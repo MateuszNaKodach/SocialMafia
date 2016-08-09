@@ -50,7 +50,7 @@ public class TapPlayersNamesActivity extends AppCompatActivity {
             public void onClick(View view) {
                // for(int i=0;i<pickedPlayersAmount;i++)
                //     tapPlayerNamesRecyclerView.findViewHolderForAdapterPosition(i).
-                Intent intent = new Intent(getApplicationContext(),SelectPlayerRoles.class);
+                Intent intent = new Intent(getApplicationContext(),SelectPlayerRolesActivity.class);
                 startActivity(intent);
             }
         });

@@ -23,7 +23,12 @@ import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses.Pla
 public class PlayerChoosingRoleAdapter extends RecyclerView.Adapter<PlayerChoosingRoleAdapter.PlayerRoleViewHolder> {
 
     private ArrayList<PlayerRole> fractionRolesList;
+    private ArrayList<PlayerRole> selectedRolesList;
     private LayoutInflater inflater;
+
+    public ArrayList<PlayerRole> getSelectedRolesList() {
+        return selectedRolesList;
+    }
 
     public PlayerChoosingRoleAdapter(ArrayList<PlayerRole> fractionRolesList, Context context){
         this.fractionRolesList = fractionRolesList;

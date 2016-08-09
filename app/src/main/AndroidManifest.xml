@@ -34,7 +34,7 @@
                 android:value="pl.nowakprojects.socialmafia.mainmenuoptions.newgame.PickPlayersAmountActivity" />
         </activity>
         <activity
-            android:name=".mainmenuoptions.newgame.SelectPlayerRoles"
+            android:name=".mainmenuoptions.newgame.SelectPlayerRolesActivity"
             android:label="@string/title_activity_select_player_roles"
             android:parentActivityName=".mainmenuoptions.newgame.TapPlayersNamesActivity"
             android:theme="@style/AppTheme.NoActionBar">
