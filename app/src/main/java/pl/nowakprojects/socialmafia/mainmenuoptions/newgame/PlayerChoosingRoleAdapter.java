@@ -1,14 +1,19 @@
 package pl.nowakprojects.socialmafia.mainmenuoptions.newgame;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.media.Image;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -25,6 +30,8 @@ public class PlayerChoosingRoleAdapter extends RecyclerView.Adapter<PlayerChoosi
     private ArrayList<PlayerRole> fractionRolesList;
     private ArrayList<PlayerRole> selectedRolesList;
     private LayoutInflater inflater;
+    private Context context;
+
 
     public ArrayList<PlayerRole> getSelectedRolesList() {
         return selectedRolesList;
@@ -33,6 +40,7 @@ public class PlayerChoosingRoleAdapter extends RecyclerView.Adapter<PlayerChoosi
     public PlayerChoosingRoleAdapter(ArrayList<PlayerRole> fractionRolesList, Context context){
         this.fractionRolesList = fractionRolesList;
         this.inflater = LayoutInflater.from(context);
+        this.context = context;
     }
 
 
@@ -47,6 +55,7 @@ public class PlayerChoosingRoleAdapter extends RecyclerView.Adapter<PlayerChoosi
             PlayerRole playerRole = fractionRolesList.get(position);
             holder.roleIcon.setImageResource(playerRole.getIconResourceID());
             holder.roleName.setText(playerRole.getName());
+            holder.roleAmount.setText(String.valueOf(playerRole.rolePlayersAmount));
     }
 
     @Override
@@ -62,6 +71,7 @@ public class PlayerChoosingRoleAdapter extends RecyclerView.Adapter<PlayerChoosi
         private ImageButton increaseRoleAmount;
         private ImageButton decreaseRoleAmount;
         private View container;
+        private AlertDialog roleDescriptionDialog;
 
         public PlayerRoleViewHolder(View itemView) {
             super(itemView);
@@ -71,23 +81,52 @@ public class PlayerChoosingRoleAdapter extends RecyclerView.Adapter<PlayerChoosi
             roleAmount = (TextView) itemView.findViewById(R.id.roleAmount);
             increaseRoleAmount = (ImageButton) itemView.findViewById(R.id.increaseRoleAmountButton);
             decreaseRoleAmount = (ImageButton) itemView.findViewById(R.id.decreaseRoleAmountButton);
-            container = itemView.findViewById(R.layout.player_role_choosing_layout);
+            //container = itemView.findViewById(R.layout.player_role_choosing_layout);
 
             increaseRoleAmount.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    roleAmount.setText(String.valueOf(Integer.valueOf(roleAmount.getText().toString())+1));
+//                    selectedRolesList.add(fractionRolesList.get(getAdapterPosition()));
+                    fractionRolesList.get(getAdapterPosition()).setRolePlayersAmount(fractionRolesList.get(getAdapterPosition()).getRolePlayersAmount()+1);
+                    roleAmount.setText(String.valueOf(fractionRolesList.get(getAdapterPosition()).getRolePlayersAmount()));;
                 }
             });
 
             decreaseRoleAmount.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(Integer.valueOf(roleAmount.getText().toString())>0)
-                        roleAmount.setText(String.valueOf(Integer.valueOf(roleAmount.getText().toString())-1));
+                    if(Integer.valueOf(roleAmount.getText().toString())>0){
+                 //       selectedRolesList.remove(fractionRolesList.get(getAdapterPosition()));
+                        fractionRolesList.get(getAdapterPosition()).setRolePlayersAmount(fractionRolesList.get(getAdapterPosition()).getRolePlayersAmount()-1);
+                    roleAmount.setText(String.valueOf(fractionRolesList.get(getAdapterPosition()).getRolePlayersAmount()));}
+                }
+            });
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    buildRoleDescriptionDialog();
+                    roleDescriptionDialog.show();
+                    return false;
                 }
             });
 
         }
+
+
+        public void buildRoleDescriptionDialog() {
+            final AlertDialog.Builder descriptionDialog = new AlertDialog.Builder(context);
+            descriptionDialog.setTitle("Role Description");
+            descriptionDialog.setMessage(context.getString(fractionRolesList.get(getAdapterPosition()).getDescription()));
+            descriptionDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    roleDescriptionDialog.cancel();
+                }
+            });
+
+            roleDescriptionDialog = descriptionDialog.create();
+    }
+
     }
 }

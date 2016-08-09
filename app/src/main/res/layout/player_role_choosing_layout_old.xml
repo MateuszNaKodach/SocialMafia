@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.v7.widget.CardView android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="@dimen/cardview_default_radius"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white">
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="125dp"
+        android:id="@+id/roleIcon"
+        android:src="@drawable/icon_role_medic"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="the name of the role"
+        android:id="@+id/roleName"
+        android:layout_marginBottom="45dp"
+        android:layout_alignBottom="@+id/roleIcon"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="120dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="0"
+        android:id="@+id/roleAmount"
+        android:layout_alignTop="@+id/roleName"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="40dp"
+        android:layout_marginEnd="40dp" />
+
+    <ImageButton
+        android:layout_width="40dp"
+        android:layout_height="50dp"
+        android:id="@+id/increaseRoleAmountButton"
+        android:src="@drawable/menuarrowup"
+        android:scaleType="fitCenter"
+        android:background="@null"
+        android:layout_above="@+id/roleAmount"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="26dp" />
+
+    <ImageButton
+        android:layout_width="40dp"
+        android:layout_height="50dp"
+        android:id="@+id/decreaseRoleAmountButton"
+        android:src="@drawable/menuarrowdown"
+        android:scaleType="fitCenter"
+        android:background="@null"
+        android:layout_below="@+id/roleAmount"
+        android:layout_alignLeft="@+id/increaseRoleAmountButton"
+        android:layout_alignStart="@+id/increaseRoleAmountButton" />
+
+</RelativeLayout>
+
+</android.support.v7.widget.CardView>

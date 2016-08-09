@@ -37,7 +37,7 @@ public class PlayerRole {
     ActionType actionType;
     int nightWakeHierarchyNumber;
 
-    int rolePlayersAmount=0;
+    public int rolePlayersAmount=0;
 
     public TextView roleAmount;
 
