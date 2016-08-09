@@ -1,3 +1,128 @@
 <resources>
     <string name="app_name">SocialMafia</string>
+    <string name="title_activity_pick_players_amount">PickPlayersAmountActivity</string>
+
+    <string name="title_activity_game_rules">Szczegółowe zasady gry</string>
+    <string name="generalRules">Zasady ogólne</string>
+    <string name="town">Miasto</string>
+    <string name="mafia">Mafia</string>
+    <string name="syndicate">Syndykat</string>
+    <string name="generalRulesExplanation">\t Na początku gry każdy gracz dostaje kartę, która oznacza jego funkcję. Funkcje te opisane są na kolejnych zakładkach. \n \n \t Następnie prowadzący zbiera od wszystkich karty i rozpoczyna się gra w mafię. \n \n \t Jeśli nie zna się swojej funkcji lub ma się inne pytania odnośnie gry można pójść do prowadzącego „na spowiedź”-  wszystko zostanie wytłumaczone :)
+        \n \n \n \t
+        1)	Noc zerowa: pierwsza noc w czasie trwania gry. Należy stosować się do zaleceń prowadzącego :D i mieć ZAMKNIĘTE oczy, gdy nie wykonuje się swojej funkcji. Niektóre osoby w ogóle nie budzą się w czasie „zerowej nocy”.
+         \n \n \t
+        2)	Gdy wszyscy gracze wykonają swoją funkcję rozpoczyna się dzień. W czasie dnia mogą się zazwyczaj odbyć 2 pojedynki (każdy może „wyzwać” dowolną osobę oskarżając ją o przynależność do innej frakcji- zazwyczaj mafii lub syndykatu). W pojedynku ginie osoba, na którą zagłosuje więcej graczy (wyjątek- patrz funkcja szybki) podczas tajnego (z zamkniętymi oczami) głosowania. Można wstrzymać się od głosu.
+       \n \n \t
+        3)	Pod koniec dnia nastąpić może albo sprawdzanie (gracze głosowaniem wyznaczają osobę, której przynależność do frakcji chcą sprawdzić) albo zabijanie wyznaczonej osoby. Po sprawdzeniu lub zabiciu następuje koniec dnia. W tym głosowaniu nie można się wstrzymywać.
+        \n \n \t
+        4)	Po zakończeniu każdego dnia następuje noc, podczas której mafia ma możliwość zabicia jednej osoby (podczas braku jednomyślności decyzję podejmuje szef mafii). Swoje funkcje wykonują też na polecenie prowadzącego inni gracze (np. katani, czy dealer). Po nocy następuje znowu dzień, który przebiega wg. Punktów 2 i 3 itd.
+       \n \n \t
+        5)	Osoba szantażowana nie może działać na niekorzyść szantażysty (mówić kim jest szantażysta, oskarżać go o przynależność do mafii itd. Oraz głosować na jego zabicie lub sprawdzenie. Wyjątkiem jest  tutaj szantażowany świr, który może oskarżać lub współpracować z szantażystą.
+        \n \n \t
+        6)	Kochankowie nie mogą działać na swoją niekorzyść (nie mogą mówić, ze są kochankami), znają swoje karty. Giną oboje, gdy powinno zginąć co najmniej jedno z nich. Kochanków wyznacza „zerowej nocy” ksiądz, którego jednak oni nie znają.
+    </string>
+    <string name="townRolesExplanation">\t•	As (KARO)- Świr\n
+W statystykach liczony jest jako miasto, ale może współpracować również z innymi frakcjami (nie oznacza to, że może się z nimi budzić – jest to surowo zabronione pod karą kowadła). Raz w ciągu gry, w dzień może zabić dowolną osobę.
+\t\n\n•	Joker- Dubler \n
+Podczas zerowej nocy wybiera osobę i od tego czasu posiada taką samą funkcję jak ona (prowadzący pokaże dublerowi kartę wybranej osoby). Jeśli zdublował osobę z mafii, to budzi się z mafią, a jeśli ma inną funkcję to wykonuje ją pod koniec nocy. Dubler w statystykach jest podawany jako dubler.
+\t\n\n	As- Sklep z Bronią \n
+Gdy sklep z bronią zostanie zabity kolejnej nocy mafia ma 2 strzały (może zabić 2 osoby). W ciągu gry nie ma żadnej specjalnej funkcji- dla dobra miasta powinien starać utrzymać się przy życiu 
+\t\n\n	Król- Katani \n
+każdej, oprócz zerowej, nocy katani sprawdza frakcję jednej osoby (prowadzący pokazjuje kciuk w górę- osoba jest z miasta, kciuk w bok- z syndykatu, kciuk w dół- sprawdzana osoba jest z mafii)
+\t\n\n	Dama- Dziwka  \n
+„Zerowej nocy” na polecenie prowadzącego wybiera jedną osobę i sprawdza jej kartę- funkcję (sprawdzona osoba wie też kim jest dziwka).
+\t\n\n	Jopek- Lekarz \n
+Każdej nocy może uleczyć jedną osobę przed zabiciem ze strony mafii (spośród graczy wybiera jedną osobę, którą uważa za „postrzeloną” przez mafię :D)
+\t\n\n	10- Szybki Miasta \n
+Wygrywa on pojedynki niezależnie od wyniku głosowania. Wyjątkiem jest odbycie się pojedynku między nim, a innym szybkim (wtedy o wyniku decyduje ilość głosów wszystkich graczy)
+\t\n\n	9- Sędzia Murzyn \n
+Jeśli padnie wyzwanie na pojedynek, a osoba wyzwana nie wyraża na niego zgody, sędzia decyduje, czy pojedynek się odbędzie. Pierwszej nocy wybiera też osobę, którą „murzyni”, czyli ginie za nią podczas gry.
+\t\n\n	8- Ksiądz \n
+Jest przyjacielem szefa mafii (chociaż nie wie kto jest szefem mafii), więc nie może zostać w nocy zabity przez mafię, o ile szef jeszcze żyje. Pierwszej nocy wybiera kochanków opisanych w punkcie 6. Nie może powiedzieć komu udzielił sakramentu 
+\t\n\n	7- Żyd \n
+Podczas jakiegokolwiek sprawdzania pokazywane jest ,że jest zły, chociaż należy do miasta i działa na korzyść miasta.
+\t\n\n	6 - Terrorysta \n
+Gdy terrorysta zostaje zabity ginie razem z nim osoba po jego prawej stronie
+\t\n\n	5 - Adwokat \n
+Raz w ciągu gry może ochronić wybraną przez siebie osobę i wówczas nikt (za wyjątkiem świra ;)) nie może tej osoby zabić, ani nawet oskarżać.
+\t\n\n	4 - Burmistrz \n
+Podczas każdego głosowania jego wybór jest liczony podwójnie.
+\t\n\n	2- Emo \n
+Ma 2 życia. Może się zabić (pociąć), aby udowodnić swoją funkcję. Musi jednak uważać na dealera, który tą funkcję może zablokować. Nie dowiaduje się o utracie życia w przypadku, gdy odbierze mu je mafia w ciągu nocy.</string>
+
+    <string name="mafiaRolesExplanation">
+        MAFIA (oznaczona kartami pik)
+\n Mafia poznaje się „zerowej nocy”
+\n \n \t	Król- Szef Mafii - Szantażysta \n
+Szef nie może zabić księdza. Pierwszej nocy wybiera osobę do szantażowania (opis pkt.5)
+\t\n\n	Dama- Kokietka \n
+Podczas jej sprawdzania w dzień lub przez kataniego (w zależności, czy jest mega, czy zwykła) widziana jest jako „dobra” (z miasta), mimo, że należy do mafii
+\t\n\n	Jopek- Pawulon \n
+W nocy może „dobić” osobę uleczoną przez lekarza („ponowić” strzał mafii w tą osobę)
+
+\t\n\n	10- Szybki \n
+Działa jak szybki miasta, tylko dla mafii. Wygrywa on pojedynki niezależnie od wyniku głosowania. Wyjątkiem jest odbycie się pojedynku między nim, a innym szybkim (wtedy o wyniku decyduje ilość głosów wszystkich graczy)
+\t\n\n	9- Dealer \n
+Każdej nocy wybiera jedną osobę, której funkcję zablokowuje na następny dzień lub noc (np. sędzia murzyn nie decyduje wówczas o pojedynkach, katani nie sprawdza itd.)
+\t\n\n	8- Hitler \n
+Budzi się zerowej nocy i zna Żyda
+\t\n\n	7- Grabarz \n
+W nocy poznaje kartę (funkcję) ostatniej zabitej przez mafię osoby. Może próbować przekazać tą wiedzę mafii 
+\t\n\n	6- Czarna Dziwka/Gwałciciel \n
+Zerowej nocy może wskazać jedną osobę, z którą spędzi noc – pozna jej kartę. Wybrana osoba nie będzie wiedziała kto jest czarną dziwką/gwałcicielem.
+</string>
+
+    <string name="syndicateRolesExplanation">
+        SYNDYKAT (oznaczony kartami trefl)
+\n Syndykat nie zna siebie nawzajem (cały syndykat zna tylko szef)
+\t\n\n	As- Anioł Śmierci \n
+Każdej nocy (oprócz „zerowej”) naznacza jedną osobę. Jeśli osoba dostanie 2 naznaczenia- ginie
+\t\n\n	Król- Szef Syndykatu \n
+Zna cały syndykat (poznaje go pierwszej nocy)
+\t\n\n	Dama- Diabolistka \n
+Podczas trwania zerowej nocy wybiera jedną osobę. Jeśli ta osoba zginie w nocy, to przechodzi do syndykatu.
+\t\n\n	Jopek- Święty \n
+Wszystkie osoby głosujące na jego śmierć, giną razem z nim.
+\t\n\n	10- Szybki Syndykatu \n
+Działa jak szybki miasta, lub mafii, tylko dla syndykatu. Wygrywa on pojedynki niezależnie od wyniku głosowania. Wyjątkiem jest odbycie się pojedynku między nim, a innym szybkim (wtedy o wyniku decyduje ilość głosów wszystkich graczy)
+\t\n\n	9- Kolejarz \n
+W ciągu gry, w dowolnym momencie, może „wywieźć” 2 osoby. Wówczas on i dwaj wybrani gracze kończą grę.
+\t\n\n	8- Barman \n
+Raz w ciągu gry może przesunąć strzał mafii (pokazuje w którą stronę i o ile)
+\t\n\n	7- Czasowstrzymywacz \n
+Raz w ciągu gry może zakończyć dzień w dowolnym momencie. Wówczas wszyscy idą spać i nie odbywają się już żadne głosowania
+\t\n\n	6- Łowca \n
+Jeśli miałby zginąć w ciągu dnia może raz wyznaczyć osobę, która zginie zamiast niego
+\t\n\n	5- Dentysta \n
+Raz w ciągu gry,  podczas trwania dnia wybiera osobę, która aż do nocy nie będzie mogła się odzywać.
+</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="playersAmount">Liczba graczy:</string>
+    <string name="daytime">Czas trwania dnia:</string>
+    <string name="rolesSettings">Wybór ról</string>
+
+    <string name="playersAmountChanged">Liczba graczy została zmieniona.</string>
+    <string name="title_activity_game_settings">Nowa Gra - Ustawienia</string>
+
+
+    <string name="madman">Świr</string>
+    <string name="madmanDescription">Świr sobie swiruje.</string>
+    <string name="armshop">Sklep z bronią</string>
+    <string name="policeman">Świr</string>
+    <string name="prostitute">Prostytutka</string>
+    <string name="medic">Lekarz</string>
+    <string name="townspeedy">Szybki Miasta</string>
+    <string name="judge">Sędzia</string>
+    <string name="black">Murzyn</string>
+    <string name="priest">Ksiądz</string>
+    <string name="jew">"Żyd</string>
+    <string name="terrorist">Terrorysta</string>
+    <string name="lawyer">Adwokat</string>
+    <string name="mayor">Burmistrz</string>
+    <string name="emo">E. M. O.</string>
+    <string name="blackJudge">Sędzia Murzyn</string>
+    <string name="title_activity_tap_players_names">TapPlayersNamesActivity</string>
+    <string name="title_activity_select_player_roles">SelectPlayerRoles</string>
 </resources>

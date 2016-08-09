@@ -1,0 +1,17 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".mainmenuoptions.newgame.SelectPlayerRolesTownFragment"
+    android:orientation="vertical"
+    android:gravity="center_vertical">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="437dp"
+        android:id="@+id/selectTownRolesRecyclerView"
+        android:layout_gravity="center" />
+
+</LinearLayout>
