@@ -3,15 +3,11 @@ package pl.nowakprojects.socialmafia.mainmenuoptions.newgame;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +23,8 @@ import pl.nowakprojects.socialmafia.R;
 
 public class TapPlayersNamesActivity extends AppCompatActivity {
 
-    ArrayList<String> tapedPlayersNamesList = new ArrayList<String>();
+    static final String EXTRA_PLAYERS_NAMES_LIST = "pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses.EXTRA_PLAYERS_NAMES_LIST";
+
     private TapPlayerNameAdapter tapPlayerNameAdapter;
     private RecyclerView tapPlayerNamesRecyclerView;
     private int pickedPlayersAmount;
@@ -39,6 +37,7 @@ public class TapPlayersNamesActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        //przypisujemy wczesniej wybrana liczbe graczy
         pickedPlayersAmount = getIntent().getIntExtra(PickPlayersAmountActivity.EXTRA_PLAYERS_AMOUNT,5);
 
         tapPlayerNamesRecyclerView = (RecyclerView) findViewById(R.id.playersNamesRecyclerView);
@@ -50,11 +49,10 @@ public class TapPlayersNamesActivity extends AppCompatActivity {
         goToSelectRolesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               // for(int i=0;i<pickedPlayersAmount;i++)
-               //     tapPlayerNamesRecyclerView.findViewHolderForAdapterPosition(i).
                 //Jesli niektore imiona pozostały puste zostanie do nich wpisany numer gracza:
                 fillEmptyNamesWithPlayerNumbers();
                 Intent intent = new Intent(getApplicationContext(),SelectPlayerRolesActivity.class);
+                intent.putStringArrayListExtra(EXTRA_PLAYERS_NAMES_LIST,makeStringArrayListFromTapPlayerNameList());
                 startActivity(intent);
             }
         });
@@ -66,21 +64,30 @@ public class TapPlayersNamesActivity extends AppCompatActivity {
                 tapPlayerNameAdapter.namesList.get(i).playerName = "Player #"+(i+1);
     }
 
+    ArrayList<String> makeStringArrayListFromTapPlayerNameList(){
+        ArrayList<String> playersNames = new ArrayList<>();
+        for(int i=0;i<tapPlayerNameAdapter.namesList.size();i++)
+            playersNames.add(tapPlayerNameAdapter.namesList.get(i).playerName);
+
+        return playersNames;
+    }
+
+
+
     class TapPlayerNameAdapter extends RecyclerView.Adapter<TapPlayerNameAdapter.PlayerNameViewHolder>{
 
         class TapPlayerNameItem{
-            private int playerNumber;
             private String playerName = "";
         }
 
-        private List<TapPlayerNameItem> namesList;
+        private List<TapPlayerNameItem> namesList; //lista imion graczy
         private LayoutInflater layoutInflater;
 
         public TapPlayerNameAdapter(int playersAmount, Context c){
             layoutInflater = LayoutInflater.from(c);
             namesList = new ArrayList<>(playersAmount);
             for(int i=0;i<playersAmount;i++)
-                namesList.add(new TapPlayerNameItem());
+                namesList.add(new TapPlayerNameItem()); //tworzy lista, aby byly miejsca na imiona graczy
         }
 
         @Override
@@ -93,6 +100,7 @@ public class TapPlayersNamesActivity extends AppCompatActivity {
         public void onBindViewHolder(PlayerNameViewHolder holder, int position) {
                 TapPlayerNameItem item = namesList.get(position);
                 holder.playerNumberText.setText("Player #"+(position+1));
+                holder.playerNameEditText.setText(item.playerName);
         }
 
         @Override
@@ -103,22 +111,22 @@ public class TapPlayersNamesActivity extends AppCompatActivity {
         class PlayerNameViewHolder extends RecyclerView.ViewHolder{
 
             private TextView playerNumberText;
-            private EditText playerName;
+            private EditText playerNameEditText;
           //  private View container;
 
             public PlayerNameViewHolder(View itemView) {
                 super(itemView);
                 playerNumberText = (TextView) itemView.findViewById(R.id.playerNumberText);
-                playerName = (EditText) itemView.findViewById(R.id.playerNameEditText);
+                playerNameEditText = (EditText) itemView.findViewById(R.id.playerNameEditText);
                // container = itemView.findViewById(R.id.playernamelistitem);
 
                 //WYMAGA POPRAWEK DLA WIEKSZEJ ILOSCI ZMIAN NIZ JEDNA (ZAMIANA JUZ ISTNIEJACEGO TEKSTU ITP!)
-                playerName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                playerNameEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                     @Override
                     public void onFocusChange(View v, boolean hasFocus) {
-                        if (!hasFocus && !playerName.getText().toString().isEmpty()) {
-                            tapedPlayersNamesList.add(playerName.getText().toString());
-                            Log.i("TEST",tapedPlayersNamesList.get(tapedPlayersNamesList.size()-1));
+                        if (!hasFocus && !playerNameEditText.getText().toString().isEmpty()) {
+                            namesList.get(getAdapterPosition()).playerName = playerNameEditText.getText().toString();
+                           // Log.i("TEST",tapedPlayersNamesList.get(tapedPlayersNamesList.size()-1));
                         }
                     }
                 });

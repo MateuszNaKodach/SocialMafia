@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">SocialMafia</string>
-    <string name="title_activity_pick_players_amount">PickPlayersAmountActivity</string>
+    <string name="app_name">Social Mafia</string>
+    <string name="title_activity_pick_players_amount">Liczba Graczy</string>
 
     <string name="title_activity_game_rules">Szczegółowe zasady gry</string>
     <string name="generalRules">Zasady ogólne</string>
@@ -110,9 +110,13 @@ Raz w ciągu gry,  podczas trwania dnia wybiera osobę, która aż do nocy nie b
     <string name="madman">Świr</string>
     <string name="madmanDescription">W statystykach liczony jest jako miasto, ale może współpracować również z innymi frakcjami (nie oznacza to, że może się z nimi budzić – jest to surowo zabronione pod karą kowadła). Raz w ciągu gry, w dzień może zabić dowolną osobę.</string>
     <string name="armshop">Sklep z bronią</string>
+    <string name="armshopDescription">Gdy sklep z bronią zostanie zabity kolejnej nocy mafia ma 2 strzały (może zabić 2 osoby). W ciągu gry nie ma żadnej specjalnej funkcji- dla dobra miasta powinien starać utrzymać się przy życiu </string>
     <string name="policeman">Katani</string>
+    <string name="policemanDescription">Każdej, oprócz zerowej, nocy katani sprawdza frakcję jednej osoby (prowadzący pokazjuje kciuk w górę- osoba jest z miasta, kciuk w bok- z syndykatu, kciuk w dół- sprawdzana osoba jest z mafii)</string>
     <string name="prostitute">Prostytutka</string>
+    <string name="prostituteDescription">„Zerowej nocy” na polecenie prowadzącego wybiera jedną osobę i sprawdza jej kartę- funkcję (sprawdzona osoba wie też kim jest dziwka).</string>
     <string name="medic">Lekarz</string>
+    <string name="medicDescription">Każdej nocy może uleczyć jedną osobę przed zabiciem ze strony mafii (spośród graczy wybiera jedną osobę, którą uważa za „postrzeloną” przez mafię :D)</string>
     <string name="townspeedy">Szybki Miasta</string>
     <string name="judge">Sędzia</string>
     <string name="black">Murzyn</string>
@@ -147,11 +151,13 @@ Raz w ciągu gry,  podczas trwania dnia wybiera osobę, która aż do nocy nie b
     <string name="timestopper">Czasowstrzymywacz</string>
     <string name="hunter">Lowca</string>
     <string name="dentist">Dentysta</string>
-    <string name="select_player_roles_choosed_functions">Wybranych funkcji: /</string>
+    <string name="select_player_roles_choosed_functions">Wybranych funkcji: </string>
     <string name="pick_players_amount_explanation">Proszę wybrać liczbę graczy:</string>
     <string name="go_to_players_names">Wprowadź imiona graczy</string>
     <string name="assign_roles_to_players">Przydziel role do graczy</string>
     <string name="select_roles">Wybierz funkcje graczy</string>
     <string name="please_tap_players_names">Proszę wprowadzić imiona graczy:</string>
+    <string name="tooLessFuctionsSelected">Wybrano zbyt mało funkcji!</string>
+    <string name="title_activity_connect_players_to_roles">ConnectPlayersToRolesActivity</string>
 
 </resources>

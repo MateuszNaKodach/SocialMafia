@@ -9,14 +9,26 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.parceler.Parcel;
+
 import pl.nowakprojects.socialmafia.R;
 
 /**
  * Created by Mateusz on 20.06.2016.
  */
+@Parcel
 public class PlayerRole {
 
-    Activity activity;
+    public enum Fraction {TOWN, MAFIA, SYNDICATE};
+    public enum ActionType {ZeroNight, AllNights, AllNightsBesideZero, ActionRequire, OnceAGame, NoAction };
+
+    int name = 0;
+    int description = 0;
+    int iconResourceID = 0;
+    Fraction fraction;
+    ActionType actionType;
+    int nightWakeHierarchyNumber;
+    int rolePlayersAmount=0;
 
     public PlayerRole(int name, int description, int iconResourceID, Fraction fraction, ActionType actionType, int nightWakeHierarchyNumber) {
         this.name = name;
@@ -27,40 +39,7 @@ public class PlayerRole {
         this.nightWakeHierarchyNumber = nightWakeHierarchyNumber;
     }
 
-    public enum Fraction {TOWN, MAFIA, SYNDICATE};
-    public enum ActionType {ZeroNight, AllNights, AllNightsBesideZero, ActionRequire, OnceAGame, NoAction };
 
-    public int name = 0;
-    int description = 0;
-    int iconResourceID = 0;
-    Fraction fraction;
-    ActionType actionType;
-    int nightWakeHierarchyNumber;
-
-    public int rolePlayersAmount=0;
-
-    public TextView roleAmount;
-
-
-
-
-
-
-    public void increaseRoleAmount() {
-        if (rolePlayersAmount < 1) //premierum version will make more than 1 possibilty
-            rolePlayersAmount++;
-    }
-
-    public void decreaseRoleAmount(){
-        if(rolePlayersAmount>0) //premierum version will make more than 1 possibilty
-            rolePlayersAmount--;
-    }
-
-
-    public void updateRoleAmountTextView(){
-        Integer amount = new Integer(this.rolePlayersAmount);
-        roleAmount.setText(amount.toString());
-    }
 
 
     public int getName() {

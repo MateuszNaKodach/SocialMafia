@@ -4,11 +4,11 @@
 
     <application
         android:allowBackup="true"
+        android:debuggable="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme.NoActionBar"
-        android:debuggable="true">
+        android:theme="@style/AppTheme.NoActionBar">
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -51,6 +51,15 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="pl.nowakprojects.socialmafia.mainmenuoptions.newgame.TapPlayersNamesActivity" />
+        </activity>
+        <activity
+            android:name=".mainmenuoptions.newgame.ConnectPlayersToRolesActivity"
+            android:label="@string/title_activity_connect_players_to_roles"
+            android:parentActivityName=".mainmenuoptions.newgame.SelectPlayerRolesActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="pl.nowakprojects.socialmafia.mainmenuoptions.newgame.SelectPlayerRolesActivity" />
         </activity>
     </application>
 

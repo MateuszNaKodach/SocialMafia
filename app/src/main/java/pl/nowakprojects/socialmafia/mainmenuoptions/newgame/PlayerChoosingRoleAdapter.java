@@ -20,6 +20,7 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 
 import pl.nowakprojects.socialmafia.R;
+import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses.Fraction;
 import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses.PlayerRole;
 
 /**
@@ -32,9 +33,23 @@ public class PlayerChoosingRoleAdapter extends RecyclerView.Adapter<PlayerChoosi
     private LayoutInflater inflater;
     private Context context;
 
+    public ArrayList<PlayerRole> getFractionRolesList() {
+        return fractionRolesList;
+    }
 
     public ArrayList<PlayerRole> getSelectedRolesList() {
         return selectedRolesList;
+    }
+
+    private RoleAmountChangedCallback roleAmountChangedCallback;
+
+    public interface RoleAmountChangedCallback{
+        void amountDecrease(PlayerRole.Fraction fraction);
+        void amountIncrease(PlayerRole.Fraction fraction);
+    }
+
+    public void setRoleAmountChangedCallback(RoleAmountChangedCallback roleAmountChangedCallback) {
+        this.roleAmountChangedCallback = roleAmountChangedCallback;
     }
 
     public PlayerChoosingRoleAdapter(ArrayList<PlayerRole> fractionRolesList, Context context){
@@ -89,7 +104,8 @@ public class PlayerChoosingRoleAdapter extends RecyclerView.Adapter<PlayerChoosi
                 public void onClick(View view) {
                     selectedRolesList.add(fractionRolesList.get(getAdapterPosition()));
                     fractionRolesList.get(getAdapterPosition()).setRolePlayersAmount(fractionRolesList.get(getAdapterPosition()).getRolePlayersAmount()+1);
-                    roleAmount.setText(String.valueOf(fractionRolesList.get(getAdapterPosition()).getRolePlayersAmount()));;
+                    roleAmount.setText(String.valueOf(fractionRolesList.get(getAdapterPosition()).getRolePlayersAmount()));
+                    roleAmountChangedCallback.amountIncrease(fractionRolesList.get(getAdapterPosition()).getFraction());
                 }
             });
 
@@ -101,21 +117,29 @@ public class PlayerChoosingRoleAdapter extends RecyclerView.Adapter<PlayerChoosi
                         //zmienjsza liczbę wybranych o 1:
                         fractionRolesList.get(getAdapterPosition()).setRolePlayersAmount(fractionRolesList.get(getAdapterPosition()).getRolePlayersAmount()-1);
                         //ustawia tekst TextView na zmienioną liczbę
-                        roleAmount.setText(String.valueOf(fractionRolesList.get(getAdapterPosition()).getRolePlayersAmount()));}
+                        roleAmount.setText(String.valueOf(fractionRolesList.get(getAdapterPosition()).getRolePlayersAmount()));
+                        roleAmountChangedCallback.amountDecrease(fractionRolesList.get(getAdapterPosition()).getFraction());}
                 }
             });
 
             /**
              * Przy długim naciśnięciu karty roli pojawią się jej opis
              */
-            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    buildRoleDescriptionDialog();
+                    roleDescriptionDialog.show();
+                }
+            });
+          /*  itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
                     buildRoleDescriptionDialog();
                     roleDescriptionDialog.show();
                     return false;
                 }
-            });
+            });*/
 
         }
 
