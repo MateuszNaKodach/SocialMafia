@@ -17,10 +17,11 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large Text"
-        android:id="@+id/textView"
-        android:layout_gravity="center_horizontal" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/pick_players_amount_explanation"
+        android:id="@+id/pickPlayersAmountExplanation"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/abc_text_size_medium_material" />
     <NumberPicker
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:layout_width="wrap_content"
@@ -29,10 +30,9 @@
         android:id="@+id/playersamountpicker"/>
 
     <Button
-        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginTop="@dimen/abc_text_size_display_4_material"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Button"
-        android:id="@+id/goToPlayerNamesButton"
-        android:layout_gravity="center_horizontal" />
+        android:text="@string/go_to_players_names"
+        android:id="@+id/goToPlayerNamesButton" />
 </LinearLayout>

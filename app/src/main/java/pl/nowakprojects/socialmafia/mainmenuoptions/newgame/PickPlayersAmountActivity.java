@@ -14,15 +14,21 @@ import android.widget.NumberPicker;
 import pl.nowakprojects.socialmafia.MainActivity;
 import pl.nowakprojects.socialmafia.R;
 
+/**
+ * Wybór liczby graczy
+ */
 public class PickPlayersAmountActivity extends AppCompatActivity {
 
     static final String EXTRA_PLAYERS_AMOUNT = "pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses.EXTRA_PLAYERS_AMOUNT";
-    private final String LOG_TAG = "SOCIALMAFIA: PickPlayersAmountActivity.class";
+
+    private final String LOG_TAG = "SOCIALMAFIA: PickPlayersAmountActivity.class"; //tag dla logów
+
     private NumberPicker playersAmountNumberPicker;
     private Button goToPlayerNamesButton;
-    private static final int PLAYERS_MAX_AMOUNT = 70;
-    private static final int PLAYERS_MIN_AMOUNT = 5;
-    private int pickedPlayersAmount = PLAYERS_MIN_AMOUNT;
+
+    private static final int PLAYERS_MAX_AMOUNT = 70; //maksymalna liczba graczy
+    private static final int PLAYERS_MIN_AMOUNT = 5; //minimalna liczba graczy
+    private int pickedPlayersAmount = PLAYERS_MIN_AMOUNT; //poczatkowa wybrana liczba graczy
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,14 +44,19 @@ public class PickPlayersAmountActivity extends AppCompatActivity {
         playersAmountNumberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker numberPicker, int oldValue, int newValue) {
-                pickedPlayersAmount=newValue;
+                pickedPlayersAmount=newValue; //przy zmianie wartości nadpisuje wybraną liczbę graczy
             }
         });
 
         goToPlayerNamesButton = (Button) findViewById(R.id.goToPlayerNamesButton);
         goToPlayerNamesButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Przekazuje liczbe graczy do aktywności wpisywania imion
+             * @param view
+             */
             @Override
             public void onClick(View view) {
+
                 Log.i(LOG_TAG,String.valueOf(pickedPlayersAmount));
                 Intent intent = new Intent(getApplicationContext(), TapPlayersNamesActivity.class);
                 intent.putExtra(EXTRA_PLAYERS_AMOUNT,pickedPlayersAmount);

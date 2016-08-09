@@ -108,7 +108,7 @@ Raz w ciągu gry,  podczas trwania dnia wybiera osobę, która aż do nocy nie b
 
 
     <string name="madman">Świr</string>
-    <string name="madmanDescription">Świr sobie swiruje.</string>
+    <string name="madmanDescription">W statystykach liczony jest jako miasto, ale może współpracować również z innymi frakcjami (nie oznacza to, że może się z nimi budzić – jest to surowo zabronione pod karą kowadła). Raz w ciągu gry, w dzień może zabić dowolną osobę.</string>
     <string name="armshop">Sklep z bronią</string>
     <string name="policeman">Katani</string>
     <string name="prostitute">Prostytutka</string>
@@ -116,13 +116,42 @@ Raz w ciągu gry,  podczas trwania dnia wybiera osobę, która aż do nocy nie b
     <string name="townspeedy">Szybki Miasta</string>
     <string name="judge">Sędzia</string>
     <string name="black">Murzyn</string>
+    <string name="blackJudge">Sędzia Murzyn</string>
     <string name="priest">Ksiądz</string>
     <string name="jew">"Żyd</string>
     <string name="terrorist">Terrorysta</string>
     <string name="lawyer">Adwokat</string>
     <string name="mayor">Burmistrz</string>
     <string name="emo">E. M. O.</string>
-    <string name="blackJudge">Sędzia Murzyn</string>
-    <string name="title_activity_tap_players_names">TapPlayersNamesActivity</string>
-    <string name="title_activity_select_player_roles">SelectPlayerRoles</string>
+
+    <string name="title_activity_tap_players_names">Imiona graczy</string>
+    <string name="title_activity_select_player_roles">Wybór funkcji</string>
+
+    <string name="boss">Szef Mafii</string>
+    <string name="blackmailer">Szantażysta</string>
+    <string name="blackmailerBoss">Szef Szantażysta</string>
+    <string name="coquette">Kokietka</string>
+    <string name="darkmedic">Pawulon</string>
+    <string name="mafiaspeedy">Szybki Mafii</string>
+    <string name="dealer">Diler</string>
+    <string name="gravedigger">Grabarz</string>
+    <string name="rapist">Gwałciciel</string>
+
+    <string name="sindicateBoss">Szef Syndykatu</string>
+    <string name="deathAngel">Anioł Smierci</string>
+    <string name="witch">Diabolistka</string>
+    <string name="saint">Swięty</string>
+    <string name="sindicateSpeedy">Szybki Syndykatu</string>
+    <string name="conductor">Kolejarz</string>
+    <string name="bartender">Barman</string>
+    <string name="timestopper">Czasowstrzymywacz</string>
+    <string name="hunter">Lowca</string>
+    <string name="dentist">Dentysta</string>
+    <string name="select_player_roles_choosed_functions">Wybranych funkcji: /</string>
+    <string name="pick_players_amount_explanation">Proszę wybrać liczbę graczy:</string>
+    <string name="go_to_players_names">Wprowadź imiona graczy</string>
+    <string name="assign_roles_to_players">Przydziel role do graczy</string>
+    <string name="select_roles">Wybierz funkcje graczy</string>
+    <string name="please_tap_players_names">Proszę wprowadzić imiona graczy:</string>
+
 </resources>

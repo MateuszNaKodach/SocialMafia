@@ -6,8 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 
+import pl.nowakprojects.socialmafia.mainmenuoptions.gamerules.GameRulesActivity;
 import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.PickPlayersAmountActivity;
-import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.TapPlayersNamesActivity;
 
 public class MainActivity extends AppCompatActivity {
 

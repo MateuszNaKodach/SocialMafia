@@ -28,7 +28,7 @@ public class PlayerRole {
     }
 
     public enum Fraction {TOWN, MAFIA, SYNDICATE};
-    public enum ActionType {ZeroNight, AllNights, AllNightsBesideZero, ActionRequire, OnceAGame };
+    public enum ActionType {ZeroNight, AllNights, AllNightsBesideZero, ActionRequire, OnceAGame, NoAction };
 
     public int name = 0;
     int description = 0;

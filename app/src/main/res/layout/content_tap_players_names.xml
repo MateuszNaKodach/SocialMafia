@@ -18,20 +18,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large Text"
+        android:text="@string/please_tap_players_names"
         android:id="@+id/textView2"
         android:layout_gravity="center_horizontal" />
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="373dp"
-        android:layout_weight="0.42"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:id="@+id/playersNamesRecyclerView"/>
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="New Button"
+        android:text="@string/select_roles"
         android:id="@+id/goToSelectRolesButton"
         android:layout_gravity="center_horizontal" />
 

@@ -38,6 +38,7 @@ public class PlayerChoosingRoleAdapter extends RecyclerView.Adapter<PlayerChoosi
     }
 
     public PlayerChoosingRoleAdapter(ArrayList<PlayerRole> fractionRolesList, Context context){
+        this.selectedRolesList = new ArrayList<>();
         this.fractionRolesList = fractionRolesList;
         this.inflater = LayoutInflater.from(context);
         this.context = context;
@@ -86,7 +87,7 @@ public class PlayerChoosingRoleAdapter extends RecyclerView.Adapter<PlayerChoosi
             increaseRoleAmount.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-//                    selectedRolesList.add(fractionRolesList.get(getAdapterPosition()));
+                    selectedRolesList.add(fractionRolesList.get(getAdapterPosition()));
                     fractionRolesList.get(getAdapterPosition()).setRolePlayersAmount(fractionRolesList.get(getAdapterPosition()).getRolePlayersAmount()+1);
                     roleAmount.setText(String.valueOf(fractionRolesList.get(getAdapterPosition()).getRolePlayersAmount()));;
                 }
@@ -96,12 +97,17 @@ public class PlayerChoosingRoleAdapter extends RecyclerView.Adapter<PlayerChoosi
                 @Override
                 public void onClick(View view) {
                     if(Integer.valueOf(roleAmount.getText().toString())>0){
-                 //       selectedRolesList.remove(fractionRolesList.get(getAdapterPosition()));
+                        selectedRolesList.remove(fractionRolesList.get(getAdapterPosition()));
+                        //zmienjsza liczbę wybranych o 1:
                         fractionRolesList.get(getAdapterPosition()).setRolePlayersAmount(fractionRolesList.get(getAdapterPosition()).getRolePlayersAmount()-1);
-                    roleAmount.setText(String.valueOf(fractionRolesList.get(getAdapterPosition()).getRolePlayersAmount()));}
+                        //ustawia tekst TextView na zmienioną liczbę
+                        roleAmount.setText(String.valueOf(fractionRolesList.get(getAdapterPosition()).getRolePlayersAmount()));}
                 }
             });
 
+            /**
+             * Przy długim naciśnięciu karty roli pojawią się jej opis
+             */
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
@@ -114,11 +120,19 @@ public class PlayerChoosingRoleAdapter extends RecyclerView.Adapter<PlayerChoosi
         }
 
 
+        /**
+         * Tworzy okienko wyświetlające opis roli
+         */
         public void buildRoleDescriptionDialog() {
             final AlertDialog.Builder descriptionDialog = new AlertDialog.Builder(context);
-            descriptionDialog.setTitle("Role Description");
+            descriptionDialog.setTitle(context.getString(fractionRolesList.get(getAdapterPosition()).getName()));
             descriptionDialog.setMessage(context.getString(fractionRolesList.get(getAdapterPosition()).getDescription()));
             descriptionDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                /**
+                 * Zamyka okno z opisem roli
+                 * @param dialog
+                 * @param which
+                 */
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     roleDescriptionDialog.cancel();

@@ -1,4 +1,4 @@
-package pl.nowakprojects.socialmafia;
+package pl.nowakprojects.socialmafia.mainmenuoptions.gamerules;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -12,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
+import pl.nowakprojects.socialmafia.R;
 
 public class GameRulesActivity extends AppCompatActivity {
 
