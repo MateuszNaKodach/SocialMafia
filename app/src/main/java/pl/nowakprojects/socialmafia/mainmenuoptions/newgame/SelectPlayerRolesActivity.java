@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -29,6 +30,7 @@ import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses.Rol
 public class SelectPlayerRolesActivity extends AppCompatActivity implements PlayerChoosingRoleAdapter.RoleAmountChangedCallback {
 
     static final String EXTRA_SELECTED_ROLES_LIST = "pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses.EXTRA_SELECTED_ROLES_LIST";
+    static final String LOG_TAG = "SelectPlayersRolesActivity.class";
 
     private RecyclerView townRolesList;
     private RecyclerView mafiaRolesList;
@@ -99,19 +101,26 @@ public class SelectPlayerRolesActivity extends AppCompatActivity implements Play
         assignRolesToPlayers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.i(LOG_TAG, "Przycisk nacisniety");
                 //dodac ostrzezenia jak np. mafii jest za duzo i alertbox o zaakcpetowanie!!!
                 if ((howManyTownRolesWasSelected+howManyMafiaRolesWasSelected+howManySyndicateRolesWasSelected)!=playersNamesList.size())
                     Toast.makeText(getApplicationContext(),R.string.tooLessFuctionsSelected, Toast.LENGTH_SHORT).show();
-                else if ((howManyTownRolesWasSelected+howManyMafiaRolesWasSelected+howManySyndicateRolesWasSelected)==playersNamesList.size()){
+                else {
+                    Log.i(LOG_TAG, "Wejscie do losowania rol");
                     //przejscie do losowania ról:
                     connectSelectedRolesFromAllFractions();
                     //Tworzymy Bundle do przekazania do Activity mieszania ról
                     Bundle bundle = new Bundle();
+                    Log.i(LOG_TAG, "Bundle stworzone");
                     bundle.putParcelable(EXTRA_SELECTED_ROLES_LIST, Parcels.wrap(allSelectedRoles)); //wszystkie wybrane role przekazujemy
+                    Log.i(LOG_TAG, "Role przekazaney");
                     bundle.putStringArrayList(TapPlayersNamesActivity.EXTRA_PLAYERS_NAMES_LIST,playersNamesList); //wszystkie imiona graczy
                     Intent intent = new Intent(getApplicationContext(),ConnectPlayersToRolesActivity.class);
+                    Log.i(LOG_TAG, "Intencja stworzona");
                     intent.putExtras(bundle);
+                    Log.i(LOG_TAG, "Extras putted");
                     startActivity(intent);
+                    Log.i(LOG_TAG, "Start Activity");
                 }
 
             }
@@ -159,5 +168,6 @@ public class SelectPlayerRolesActivity extends AppCompatActivity implements Play
             allSelectedRoles.add(mafiaRolesAdapter.getSelectedRolesList().get(i));
         for(int i=0;i<syndicateRolesAdapter.getSelectedRolesList().size();i++)
             allSelectedRoles.add(syndicateRolesAdapter.getSelectedRolesList().get(i));
+        Log.i(LOG_TAG, "Laczenie zakonczone.");
     }
 }
