@@ -71,7 +71,7 @@ public class PlayerChoosingRoleAdapter extends RecyclerView.Adapter<PlayerChoosi
             PlayerRole playerRole = fractionRolesList.get(position);
             holder.roleIcon.setImageResource(playerRole.getIconResourceID());
             holder.roleName.setText(playerRole.getName());
-            holder.roleAmount.setText(String.valueOf(playerRole.rolePlayersAmount));
+            holder.roleAmount.setText(String.valueOf(playerRole.getRolePlayersAmount()));
     }
 
     @Override

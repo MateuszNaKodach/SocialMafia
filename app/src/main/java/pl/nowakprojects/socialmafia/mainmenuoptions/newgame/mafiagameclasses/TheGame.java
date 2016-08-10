@@ -3,6 +3,8 @@ package pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses;
  * Created by Mateusz on 2016-02-20.
  */
 
+import org.parceler.Parcel;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -26,6 +28,7 @@ import javafx.stage.Stage;
  * teraz DODAC CZAS GRY ( BEDZIE POTRZEBNY DO SAVE!!!)
  */
 
+@Parcel
 public class TheGame {
 	// LISTA ZAPISANYCH GRACZY
 	ArrayList<HumanPlayer> playersInfoList = new ArrayList<HumanPlayer>();

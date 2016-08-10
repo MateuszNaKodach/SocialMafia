@@ -17,6 +17,10 @@ public class HumanPlayer {
 	public HumanPlayer(String playerName){
 		this.playerName=playerName;
 	}
+	public HumanPlayer(String playerName, PlayerRole playerRole){
+		this.playerName=playerName;
+		this.playerRole=playerRole;
+	}
 
 	public String getPlayerName(){
 		return this.playerName;
