@@ -106,6 +106,7 @@ Raz w ciągu gry,  podczas trwania dnia wybiera osobę, która aż do nocy nie b
     <string name="playersAmountChanged">Liczba graczy została zmieniona.</string>
     <string name="title_activity_game_settings">Nowa Gra - Ustawienia</string>
 
+    <string name="player">Gracz</string>
 
     <string name="madman">Świr</string>
     <string name="madmanDescription">W statystykach liczony jest jako miasto, ale może współpracować również z innymi frakcjami (nie oznacza to, że może się z nimi budzić – jest to surowo zabronione pod karą kowadła). Raz w ciągu gry, w dzień może zabić dowolną osobę.</string>

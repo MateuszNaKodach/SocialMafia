@@ -2,7 +2,6 @@ package pl.nowakprojects.socialmafia.mainmenuoptions.newgame;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -44,23 +42,26 @@ public class ConnectPlayersToRolesActivity extends AppCompatActivity {
 
         Log.i(SelectPlayerRolesActivity.LOG_TAG, "Activity wystartowalo, tworzy liste");
         selectedGameRoles = Parcels.unwrap(getIntent().getParcelableExtra(SelectPlayerRolesActivity.EXTRA_SELECTED_ROLES_LIST));
+        Log.i(SelectPlayerRolesActivity.LOG_TAG,selectedGameRoles.get(0).toString());
         Log.i(SelectPlayerRolesActivity.LOG_TAG, "Odycztano Parcele");
         playersNamesList = getIntent().getStringArrayListExtra(TapPlayersNamesActivity.EXTRA_PLAYERS_NAMES_LIST);
+        Log.i(SelectPlayerRolesActivity.LOG_TAG,playersNamesList.get(0));
         makeHumanPlayerWithRolesList(); //utowrzenie już listy graczy z przydzielonymi rolami
         Log.i(SelectPlayerRolesActivity.LOG_TAG, "Utworzono liste z przydzielonymi rolami");
+        playerShowingRoleAdapter = new PlayerShowingRoleAdapter(playersInfoList,this);
         allPlayersRolesRecyclerView = (RecyclerView) findViewById(R.id.allPlayersRolesRecyclerView);
         allPlayersRolesRecyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
-        playerShowingRoleAdapter = new PlayerShowingRoleAdapter(playersInfoList,this);
         allPlayersRolesRecyclerView.setAdapter(playerShowingRoleAdapter);
-
     }
 
     void makeHumanPlayerWithRolesList(){
+            playersInfoList = new ArrayList<>();
             Collections.shuffle(this.selectedGameRoles); // pomieszanie roli, żeby nie były według wyboru
             // przydzielenie pomieszanych ról do graczy:
             //tworzymy nowe obiekty z imienia i roli gracza
-            for (int i = 0; i < this.playersNamesList.size(); i++) {
+            for (int i = 0; i < this.selectedGameRoles.size(); i++) {
                 playersInfoList.add(new HumanPlayer(playersNamesList.get(i),selectedGameRoles.get(i)));
+                Log.i(SelectPlayerRolesActivity.LOG_TAG,"Wykonano dodawanie "+String.valueOf(i));
             }
     }
 
@@ -70,7 +71,7 @@ public class ConnectPlayersToRolesActivity extends AppCompatActivity {
         private LayoutInflater inflater;
         private Context context;
 
-        public PlayerShowingRoleAdapter(ArrayList<HumanPlayer> humanPlayersList, Context context){
+        public PlayerShowingRoleAdapter(ArrayList<HumanPlayer> humanPlayersList, Context context) {
             this.humanPlayersList = humanPlayersList;
             this.inflater = LayoutInflater.from(context);
             this.context = context;
@@ -78,7 +79,7 @@ public class ConnectPlayersToRolesActivity extends AppCompatActivity {
 
         @Override
         public HumanPlayerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = inflater.inflate(R.layout.player_role_showing_layout,parent,false);
+            View view = inflater.inflate(R.layout.player_role_showing_layout, parent, false);
             return new HumanPlayerViewHolder(view);
         }
 
@@ -93,7 +94,7 @@ public class ConnectPlayersToRolesActivity extends AppCompatActivity {
             return humanPlayersList.size();
         }
 
-        class HumanPlayerViewHolder extends RecyclerView.ViewHolder{
+        class HumanPlayerViewHolder extends RecyclerView.ViewHolder {
 
             private ImageView playerRoleIcon;
             private TextView playerName;
@@ -105,7 +106,7 @@ public class ConnectPlayersToRolesActivity extends AppCompatActivity {
 
                 playerRoleIcon = (ImageView) itemView.findViewById(R.id.playerIco);
                 playerName = (TextView) itemView.findViewById(R.id.playerName);
-                showRoleButton = (Button) findViewById(R.id.show_hide_button);
+                showRoleButton = (Button) itemView.findViewById(R.id.show_hide_button);
 
                 showRoleButton.setOnClickListener(new View.OnClickListener() {
                     @Override

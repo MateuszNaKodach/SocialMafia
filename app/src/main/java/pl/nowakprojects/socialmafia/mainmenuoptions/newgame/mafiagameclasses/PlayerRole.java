@@ -39,6 +39,11 @@ public class PlayerRole {
         this.nightWakeHierarchyNumber = nightWakeHierarchyNumber;
     }
 
+    // empty constructor needed by the Parceler library
+    public PlayerRole(){
+
+    }
+
 
 
 
@@ -99,4 +104,8 @@ public class PlayerRole {
         this.rolePlayersAmount = rolePlayersAmount;
     }
 
+    @Override
+    public String toString() {
+        return String.valueOf(name);
+    }
 }

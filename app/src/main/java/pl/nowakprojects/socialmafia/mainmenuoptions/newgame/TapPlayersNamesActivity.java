@@ -99,7 +99,7 @@ public class TapPlayersNamesActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(PlayerNameViewHolder holder, int position) {
                 TapPlayerNameItem item = namesList.get(position);
-                holder.playerNumberText.setText("Player #"+(position+1));
+                holder.playerNumberText.setText(getString(R.string.player) +"#"+(position+1));
                 holder.playerNameEditText.setText(item.playerName);
         }
 
