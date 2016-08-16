@@ -14,6 +14,9 @@ public class HumanPlayer {
 	boolean alive=true; // czy gracz jeszcze żyje
 	HumanPlayer guard=null; //ochroniarz, ktos kto ginie za danego gracza
 
+	//For ShowingRoles:
+	private boolean wasRoleShowed = false;
+
 	public HumanPlayer(String playerName){
 		this.playerName=playerName;
 	}
@@ -26,8 +29,20 @@ public class HumanPlayer {
 		return this.playerName;
 	}
 
-	public String getRoleName(){
-		return this.playerRole.toString();
+	public int getRoleName(){
+		return this.playerRole.getName();
+	}
+
+	public PlayerRole getPlayerRole() {
+		return playerRole;
+	}
+
+	public boolean isWasRoleShowed() {
+		return wasRoleShowed;
+	}
+
+	public void setWasRoleShowed(boolean wasRoleShowed) {
+		this.wasRoleShowed = wasRoleShowed;
 	}
 
 	public boolean isAlive(){

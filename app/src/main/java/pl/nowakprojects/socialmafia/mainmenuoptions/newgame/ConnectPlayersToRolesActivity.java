@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -29,6 +30,8 @@ public class ConnectPlayersToRolesActivity extends AppCompatActivity {
     ArrayList<PlayerRole> selectedGameRoles;
     private ArrayList<String> playersNamesList; //lista imion graczy
 
+    private  int showedRolesAmount;
+
     PlayerShowingRoleAdapter playerShowingRoleAdapter;
     RecyclerView allPlayersRolesRecyclerView;
 
@@ -38,16 +41,12 @@ public class ConnectPlayersToRolesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_connect_players_to_roles);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true); // cos nie dziala!!!
 
-        Log.i(SelectPlayerRolesActivity.LOG_TAG, "Activity wystartowalo, tworzy liste");
         selectedGameRoles = Parcels.unwrap(getIntent().getParcelableExtra(SelectPlayerRolesActivity.EXTRA_SELECTED_ROLES_LIST));
         Log.i(SelectPlayerRolesActivity.LOG_TAG,selectedGameRoles.get(0).toString());
-        Log.i(SelectPlayerRolesActivity.LOG_TAG, "Odycztano Parcele");
         playersNamesList = getIntent().getStringArrayListExtra(TapPlayersNamesActivity.EXTRA_PLAYERS_NAMES_LIST);
-        Log.i(SelectPlayerRolesActivity.LOG_TAG,playersNamesList.get(0));
         makeHumanPlayerWithRolesList(); //utowrzenie już listy graczy z przydzielonymi rolami
-        Log.i(SelectPlayerRolesActivity.LOG_TAG, "Utworzono liste z przydzielonymi rolami");
         playerShowingRoleAdapter = new PlayerShowingRoleAdapter(playersInfoList,this);
         allPlayersRolesRecyclerView = (RecyclerView) findViewById(R.id.allPlayersRolesRecyclerView);
         allPlayersRolesRecyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
@@ -87,6 +86,11 @@ public class ConnectPlayersToRolesActivity extends AppCompatActivity {
         public void onBindViewHolder(HumanPlayerViewHolder holder, int position) {
             HumanPlayer humanPlayer = humanPlayersList.get(position);
             holder.playerName.setText(humanPlayer.getPlayerName());
+            holder.roleName.setText(getString(R.string.questionMarks));
+            holder.showRoleButton.setText(getString(R.string.show_role));
+            holder.playerRoleIcon.setImageResource(R.drawable.image_template);
+            holder.wasRoleShowed.setChecked(humanPlayersList.get(position).isWasRoleShowed());
+            holder.isRoleShowed=false;
         }
 
         @Override
@@ -98,21 +102,41 @@ public class ConnectPlayersToRolesActivity extends AppCompatActivity {
 
             private ImageView playerRoleIcon;
             private TextView playerName;
+            private TextView roleName;
             private Button showRoleButton;
+            private CheckBox wasRoleShowed;
             private View container;
+
+            private boolean isRoleShowed = false;
 
             public HumanPlayerViewHolder(View itemView) {
                 super(itemView);
 
                 playerRoleIcon = (ImageView) itemView.findViewById(R.id.playerIco);
                 playerName = (TextView) itemView.findViewById(R.id.playerName);
+                roleName = (TextView) itemView.findViewById(R.id.roleName);
                 showRoleButton = (Button) itemView.findViewById(R.id.show_hide_button);
+                wasRoleShowed = (CheckBox) itemView.findViewById(R.id.wasRoleShowedCheckBox);
 
                 showRoleButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        if(humanPlayersList.get(getAdapterPosition()).isWasRoleShowed()==false)
+                            showedRolesAmount++;
 
-                    }
+                        humanPlayersList.get(getAdapterPosition()).setWasRoleShowed(true);
+                        wasRoleShowed.setChecked(humanPlayersList.get(getAdapterPosition()).isWasRoleShowed());
+                        if(isRoleShowed){
+                            isRoleShowed=false;
+                            showRoleButton.setText(getString(R.string.show_role));
+                            roleName.setText(getString(R.string.questionMarks));
+                            playerRoleIcon.setImageResource(R.drawable.image_template);}
+                        else{
+                            isRoleShowed=true;
+                            showRoleButton.setText(getString(R.string.hide_role));
+                            roleName.setText(getString(humanPlayersList.get(getAdapterPosition()).getRoleName()));
+                            playerRoleIcon.setImageResource(humanPlayersList.get(getAdapterPosition()).getPlayerRole().getIconResourceID());}
+                     }
                 });
 
             }

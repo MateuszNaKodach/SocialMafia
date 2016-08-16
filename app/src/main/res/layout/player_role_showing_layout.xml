@@ -35,12 +35,18 @@
             android:src="@drawable/image_template"
             android:layout_gravity="center_horizontal" />
 
-        <Button
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/show_role"
-            android:id="@+id/show_hide_button"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/questionMarks"
+            android:id="@+id/roleName"
+            android:gravity="center_horizontal"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_marginBottom="10dp"
             android:layout_gravity="center_horizontal" />
+
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:orientation="horizontal"
@@ -48,14 +54,23 @@
             android:layout_height="wrap_content"
             android:background="@android:color/white"
             android:layout_gravity="center"
-            android:gravity="center_vertical|center_horizontal"
-            android:layout_marginTop="30dp">
+            android:gravity="center_vertical|center_horizontal">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/show_role"
+                android:id="@+id/show_hide_button"
+                android:layout_weight="0.8" />
 
             <CheckBox
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="@string/already_showed"
-                android:id="@+id/checkBox" />
+                android:id="@+id/wasRoleShowedCheckBox"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.2"
+                android:clickable="false"/>
 
         </LinearLayout>
 

@@ -111,16 +111,11 @@ public class SelectPlayerRolesActivity extends AppCompatActivity implements Play
                     connectSelectedRolesFromAllFractions();
                     //Tworzymy Bundle do przekazania do Activity mieszania ról
                     Bundle bundle = new Bundle();
-                    Log.i(LOG_TAG, "Bundle stworzone");
                     bundle.putParcelable(EXTRA_SELECTED_ROLES_LIST, Parcels.wrap(allSelectedRoles)); //wszystkie wybrane role przekazujemy
-                    Log.i(LOG_TAG, "Role przekazaney");
                     bundle.putStringArrayList(TapPlayersNamesActivity.EXTRA_PLAYERS_NAMES_LIST,playersNamesList); //wszystkie imiona graczy
                     Intent intent = new Intent(getApplicationContext(),ConnectPlayersToRolesActivity.class);
-                    Log.i(LOG_TAG, "Intencja stworzona");
                     intent.putExtras(bundle);
-                    Log.i(LOG_TAG, "Extras putted");
                     startActivity(intent);
-                    Log.i(LOG_TAG, "Start Activity");
                 }
 
             }
@@ -168,6 +163,5 @@ public class SelectPlayerRolesActivity extends AppCompatActivity implements Play
             allSelectedRoles.add(mafiaRolesAdapter.getSelectedRolesList().get(i));
         for(int i=0;i<syndicateRolesAdapter.getSelectedRolesList().size();i++)
             allSelectedRoles.add(syndicateRolesAdapter.getSelectedRolesList().get(i));
-        Log.i(LOG_TAG, "Laczenie zakonczone.");
     }
 }

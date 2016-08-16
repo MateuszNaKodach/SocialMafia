@@ -123,7 +123,7 @@ public class PlayerChoosingRoleAdapter extends RecyclerView.Adapter<PlayerChoosi
             });
 
             /**
-             * Przy długim naciśnięciu karty roli pojawią się jej opis
+             * Przy naciśnięciu karty roli pojawią się jej opis
              */
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -132,14 +132,6 @@ public class PlayerChoosingRoleAdapter extends RecyclerView.Adapter<PlayerChoosi
                     roleDescriptionDialog.show();
                 }
             });
-          /*  itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-                    buildRoleDescriptionDialog();
-                    roleDescriptionDialog.show();
-                    return false;
-                }
-            });*/
 
         }
 
@@ -164,7 +156,8 @@ public class PlayerChoosingRoleAdapter extends RecyclerView.Adapter<PlayerChoosi
             });
 
             roleDescriptionDialog = descriptionDialog.create();
-    }
+        }
+
 
     }
 }

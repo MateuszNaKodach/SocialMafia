@@ -61,7 +61,7 @@ public class TapPlayersNamesActivity extends AppCompatActivity {
     void fillEmptyNamesWithPlayerNumbers(){
         for(int i=0;i<tapPlayerNameAdapter.namesList.size();i++)
             if(tapPlayerNameAdapter.namesList.get(i).playerName.isEmpty())
-                tapPlayerNameAdapter.namesList.get(i).playerName = "Player #"+(i+1);
+                tapPlayerNameAdapter.namesList.get(i).playerName = getString(R.string.player) +" #"+(i+1);
     }
 
     ArrayList<String> makeStringArrayListFromTapPlayerNameList(){
@@ -99,7 +99,7 @@ public class TapPlayersNamesActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(PlayerNameViewHolder holder, int position) {
                 TapPlayerNameItem item = namesList.get(position);
-                holder.playerNumberText.setText(getString(R.string.player) +"#"+(position+1));
+                holder.playerNumberText.setText(getString(R.string.player) +" #"+(position+1));
                 holder.playerNameEditText.setText(item.playerName);
         }
 

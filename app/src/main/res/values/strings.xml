@@ -160,10 +160,12 @@ Raz w ciągu gry,  podczas trwania dnia wybiera osobę, która aż do nocy nie b
     <string name="please_tap_players_names">Proszę wprowadzić imiona graczy:</string>
     <string name="tooLessFuctionsSelected">Wybrano zbyt mało funkcji!</string>
     <string name="title_activity_connect_players_to_roles">ConnectPlayersToRolesActivity</string>
-    <string name="show_role">ODKRYJ</string>
+    <string name="show_role">Odkryj</string>
+    <string name="hide_role">Zakryj</string>
     <string name="playerName">the name of the player</string>
     <string name="explainConnectPlayersToRoles">Proszę pokazać każdemu z graczy jego rolę</string>
     <string name="start_the_game">Rozpocznij grę</string>
     <string name="already_showed">Już pokazane</string>
+    <string name="questionMarks">-?-?-?-</string>
 
 </resources>
