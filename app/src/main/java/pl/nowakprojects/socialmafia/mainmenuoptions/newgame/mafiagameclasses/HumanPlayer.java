@@ -10,8 +10,8 @@ import javafx.scene.layout.HBox;
 
 @Parcel
 public class HumanPlayer {
-	int playerIndex; // index gracza, dla ulatwienia indentyfikacji
-	int playerPoints=0; //punkty jakie gracz uzbieral w trakcie gier
+	//int playerIndex; // index gracza, dla ulatwienia indentyfikacji
+	//int playerPoints=0; //punkty jakie gracz uzbieral w trakcie gier
 	String playerName = ""; // imię gracza
 	PlayerRole playerRole; // rola gracza
 	boolean alive=true; // czy gracz jeszcze żyje

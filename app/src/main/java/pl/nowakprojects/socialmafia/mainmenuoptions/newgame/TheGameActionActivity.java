@@ -1,33 +1,38 @@
 package pl.nowakprojects.socialmafia.mainmenuoptions.newgame;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Vibrator;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 
 import org.parceler.Parcels;
 
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 import pl.nowakprojects.socialmafia.R;
+import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses.HumanPlayer;
 import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses.TheGame;
 
 public class TheGameActionActivity extends AppCompatActivity {
 
     TheGame theGame;
     boolean IS_LOADED_GAME = false;
+
+    RecyclerView playersInfoRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,11 +42,16 @@ public class TheGameActionActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         receiveGameSettings(); //odbiera ustawienia gry
+
         DayTimeFragment dayTimeFragment = new DayTimeFragment();
         NightTimeFragment nightTimeFragment = new NightTimeFragment();
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.add(R.id.dayOrNightTimeFragment,dayTimeFragment,"TIME_FRAGMENT");
         fragmentTransaction.commit();
+
+        playersInfoRecyclerView = (RecyclerView) findViewById(R.id.playersStatusRecyclerView);
+        playersInfoRecyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
+        playersInfoRecyclerView.setAdapter(new PlayerGameStatusRoleAdapter(getApplicationContext()));
 
     }
 
@@ -139,6 +149,108 @@ public class TheGameActionActivity extends AppCompatActivity {
 
     }
 
+
+    /**
+     * Adapter do przeglądania statusu gracza
+     */
+    public class PlayerGameStatusRoleAdapter extends RecyclerView.Adapter<PlayerGameStatusRoleAdapter.PlayerStatusViewHolder> {
+
+        private ArrayList<HumanPlayer> humanPlayersList;
+        private LayoutInflater inflater;
+        private Context context;
+
+        public PlayerGameStatusRoleAdapter(Context context) {
+            this.humanPlayersList = theGame.getPlayersInfoList();
+            this.inflater = LayoutInflater.from(context);
+            this.context = getApplicationContext();
+        }
+
+        @Override
+        public PlayerStatusViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = inflater.inflate(R.layout.player_game_status_layout, parent, false);
+            return new PlayerStatusViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(PlayerStatusViewHolder holder, int position) {
+            HumanPlayer humanPlayer = humanPlayersList.get(position);
+            holder.playerName.setText(humanPlayer.getPlayerName());
+            holder.playerRoleIcon.setImageResource(humanPlayer.getPlayerRole().getIconResourceID());
+            holder.roleName.setText(getString(humanPlayer.getRoleName()));
+            showProperlyPlayerStatus(humanPlayer,holder);
+        }
+
+        @Override
+        public int getItemCount() {
+            return humanPlayersList.size();
+        }
+
+        public void showProperlyPlayerStatus(HumanPlayer humanPlayer, PlayerStatusViewHolder playerStatusViewHolder){
+            if(humanPlayer.isAlive())
+                playerStatusViewHolder.playerStatus.setText(R.string.status_alive);
+            else{
+                playerStatusViewHolder.playerStatus.setText(R.string.status_died);
+                playerStatusViewHolder.playerRoleIcon.setImageResource(R.drawable.icon_ghost);}
+        }
+
+        class PlayerStatusViewHolder extends RecyclerView.ViewHolder {
+
+            private ImageView playerRoleIcon;
+            private TextView playerName;
+            private TextView roleName;
+            private TextView playerStatus;
+            private View container;
+
+            private AlertDialog roleDescriptionDialog;
+
+            public PlayerStatusViewHolder(View itemView) {
+                super(itemView);
+
+                playerRoleIcon = (ImageView) itemView.findViewById(R.id.playerIco);
+                playerName = (TextView) itemView.findViewById(R.id.playerName);
+                roleName = (TextView) itemView.findViewById(R.id.roleName);
+                playerStatus = (TextView) itemView.findViewById(R.id.playerStatus);
+
+                /**
+                 * Przy naciśnięciu karty roli pojawią się jej opis
+                 */
+                playerRoleIcon.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                            buildRoleDescriptionDialog();
+                            roleDescriptionDialog.show();}
+                });
+
+                /**
+                 * Menu kontekstowe
+                 */
+
+            }
+
+            /**
+             * Tworzy okienko wyświetlające opis roli
+             */
+            public void buildRoleDescriptionDialog() {
+                final AlertDialog.Builder descriptionDialog = new AlertDialog.Builder(context);
+                descriptionDialog.setTitle(context.getString(humanPlayersList.get(getAdapterPosition()).getPlayerRole().getName()));
+                descriptionDialog.setMessage(context.getString(humanPlayersList.get(getAdapterPosition()).getPlayerRole().getDescription()));
+                descriptionDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    /**
+                     * Zamyka okno z opisem roli
+                     * @param dialog
+                     * @param which
+                     */
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        roleDescriptionDialog.cancel();
+                    }
+                });
+
+                roleDescriptionDialog = descriptionDialog.create();
+            }
+
+        }
+    }
 
 
 }
