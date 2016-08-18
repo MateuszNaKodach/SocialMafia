@@ -2,6 +2,7 @@ package pl.nowakprojects.socialmafia.mainmenuoptions.newgame;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -68,7 +69,13 @@ public class ConnectPlayersToRolesActivity extends AppCompatActivity {
                     TheGame newGame = new TheGame();
                     newGame.setPlayersInfoList(playersInfoList);
                     Bundle bundle = new Bundle();
+                    Log.i("SRATATA","Dajemy parcele.");
                     bundle.putParcelable(EXTRA_NEW_GAME,Parcels.wrap(newGame));
+                    Log.i("SRATATA","Dajemy parcele.");
+                    Intent intent = new Intent(getApplicationContext(),TheGameActionActivity.class);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                    Log.i("SRATATA","Startujemy activity.");
                 }
             }
         });
@@ -166,8 +173,9 @@ public class ConnectPlayersToRolesActivity extends AppCompatActivity {
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        if(isRoleShowed){
                         buildRoleDescriptionDialog();
-                        roleDescriptionDialog.show();
+                        roleDescriptionDialog.show();}
                     }
                 });
 

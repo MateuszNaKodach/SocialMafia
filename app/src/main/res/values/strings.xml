@@ -196,4 +196,9 @@ Raz w ciągu gry,  podczas trwania dnia wybiera osobę, która aż do nocy nie b
     <string name="title_activity_the_game_action">TheGameActionActivity</string>
     <string name="menu_facebookfanpage">Facebook App FanPage</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="fisnish_the_day">Zakończ \n dzień</string>
+    <string name="day_number">Dzień #0</string>
+
 </resources>

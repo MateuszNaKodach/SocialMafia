@@ -1,5 +1,7 @@
 package pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses;
 
+import org.parceler.Parcel;
+
 import java.util.ArrayList;
 
 import pl.nowakprojects.socialmafia.R;
@@ -7,10 +9,14 @@ import pl.nowakprojects.socialmafia.R;
 /**
  * Created by Mateusz on 20.06.2016.
  */
+
 public class Fraction {
     private PlayerRole.Fraction type;
     private int icon;
     private ArrayList<PlayerRole> fractionRoles = new ArrayList<PlayerRole>();
+
+    public Fraction(){
+    }
 
     public Fraction(PlayerRole.Fraction type) {
         this.type = type;

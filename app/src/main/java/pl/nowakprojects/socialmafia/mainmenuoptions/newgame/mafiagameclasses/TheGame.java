@@ -30,18 +30,24 @@ import javafx.stage.Stage;
 
 @Parcel
 public class TheGame {
-	// LISTA ZAPISANYCH GRACZY
-	ArrayList<HumanPlayer> playersInfoList;
+
+	public enum DayTime {DAY, NIGHT, JUDGEMENT};
+
+	ArrayList<HumanPlayer> playersInfoList; 	// LISTA ZAPISANYCH GRACZY
+
+
 	// LISTA WSZYSTKICH WYBRANYCH RÓL (Z POWTÓRZENIAMI)
 	//ArrayList<PlayerRole> currentGameRoles = new ArrayList<PlayerRole>();
 
 	// STATYSTYKI GRY:
+	long daytime = 180000; // czas dnia w milisekundach
+
 	int players = 0;
 	int mafia = 0;
 	int town = 0;
 	int sindicate = 0;
 	int doublers = 0;
-	//int daytime = 0; // 0 means infintivie
+
 
 	//boolean coquetteMEGA = true;
 
@@ -67,5 +73,29 @@ public class TheGame {
 
 	public void setPlayersInfoList(ArrayList<HumanPlayer> playersInfoList) {
 		this.playersInfoList = playersInfoList;
+	}
+
+	public long getDaytime() {
+		return daytime;
+	}
+
+	public int getPlayers() {
+		return players;
+	}
+
+	public int getMafia() {
+		return mafia;
+	}
+
+	public int getTown() {
+		return town;
+	}
+
+	public int getSindicate() {
+		return sindicate;
+	}
+
+	public int getDoublers() {
+		return doublers;
 	}
 }

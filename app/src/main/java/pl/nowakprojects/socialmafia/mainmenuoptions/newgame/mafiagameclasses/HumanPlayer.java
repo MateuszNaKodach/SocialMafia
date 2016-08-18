@@ -1,11 +1,14 @@
 package pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses;
 
+import org.parceler.Parcel;
+
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.HBox;
 
+@Parcel
 public class HumanPlayer {
 	int playerIndex; // index gracza, dla ulatwienia indentyfikacji
 	int playerPoints=0; //punkty jakie gracz uzbieral w trakcie gier
@@ -16,6 +19,8 @@ public class HumanPlayer {
 
 	//For ShowingRoles:
 	private boolean wasRoleShowed = false;
+
+	public HumanPlayer(){}
 
 	public HumanPlayer(String playerName){
 		this.playerName=playerName;

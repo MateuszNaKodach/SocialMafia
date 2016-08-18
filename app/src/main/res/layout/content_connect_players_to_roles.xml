@@ -11,7 +11,8 @@
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="pl.nowakprojects.socialmafia.mainmenuoptions.newgame.ConnectPlayersToRolesActivity"
-    tools:showIn="@layout/activity_connect_players_to_roles">
+    tools:showIn="@layout/activity_connect_players_to_roles"
+    android:background="#ffffffff">
 
     <TextView
         android:layout_width="wrap_content"
@@ -22,12 +23,37 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="@dimen/abc_edit_text_inset_bottom_material" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:gravity="center_vertical|center_horizontal">
+        <ImageView
+            android:layout_weight="0.1"
+            android:layout_width="20dp"
+            android:layout_height="100dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/icon_arrowhelpleft"
+            android:layout_gravity="center"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_marginRight="12dp" />
     <android.support.v7.widget.RecyclerView
+        android:layout_weight="0.8"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/allPlayersRolesRecyclerView"
-        android:layout_weight="1"
     />
+        <ImageView
+            android:layout_weight="0.1"
+            android:layout_width="20dp"
+            android:layout_height="100dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/icon_arrowhelright"
+            android:layout_gravity="center"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_marginLeft="12dp" />
+    </LinearLayout>
 
     <Button
         android:layout_width="match_parent"
