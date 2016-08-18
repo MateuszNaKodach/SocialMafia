@@ -26,7 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:columnCount="2"
-        android:rowCount="5"
+        android:rowCount="6"
         android:useDefaultMargins="true">
 
         <LinearLayout
@@ -148,8 +148,40 @@
         android:textAllCaps="true"
         android:id="@+id/textView" />
 
+
+
 </LinearLayout>
 
+        <LinearLayout
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_rowWeight="1"
+            android:layout_columnSpan="2"
+            android:id="@+id/facebookFanPageLayout"
+            android:gravity="center_vertical|center_horizontal">
+            <ImageButton
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:id="@+id/buttonfacebookFanPage"
+                android:src="@drawable/icon_facebook"
+                android:clickable="true"
+                android:layout_columnWeight="1"
+                android:background="@null" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/menu_facebookfanpage"
+                android:id="@+id/facebookFanPageTextView"
+                android:layout_marginLeft="12dp"
+                android:textColor="#A52A2A"/>
+
+        </LinearLayout>
 
     </GridLayout>
 

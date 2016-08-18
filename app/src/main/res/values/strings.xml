@@ -194,5 +194,6 @@ Raz w ciągu gry,  podczas trwania dnia wybiera osobę, która aż do nocy nie b
     <string name="questionMarks">-?-?-?-</string>
     <string name="tooLessPlayersRolesShowed">Jeszcze nie wszyscy gracze zobaczyli swoje funkcje!</string>
     <string name="title_activity_the_game_action">TheGameActionActivity</string>
+    <string name="menu_facebookfanpage">Facebook App FanPage</string>
 
 </resources>

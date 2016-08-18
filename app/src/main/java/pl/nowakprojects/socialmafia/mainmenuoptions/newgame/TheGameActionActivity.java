@@ -17,7 +17,7 @@ public class TheGameActionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_the_game_action);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        
+
     }
 
 }

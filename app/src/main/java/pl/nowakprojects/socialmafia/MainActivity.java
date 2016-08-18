@@ -1,6 +1,7 @@
 package pl.nowakprojects.socialmafia;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -22,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
         ImageButton buttonLoadGame = (ImageButton) findViewById(R.id.buttonLoadGame);
         ImageButton buttonGameRules = (ImageButton) findViewById(R.id.buttonGameRules);
         ImageButton buttonAppPreferences = (ImageButton) findViewById(R.id.buttonAppPreferences);
+        View facebookLayout = (View) findViewById(R.id.facebookFanPageLayout);
 
         buttonStartNewGame.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -35,6 +37,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(),GameRulesActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        facebookLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Uri url = Uri.parse("https://www.facebook.com/Social-Mafia-1764817623732317/");
+                Intent intent = new Intent(Intent.ACTION_VIEW,url);
                 startActivity(intent);
             }
         });
