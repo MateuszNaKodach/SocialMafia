@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,13 +8,14 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:background="#ffffffff"
-    tools:context="pl.nowakprojects.socialmafia.MainActivity">
+    tools:context="pl.nowakprojects.socialmafia.MainActivity"
+    android:orientation="vertical">
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="161dp"
         android:id="@+id/theMafiaLogo"
-        android:src="@drawable/themafialogo"
+        android:src="@drawable/logo_socialmafianew"
         android:contentDescription="The logo of the mafia application." />
 
     <ScrollView
@@ -24,59 +24,136 @@
         android:fillViewport="false">
     <GridLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:columnCount="2"
-        android:rowCount="5">
+        android:rowCount="5"
+        android:useDefaultMargins="true">
 
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_gravity="center"
+            android:gravity="center_vertical|center_horizontal">
 
             <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="100dp"
+                android:layout_height="120dp"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
                 android:id="@+id/buttonStartNewGame"
-                android:src="@drawable/icon_startnewgame"
+                android:src="@drawable/icon_startgame2"
                 android:clickable="true"
-                android:minHeight="150dp"
-                android:minWidth="150dp"
                 android:layout_columnWeight="1"
                 android:background="@null" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/menu_newgame"
+                android:textAllCaps="true"
+                android:id="@+id/textView" />
+
+        </LinearLayout>
 
 
-        <ImageButton
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/buttonLoadGame"
-            android:src="@drawable/icon_loadgame"
-            android:clickable="true"
-            android:minHeight="150dp"
-            android:minWidth="150dp"
-            android:background="@null"
-            android:layout_columnWeight="1" />
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_gravity="center"
+            android:gravity="center_vertical|center_horizontal">
 
-        <ImageButton
+            <ImageButton
+                android:layout_width="100dp"
+                android:layout_height="120dp"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:id="@+id/buttonLoadGame"
+                android:src="@drawable/icon_loadgame2"
+                android:clickable="true"
+                android:layout_columnWeight="1"
+                android:background="@null" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/menu_loadgame"
+                android:textAllCaps="true"
+                android:id="@+id/textView" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/buttonAppPreferences"
-            android:src="@drawable/icon_apppreferences"
-            android:background="@null"
-            android:clickable="true"
-            android:minHeight="150dp"
-            android:minWidth="150dp"
-            android:layout_columnWeight="1" />
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_gravity="center"
+            android:gravity="center_vertical|center_horizontal">
 
-        <ImageButton
+            <ImageButton
+                android:layout_width="100dp"
+                android:layout_height="120dp"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:id="@+id/buttonAppPreferences"
+                android:src="@drawable/icon_apppreferences2"
+                android:clickable="true"
+                android:layout_columnWeight="1"
+                android:background="@null" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/menu_apppreferences"
+                android:textAllCaps="true"
+                android:id="@+id/textView" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/buttonGameRules"
-            android:src="@drawable/icon_rulesofthegame"
-            android:background="@null"
-            android:clickable="true"
-            android:minHeight="150dp"
-            android:minWidth="150dp"
-            android:layout_columnWeight="1" />
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_gravity="center"
+            android:gravity="center_vertical|center_horizontal">
+    <ImageButton
+        android:layout_width="100dp"
+        android:layout_height="120dp"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:id="@+id/buttonGameRules"
+        android:src="@drawable/icon_gamerules"
+        android:clickable="true"
+        android:layout_columnWeight="1"
+        android:background="@null" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/menu_gamerules"
+        android:textAllCaps="true"
+        android:id="@+id/textView" />
+
+</LinearLayout>
+
 
     </GridLayout>
 
     </ScrollView>
+
 
 </LinearLayout>

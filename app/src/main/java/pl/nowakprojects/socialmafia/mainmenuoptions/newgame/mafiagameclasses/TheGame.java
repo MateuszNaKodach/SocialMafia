@@ -31,9 +31,9 @@ import javafx.stage.Stage;
 @Parcel
 public class TheGame {
 	// LISTA ZAPISANYCH GRACZY
-	ArrayList<HumanPlayer> playersInfoList = new ArrayList<HumanPlayer>();
+	ArrayList<HumanPlayer> playersInfoList;
 	// LISTA WSZYSTKICH WYBRANYCH RÓL (Z POWTÓRZENIAMI)
-	ArrayList<PlayerRole> currentGameRoles = new ArrayList<PlayerRole>();
+	//ArrayList<PlayerRole> currentGameRoles = new ArrayList<PlayerRole>();
 
 	// STATYSTYKI GRY:
 	int players = 0;
@@ -41,13 +41,9 @@ public class TheGame {
 	int town = 0;
 	int sindicate = 0;
 	int doublers = 0;
-	int daytime = 0; // 0 means infintivie
+	//int daytime = 0; // 0 means infintivie
 
-	// DODATKOWE USTAWIENIA:
-	boolean sindicatON = false;
-	boolean isBLACKequalsJUDGE = true;
-	boolean isBOSSequalsBLACKMAILER = true;
-	boolean coquetteMEGA = true;
+	//boolean coquetteMEGA = true;
 
 
 	public TheGame() {
@@ -65,15 +61,11 @@ public class TheGame {
 	 */
 
 
-	/*
-	 * Automatyczne przydzielanie graczom ról
-	 */
-	public void connectRolesToPlayers() {
-		Collections.shuffle(this.currentGameRoles); // pomieszanie roli, żeby
-		// nie były według wybori
-		// przydzielenie pomieszanych ról do graczy:
-		for (int i = 0; i < this.currentGameRoles.size(); i++) {
-			playersInfoList.get(i).playerRole = this.currentGameRoles.get(i);
-		}
+	public ArrayList<HumanPlayer> getPlayersInfoList() {
+		return playersInfoList;
+	}
+
+	public void setPlayersInfoList(ArrayList<HumanPlayer> playersInfoList) {
+		this.playersInfoList = playersInfoList;
 	}
 }

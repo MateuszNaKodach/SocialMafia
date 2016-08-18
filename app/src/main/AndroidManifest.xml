@@ -61,6 +61,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="pl.nowakprojects.socialmafia.mainmenuoptions.newgame.SelectPlayerRolesActivity" />
         </activity>
+        <activity
+            android:name=".mainmenuoptions.newgame.TheGameActionActivity"
+            android:label="@string/title_activity_the_game_action"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

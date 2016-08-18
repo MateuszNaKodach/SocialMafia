@@ -1,7 +1,9 @@
 package pl.nowakprojects.socialmafia.mainmenuoptions.newgame;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +16,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.parceler.Parcels;
 
@@ -23,14 +26,17 @@ import java.util.Collections;
 import pl.nowakprojects.socialmafia.R;
 import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses.HumanPlayer;
 import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses.PlayerRole;
+import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses.TheGame;
 
 public class ConnectPlayersToRolesActivity extends AppCompatActivity {
+
+    static final String EXTRA_NEW_GAME = "pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses.EXTRA_NEW_GAME";
 
     ArrayList<HumanPlayer> playersInfoList;
     ArrayList<PlayerRole> selectedGameRoles;
     private ArrayList<String> playersNamesList; //lista imion graczy
 
-    private  int showedRolesAmount;
+    private  int showedRolesAmount=0;
 
     PlayerShowingRoleAdapter playerShowingRoleAdapter;
     RecyclerView allPlayersRolesRecyclerView;
@@ -44,13 +50,28 @@ public class ConnectPlayersToRolesActivity extends AppCompatActivity {
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true); // cos nie dziala!!!
 
         selectedGameRoles = Parcels.unwrap(getIntent().getParcelableExtra(SelectPlayerRolesActivity.EXTRA_SELECTED_ROLES_LIST));
-        Log.i(SelectPlayerRolesActivity.LOG_TAG,selectedGameRoles.get(0).toString());
         playersNamesList = getIntent().getStringArrayListExtra(TapPlayersNamesActivity.EXTRA_PLAYERS_NAMES_LIST);
         makeHumanPlayerWithRolesList(); //utowrzenie już listy graczy z przydzielonymi rolami
         playerShowingRoleAdapter = new PlayerShowingRoleAdapter(playersInfoList,this);
         allPlayersRolesRecyclerView = (RecyclerView) findViewById(R.id.allPlayersRolesRecyclerView);
         allPlayersRolesRecyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
         allPlayersRolesRecyclerView.setAdapter(playerShowingRoleAdapter);
+
+        Button startTheGameButton = (Button) findViewById(R.id.startTheGameButton);
+        startTheGameButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (showedRolesAmount<playersInfoList.size())
+                    Toast.makeText(getApplicationContext(),R.string.tooLessPlayersRolesShowed, Toast.LENGTH_LONG).show();
+                else{
+                    //tworzenie nowej gry:
+                    TheGame newGame = new TheGame();
+                    newGame.setPlayersInfoList(playersInfoList);
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable(EXTRA_NEW_GAME,Parcels.wrap(newGame));
+                }
+            }
+        });
     }
 
     void makeHumanPlayerWithRolesList(){
@@ -60,7 +81,6 @@ public class ConnectPlayersToRolesActivity extends AppCompatActivity {
             //tworzymy nowe obiekty z imienia i roli gracza
             for (int i = 0; i < this.selectedGameRoles.size(); i++) {
                 playersInfoList.add(new HumanPlayer(playersNamesList.get(i),selectedGameRoles.get(i)));
-                Log.i(SelectPlayerRolesActivity.LOG_TAG,"Wykonano dodawanie "+String.valueOf(i));
             }
     }
 
@@ -107,6 +127,7 @@ public class ConnectPlayersToRolesActivity extends AppCompatActivity {
             private CheckBox wasRoleShowed;
             private View container;
 
+            private AlertDialog roleDescriptionDialog;
             private boolean isRoleShowed = false;
 
             public HumanPlayerViewHolder(View itemView) {
@@ -139,8 +160,40 @@ public class ConnectPlayersToRolesActivity extends AppCompatActivity {
                      }
                 });
 
+                /**
+                 * Przy naciśnięciu karty roli pojawią się jej opis
+                 */
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        buildRoleDescriptionDialog();
+                        roleDescriptionDialog.show();
+                    }
+                });
+
             }
 
+            /**
+             * Tworzy okienko wyświetlające opis roli
+             */
+            public void buildRoleDescriptionDialog() {
+                final AlertDialog.Builder descriptionDialog = new AlertDialog.Builder(context);
+                descriptionDialog.setTitle(context.getString(humanPlayersList.get(getAdapterPosition()).getPlayerRole().getName()));
+                descriptionDialog.setMessage(context.getString(humanPlayersList.get(getAdapterPosition()).getPlayerRole().getDescription()));
+                descriptionDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    /**
+                     * Zamyka okno z opisem roli
+                     * @param dialog
+                     * @param which
+                     */
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        roleDescriptionDialog.cancel();
+                    }
+                });
+
+                roleDescriptionDialog = descriptionDialog.create();
+            }
 
         }
     }

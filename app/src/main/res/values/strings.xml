@@ -1,12 +1,22 @@
 <resources>
+    <!--GeneralGameStrings........................................................................-->
     <string name="app_name">Social Mafia</string>
-    <string name="title_activity_pick_players_amount">Liczba Graczy</string>
 
-    <string name="title_activity_game_rules">Szczegółowe zasady gry</string>
-    <string name="generalRules">Zasady ogólne</string>
     <string name="town">Miasto</string>
     <string name="mafia">Mafia</string>
     <string name="syndicate">Syndykat</string>
+
+    <string name="title_activity_pick_players_amount">Liczba Graczy</string>
+
+    <string name="generalRules">Zasady ogólne</string>
+
+    <!--MainActivityStrings......................................................................-->
+    <string name="menu_newgame">Nowa gra</string>
+    <string name="menu_loadgame">Wczytaj</string>
+    <string name="menu_apppreferences">Preferencje</string>
+    <string name="menu_gamerules">Zasady gry</string>
+    <!--GameRulesActivity........................................................................-->
+    <string name="title_activity_game_rules">Szczegółowe zasady gry</string>
     <string name="generalRulesExplanation">\t Na początku gry każdy gracz dostaje kartę, która oznacza jego funkcję. Funkcje te opisane są na kolejnych zakładkach. \n \n \t Następnie prowadzący zbiera od wszystkich karty i rozpoczyna się gra w mafię. \n \n \t Jeśli nie zna się swojej funkcji lub ma się inne pytania odnośnie gry można pójść do prowadzącego „na spowiedź”-  wszystko zostanie wytłumaczone :)
         \n \n \n \t
         1)	Noc zerowa: pierwsza noc w czasie trwania gry. Należy stosować się do zaleceń prowadzącego :D i mieć ZAMKNIĘTE oczy, gdy nie wykonuje się swojej funkcji. Niektóre osoby w ogóle nie budzą się w czasie „zerowej nocy”.
@@ -49,7 +59,6 @@ Raz w ciągu gry może ochronić wybraną przez siebie osobę i wówczas nikt (z
 Podczas każdego głosowania jego wybór jest liczony podwójnie.
 \t\n\n	2- Emo \n
 Ma 2 życia. Może się zabić (pociąć), aby udowodnić swoją funkcję. Musi jednak uważać na dealera, który tą funkcję może zablokować. Nie dowiaduje się o utracie życia w przypadku, gdy odbierze mu je mafia w ciągu nocy.</string>
-
     <string name="mafiaRolesExplanation">
         MAFIA (oznaczona kartami pik)
 \n Mafia poznaje się „zerowej nocy”
@@ -71,7 +80,6 @@ W nocy poznaje kartę (funkcję) ostatniej zabitej przez mafię osoby. Może pr�
 \t\n\n	6- Czarna Dziwka/Gwałciciel \n
 Zerowej nocy może wskazać jedną osobę, z którą spędzi noc – pozna jej kartę. Wybrana osoba nie będzie wiedziała kto jest czarną dziwką/gwałcicielem.
 </string>
-
     <string name="syndicateRolesExplanation">
         SYNDYKAT (oznaczony kartami trefl)
 \n Syndykat nie zna siebie nawzajem (cały syndykat zna tylko szef)
@@ -96,9 +104,9 @@ Jeśli miałby zginąć w ciągu dnia może raz wyznaczyć osobę, która zginie
 \t\n\n	5- Dentysta \n
 Raz w ciągu gry,  podczas trwania dnia wybiera osobę, która aż do nocy nie będzie mogła się odzywać.
 </string>
+    <!--.........................................................................................-->
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
     <string name="playersAmount">Liczba graczy:</string>
     <string name="daytime">Czas trwania dnia:</string>
     <string name="rolesSettings">Wybór ról</string>
@@ -106,10 +114,16 @@ Raz w ciągu gry,  podczas trwania dnia wybiera osobę, która aż do nocy nie b
     <string name="playersAmountChanged">Liczba graczy została zmieniona.</string>
     <string name="title_activity_game_settings">Nowa Gra - Ustawienia</string>
 
+    <!--TapPlayerNamesActivity...................................................................-->
+    <string name="title_activity_tap_players_names">Imiona graczy</string>
+    <string name="go_to_players_names">Wprowadź imiona graczy</string>
     <string name="player">Gracz</string>
 
+    <!--SelectPlayerRolesActivity................................................................-->
+    <string name="title_activity_select_player_roles">Wybór funkcji</string>
+
     <string name="madman">Świr</string>
-    <string name="madmanDescription">W statystykach liczony jest jako miasto, ale może współpracować również z innymi frakcjami (nie oznacza to, że może się z nimi budzić – jest to surowo zabronione pod karą kowadła). Raz w ciągu gry, w dzień może zabić dowolną osobę.</string>
+    <string name="madmanDescription">W statystykach liczony jest jako miasto, ale może współpracować również z innymi frakcjami (nie oznacza to, że może się z nimi budzić – jest to surowo zabronione pod karą wyrzucenia z gry). Raz w ciągu gry - w trakcie dnia - może zabić dowolną osobę.</string>
     <string name="armshop">Sklep z bronią</string>
     <string name="armshopDescription">Gdy sklep z bronią zostanie zabity kolejnej nocy mafia ma 2 strzały (może zabić 2 osoby). W ciągu gry nie ma żadnej specjalnej funkcji- dla dobra miasta powinien starać utrzymać się przy życiu </string>
     <string name="policeman">Katani</string>
@@ -119,18 +133,26 @@ Raz w ciągu gry,  podczas trwania dnia wybiera osobę, która aż do nocy nie b
     <string name="medic">Lekarz</string>
     <string name="medicDescription">Każdej nocy może uleczyć jedną osobę przed zabiciem ze strony mafii (spośród graczy wybiera jedną osobę, którą uważa za „postrzeloną” przez mafię :D)</string>
     <string name="townspeedy">Szybki Miasta</string>
+    <string name="townspeedyDescription">Wygrywa on pojedynki niezależnie od wyniku głosowania. Wyjątkiem jest odbycie się pojedynku między nim, a innym szybkim (wtedy o wyniku decyduje ilość głosów wszystkich graczy)</string>
     <string name="judge">Sędzia</string>
+    <string name="judgeDescription">Jeśli padnie wyzwanie na pojedynek, a osoba wyzwana nie wyraża na niego zgody, sędzia decyduje, czy pojedynek się odbędzie.</string>
     <string name="black">Murzyn</string>
+    <string name="blackDescription">Pierwszej nocy wybiera też osobę, którą „murzyni”, czyli ginie za nią podczas gry.</string>
     <string name="blackJudge">Sędzia Murzyn</string>
+    <string name="blackJudgeDescription">Jeśli padnie wyzwanie na pojedynek, a osoba wyzwana nie wyraża na niego zgody, sędzia decyduje, czy pojedynek się odbędzie. Pierwszej nocy wybiera też osobę, którą „murzyni”, czyli ginie za nią podczas gry.</string>
     <string name="priest">Ksiądz</string>
-    <string name="jew">"Żyd</string>
+    <string name="priestDescription">O ile pobożny szef mafii żyje, ksiądz nie może zginąć zabity w nocy przez mafię. Pierwszej nocy wybiera kochanków (którzy się poznają i giną jeśli zginie też drugi z nich). Nie może powiedzieć komu udzielił sakramentu.</string>
+    <string name="jew">Żyd</string>
+    <string name="jewDescription">Podczas jakiegokolwiek sprawdzania pokazywane jest ,że jest zły, chociaż należy do miasta i działa na korzyść miasta.</string>
     <string name="terrorist">Terrorysta</string>
+    <string name="terroristDescription">Gdy terrorysta zostaje zabity ginie razem z nim osoba po jego prawej stronie</string>
     <string name="lawyer">Adwokat</string>
+    <string name="lawyerDescription">Raz w ciągu gry może ochronić wybraną przez siebie osobę i wówczas nikt (za wyjątkiem świra ;)) nie może tej osoby zabić, ani nawet oskarżać.</string>
     <string name="mayor">Burmistrz</string>
+    <string name="mayorDescription">Podczas każdego głosowania jego wybór jest liczony podwójnie.</string>
     <string name="emo">E. M. O.</string>
+    <string name="emoDescription">Ma 2 życia. Może się zabić (pociąć), aby udowodnić swoją funkcję. Musi jednak uważać na dealera, który tą funkcję może zablokować. Nie dowiaduje się o utracie życia w przypadku, gdy odbierze mu je mafia w ciągu nocy.</string>
 
-    <string name="title_activity_tap_players_names">Imiona graczy</string>
-    <string name="title_activity_select_player_roles">Wybór funkcji</string>
 
     <string name="boss">Szef Mafii</string>
     <string name="blackmailer">Szantażysta</string>
@@ -152,14 +174,17 @@ Raz w ciągu gry,  podczas trwania dnia wybiera osobę, która aż do nocy nie b
     <string name="timestopper">Czasowstrzymywacz</string>
     <string name="hunter">Lowca</string>
     <string name="dentist">Dentysta</string>
+
     <string name="select_player_roles_choosed_functions">Wybranych funkcji: </string>
+
     <string name="pick_players_amount_explanation">Proszę wybrać liczbę graczy:</string>
-    <string name="go_to_players_names">Wprowadź imiona graczy</string>
+
     <string name="assign_roles_to_players">Przydziel role do graczy</string>
     <string name="select_roles">Wybierz funkcje graczy</string>
     <string name="please_tap_players_names">Proszę wprowadzić imiona graczy:</string>
     <string name="tooLessFuctionsSelected">Wybrano zbyt mało funkcji!</string>
-    <string name="title_activity_connect_players_to_roles">ConnectPlayersToRolesActivity</string>
+    <string name="tooMuchFuctionsSelected">Wybrano zbyt wiele funkcji!</string>
+    <string name="title_activity_connect_players_to_roles">Prezentacja funkcji</string>
     <string name="show_role">Odkryj</string>
     <string name="hide_role">Zakryj</string>
     <string name="playerName">the name of the player</string>
@@ -167,5 +192,7 @@ Raz w ciągu gry,  podczas trwania dnia wybiera osobę, która aż do nocy nie b
     <string name="start_the_game">Rozpocznij grę</string>
     <string name="already_showed">Już pokazane</string>
     <string name="questionMarks">-?-?-?-</string>
+    <string name="tooLessPlayersRolesShowed">Jeszcze nie wszyscy gracze zobaczyli swoje funkcje!</string>
+    <string name="title_activity_the_game_action">TheGameActionActivity</string>
 
 </resources>

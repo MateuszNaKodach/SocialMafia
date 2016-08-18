@@ -101,12 +101,12 @@ public class SelectPlayerRolesActivity extends AppCompatActivity implements Play
         assignRolesToPlayers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.i(LOG_TAG, "Przycisk nacisniety");
                 //dodac ostrzezenia jak np. mafii jest za duzo i alertbox o zaakcpetowanie!!!
-                if ((howManyTownRolesWasSelected+howManyMafiaRolesWasSelected+howManySyndicateRolesWasSelected)!=playersNamesList.size())
+                if ((howManyTownRolesWasSelected+howManyMafiaRolesWasSelected+howManySyndicateRolesWasSelected)<playersNamesList.size())
                     Toast.makeText(getApplicationContext(),R.string.tooLessFuctionsSelected, Toast.LENGTH_SHORT).show();
+                else if ((howManyTownRolesWasSelected+howManyMafiaRolesWasSelected+howManySyndicateRolesWasSelected)>playersNamesList.size())
+                    Toast.makeText(getApplicationContext(),R.string.tooMuchFuctionsSelected, Toast.LENGTH_SHORT).show();
                 else {
-                    Log.i(LOG_TAG, "Wejscie do losowania rol");
                     //przejscie do losowania ról:
                     connectSelectedRolesFromAllFractions();
                     //Tworzymy Bundle do przekazania do Activity mieszania ról

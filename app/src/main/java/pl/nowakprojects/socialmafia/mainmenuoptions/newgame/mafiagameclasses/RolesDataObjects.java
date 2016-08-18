@@ -21,15 +21,15 @@ public class RolesDataObjects {
         playerRoles.add(new PlayerRole(R.string.prostitute,R.string.prostituteDescription,R.drawable.icon_prostitute, PlayerRole.Fraction.TOWN, PlayerRole.ActionType.OnceAGame,-1));
         playerRoles.add(new PlayerRole(R.string.medic,R.string.medicDescription,R.drawable.icon_role_medic, PlayerRole.Fraction.TOWN, PlayerRole.ActionType.OnceAGame,-1));
         playerRoles.add(new PlayerRole(R.string.townspeedy,R.string.madmanDescription,R.drawable.image_template, PlayerRole.Fraction.TOWN, PlayerRole.ActionType.OnceAGame,-1));
-        playerRoles.add(new PlayerRole(R.string.judge,R.string.madmanDescription,R.drawable.icon_judge, PlayerRole.Fraction.TOWN, PlayerRole.ActionType.ActionRequire,-1));
-        playerRoles.add(new PlayerRole(R.string.black,R.string.madmanDescription,R.drawable.image_template, PlayerRole.Fraction.TOWN, PlayerRole.ActionType.ActionRequire,-1));
-        playerRoles.add(new PlayerRole(R.string.blackJudge,R.string.madmanDescription,R.drawable.image_template, PlayerRole.Fraction.TOWN, PlayerRole.ActionType.ActionRequire,-1));
-        playerRoles.add(new PlayerRole(R.string.priest,R.string.madmanDescription,R.drawable.image_template, PlayerRole.Fraction.TOWN, PlayerRole.ActionType.ActionRequire,-1));
-        playerRoles.add(new PlayerRole(R.string.jew,R.string.madmanDescription,R.drawable.image_template, PlayerRole.Fraction.TOWN, PlayerRole.ActionType.ActionRequire,-1));
-        playerRoles.add(new PlayerRole(R.string.terrorist,R.string.madmanDescription,R.drawable.image_template, PlayerRole.Fraction.TOWN, PlayerRole.ActionType.ActionRequire,-1));
-        playerRoles.add(new PlayerRole(R.string.lawyer,R.string.madmanDescription,R.drawable.image_template, PlayerRole.Fraction.TOWN, PlayerRole.ActionType.ActionRequire,-1));
-        playerRoles.add(new PlayerRole(R.string.mayor,R.string.madmanDescription,R.drawable.image_template, PlayerRole.Fraction.TOWN, PlayerRole.ActionType.ActionRequire,-1));
-        playerRoles.add(new PlayerRole(R.string.emo,R.string.madmanDescription,R.drawable.image_template, PlayerRole.Fraction.TOWN, PlayerRole.ActionType.ActionRequire,-1));
+        playerRoles.add(new PlayerRole(R.string.judge,R.string.judgeDescription,R.drawable.icon_judge, PlayerRole.Fraction.TOWN, PlayerRole.ActionType.ActionRequire,-1));
+        playerRoles.add(new PlayerRole(R.string.black,R.string.blackDescription,R.drawable.image_template, PlayerRole.Fraction.TOWN, PlayerRole.ActionType.ActionRequire,-1));
+        playerRoles.add(new PlayerRole(R.string.blackJudge,R.string.blackJudgeDescription,R.drawable.image_template, PlayerRole.Fraction.TOWN, PlayerRole.ActionType.ActionRequire,-1));
+        playerRoles.add(new PlayerRole(R.string.priest,R.string.priestDescription,R.drawable.image_template, PlayerRole.Fraction.TOWN, PlayerRole.ActionType.ActionRequire,-1));
+        playerRoles.add(new PlayerRole(R.string.jew,R.string.jewDescription,R.drawable.image_template, PlayerRole.Fraction.TOWN, PlayerRole.ActionType.ActionRequire,-1));
+        playerRoles.add(new PlayerRole(R.string.terrorist,R.string.terroristDescription,R.drawable.image_template, PlayerRole.Fraction.TOWN, PlayerRole.ActionType.ActionRequire,-1));
+        playerRoles.add(new PlayerRole(R.string.lawyer,R.string.lawyerDescription,R.drawable.image_template, PlayerRole.Fraction.TOWN, PlayerRole.ActionType.ActionRequire,-1));
+        playerRoles.add(new PlayerRole(R.string.mayor,R.string.mayorDescription,R.drawable.image_template, PlayerRole.Fraction.TOWN, PlayerRole.ActionType.ActionRequire,-1));
+        playerRoles.add(new PlayerRole(R.string.emo,R.string.emoDescription,R.drawable.image_template, PlayerRole.Fraction.TOWN, PlayerRole.ActionType.ActionRequire,-1));
 
         return playerRoles;
     }
