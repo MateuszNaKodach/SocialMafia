@@ -10,15 +10,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 
 import org.parceler.Parcels;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
@@ -32,6 +35,8 @@ public class TheGameActionActivity extends AppCompatActivity {
     TheGame theGame;
     boolean IS_LOADED_GAME = false;
 
+    DayTimeFragment dayTimeFragment;
+    NightTimeFragment nightTimeFragment;
     RecyclerView playersInfoRecyclerView;
 
     @Override
@@ -43,19 +48,50 @@ public class TheGameActionActivity extends AppCompatActivity {
 
         receiveGameSettings(); //odbiera ustawienia gry
 
-        DayTimeFragment dayTimeFragment = new DayTimeFragment();
-        NightTimeFragment nightTimeFragment = new NightTimeFragment();
+        //playersInfoRecyclerView = (RecyclerView) findViewById(R.id.playersStatusRecyclerView);
+        //playersInfoRecyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
+        //playersInfoRecyclerView.setAdapter(new PlayerGameStatusRoleAdapter(getApplicationContext()));
+
+        startMafiaGameAction();
+    }
+
+    /**
+     * TheGame functions:
+     */
+
+    void startMafiaGameAction(){
+        //GameView proporties:
+        dayTimeFragment = new DayTimeFragment();
+        nightTimeFragment = new NightTimeFragment();
+        //dopóki gra nie jest zakończona ciągle leci dzień - noc:
+        while(!theGame.isFinished()){
+            startNightAction();
+            startDayAction();}
+
+        endTheGameAndShowResults();
+    }
+
+    void startNightAction(){
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.add(R.id.dayOrNightTimeFragment,nightTimeFragment,"TIME_FRAGMENT");
+        fragmentTransaction.commit();
+    }
+
+    void endNightAction(){
+        theGame.setNightNumber(theGame.getNightNumber()+1);
+    }
+
+    void startDayAction(){
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.add(R.id.dayOrNightTimeFragment,dayTimeFragment,"TIME_FRAGMENT");
         fragmentTransaction.commit();
-
-        playersInfoRecyclerView = (RecyclerView) findViewById(R.id.playersStatusRecyclerView);
-        playersInfoRecyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
-        playersInfoRecyclerView.setAdapter(new PlayerGameStatusRoleAdapter(getApplicationContext()));
-
     }
 
+    void endTheGameAndShowResults(){};
 
+    /**
+     * Game app functions:
+     */
     void receiveGameSettings(){
         if(IS_LOADED_GAME)
             receiveLoadGameSettings();
@@ -88,18 +124,21 @@ public class TheGameActionActivity extends AppCompatActivity {
             // Inflate the layout for this fragment
             View fragmentView = inflater.inflate(R.layout.fragment_day_time, container, false);
 
+            //Odliczanie czasu na jeden dzień (czas ustawiony wczesniej):
             dayTimerTextView = (TextView) fragmentView.findViewById(R.id.dayTimerTextView);
             final TimeCounterClass dayTimeTimer = new TimeCounterClass(theGame.getDaytime(),1000);
             dayTimeTimer.start();
 
-         //   Button finishDayButton = (Button) findViewById(R.id.dayTimeEnded);
-
-           /* finishDayButton.setOnClickListener(new View.OnClickListener() {
+            //Przycisk konczacy dzien:
+            Button finishDayButton = (Button) findViewById(R.id.finishTheDayButton);
+            finishDayButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Log.i("finishDayButton.onClick","Przycisk Wcisniety!");
+
                 }
-            });*/
+            });
+
 
             return fragmentView;
         }
@@ -135,18 +174,28 @@ public class TheGameActionActivity extends AppCompatActivity {
     public class NightTimeFragment extends Fragment {
 
 
+        TextView nightNumberTextView;
+
         public NightTimeFragment() {
             // Required empty public constructor
         }
-
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             // Inflate the layout for this fragment
-            return inflater.inflate(R.layout.fragment_day_time, container, false);
+            View fragmentView = inflater.inflate(R.layout.fragment_night_time, container, false);
+
+            nightNumberTextView = (TextView) findViewById(R.id.nightNumberTextView);
+            updateNightNumberTextView();
+
+            return fragmentView;
         }
 
+
+        void updateNightNumberTextView(){
+            nightNumberTextView.setText(R.string.night_number + String.valueOf(theGame.getNightNumber()));
+        }
     }
 
 
@@ -198,6 +247,7 @@ public class TheGameActionActivity extends AppCompatActivity {
             private ImageView playerRoleIcon;
             private TextView playerName;
             private TextView roleName;
+            private TextView fractionName;
             private TextView playerStatus;
             private View container;
 
@@ -209,21 +259,23 @@ public class TheGameActionActivity extends AppCompatActivity {
                 playerRoleIcon = (ImageView) itemView.findViewById(R.id.playerIco);
                 playerName = (TextView) itemView.findViewById(R.id.playerName);
                 roleName = (TextView) itemView.findViewById(R.id.roleName);
+                fractionName = (TextView) itemView.findViewById(R.id.fractionName);
                 playerStatus = (TextView) itemView.findViewById(R.id.playerStatus);
 
                 /**
                  * Przy naciśnięciu karty roli pojawią się jej opis
                  */
-                playerRoleIcon.setOnClickListener(new View.OnClickListener() {
+               /* playerRoleIcon.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                             buildRoleDescriptionDialog();
                             roleDescriptionDialog.show();}
-                });
+                });*/
 
                 /**
                  * Menu kontekstowe
                  */
+
 
             }
 

@@ -199,8 +199,10 @@ Raz w ciągu gry,  podczas trwania dnia wybiera osobę, która aż do nocy nie b
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="fisnish_the_day">Zakończ \n dzień</string>
-    <string name="day_number">Dzień #0</string>
+    <string name="day_number">Dzień #</string>
     <string name="status_alive">ŻYWY</string>
     <string name="status_died">MARTWY</string>
+    <string name="night_number">Noc #</string>
+    <string name="fisnish_the_night">Zakończ noc</string>
 
 </resources>

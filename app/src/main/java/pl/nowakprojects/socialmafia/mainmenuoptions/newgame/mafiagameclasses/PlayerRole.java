@@ -20,7 +20,7 @@ import pl.nowakprojects.socialmafia.R;
 public class PlayerRole {
 
     public enum Fraction {TOWN, MAFIA, SYNDICATE};
-    public enum ActionType {ZeroNight, AllNights, AllNightsBesideZero, ActionRequire, OnceAGame, NoAction };
+    public enum ActionType {OnlyZeroNight, AllNights, AllNightsBesideZero, ActionRequire, OnceAGame, NoAction, MafiaAction, OnlyZeroNightAndActionRequire };
 
     int name = 0;
     int description = 0;

@@ -48,7 +48,10 @@ public class TheGame {
 	int sindicate = 0;
 	int doublers = 0;
 
+	int nightNumber = 0;
+	int dayNumber = 1;
 
+	boolean isFinished = false; //czy gra została skończona
 	//boolean coquetteMEGA = true;
 
 
@@ -97,5 +100,45 @@ public class TheGame {
 
 	public int getDoublers() {
 		return doublers;
+	}
+
+	public int getNightNumber() {
+		return nightNumber;
+	}
+
+	public int getDayNumber() {
+		return dayNumber;
+	}
+
+	public void setDaytime(long daytime) {
+		this.daytime = daytime;
+	}
+
+	public void setPlayers(int players) {
+		this.players = players;
+	}
+
+	public void setMafia(int mafia) {
+		this.mafia = mafia;
+	}
+
+	public void setTown(int town) {
+		this.town = town;
+	}
+
+	public void setSindicate(int sindicate) {
+		this.sindicate = sindicate;
+	}
+
+	public void setDoublers(int doublers) {
+		this.doublers = doublers;
+	}
+
+	public void setNightNumber(int nightNumber) {
+		this.nightNumber = nightNumber;
+	}
+
+	public void setDayNumber(int dayNumber) {
+		this.dayNumber = dayNumber;
 	}
 }

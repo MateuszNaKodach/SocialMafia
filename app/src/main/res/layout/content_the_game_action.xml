@@ -13,8 +13,7 @@
     tools:context="pl.nowakprojects.socialmafia.mainmenuoptions.newgame.TheGameActionActivity"
     tools:showIn="@layout/activity_the_game_action"
     android:orientation="vertical"
-    android:gravity="center_horizontal"
-    android:background="#263238">
+    android:gravity="center_horizontal">
 
     <ScrollView
         android:layout_width="match_parent"
