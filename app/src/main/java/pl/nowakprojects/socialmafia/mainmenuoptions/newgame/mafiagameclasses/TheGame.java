@@ -141,4 +141,8 @@ public class TheGame {
 	public void setDayNumber(int dayNumber) {
 		this.dayNumber = dayNumber;
 	}
+
+	public boolean isFinished() {
+		return isFinished;
+	}
 }

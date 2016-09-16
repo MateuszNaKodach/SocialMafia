@@ -48,11 +48,15 @@ public class TheGameActionActivity extends AppCompatActivity {
 
         receiveGameSettings(); //odbiera ustawienia gry
 
+        startMafiaGameAction();
+
+        startDayAction();
+       // startDayAction();
         //playersInfoRecyclerView = (RecyclerView) findViewById(R.id.playersStatusRecyclerView);
         //playersInfoRecyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
         //playersInfoRecyclerView.setAdapter(new PlayerGameStatusRoleAdapter(getApplicationContext()));
 
-        startMafiaGameAction();
+        //startMafiaGameAction();
     }
 
     /**
@@ -64,11 +68,11 @@ public class TheGameActionActivity extends AppCompatActivity {
         dayTimeFragment = new DayTimeFragment();
         nightTimeFragment = new NightTimeFragment();
         //dopóki gra nie jest zakończona ciągle leci dzień - noc:
-        while(!theGame.isFinished()){
-            startNightAction();
-            startDayAction();}
+       // while(!theGame.isFinished()){
+      //      startNightAction();
+      //      startDayAction();}
 
-        endTheGameAndShowResults();
+      //  endTheGameAndShowResults();
     }
 
     void startNightAction(){
@@ -99,6 +103,9 @@ public class TheGameActionActivity extends AppCompatActivity {
             receiveNewGameSettings();
     };
 
+    /**
+     * Odbieranie ustawień z nowej gry
+     */
     void receiveNewGameSettings(){
         theGame = Parcels.unwrap(getIntent().getParcelableExtra(ConnectPlayersToRolesActivity.EXTRA_NEW_GAME));
     };
@@ -130,7 +137,7 @@ public class TheGameActionActivity extends AppCompatActivity {
             dayTimeTimer.start();
 
             //Przycisk konczacy dzien:
-            Button finishDayButton = (Button) findViewById(R.id.finishTheDayButton);
+            Button finishDayButton = (Button) fragmentView.findViewById(R.id.finishTheDayButton);
             finishDayButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

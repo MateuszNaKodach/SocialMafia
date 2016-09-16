@@ -18,7 +18,7 @@ public class HumanPlayer {
 	HumanPlayer guard=null; //ochroniarz, ktos kto ginie za danego gracza
 
 	//For ShowingRoles:
-	private boolean wasRoleShowed = false;
+	boolean wasRoleShowed = false;
 
 	public HumanPlayer(){}
 
