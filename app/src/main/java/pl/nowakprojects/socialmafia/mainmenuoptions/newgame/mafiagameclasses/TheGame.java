@@ -144,4 +144,12 @@ public class TheGame {
 	public boolean isFinished() {
 		return isFinished;
 	}
+
+	public HumanPlayer findHumanPlayerByName(String playerName){
+		for(HumanPlayer humanPlayer: playersInfoList)
+			if(humanPlayer.getPlayerName().equals(playerName))
+				return humanPlayer;
+
+		return null;
+	}
 }

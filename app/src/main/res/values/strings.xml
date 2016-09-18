@@ -204,6 +204,7 @@ Raz w ciągu gry,  podczas trwania dnia wybiera osobę, która aż do nocy nie b
     <string name="status_died">MARTWY</string>
     <string name="night_number">Noc #%1$d</string>
     <string name="fisnish_the_night">Zakończ noc</string>
-    <string name="confirm">ZATWIERDŹ</string>
+    <string name="confirm">zatwierdź</string>
+    <string name="roleActionDone">wykonano</string>
 
 </resources>

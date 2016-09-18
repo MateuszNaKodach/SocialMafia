@@ -23,6 +23,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.widget.Toast;
 
 import org.parceler.Parcels;
 
@@ -282,9 +283,17 @@ public class TheGameActionActivity extends AppCompatActivity {
             @Override
             public void onBindViewHolder(PlayerRoleActionViewHolder holder, int position) {
                 PlayerRole playerRole = actionPlayers.get(position).getPlayerRole();
-                holder.roleIcon.setImageResource(playerRole.getIconResourceID());
+              //  holder.roleIcon.setImageResource(playerRole.getIconResourceID());
                 holder.roleName.setText(playerRole.getName());
                 holder.playerName.setText(actionPlayers.get(position).getPlayerName());
+
+                ArrayList<String> playerNames = new ArrayList<String>();
+                for(HumanPlayer humanPlayer: theGame.getPlayersInfoList()){
+                    playerNames.add(humanPlayer.getPlayerName());
+                }
+                ArrayAdapter<String> choosingSpinnerAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, playerNames);
+                choosingSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                holder.choosingSpinner.setAdapter(choosingSpinnerAdapter);
             }
 
             @Override
@@ -294,33 +303,46 @@ public class TheGameActionActivity extends AppCompatActivity {
 
             class  PlayerRoleActionViewHolder extends RecyclerView.ViewHolder{
 
-                private ImageView roleIcon;
+               // private ImageView roleIcon;
                 private TextView roleName;
                 private TextView playerName;
-             //   private MaterialSpinner choosingSpinner;
+                private Button confirmButton;
+                private Spinner choosingSpinner;
 
                 private AlertDialog roleDescriptionDialog;
 
                 public PlayerRoleActionViewHolder(View itemView) {
                     super(itemView);
 
-                    roleIcon = (ImageView) itemView.findViewById(R.id.roleIcon);
+                   // roleIcon = (ImageView) itemView.findViewById(R.id.roleIcon);
                     roleName = (TextView) itemView.findViewById(R.id.roleName);
                     playerName = (TextView) itemView.findViewById(R.id.playerName);
-                /*    choosingSpinner = (MaterialSpinner) itemView.findViewById(R.id.playersNamesSpinner);
-                    ArrayList<String> playerNames = new ArrayList<String>();
-                    for(HumanPlayer humanPlayer: theGame.getPlayersInfoList()){
-                        playerNames.add(humanPlayer.getPlayerName());
-                    }
-                    ArrayAdapter<String> choosingSpinnerAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, playerNames);
-                    choosingSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    choosingSpinner.setAdapter(choosingSpinnerAdapter);*/
+                    confirmButton = (Button) itemView.findViewById(R.id.confirmButton);
+                    choosingSpinner = (Spinner) itemView.findViewById(R.id.playersNamesSpinner);
+
+                    confirmButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            choosingSpinner.setEnabled(false);
+                            confirmButton.setText(R.string.roleActionDone);
+                            makeRoleAction(actionPlayers.get(getAdapterPosition()),theGame.findHumanPlayerByName(choosingSpinner.getSelectedItem().toString()));
+                        }
+                    });
+
                 }
 
 
             }
         }
 
+        /**
+         * Spinner adapter - do wyboru innego gracza
+         */
+      //  public class ChoosingPlayerSpinnerAdapter extends ArrayAdapter<HumanPlayer>{
+
+          //  public ChoosingPlayerSpinnerAdapter(){}
+
+       // }
 
     }
 
@@ -449,6 +471,16 @@ public class TheGameActionActivity extends AppCompatActivity {
         }
 
         return result;
+    }
+
+    void makeRoleAction(HumanPlayer actionPlayer, HumanPlayer choosenPlayer){
+        switch(actionPlayer.getRoleName()){
+            case R.string.prostitute:{
+                Toast.makeText(getApplicationContext(),"Rola sprawdzonej osoby to "+getString(choosenPlayer.getRoleName()), Toast.LENGTH_LONG).show();
+
+            }
+
+        }
     }
 
 }
