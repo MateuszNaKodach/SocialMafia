@@ -66,45 +66,45 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="center"
-            android:gravity="center_vertical|center_horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/town"
-            android:id="@+id/townTextView"
-            android:layout_gravity="center_horizontal"
-            android:textAllCaps="true"
-            android:textStyle="bold" />
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text=":"
-                android:layout_gravity="center_horizontal"
-                android:textAllCaps="true"
-                android:textStyle="bold" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:id="@+id/townSelectedRolesAmount"
-                android:text="0"
-                android:layout_gravity="center_horizontal"
-                android:textAllCaps="true"
-                android:textStyle="bold"
-                android:layout_marginLeft="10dp" />
-        </LinearLayout>
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:gravity="center_vertical|center_horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/town"
+                    android:id="@+id/townTextView"
+                    android:layout_gravity="center_horizontal"
+                    android:textAllCaps="true"
+                    android:textStyle="bold" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text=":"
+                    android:layout_gravity="center_horizontal"
+                    android:textAllCaps="true"
+                    android:textStyle="bold" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:id="@+id/townSelectedRolesAmount"
+                    android:text="0"
+                    android:layout_gravity="center_horizontal"
+                    android:textAllCaps="true"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="10dp" />
+            </LinearLayout>
 
-        <android.support.v7.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/selectTownRolesRecyclerView"/>
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/selectTownRolesRecyclerView"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -141,10 +141,10 @@
                     android:layout_marginLeft="10dp" />
             </LinearLayout>
 
-        <android.support.v7.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/selectMafiaRolesRecyclerView"/>
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/selectMafiaRolesRecyclerView"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -181,22 +181,20 @@
                     android:layout_marginLeft="10dp" />
             </LinearLayout>
 
-        <android.support.v7.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/selectSyndicateRolesRecyclerView"/>
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/selectSyndicateRolesRecyclerView"/>
 
         </LinearLayout>
 
     </ScrollView>
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/assign_roles_to_players"
-            android:id="@+id/assignRolesToPlayers"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/assign_roles_to_players"
+        android:id="@+id/assignRolesToPlayers"/>
 
-    </LinearLayout>
-
-
+</LinearLayout>
 

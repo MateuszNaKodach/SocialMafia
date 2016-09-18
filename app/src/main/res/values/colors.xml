@@ -4,4 +4,5 @@
     <color name="colorPrimaryDark">#A52A2A</color>
     <color name="colorAccent">#FF4081</color>
     <color name="iconsColor">#A52A2A</color>
+    <color name="spinner_base_color">#44000000</color>
 </resources>

@@ -98,9 +98,9 @@ public class TapPlayersNamesActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(PlayerNameViewHolder holder, int position) {
-                TapPlayerNameItem item = namesList.get(position);
-                holder.playerNumberText.setText(getString(R.string.player) +" #"+(position+1));
-                holder.playerNameEditText.setText(item.playerName);
+            TapPlayerNameItem item = namesList.get(position);
+            holder.playerNumberText.setText(getString(R.string.player) +" #"+(position+1));
+            holder.playerNameEditText.setText(item.playerName);
         }
 
         @Override
@@ -112,13 +112,13 @@ public class TapPlayersNamesActivity extends AppCompatActivity {
 
             private TextView playerNumberText;
             private EditText playerNameEditText;
-          //  private View container;
+            //  private View container;
 
             public PlayerNameViewHolder(View itemView) {
                 super(itemView);
                 playerNumberText = (TextView) itemView.findViewById(R.id.playerNumberText);
                 playerNameEditText = (EditText) itemView.findViewById(R.id.playerNameEditText);
-               // container = itemView.findViewById(R.id.playernamelistitem);
+                // container = itemView.findViewById(R.id.playernamelistitem);
 
                 //WYMAGA POPRAWEK DLA WIEKSZEJ ILOSCI ZMIAN NIZ JEDNA (ZAMIANA JUZ ISTNIEJACEGO TEKSTU ITP!)
                 playerNameEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -126,7 +126,7 @@ public class TapPlayersNamesActivity extends AppCompatActivity {
                     public void onFocusChange(View v, boolean hasFocus) {
                         if (!hasFocus && !playerNameEditText.getText().toString().isEmpty()) {
                             namesList.get(getAdapterPosition()).playerName = playerNameEditText.getText().toString();
-                           // Log.i("TEST",tapedPlayersNamesList.get(tapedPlayersNamesList.size()-1));
+                            // Log.i("TEST",tapedPlayersNamesList.get(tapedPlayersNamesList.size()-1));
                         }
                     }
                 });

@@ -68,10 +68,10 @@ public class PlayerChoosingRoleAdapter extends RecyclerView.Adapter<PlayerChoosi
 
     @Override
     public void onBindViewHolder(PlayerRoleViewHolder holder, int position) {
-            PlayerRole playerRole = fractionRolesList.get(position);
-            holder.roleIcon.setImageResource(playerRole.getIconResourceID());
-            holder.roleName.setText(playerRole.getName());
-            holder.roleAmount.setText(String.valueOf(playerRole.getRolePlayersAmount()));
+        PlayerRole playerRole = fractionRolesList.get(position);
+        holder.roleIcon.setImageResource(playerRole.getIconResourceID());
+        holder.roleName.setText(playerRole.getName());
+        holder.roleAmount.setText(String.valueOf(playerRole.getRolePlayersAmount()));
     }
 
     @Override

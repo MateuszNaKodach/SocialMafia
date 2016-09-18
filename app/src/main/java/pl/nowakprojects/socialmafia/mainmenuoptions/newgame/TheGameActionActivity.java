@@ -5,8 +5,10 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Vibrator;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -14,20 +16,24 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 
 import org.parceler.Parcels;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
+import fr.ganfra.materialspinner.MaterialSpinner;
+
 import pl.nowakprojects.socialmafia.R;
 import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses.HumanPlayer;
+import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses.PlayerRole;
 import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses.TheGame;
 
 public class TheGameActionActivity extends AppCompatActivity {
@@ -37,7 +43,11 @@ public class TheGameActionActivity extends AppCompatActivity {
 
     DayTimeFragment dayTimeFragment;
     NightTimeFragment nightTimeFragment;
+    NightTimeRoleActionsFragment nightTimeRoleActionsFragment;
     RecyclerView playersInfoRecyclerView;
+
+    final String TIME_FRAGMENT = "TIME_FRAGMENT";
+    final String TIME_ROLE_ACTIONS_FRAGMENT = "TIME_ROLE_ACTIONS_FRAGMENT";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +60,7 @@ public class TheGameActionActivity extends AppCompatActivity {
 
         startMafiaGameAction();
 
-        startDayAction();
+        startNightAction();
        // startDayAction();
         //playersInfoRecyclerView = (RecyclerView) findViewById(R.id.playersStatusRecyclerView);
         //playersInfoRecyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
@@ -66,6 +76,7 @@ public class TheGameActionActivity extends AppCompatActivity {
     void startMafiaGameAction(){
         //GameView proporties:
         dayTimeFragment = new DayTimeFragment();
+        //dayTimeRoleActionsFragment = new DayTimeRoleActionsFragment();
         nightTimeFragment = new NightTimeFragment();
         //dopóki gra nie jest zakończona ciągle leci dzień - noc:
        // while(!theGame.isFinished()){
@@ -76,9 +87,14 @@ public class TheGameActionActivity extends AppCompatActivity {
     }
 
     void startNightAction(){
+        if(theGame.getNightNumber()==0)
+            nightTimeRoleActionsFragment = new NightTimeRoleActionsFragment(getZeroNightHumanPlayers());
+
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.dayOrNightTimeFragment,nightTimeFragment,"TIME_FRAGMENT");
+        fragmentTransaction.add(R.id.dayOrNightTimeFragment,nightTimeFragment,TIME_FRAGMENT);
+        fragmentTransaction.add(R.id.dayOrNightTimeRoleActionsFragment,nightTimeRoleActionsFragment,TIME_ROLE_ACTIONS_FRAGMENT);
         fragmentTransaction.commit();
+
     }
 
     void endNightAction(){
@@ -87,7 +103,7 @@ public class TheGameActionActivity extends AppCompatActivity {
 
     void startDayAction(){
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.dayOrNightTimeFragment,dayTimeFragment,"TIME_FRAGMENT");
+        //fragmentTransaction.add(R.id.dayOrNightTimeFragment,dayTimeFragment,TIME_FRAGMENT);
         fragmentTransaction.commit();
     }
 
@@ -113,8 +129,6 @@ public class TheGameActionActivity extends AppCompatActivity {
     void receiveLoadGameSettings(){
         //WCZYTYWANIE Z BAZDY DANYCH i tworzenie theGame na podstawie tego
     };
-
-
 
     public class DayTimeFragment extends Fragment {
 
@@ -181,6 +195,7 @@ public class TheGameActionActivity extends AppCompatActivity {
     public class NightTimeFragment extends Fragment {
 
 
+        String nightNumer;
         TextView nightNumberTextView;
 
         public NightTimeFragment() {
@@ -193,18 +208,121 @@ public class TheGameActionActivity extends AppCompatActivity {
             // Inflate the layout for this fragment
             View fragmentView = inflater.inflate(R.layout.fragment_night_time, container, false);
 
-            nightNumberTextView = (TextView) findViewById(R.id.nightNumberTextView);
+            nightNumberTextView = (TextView) fragmentView.findViewById(R.id.nightNumberTextView);
             updateNightNumberTextView();
 
             return fragmentView;
         }
 
-
+        /**
+         * Aktualizuje numer kolejnej nocy
+         */
         void updateNightNumberTextView(){
-            nightNumberTextView.setText(R.string.night_number + String.valueOf(theGame.getNightNumber()));
+            nightNumberTextView.setText((getString(R.string.night_number,theGame.getNightNumber())));
         }
     }
 
+    public class NightTimeRoleActionsFragment extends Fragment {
+
+        DayOrNightRoleActionsAdapter dayOrNightRoleActionsAdapter;
+        ArrayList<HumanPlayer> nightHumanPlayers;
+
+        public NightTimeRoleActionsFragment() {
+            // Required empty public constructor
+        }
+
+        public NightTimeRoleActionsFragment(ArrayList<HumanPlayer> nightHumanPlayers) {
+            this.nightHumanPlayers = nightHumanPlayers;
+        }
+
+        @Override
+        public void onCreate(@Nullable Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            dayOrNightRoleActionsAdapter = new DayOrNightRoleActionsAdapter(getApplicationContext(),nightHumanPlayers);
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            // Inflate the layout for this fragment
+            View fragmentView = inflater.inflate(R.layout.fragment_time_role_actions, container, false);
+            return fragmentView;
+        }
+
+        @Override
+        public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+            super.onViewCreated(view, savedInstanceState);
+            RecyclerView playersActionsRecyclerView = (RecyclerView) view.findViewById(R.id.playersActionsRecyclerView);
+            playersActionsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), GridLayoutManager.HORIZONTAL,false));
+            playersActionsRecyclerView.setAdapter(dayOrNightRoleActionsAdapter);
+        }
+
+        /**
+         * Adapter do wykonywania roli graczy
+         */
+        public class DayOrNightRoleActionsAdapter extends RecyclerView.Adapter<DayOrNightRoleActionsAdapter.PlayerRoleActionViewHolder> {
+
+            private ArrayList<HumanPlayer> actionPlayers;
+
+            private LayoutInflater inflater;
+            private Context context;
+
+            public DayOrNightRoleActionsAdapter(Context context, ArrayList<HumanPlayer> actionPlayers){
+                this.actionPlayers = actionPlayers; //ogarnac zeby tylko te co się budzą danej porze dnia!!
+                this.context=context;
+                this.inflater = LayoutInflater.from(context);
+            }
+
+            @Override
+            public PlayerRoleActionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+                View view = inflater.inflate(R.layout.player_role_action_layout,parent,false);
+                return new PlayerRoleActionViewHolder(view);
+            }
+
+            @Override
+            public void onBindViewHolder(PlayerRoleActionViewHolder holder, int position) {
+                PlayerRole playerRole = actionPlayers.get(position).getPlayerRole();
+                holder.roleIcon.setImageResource(playerRole.getIconResourceID());
+                holder.roleName.setText(playerRole.getName());
+                holder.playerName.setText(actionPlayers.get(position).getPlayerName());
+            }
+
+            @Override
+            public int getItemCount() {
+                return actionPlayers.size();
+            }
+
+            class  PlayerRoleActionViewHolder extends RecyclerView.ViewHolder{
+
+                private ImageView roleIcon;
+                private TextView roleName;
+                private TextView playerName;
+             //   private MaterialSpinner choosingSpinner;
+
+                private AlertDialog roleDescriptionDialog;
+
+                public PlayerRoleActionViewHolder(View itemView) {
+                    super(itemView);
+
+                    roleIcon = (ImageView) itemView.findViewById(R.id.roleIcon);
+                    roleName = (TextView) itemView.findViewById(R.id.roleName);
+                    playerName = (TextView) itemView.findViewById(R.id.playerName);
+                /*    choosingSpinner = (MaterialSpinner) itemView.findViewById(R.id.playersNamesSpinner);
+                    ArrayList<String> playerNames = new ArrayList<String>();
+                    for(HumanPlayer humanPlayer: theGame.getPlayersInfoList()){
+                        playerNames.add(humanPlayer.getPlayerName());
+                    }
+                    ArrayAdapter<String> choosingSpinnerAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, playerNames);
+                    choosingSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    choosingSpinner.setAdapter(choosingSpinnerAdapter);*/
+                }
+
+
+            }
+        }
+
+
+    }
 
     /**
      * Adapter do przeglądania statusu gracza
@@ -311,5 +429,26 @@ public class TheGameActionActivity extends AppCompatActivity {
         }
     }
 
+
+    ArrayList<HumanPlayer> getTownHumanPlayers(){
+        ArrayList<HumanPlayer> result = new ArrayList<HumanPlayer>();
+        for(HumanPlayer humanPlayer: theGame.getPlayersInfoList()){
+            if(humanPlayer.getPlayerRole().getFraction().equals(PlayerRole.Fraction.TOWN))
+                result.add(humanPlayer);
+        }
+        return result;
+    }
+
+    ArrayList<HumanPlayer> getZeroNightHumanPlayers(){
+        ArrayList<HumanPlayer> result = new ArrayList<HumanPlayer>();
+        for(HumanPlayer humanPlayer: theGame.getPlayersInfoList()){
+            if(humanPlayer.getPlayerRole().getActionType().equals(PlayerRole.ActionType.OnlyZeroNightAndActionRequire))
+                result.add(humanPlayer);
+            if(humanPlayer.getPlayerRole().getActionType().equals(PlayerRole.ActionType.OnlyZeroNight))
+                result.add(humanPlayer);
+        }
+
+        return result;
+    }
 
 }

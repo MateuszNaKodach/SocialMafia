@@ -35,7 +35,6 @@ public class TheGame {
 
 	ArrayList<HumanPlayer> playersInfoList; 	// LISTA ZAPISANYCH GRACZY
 
-
 	// LISTA WSZYSTKICH WYBRANYCH RÓL (Z POWTÓRZENIAMI)
 	//ArrayList<PlayerRole> currentGameRoles = new ArrayList<PlayerRole>();
 

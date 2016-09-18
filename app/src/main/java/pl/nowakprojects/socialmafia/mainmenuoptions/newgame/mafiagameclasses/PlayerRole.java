@@ -29,6 +29,7 @@ public class PlayerRole {
     ActionType actionType;
     int nightWakeHierarchyNumber;
     int rolePlayersAmount=0;
+    boolean roleUsed = false;
 
     public PlayerRole(int name, int description, int iconResourceID, Fraction fraction, ActionType actionType, int nightWakeHierarchyNumber) {
         this.name = name;
@@ -85,6 +86,10 @@ public class PlayerRole {
 
     public void setActionType(ActionType actionType) {
         this.actionType = actionType;
+    }
+
+    public boolean isRoleUsed() {
+        return roleUsed;
     }
 
     public int getNightWakeHierarchyNumber() {
