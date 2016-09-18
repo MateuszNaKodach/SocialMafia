@@ -16,6 +16,7 @@ public class HumanPlayer {
 	PlayerRole playerRole; // rola gracza
 	boolean alive=true; // czy gracz jeszcze żyje
 	HumanPlayer guard=null; //ochroniarz, ktos kto ginie za danego gracza
+	HumanPlayer blackMailer=null; //szantazysta, nie moze na niego zaglosowac itp.
 
 	//For ShowingRoles:
 	boolean wasRoleShowed = false;
@@ -48,6 +49,14 @@ public class HumanPlayer {
 
 	public void setWasRoleShowed(boolean wasRoleShowed) {
 		this.wasRoleShowed = wasRoleShowed;
+	}
+
+	public void setGuard(HumanPlayer guard) {
+		this.guard = guard;
+	}
+
+	public void setBlackMailer(HumanPlayer blackMailer) {
+		this.blackMailer = blackMailer;
 	}
 
 	public boolean isAlive(){

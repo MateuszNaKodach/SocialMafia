@@ -230,6 +230,7 @@ public class TheGameActionActivity extends AppCompatActivity {
         DayOrNightRoleActionsAdapter dayOrNightRoleActionsAdapter;
         ArrayList<HumanPlayer> nightHumanPlayers;
 
+
         public NightTimeRoleActionsFragment() {
             // Required empty public constructor
         }
@@ -334,7 +335,81 @@ public class TheGameActionActivity extends AppCompatActivity {
                 }
 
 
+                void makeRoleAction(HumanPlayer actionPlayer, HumanPlayer choosenPlayer){
+                    switch(actionPlayer.getRoleName()){
+                        case R.string.prostitute:
+                            makeProstituteAction(choosenPlayer);break;
+                        case R.string.black:
+                            makeBlackManAction(choosenPlayer);break;
+                        case R.string.blackJudge:
+                            makeBlackManAction(choosenPlayer);break;
+                        case R.string.blackmailer:
+                            makeBlackmailerAction(choosenPlayer);break;
+                        case R.string.blackmailerBoss:
+                            makeBlackmailerAction(choosenPlayer);break;
+                    }
+                }
+
+                void makeProstituteAction(HumanPlayer choosenPlayer){
+                    FragmentManager fragmentManager = getFragmentManager();
+                    TheGameActionShowingPlayerRoleDialog theGameActionShowingPlayerRoleDialog = new TheGameActionShowingPlayerRoleDialog(choosenPlayer);
+                    theGameActionShowingPlayerRoleDialog.show(fragmentManager,"ProstituteAction");
+                }
+
+                void makeBlackManAction(HumanPlayer choosenPlayer){
+                    choosenPlayer.setGuard(actionPlayers.get(getAdapterPosition()));
+                    Toast.makeText(getApplicationContext(),choosenPlayer.getPlayerName()+" "+getString(R.string.hasBlackNow), Toast.LENGTH_LONG).show();
+                }
+
+                void makeBlackmailerAction(HumanPlayer choosenPlayer){
+                    choosenPlayer.setBlackMailer(actionPlayers.get(getAdapterPosition()));
+                    Toast.makeText(getApplicationContext(),choosenPlayer.getPlayerName()+" "+getString(R.string.hasBlackmailerNow), Toast.LENGTH_LONG).show();
+                }
+
+                void makeRoleAction(HumanPlayer actionPlayer, HumanPlayer choosenPlayer1, HumanPlayer choosenPlayer2){
+                    //makePriestAction();
+                }
+
+                public class TheGameActionShowingPlayerRoleDialog extends DialogFragment{
+
+                    private HumanPlayer choosenPlayer;
+                    private Button understandButton;
+                    private TextView showingPlayerRoleExplanation;
+                    private TextView showedPlayerRoleText;
+                    private TextView showedPlayerFraction;
+
+                    TheGameActionShowingPlayerRoleDialog(HumanPlayer choosenPlayer){
+                        this.choosenPlayer = choosenPlayer;
+                    }
+                    @Nullable
+                    @Override
+                    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+                        View view = inflater.inflate(R.layout.dialog_showing_player_role,null);
+                        setCancelable(false);
+                        getDialog().setTitle(R.string.checkedRole);
+
+                        //showingPlayerRoleExplanation = (TextView) view.findViewById(R.id.showingPlayerRoleExplanation);
+                        showedPlayerRoleText = (TextView) view.findViewById(R.id.showedPlayerRoleText);
+                        showedPlayerRoleText.setText(getString(choosenPlayer.getRoleName()));
+                        showedPlayerFraction = (TextView) view.findViewById(R.id.showedPlayerFraction);
+                        showedPlayerFraction.setText(choosenPlayer.getPlayerRole().getFraction().name());
+
+
+                        Button understandButton = (Button) view.findViewById(R.id.understandButton);
+                        understandButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                dismiss();
+                            }
+                        });
+                        return view;
+                    }
+
+                }
+
             }
+
+
         }
 
         /**
@@ -346,62 +421,7 @@ public class TheGameActionActivity extends AppCompatActivity {
 
        // }
 
-        public class TheGameActionShowingPlayerRoleDialog extends DialogFragment{
 
-            private HumanPlayer choosenPlayer;
-            private Button understandButton;
-            private TextView showingPlayerRoleExplanation;
-            private TextView showedPlayerRoleText;
-            private TextView showedPlayerFraction;
-
-            TheGameActionShowingPlayerRoleDialog(HumanPlayer choosenPlayer){
-                this.choosenPlayer = choosenPlayer;
-            }
-            @Nullable
-            @Override
-            public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-                View view = inflater.inflate(R.layout.dialog_showing_player_role,null);
-                setCancelable(false);
-                getDialog().setTitle(R.string.checkedRole);
-
-                //showingPlayerRoleExplanation = (TextView) view.findViewById(R.id.showingPlayerRoleExplanation);
-                showedPlayerRoleText = (TextView) view.findViewById(R.id.showedPlayerRoleText);
-                showedPlayerRoleText.setText(getString(choosenPlayer.getRoleName()));
-                showedPlayerFraction = (TextView) view.findViewById(R.id.showedPlayerFraction);
-                showedPlayerFraction.setText(choosenPlayer.getPlayerRole().getFraction().name());
-
-
-                Button understandButton = (Button) view.findViewById(R.id.understandButton);
-                understandButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        dismiss();
-                    }
-                });
-                return view;
-            }
-
-        }
-
-        void makeRoleAction(HumanPlayer actionPlayer, HumanPlayer choosenPlayer){
-            switch(actionPlayer.getRoleName()){
-                case R.string.prostitute:{
-                    //Toast.makeText(getApplicationContext(),"Rola sprawdzonej osoby to "+getString(choosenPlayer.getRoleName()), Toast.LENGTH_LONG).show();
-                    makeProstituteAction(choosenPlayer);
-                }
-
-            }
-        }
-
-        void makeProstituteAction(HumanPlayer choosenPlayer){
-            FragmentManager fragmentManager = getFragmentManager();
-            TheGameActionShowingPlayerRoleDialog theGameActionShowingPlayerRoleDialog = new TheGameActionShowingPlayerRoleDialog(choosenPlayer);
-            theGameActionShowingPlayerRoleDialog.show(fragmentManager,"ProstituteAction");
-        }
-
-        void makeRoleAction(HumanPlayer actionPlayer, HumanPlayer choosenPlayer1, HumanPlayer choosenPlayer2){
-            //makePriestAction();
-        }
 
     }
 

@@ -207,5 +207,7 @@ Raz w ciągu gry,  podczas trwania dnia wybiera osobę, która aż do nocy nie b
     <string name="confirm">zatwierdź</string>
     <string name="roleActionDone">wykonano</string>
     <string name="checkedRole">Sprawdzona rola</string>
+    <string name="hasBlackNow">ma teraz MURZYNA!</string>
+    <string name="hasBlackmailerNow">jest teraz szantażowany!</string>
 
 </resources>
