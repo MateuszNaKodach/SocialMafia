@@ -206,5 +206,6 @@ Raz w ciągu gry,  podczas trwania dnia wybiera osobę, która aż do nocy nie b
     <string name="fisnish_the_night">Zakończ noc</string>
     <string name="confirm">zatwierdź</string>
     <string name="roleActionDone">wykonano</string>
+    <string name="checkedRole">Sprawdzona rola</string>
 
 </resources>

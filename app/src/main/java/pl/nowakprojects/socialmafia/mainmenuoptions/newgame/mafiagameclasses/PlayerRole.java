@@ -76,6 +76,11 @@ public class PlayerRole {
         return fraction;
     }
 
+    //public String getFractionName() {
+    //    switch(fraction){
+    //    }
+    //}
+
     public void setFraction(Fraction fraction) {
         this.fraction = fraction;
     }
