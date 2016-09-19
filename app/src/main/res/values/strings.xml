@@ -193,7 +193,7 @@ Raz w ciągu gry,  podczas trwania dnia wybiera osobę, która aż do nocy nie b
     <string name="already_showed">Już pokazane</string>
     <string name="questionMarks">-?-?-?-</string>
     <string name="tooLessPlayersRolesShowed">Jeszcze nie wszyscy gracze zobaczyli swoje funkcje!</string>
-    <string name="title_activity_the_game_action">TheGameActionActivity</string>
+    <string name="title_activity_the_game_action">Social Mafia v. 0.1</string>
     <string name="menu_facebookfanpage">Facebook App FanPage</string>
 
     <!-- TODO: Remove or change this placeholder text -->
@@ -209,5 +209,8 @@ Raz w ciągu gry,  podczas trwania dnia wybiera osobę, która aż do nocy nie b
     <string name="checkedRole">Sprawdzona rola</string>
     <string name="hasBlackNow">ma teraz MURZYNA!</string>
     <string name="hasBlackmailerNow">jest teraz szantażowany!</string>
+    <string name="theSameLovers">Kochankami nie może być ta sama osoba!</string>
+    <string name="loversRoles">Zapoznanie kochanków</string>
+    <string name="ok">OK</string>
 
 </resources>

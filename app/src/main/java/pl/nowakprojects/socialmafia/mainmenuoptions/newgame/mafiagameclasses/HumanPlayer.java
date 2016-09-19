@@ -17,6 +17,7 @@ public class HumanPlayer {
 	boolean alive=true; // czy gracz jeszcze żyje
 	HumanPlayer guard=null; //ochroniarz, ktos kto ginie za danego gracza
 	HumanPlayer blackMailer=null; //szantazysta, nie moze na niego zaglosowac itp.
+	HumanPlayer lover=null; //kochanek - nie mozna na niego glosowac, jesli ginie jeden z nich - gina oboje
 
 	//For ShowingRoles:
 	boolean wasRoleShowed = false;
@@ -54,6 +55,19 @@ public class HumanPlayer {
 	public void setGuard(HumanPlayer guard) {
 		this.guard = guard;
 	}
+
+	public void setLover(HumanPlayer lover) {
+		this.lover = lover;
+	}
+
+	public HumanPlayer getLover() {
+		return lover;
+	}
+
+	public HumanPlayer getGuard() {
+		return guard;
+	}
+
 
 	public void setBlackMailer(HumanPlayer blackMailer) {
 		this.blackMailer = blackMailer;

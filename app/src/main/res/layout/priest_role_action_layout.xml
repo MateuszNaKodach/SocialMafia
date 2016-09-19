@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <android.support.v7.widget.CardView android:layout_width="wrap_content"
-    android:layout_height="190dp"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     app:cardCornerRadius="8dp"
@@ -72,6 +72,13 @@
             android:layout_height="wrap_content"
             android:id="@+id/playersNamesSpinner"
             android:layout_gravity="center_horizontal" />
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/playersNamesSpinner2"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp" />
 
         <Button
             style="?android:attr/buttonStyleSmall"
