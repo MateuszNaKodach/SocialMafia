@@ -212,5 +212,6 @@ Raz w ciągu gry,  podczas trwania dnia wybiera osobę, która aż do nocy nie b
     <string name="theSameLovers">Kochankami nie może być ta sama osoba!</string>
     <string name="loversRoles">Zapoznanie kochanków</string>
     <string name="ok">OK</string>
+    <string name="fraction">Frakcja</string>
 
 </resources>

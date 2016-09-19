@@ -48,7 +48,7 @@
                 android:scaleType="fitCenter"
                 android:adjustViewBounds="true"
                 android:id="@+id/buttonActionInfo"
-                android:src="@drawable/icon_information"
+                android:src="@drawable/icon_info2"
                 android:clickable="true"
                 android:background="@null"
                 android:padding="8dp" />

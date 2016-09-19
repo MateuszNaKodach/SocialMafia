@@ -225,289 +225,306 @@ public class TheGameActionActivity extends AppCompatActivity {
             nightNumberTextView.setText((getString(R.string.night_number,theGame.getNightNumber())));
         }
 
-        public class NightTimeRoleActionsFragment extends Fragment {
+    }
 
-            DayOrNightRoleActionsAdapter dayOrNightRoleActionsAdapter;
-            ArrayList<HumanPlayer> nightHumanPlayers;
+    public class NightTimeRoleActionsFragment extends Fragment {
+
+        DayOrNightRoleActionsAdapter dayOrNightRoleActionsAdapter;
+        ArrayList<HumanPlayer> nightHumanPlayers;
 
 
-            public NightTimeRoleActionsFragment() {
-                // Required empty public constructor
-            }
+        public NightTimeRoleActionsFragment() {
+            // Required empty public constructor
+        }
 
-            public NightTimeRoleActionsFragment(ArrayList<HumanPlayer> nightHumanPlayers) {
-                this.nightHumanPlayers = nightHumanPlayers;
+        public NightTimeRoleActionsFragment(ArrayList<HumanPlayer> nightHumanPlayers) {
+            this.nightHumanPlayers = nightHumanPlayers;
+        }
+
+        @Override
+        public void onCreate(@Nullable Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            dayOrNightRoleActionsAdapter = new DayOrNightRoleActionsAdapter(getApplicationContext(),nightHumanPlayers);
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            // Inflate the layout for this fragment
+            View fragmentView = inflater.inflate(R.layout.fragment_time_role_actions, container, false);
+            return fragmentView;
+        }
+
+        @Override
+        public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+            super.onViewCreated(view, savedInstanceState);
+            RecyclerView playersActionsRecyclerView = (RecyclerView) view.findViewById(R.id.playersActionsRecyclerView);
+            playersActionsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), GridLayoutManager.HORIZONTAL,false));
+            playersActionsRecyclerView.setAdapter(dayOrNightRoleActionsAdapter);
+        }
+
+        /**
+         * Adapter do wykonywania roli graczy
+         */
+        public class DayOrNightRoleActionsAdapter extends RecyclerView.Adapter<DayOrNightRoleActionsAdapter.PlayerRoleActionViewHolder> {
+
+            private ArrayList<HumanPlayer> actionPlayers;
+
+            private LayoutInflater inflater;
+            private Context context;
+
+            public DayOrNightRoleActionsAdapter(Context context, ArrayList<HumanPlayer> actionPlayers){
+                this.actionPlayers = actionPlayers; //ogarnac zeby tylko te co się budzą danej porze dnia!!
+                this.context=context;
+                this.inflater = LayoutInflater.from(context);
             }
 
             @Override
-            public void onCreate(@Nullable Bundle savedInstanceState) {
-                super.onCreate(savedInstanceState);
-                dayOrNightRoleActionsAdapter = new DayOrNightRoleActionsAdapter(getApplicationContext(),nightHumanPlayers);
+            public PlayerRoleActionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+                View view = inflater.inflate(R.layout.priest_role_action_layout,parent,false);
+                return new PlayerRoleActionViewHolder(view);
             }
 
             @Override
-            public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                     Bundle savedInstanceState) {
-                // Inflate the layout for this fragment
-                View fragmentView = inflater.inflate(R.layout.fragment_time_role_actions, container, false);
-                return fragmentView;
+            public void onBindViewHolder(PlayerRoleActionViewHolder holder, int position) {
+                PlayerRole playerRole = actionPlayers.get(position).getPlayerRole();
+                //  holder.roleIcon.setImageResource(playerRole.getIconResourceID());
+                holder.roleName.setText(playerRole.getName());
+                holder.playerName.setText(actionPlayers.get(position).getPlayerName());
+
+                //Dodawanie opcji do Spinnera
+                ArrayList<String> playerNames = new ArrayList<String>();
+                for(HumanPlayer humanPlayer: theGame.getPlayersInfoList()){
+                    if(!(humanPlayer.getPlayerName().equals(actionPlayers.get(position).getPlayerName()))) //wszystkich oprócz samego gracza
+                        playerNames.add(humanPlayer.getPlayerName());
+                }
+                ArrayAdapter<String> choosingSpinnerAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, playerNames);
+                choosingSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                holder.choosingSpinner.setAdapter(choosingSpinnerAdapter);
+
+                if(playerRole.getName() == R.string.priest)
+                    holder.choosingSpinner2.setAdapter(choosingSpinnerAdapter);
+                else
+                    holder.choosingSpinner2.setVisibility(View.GONE);
+
             }
 
             @Override
-            public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-                super.onViewCreated(view, savedInstanceState);
-                RecyclerView playersActionsRecyclerView = (RecyclerView) view.findViewById(R.id.playersActionsRecyclerView);
-                playersActionsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), GridLayoutManager.HORIZONTAL,false));
-                playersActionsRecyclerView.setAdapter(dayOrNightRoleActionsAdapter);
+            public int getItemCount() {
+                return actionPlayers.size();
             }
 
-            /**
-             * Adapter do wykonywania roli graczy
-             */
-            public class DayOrNightRoleActionsAdapter extends RecyclerView.Adapter<DayOrNightRoleActionsAdapter.PlayerRoleActionViewHolder> {
+            class  PlayerRoleActionViewHolder extends RecyclerView.ViewHolder{
 
-                private ArrayList<HumanPlayer> actionPlayers;
+                // private ImageView roleIcon;
+                private TextView roleName;
+                private TextView playerName;
+                private Button confirmButton;
+                private Spinner choosingSpinner;
+                private Spinner choosingSpinner2;
 
-                private LayoutInflater inflater;
-                private Context context;
+                private AlertDialog roleDescriptionDialog;
 
-                public DayOrNightRoleActionsAdapter(Context context, ArrayList<HumanPlayer> actionPlayers){
-                    this.actionPlayers = actionPlayers; //ogarnac zeby tylko te co się budzą danej porze dnia!!
-                    this.context=context;
-                    this.inflater = LayoutInflater.from(context);
-                }
+                public PlayerRoleActionViewHolder(View itemView) {
 
-                @Override
-                public PlayerRoleActionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-                    View view = inflater.inflate(R.layout.priest_role_action_layout,parent,false);
-                    return new PlayerRoleActionViewHolder(view);
-                }
+                    super(itemView);
 
-                @Override
-                public void onBindViewHolder(PlayerRoleActionViewHolder holder, int position) {
-                    PlayerRole playerRole = actionPlayers.get(position).getPlayerRole();
-                    //  holder.roleIcon.setImageResource(playerRole.getIconResourceID());
-                    holder.roleName.setText(playerRole.getName());
-                    holder.playerName.setText(actionPlayers.get(position).getPlayerName());
+                    // roleIcon = (ImageView) itemView.findViewById(R.id.roleIcon);
+                    roleName = (TextView) itemView.findViewById(R.id.roleName);
+                    playerName = (TextView) itemView.findViewById(R.id.playerName);
+                    confirmButton = (Button) itemView.findViewById(R.id.confirmButton);
+                    choosingSpinner = (Spinner) itemView.findViewById(R.id.playersNamesSpinner);
 
-                    //Dodawanie opcji do Spinnera
-                    ArrayList<String> playerNames = new ArrayList<String>();
-                    for(HumanPlayer humanPlayer: theGame.getPlayersInfoList()){
-                        if(!(humanPlayer.getPlayerName().equals(actionPlayers.get(position).getPlayerName()))) //wszystkich oprócz samego gracza
-                            playerNames.add(humanPlayer.getPlayerName());
-                    }
-                    ArrayAdapter<String> choosingSpinnerAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, playerNames);
-                    choosingSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    holder.choosingSpinner.setAdapter(choosingSpinnerAdapter);
-
-                    if(playerRole.getName() == R.string.priest)
-                        holder.choosingSpinner2.setAdapter(choosingSpinnerAdapter);
-                    else
-                        holder.choosingSpinner2.setVisibility(View.GONE);
-
-                }
-
-                @Override
-                public int getItemCount() {
-                    return actionPlayers.size();
-                }
-
-                class  PlayerRoleActionViewHolder extends RecyclerView.ViewHolder{
-
-                    // private ImageView roleIcon;
-                    private TextView roleName;
-                    private TextView playerName;
-                    private Button confirmButton;
-                    private Spinner choosingSpinner;
-                    private Spinner choosingSpinner2;
-
-                    private AlertDialog roleDescriptionDialog;
-
-                    public PlayerRoleActionViewHolder(View itemView) {
-
-                        super(itemView);
-
-                        // roleIcon = (ImageView) itemView.findViewById(R.id.roleIcon);
-                        roleName = (TextView) itemView.findViewById(R.id.roleName);
-                        playerName = (TextView) itemView.findViewById(R.id.playerName);
-                        confirmButton = (Button) itemView.findViewById(R.id.confirmButton);
-                        choosingSpinner = (Spinner) itemView.findViewById(R.id.playersNamesSpinner);
-
-                        //Jeśli graczem jest ksiądz to używamy innego layoutu, dla wyboru 2 graczy do kochanków
+                    //Jeśli graczem jest ksiądz to używamy innego layoutu, dla wyboru 2 graczy do kochanków
 //                    if(actionPlayers.get(getAdapterPosition()).getRoleName() == R.string.priest)
-                        choosingSpinner2 = (Spinner) itemView.findViewById(R.id.playersNamesSpinner2);
+                    choosingSpinner2 = (Spinner) itemView.findViewById(R.id.playersNamesSpinner2);
 
-                        //zatwierdzenie wykonania roli gracza
-                        confirmButton.setOnClickListener(new View.OnClickListener() {
+                    //zatwierdzenie wykonania roli gracza
+                    confirmButton.setOnClickListener(new View.OnClickListener() {
 
-                            /**
-                             * Rola została wykonana
-                             * Nie jest już możliwa zmiana wybranych graczy
-                             * Dodajemy do sumy wykonanych ról
-                             */
-                            void roleActionWasMade(){
-                                choosingSpinner.setEnabled(false);
-                                choosingSpinner2.setEnabled(false);
-                                confirmButton.setText(R.string.roleActionDone);
-                                madeNightActionsAmount++;
-                            }
+                        /**
+                         * Rola została wykonana
+                         * Nie jest już możliwa zmiana wybranych graczy
+                         * Dodajemy do sumy wykonanych ról
+                         */
+                        void roleActionWasMade(){
+                            choosingSpinner.setEnabled(false);
+                            choosingSpinner2.setEnabled(false);
+                            confirmButton.setText(R.string.roleActionDone);
+                           // madeNightActionsAmount++;
+                        }
 
 
-                            @Override
-                            public void onClick(View view) {
-                                //sprawdza czy to ksiądz, aby wykonać odpowiednią funkcję
-                                if(actionPlayers.get(getAdapterPosition()).getRoleName() == R.string.priest) {
-                                    if(theGame.findHumanPlayerByName(choosingSpinner.getSelectedItem().toString()).equals( theGame.findHumanPlayerByName(choosingSpinner2.getSelectedItem().toString()) ))
-                                        Toast.makeText(getApplicationContext(),getString(R.string.theSameLovers), Toast.LENGTH_LONG).show();
-                                    else {
-                                        makePriestAction(theGame.findHumanPlayerByName(choosingSpinner.getSelectedItem().toString()), theGame.findHumanPlayerByName(choosingSpinner2.getSelectedItem().toString()));
-                                        roleActionWasMade();
-                                    }
-                                }else {
-                                    makeRoleAction(actionPlayers.get(getAdapterPosition()), theGame.findHumanPlayerByName(choosingSpinner.getSelectedItem().toString()));
+                        @Override
+                        public void onClick(View view) {
+                            //sprawdza czy to ksiądz, aby wykonać odpowiednią funkcję
+                            if(actionPlayers.get(getAdapterPosition()).getRoleName() == R.string.priest) {
+                                if(theGame.findHumanPlayerByName(choosingSpinner.getSelectedItem().toString()).equals( theGame.findHumanPlayerByName(choosingSpinner2.getSelectedItem().toString()) ))
+                                    Toast.makeText(getApplicationContext(),getString(R.string.theSameLovers), Toast.LENGTH_LONG).show();
+                                else {
+                                    makePriestAction(theGame.findHumanPlayerByName(choosingSpinner.getSelectedItem().toString()), theGame.findHumanPlayerByName(choosingSpinner2.getSelectedItem().toString()));
                                     roleActionWasMade();
                                 }
+                            }else {
+                                makeRoleAction(actionPlayers.get(getAdapterPosition()), theGame.findHumanPlayerByName(choosingSpinner.getSelectedItem().toString()));
+                                roleActionWasMade();
+                            }
+                        }
+                    });
+
+
+                }
+
+                /**
+                 * Wykonywanie roli graczy
+                 * @param actionPlayer
+                 * @param choosenPlayer
+                 */
+                void makeRoleAction(HumanPlayer actionPlayer, HumanPlayer choosenPlayer){
+                    switch(actionPlayer.getRoleName()){
+                        case R.string.prostitute:
+                            makeProstituteAction(choosenPlayer);break;
+                        case R.string.black:
+                            makeBlackManAction(choosenPlayer);break;
+                        case R.string.blackJudge:
+                            makeBlackManAction(choosenPlayer);break;
+                        case R.string.blackmailer:
+                            makeBlackmailerAction(choosenPlayer);break;
+                        case R.string.blackmailerBoss:
+                            makeBlackmailerAction(choosenPlayer);break;
+                    }
+                }
+
+                void makeProstituteAction(HumanPlayer choosenPlayer){
+                    FragmentManager fragmentManager = getFragmentManager();
+                    TheGameActionShowingPlayerRoleDialog theGameActionShowingPlayerRoleDialog = new TheGameActionShowingPlayerRoleDialog(choosenPlayer);
+                    theGameActionShowingPlayerRoleDialog.show(fragmentManager,"ProstituteAction");
+                }
+
+                void makeBlackManAction(HumanPlayer choosenPlayer){
+                    choosenPlayer.setGuard(actionPlayers.get(getAdapterPosition()));
+                    Toast.makeText(getApplicationContext(),choosenPlayer.getPlayerName()+" "+getString(R.string.hasBlackNow), Toast.LENGTH_LONG).show();
+                }
+
+                void makeBlackmailerAction(HumanPlayer choosenPlayer){
+                    choosenPlayer.setBlackMailer(actionPlayers.get(getAdapterPosition()));
+                    Toast.makeText(getApplicationContext(),choosenPlayer.getPlayerName()+" "+getString(R.string.hasBlackmailerNow), Toast.LENGTH_LONG).show();
+                }
+
+                void makePriestAction(HumanPlayer choosenPlayer1, HumanPlayer choosenPlayer2){
+                    choosenPlayer1.setLover(choosenPlayer2);
+                    choosenPlayer2.setLover(choosenPlayer1);
+                    FragmentManager fragmentManager = getFragmentManager();
+                    TheGameActionShowingLoversRolesDialog theGameActionShowingLoversRolesDialog = new TheGameActionShowingLoversRolesDialog(choosenPlayer1,choosenPlayer2);
+                    theGameActionShowingLoversRolesDialog.show(fragmentManager,"PriestAction");
+                }
+
+                public class TheGameActionShowingLoversRolesDialog extends DialogFragment{
+
+                    private HumanPlayer choosenPlayer;
+                    private HumanPlayer choosenPlayer2;
+                    private Button understandButton;
+                    private TextView showedPlayerRoleText;
+                    private TextView showedPlayerRoleText2;
+                    private TextView showedPlayerFraction;
+                    private TextView showedPlayerFraction2;
+                    private ImageView showedPlayerRoleIcon;
+                    private ImageView showedPlayerRoleIcon2;
+
+                    TheGameActionShowingLoversRolesDialog(HumanPlayer choosenPlayer, HumanPlayer choosenPlayer2){
+                        this.choosenPlayer = choosenPlayer;
+                        this.choosenPlayer2 = choosenPlayer2;
+                    }
+                    @Nullable
+                    @Override
+                    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+                        View view = inflater.inflate(R.layout.dialog_showing_lovers_roles,null);
+                        setCancelable(false);
+                        getDialog().setTitle(R.string.loversRoles);
+
+                        //showingPlayerRoleExplanation = (TextView) view.findViewById(R.id.showingPlayerRoleExplanation);
+                        showedPlayerRoleText = (TextView) view.findViewById(R.id.showedPlayerRoleText2);
+                        showedPlayerRoleText.setText(getString(choosenPlayer.getRoleName()));
+                        showedPlayerFraction = (TextView) view.findViewById(R.id.showedPlayerFraction2);
+                        showedPlayerFraction.setText(getString(choosenPlayer.getPlayerRole().getFractionNameStringID()));
+                      //  showedPlayerRoleIcon = (ImageView) view.findViewById(R.id.loverIcon1);
+                      //  showedPlayerRoleIcon.setImageResource(choosenPlayer.getPlayerRole().getIconResourceID());
+
+                        showedPlayerRoleText2 = (TextView) view.findViewById(R.id.showedPlayerRoleText);
+                        showedPlayerRoleText2.setText(getString(choosenPlayer2.getRoleName()));
+                        showedPlayerFraction2 = (TextView) view.findViewById(R.id.showedPlayerFraction);
+                        showedPlayerFraction2.setText(getString(choosenPlayer2.getPlayerRole().getFractionNameStringID()));
+                      //  showedPlayerRoleIcon2 = (ImageView) view.findViewById(R.id.loverIcon2);
+                      //  showedPlayerRoleIcon2.setImageResource(choosenPlayer2.getPlayerRole().getIconResourceID());
+
+
+                        Button understandButton = (Button) view.findViewById(R.id.understandButton);
+                        understandButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                dismiss();
                             }
                         });
-
-
-                    }
-
-                    /**
-                     * Wykonywanie roli graczy
-                     * @param actionPlayer
-                     * @param choosenPlayer
-                     */
-                    void makeRoleAction(HumanPlayer actionPlayer, HumanPlayer choosenPlayer){
-                        switch(actionPlayer.getRoleName()){
-                            case R.string.prostitute:
-                                makeProstituteAction(choosenPlayer);break;
-                            case R.string.black:
-                                makeBlackManAction(choosenPlayer);break;
-                            case R.string.blackJudge:
-                                makeBlackManAction(choosenPlayer);break;
-                            case R.string.blackmailer:
-                                makeBlackmailerAction(choosenPlayer);break;
-                            case R.string.blackmailerBoss:
-                                makeBlackmailerAction(choosenPlayer);break;
-                        }
-                    }
-
-                    void makeProstituteAction(HumanPlayer choosenPlayer){
-                        FragmentManager fragmentManager = getFragmentManager();
-                        TheGameActionShowingPlayerRoleDialog theGameActionShowingPlayerRoleDialog = new TheGameActionShowingPlayerRoleDialog(choosenPlayer);
-                        theGameActionShowingPlayerRoleDialog.show(fragmentManager,"ProstituteAction");
-                    }
-
-                    void makeBlackManAction(HumanPlayer choosenPlayer){
-                        choosenPlayer.setGuard(actionPlayers.get(getAdapterPosition()));
-                        Toast.makeText(getApplicationContext(),choosenPlayer.getPlayerName()+" "+getString(R.string.hasBlackNow), Toast.LENGTH_LONG).show();
-                    }
-
-                    void makeBlackmailerAction(HumanPlayer choosenPlayer){
-                        choosenPlayer.setBlackMailer(actionPlayers.get(getAdapterPosition()));
-                        Toast.makeText(getApplicationContext(),choosenPlayer.getPlayerName()+" "+getString(R.string.hasBlackmailerNow), Toast.LENGTH_LONG).show();
-                    }
-
-                    void makePriestAction(HumanPlayer choosenPlayer1, HumanPlayer choosenPlayer2){
-                        choosenPlayer1.setLover(choosenPlayer2);
-                        choosenPlayer2.setLover(choosenPlayer1);
-                    }
-
-                    public class TheGameActionShowingLoversRolesDialog extends DialogFragment{
-
-                        private HumanPlayer choosenPlayer;
-                        private HumanPlayer choosenPlayer2;
-                        private Button understandButton;
-                        private TextView showedPlayerRoleText;
-                        private TextView showedPlayerFraction;
-
-                        TheGameActionShowingLoversRolesDialog(HumanPlayer choosenPlayer, HumanPlayer choosenPlayer2){
-                            this.choosenPlayer = choosenPlayer;
-                            this.choosenPlayer2 = choosenPlayer2;
-                        }
-                        @Nullable
-                        @Override
-                        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-                            View view = inflater.inflate(R.layout.dialog_showing_lovers_roles,null);
-                            setCancelable(false);
-                            getDialog().setTitle(R.string.loversRoles);
-
-                            //showingPlayerRoleExplanation = (TextView) view.findViewById(R.id.showingPlayerRoleExplanation);
-                            showedPlayerRoleText = (TextView) view.findViewById(R.id.showedPlayerRoleText);
-                            showedPlayerRoleText.setText(getString(choosenPlayer.getRoleName()));
-                            showedPlayerFraction = (TextView) view.findViewById(R.id.showedPlayerFraction);
-                            showedPlayerFraction.setText(choosenPlayer.getPlayerRole().getFraction().name());
-
-
-                            Button understandButton = (Button) view.findViewById(R.id.understandButton);
-                            understandButton.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    dismiss();
-                                }
-                            });
-                            return view;
-                        }
-
-                    }
-
-                    public class TheGameActionShowingPlayerRoleDialog extends DialogFragment{
-
-                        private HumanPlayer choosenPlayer;
-                        private Button understandButton;
-                        //private AutoResizeTextView showedPlayerRoleText;
-                        private TextView showedPlayerRoleText;
-                        private TextView showedPlayerFraction;
-                        private ImageView showedPlayerRoleIcon;
-
-                        TheGameActionShowingPlayerRoleDialog(HumanPlayer choosenPlayer){
-                            this.choosenPlayer = choosenPlayer;
-                        }
-                        @Nullable
-                        @Override
-                        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-                            View view = inflater.inflate(R.layout.dialog_showing_player_role,null);
-                            setCancelable(false);
-                            getDialog().setTitle(R.string.checkedRole);
-                            
-                            showedPlayerRoleIcon = (ImageView) view.findViewById(R.id.roleIcon);
-                            showedPlayerRoleIcon.setImageResource(choosenPlayer.getPlayerRole().getIconResourceID());
-                            // showedPlayerRoleText = (AutoResizeTextView) view.findViewById(R.id.showedPlayerRoleText);
-                            showedPlayerRoleText = (TextView) view.findViewById(R.id.showedPlayerRoleText);
-                            showedPlayerRoleText.setText(getString(choosenPlayer.getRoleName()));
-                            showedPlayerFraction = (TextView) view.findViewById(R.id.showedPlayerFraction);
-                            showedPlayerFraction.setText(choosenPlayer.getPlayerRole().getFraction().name());
-
-                            understandButton = (Button) view.findViewById(R.id.understandButton);
-                            understandButton.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    dismiss();
-                                }
-                            });
-                            return view;
-                        }
-
+                        return view;
                     }
 
                 }
 
+                public class TheGameActionShowingPlayerRoleDialog extends DialogFragment{
+
+                    private HumanPlayer choosenPlayer;
+                    private Button understandButton;
+                    //private AutoResizeTextView showedPlayerRoleText;
+                    private TextView showedPlayerRoleText;
+                    private TextView showedPlayerFraction;
+                    private ImageView showedPlayerRoleIcon;
+
+                    TheGameActionShowingPlayerRoleDialog(HumanPlayer choosenPlayer){
+                        this.choosenPlayer = choosenPlayer;
+                    }
+                    @Nullable
+                    @Override
+                    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+                        View view = inflater.inflate(R.layout.dialog_showing_player_role,null);
+                        setCancelable(false);
+                        getDialog().setTitle(R.string.checkedRole);
+
+                        showedPlayerRoleIcon = (ImageView) view.findViewById(R.id.roleIcon);
+                        showedPlayerRoleIcon.setImageResource(choosenPlayer.getPlayerRole().getIconResourceID());
+                        // showedPlayerRoleText = (AutoResizeTextView) view.findViewById(R.id.showedPlayerRoleText);
+                        showedPlayerRoleText = (TextView) view.findViewById(R.id.showedPlayerRoleText);
+                        showedPlayerRoleText.setText(getString(choosenPlayer.getRoleName()));
+                        showedPlayerFraction = (TextView) view.findViewById(R.id.showedPlayerFraction);
+                        showedPlayerFraction.setText(getString(choosenPlayer.getPlayerRole().getFractionNameStringID()));
+
+                        understandButton = (Button) view.findViewById(R.id.understandButton);
+                        understandButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                dismiss();
+                            }
+                        });
+                        return view;
+                    }
+
+                }
 
             }
-
-            /**
-             * Spinner adapter - do wyboru innego gracza
-             */
-            //  public class ChoosingPlayerSpinnerAdapter extends ArrayAdapter<HumanPlayer>{
-
-            //  public ChoosingPlayerSpinnerAdapter(){}
-
-            // }
-
 
 
         }
+
+        /**
+         * Spinner adapter - do wyboru innego gracza
+         */
+        //  public class ChoosingPlayerSpinnerAdapter extends ArrayAdapter<HumanPlayer>{
+
+        //  public ChoosingPlayerSpinnerAdapter(){}
+
+        // }
+
+
+
     }
 
 

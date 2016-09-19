@@ -46,8 +46,6 @@ public class PlayerRole {
     }
 
 
-
-
     public int getName() {
         return name;
     }
@@ -76,10 +74,16 @@ public class PlayerRole {
         return fraction;
     }
 
-    //public String getFractionName() {
-    //    switch(fraction){
-    //    }
-    //}
+    public int getFractionNameStringID() {
+        if(fraction.equals(Fraction.TOWN))
+            return R.string.town;
+        if(fraction.equals(Fraction.MAFIA))
+            return R.string.mafia;
+        if(fraction.equals(Fraction.SYNDICATE))
+            return R.string.syndicate;
+
+        return R.string.fraction;
+    }
 
     public void setFraction(Fraction fraction) {
         this.fraction = fraction;
