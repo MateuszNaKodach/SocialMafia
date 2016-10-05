@@ -213,5 +213,8 @@ Raz w ciągu gry,  podczas trwania dnia wybiera osobę, która aż do nocy nie b
     <string name="loversRoles">Zapoznanie kochanków</string>
     <string name="ok">OK</string>
     <string name="fraction">Frakcja</string>
+    <string name="playerNameHint">Wprowadź imię gracza</string>
+    <string name="night_time_tip">W ciągu nocy wykonywane i budzone są odpowiednie funkcje. Poniżej znajduje się przewijana lista z funkcjami do wykonania w ciągu nocy..............................................................................................................................</string>
+    <string name="nigth_time_tip_title" >Podpowiedź</string>
 
 </resources>

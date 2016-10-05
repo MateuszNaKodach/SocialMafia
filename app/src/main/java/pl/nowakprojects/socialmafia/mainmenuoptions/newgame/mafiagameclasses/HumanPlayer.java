@@ -15,9 +15,9 @@ public class HumanPlayer {
 	String playerName = ""; // imię gracza
 	PlayerRole playerRole; // rola gracza
 	boolean alive=true; // czy gracz jeszcze żyje
-	HumanPlayer guard=null; //ochroniarz, ktos kto ginie za danego gracza
-	HumanPlayer blackMailer=null; //szantazysta, nie moze na niego zaglosowac itp.
-	HumanPlayer lover=null; //kochanek - nie mozna na niego glosowac, jesli ginie jeden z nich - gina oboje
+	HumanPlayer guard=null; //ochroniarz, ktos kto ginie za danego gracza I OCHRONIARZ TEŻ!!!
+	HumanPlayer blackMailer=null; //szantazysta, nie moze na niego zaglosowac itp. CHYBA ZROBIC LISTE SZANTAZYSTÓW!!!
+	HumanPlayer lover=null; //kochanek - nie mozna na niego glosowac, jesli ginie jeden z nich - gina oboje I KOCHANKÓW TEŻ
 
 	//For ShowingRoles:
 	boolean wasRoleShowed = false;
