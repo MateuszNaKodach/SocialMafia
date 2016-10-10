@@ -122,4 +122,26 @@ public class PlayerRole {
     public String toString() {
         return String.valueOf(name);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PlayerRole)) return false;
+
+        PlayerRole that = (PlayerRole) o;
+
+        if (name != that.name) return false;
+        if (description != that.description) return false;
+        if (iconResourceID != that.iconResourceID) return false;
+        return fraction == that.fraction;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name;
+        result = 31 * result + description;
+        result = 31 * result + iconResourceID;
+        return result;
+    }
 }

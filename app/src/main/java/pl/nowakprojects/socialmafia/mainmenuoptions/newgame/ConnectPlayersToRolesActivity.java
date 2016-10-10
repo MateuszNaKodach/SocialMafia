@@ -37,7 +37,7 @@ public class ConnectPlayersToRolesActivity extends AppCompatActivity {
     ArrayList<PlayerRole> selectedGameRoles;
     private ArrayList<String> playersNamesList; //lista imion graczy
 
-    private  int showedRolesAmount=0;
+    private int showedRolesAmount = 0;
 
     PlayerShowingRoleAdapter playerShowingRoleAdapter;
     RecyclerView allPlayersRolesRecyclerView;
@@ -53,42 +53,42 @@ public class ConnectPlayersToRolesActivity extends AppCompatActivity {
         selectedGameRoles = Parcels.unwrap(getIntent().getParcelableExtra(SelectPlayerRolesActivity.EXTRA_SELECTED_ROLES_LIST));
         playersNamesList = getIntent().getStringArrayListExtra(TapPlayersNamesActivity.EXTRA_PLAYERS_NAMES_LIST);
         makeHumanPlayerWithRolesList(); //utowrzenie już listy graczy z przydzielonymi rolami
-        playerShowingRoleAdapter = new PlayerShowingRoleAdapter(playersInfoList,this);
+        playerShowingRoleAdapter = new PlayerShowingRoleAdapter(playersInfoList, this);
         allPlayersRolesRecyclerView = (RecyclerView) findViewById(R.id.allPlayersRolesRecyclerView);
-        allPlayersRolesRecyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
+        allPlayersRolesRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         allPlayersRolesRecyclerView.setAdapter(playerShowingRoleAdapter);
 
         Button startTheGameButton = (Button) findViewById(R.id.startTheGameButton);
         startTheGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (showedRolesAmount<playersInfoList.size())
-                    Toast.makeText(getApplicationContext(),R.string.tooLessPlayersRolesShowed, Toast.LENGTH_LONG).show();
-                else{
+                if (showedRolesAmount < playersInfoList.size())
+                    Toast.makeText(getApplicationContext(), R.string.tooLessPlayersRolesShowed, Toast.LENGTH_LONG).show();
+                else {
                     //tworzenie nowej gry:
                     TheGame newGame = new TheGame();
                     newGame.setPlayersInfoList(playersInfoList);
                     Bundle bundle = new Bundle();
-                    Log.i("SRATATA","Dajemy parcele.");
-                    bundle.putParcelable(EXTRA_NEW_GAME,Parcels.wrap(newGame));
-                    Log.i("SRATATA","Dajemy parcele.");
-                    Intent intent = new Intent(getApplicationContext(),TheGameActionActivity.class);
+                    Log.i("SRATATA", "Dajemy parcele.");
+                    bundle.putParcelable(EXTRA_NEW_GAME, Parcels.wrap(newGame));
+                    Log.i("SRATATA", "Dajemy parcele.");
+                    Intent intent = new Intent(getApplicationContext(), TheGameActionActivity.class);
                     intent.putExtras(bundle);
                     startActivity(intent);
-                    Log.i("SRATATA","Startujemy activity.");
+                    Log.i("SRATATA", "Startujemy activity.");
                 }
             }
         });
     }
 
-    void makeHumanPlayerWithRolesList(){
-            playersInfoList = new ArrayList<>();
-            Collections.shuffle(this.selectedGameRoles); // pomieszanie roli, żeby nie były według wyboru
-            // przydzielenie pomieszanych ról do graczy:
-            //tworzymy nowe obiekty z imienia i roli gracza
-            for (int i = 0; i < this.selectedGameRoles.size(); i++) {
-                playersInfoList.add(new HumanPlayer(playersNamesList.get(i),selectedGameRoles.get(i)));
-            }
+    void makeHumanPlayerWithRolesList() {
+        playersInfoList = new ArrayList<>();
+        Collections.shuffle(this.selectedGameRoles); // pomieszanie roli, żeby nie były według wyboru
+        // przydzielenie pomieszanych ról do graczy:
+        //tworzymy nowe obiekty z imienia i roli gracza
+        for (int i = 0; i < this.selectedGameRoles.size(); i++) {
+            playersInfoList.add(new HumanPlayer(playersNamesList.get(i), selectedGameRoles.get(i)));
+        }
     }
 
     public class PlayerShowingRoleAdapter extends RecyclerView.Adapter<PlayerShowingRoleAdapter.HumanPlayerViewHolder> {
@@ -117,7 +117,7 @@ public class ConnectPlayersToRolesActivity extends AppCompatActivity {
             holder.showRoleButton.setText(getString(R.string.show_role));
             holder.playerRoleIcon.setImageResource(R.drawable.image_template);
             holder.wasRoleShowed.setChecked(humanPlayersList.get(position).isWasRoleShowed());
-            holder.isRoleShowed=false;
+            holder.isRoleShowed = false;
         }
 
         @Override
@@ -140,7 +140,7 @@ public class ConnectPlayersToRolesActivity extends AppCompatActivity {
             public HumanPlayerViewHolder(View itemView) {
                 super(itemView);
 
-                playerRoleIcon = (ImageView) itemView.findViewById(R.id.playerIco);
+                playerRoleIcon = (ImageView) itemView.findViewById(R.id.playerStatusIcon);
                 playerName = (TextView) itemView.findViewById(R.id.playerName);
                 roleName = (TextView) itemView.findViewById(R.id.roleName);
                 showRoleButton = (Button) itemView.findViewById(R.id.show_hide_button);
@@ -149,22 +149,23 @@ public class ConnectPlayersToRolesActivity extends AppCompatActivity {
                 showRoleButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if(humanPlayersList.get(getAdapterPosition()).isWasRoleShowed()==false)
+                        if (humanPlayersList.get(getAdapterPosition()).isWasRoleShowed() == false)
                             showedRolesAmount++;
 
                         humanPlayersList.get(getAdapterPosition()).setWasRoleShowed(true);
                         wasRoleShowed.setChecked(humanPlayersList.get(getAdapterPosition()).isWasRoleShowed());
-                        if(isRoleShowed){
-                            isRoleShowed=false;
+                        if (isRoleShowed) {
+                            isRoleShowed = false;
                             showRoleButton.setText(getString(R.string.show_role));
                             roleName.setText(getString(R.string.questionMarks));
-                            playerRoleIcon.setImageResource(R.drawable.image_template);}
-                        else{
-                            isRoleShowed=true;
+                            playerRoleIcon.setImageResource(R.drawable.image_template);
+                        } else {
+                            isRoleShowed = true;
                             showRoleButton.setText(getString(R.string.hide_role));
                             roleName.setText(getString(humanPlayersList.get(getAdapterPosition()).getRoleName()));
-                            playerRoleIcon.setImageResource(humanPlayersList.get(getAdapterPosition()).getPlayerRole().getIconResourceID());}
-                     }
+                            playerRoleIcon.setImageResource(humanPlayersList.get(getAdapterPosition()).getPlayerRole().getIconResourceID());
+                        }
+                    }
                 });
 
                 /**
@@ -173,9 +174,10 @@ public class ConnectPlayersToRolesActivity extends AppCompatActivity {
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if(isRoleShowed){
-                        buildRoleDescriptionDialog();
-                        roleDescriptionDialog.show();}
+                        if (isRoleShowed) {
+                            buildRoleDescriptionDialog();
+                            roleDescriptionDialog.show();
+                        }
                     }
                 });
 

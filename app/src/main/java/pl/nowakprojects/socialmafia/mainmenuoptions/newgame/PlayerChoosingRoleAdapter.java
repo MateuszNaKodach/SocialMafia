@@ -2,25 +2,18 @@ package pl.nowakprojects.socialmafia.mainmenuoptions.newgame;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.media.Image;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
 import pl.nowakprojects.socialmafia.R;
-import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses.Fraction;
 import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses.PlayerRole;
 
 /**
@@ -92,7 +85,7 @@ public class PlayerChoosingRoleAdapter extends RecyclerView.Adapter<PlayerChoosi
         public PlayerRoleViewHolder(View itemView) {
             super(itemView);
 
-            roleIcon = (ImageView) itemView.findViewById(R.id.roleIcon);
+            roleIcon = (ImageView) itemView.findViewById(R.id.roleIco);
             roleName = (TextView) itemView.findViewById(R.id.roleName);
             roleAmount = (TextView) itemView.findViewById(R.id.roleAmount);
             increaseRoleAmount = (ImageButton) itemView.findViewById(R.id.increaseRoleAmountButton);

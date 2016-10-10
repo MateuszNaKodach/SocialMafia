@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+
 <!--<?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -86,43 +88,47 @@
 
 </android.support.constraint.ConstraintLayout>-->
 
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="pl.nowakprojects.socialmafia.mainmenuoptions.newgame.TheGameActionActivity"
-    android:orientation="horizontal"
+    android:background="#ffffffff"
     android:gravity="left|center_vertical|center_horizontal"
-    android:background="#ffffffff">
+    android:orientation="horizontal"
+    android:padding="@dimen/floating_label_inside_spacing"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    app:orientation="horizontal"
+    tools:context="pl.nowakprojects.socialmafia.mainmenuoptions.newgame.TheGameActionActivity">
 
 
-        <ImageView
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:src="@drawable/icon_night" />
+    <ImageView
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:src="@drawable/icon_night" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="left|center_vertical"
-            android:orientation="vertical"
-            android:layout_marginLeft="10dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="@string/night_number"
-                    android:id="@+id/nightNumberTextView" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:gravity="left|center_vertical"
+        android:orientation="vertical">
 
-        </LinearLayout>
-
-        <Button
+        <TextView
+            android:id="@+id/nightNumberTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/fisnish_the_night"
-            android:id="@+id/finishTheNightButton"
-            android:layout_marginLeft="30dp" />
+            android:text="@string/night_number"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/finishTheNightButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:text="@string/fisnish_the_night" />
 
 </LinearLayout>

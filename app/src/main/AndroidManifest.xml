@@ -67,7 +67,7 @@
         <activity
             android:name=".mainmenuoptions.newgame.TheGameActionActivity"
             android:label="@string/title_activity_the_game_action"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

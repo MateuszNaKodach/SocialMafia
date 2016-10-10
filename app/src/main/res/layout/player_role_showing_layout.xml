@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-
+<!--DODAC FRAKCJE-->
 <android.support.v7.widget.CardView android:layout_width="280dp"
 android:layout_height="300dp"
 xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -31,7 +31,7 @@ app:cardElevation="8dp">
     <ImageView
         android:layout_width="100dp"
         android:layout_height="125dp"
-        android:id="@+id/playerIco"
+        android:id="@+id/playerStatusIcon"
         android:src="@drawable/image_template"
         android:layout_gravity="center_horizontal" />
 

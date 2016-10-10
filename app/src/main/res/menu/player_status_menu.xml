@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="Kill/ Revive the player"
+        android:id="@+id/statusmenu_kill_the_player"
+        android:icon="@drawable/ic_menu_skull"
+        android:orderInCategory="101"/>
+
+    <item android:title="Add warn"
+        android:id="@+id/statusmenu_add_warn"
+        android:icon="@drawable/ic_menu_skull"
+        android:orderInCategory="101"/>
+</menu>

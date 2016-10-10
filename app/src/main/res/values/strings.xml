@@ -216,5 +216,7 @@ Raz w ciągu gry,  podczas trwania dnia wybiera osobę, która aż do nocy nie b
     <string name="playerNameHint">Wprowadź imię gracza</string>
     <string name="night_time_tip">W ciągu nocy wykonywane i budzone są odpowiednie funkcje. Poniżej znajduje się przewijana lista z funkcjami do wykonania w ciągu nocy..............................................................................................................................</string>
     <string name="nigth_time_tip_title" >Podpowiedź</string>
+    <string name="returnfrom">WRÓC</string>
+    <string name="playersList">Lista graczy</string>
 
 </resources>

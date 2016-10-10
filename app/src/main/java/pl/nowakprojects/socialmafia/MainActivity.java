@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         buttonStartNewGame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               Intent intent = new Intent(getApplicationContext(),PickPlayersAmountActivity.class);
+                Intent intent = new Intent(getApplicationContext(), PickPlayersAmountActivity.class);
                 startActivity(intent);
             }
         });
@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         buttonGameRules.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(),GameRulesActivity.class);
+                Intent intent = new Intent(getApplicationContext(), GameRulesActivity.class);
                 startActivity(intent);
             }
         });
@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Uri url = Uri.parse("https://www.facebook.com/Social-Mafia-1764817623732317/");
-                Intent intent = new Intent(Intent.ACTION_VIEW,url);
+                Intent intent = new Intent(Intent.ACTION_VIEW, url);
                 startActivity(intent);
             }
         });

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <item android:title="Players List"
+        android:id="@+id/menu_thegame_playerslist"
+        android:icon="@drawable/menu_icon_whiteman"
+        app:showAsAction="ifRoom"/>
+
+    <item android:title="Save Game"
+        android:id="@+id/menu_thegame_savegame"
+        android:icon="@drawable/menu_icon_save"
+        app:showAsAction="ifRoom"/>
+
+    <item android:title="Exit Game"
+        android:id="@+id/menu_thegame_exitgame"
+        android:icon="@drawable/menu_icon_exit"
+        app:showAsAction="ifRoom"/>
+
+</menu>

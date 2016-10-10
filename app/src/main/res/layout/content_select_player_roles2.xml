@@ -104,7 +104,8 @@
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/selectTownRolesRecyclerView"/>
+                android:id="@+id/selectTownRolesRecyclerView"
+                android:scrollbars="horizontal" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -144,7 +145,8 @@
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/selectMafiaRolesRecyclerView"/>
+                android:id="@+id/selectMafiaRolesRecyclerView"
+                android:scrollbars="horizontal" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -184,7 +186,11 @@
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/selectSyndicateRolesRecyclerView"/>
+                android:id="@+id/selectSyndicateRolesRecyclerView"
+                android:scrollbars="horizontal"
+                android:addStatesFromChildren="false"
+                android:animateLayoutChanges="false"
+                android:fadeScrollbars="false" />
 
         </LinearLayout>
 
