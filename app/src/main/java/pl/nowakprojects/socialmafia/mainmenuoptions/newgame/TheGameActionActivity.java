@@ -436,16 +436,16 @@ public class TheGameActionActivity extends AppCompatActivity {
                             makeBlackmailerAction(choosenPlayer);
                             break;
                         case R.string.darkmedic:
-                            makeDarkMedicAction();
+                            makeDarkMedicAction(choosenPlayer);
                             break;
                         case R.string.dealer:
-                            makeDealerAction();
+                            makeDealerAction(choosenPlayer);
                             break;
                         case R.string.deathAngel:
-                            makeDeathAngelAction();
+                            makeDeathAngelAction(choosenPlayer);
                             break;
                         case R.string.bartender:
-                            makeBartenderAction();
+                            //makeBartenderAction(choosenPlayer);
                             break;
                     }
                 }

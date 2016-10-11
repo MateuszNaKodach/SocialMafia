@@ -53,9 +53,9 @@ public class TheGame {
 	boolean isFinished = false; //czy gra została skończona
 	//boolean coquetteMEGA = true;
 
-	private HumanPlayer lastHealingByMedicPlayer;
-	private HumanPlayer lastHeatingByDarkMedicPlayer;
-	private HumanPlayer lastDealingByDealerPlayer;
+	HumanPlayer lastHealingByMedicPlayer;
+	HumanPlayer lastHeatingByDarkMedicPlayer;
+	HumanPlayer lastDealingByDealerPlayer;
 
 	public TheGame() {
 	};

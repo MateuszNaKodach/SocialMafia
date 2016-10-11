@@ -102,13 +102,13 @@ public class SelectPlayerRolesActivity extends AppCompatActivity implements Play
 
             private boolean isThereOnlyOneFraction(){
                 if(howManyMafiaRolesWasSelected>0&&howManySyndicateRolesWasSelected==0&&howManyTownRolesWasSelected==0)
-                    return false;
-                else if (howManyTownRolesWasSelected>0&&howManySyndicateRolesWasSelected==0&&howManyMafiaRolesWasSelected==0)
-                    return false;
-                else if(howManyMafiaRolesWasSelected>0&&howManySyndicateRolesWasSelected==0&&howManyTownRolesWasSelected==0)
-                    return false;
-                else
                     return true;
+                else if (howManyTownRolesWasSelected>0&&howManySyndicateRolesWasSelected==0&&howManyMafiaRolesWasSelected==0)
+                    return true;
+                else if(howManyMafiaRolesWasSelected>0&&howManySyndicateRolesWasSelected==0&&howManyTownRolesWasSelected==0)
+                    return true;
+                else
+                    return false;
             }
 
             /**
