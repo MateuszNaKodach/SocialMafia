@@ -17,6 +17,8 @@ public class HumanPlayer {
     String playerName = ""; // imię gracza
     PlayerRole playerRole; // rola gracza
     boolean alive = true; // czy gracz jeszcze żyje
+    private int warns = 0; //ostrzezenia za lamanie zasad
+    private int stigmas = 0; //naznaczenia
     ArrayList<HumanPlayer> guard = new ArrayList<>(); //ochroniarz, ktos kto ginie za danego gracza I OCHRONIARZ TEŻ!!!
     ArrayList<HumanPlayer> blackMailer = new ArrayList<>(); //szantazysta, nie moze na niego zaglosowac itp. CHYBA ZROBIC LISTE SZANTAZYSTÓW!!!
     ArrayList<HumanPlayer> lover = new ArrayList<>(); //kochanek - nie mozna na niego glosowac, jesli ginie jeden z nich - gina oboje I KOCHANKÓW TEŻ
@@ -84,11 +86,27 @@ public class HumanPlayer {
         alive = false;
     }
 
+    public int howManyLifes(){
+        return this.playerRole.getLifes();
+    }
+
     public void reviveThePlayer(){
         alive = true;
     }
     public boolean isAlive() {
         return alive;
+    }
+
+    public void setStigmas(int stigmas) {
+        this.stigmas = stigmas;
+    }
+
+    public int getStigmas() {
+        return stigmas;
+    }
+
+    public void addStigma(){
+        this.setStigmas(getStigmas()+1);
     }
     /*
 	 * Widok roli, z przyciskiej odkryj/zakryj, do pokazania każdemu graczowi

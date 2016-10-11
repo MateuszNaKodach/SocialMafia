@@ -30,6 +30,7 @@ public class PlayerRole {
     int nightWakeHierarchyNumber;
     int rolePlayersAmount=0;
     boolean roleUsed = false;
+    private int lifes = 0;
 
     public PlayerRole(int name, int description, int iconResourceID, Fraction fraction, ActionType actionType, int nightWakeHierarchyNumber) {
         this.name = name;
@@ -38,13 +39,26 @@ public class PlayerRole {
         this.fraction = fraction;
         this.actionType = actionType;
         this.nightWakeHierarchyNumber = nightWakeHierarchyNumber;
+        if(this.name == R.string.emo)
+            lifes=2;
+        else
+            lifes=1;
     }
+
 
     // empty constructor needed by the Parceler library
     public PlayerRole(){
 
     }
 
+
+    public int getLifes() {
+        return lifes;
+    }
+
+    public void setLifes(int lifes) {
+        this.lifes = lifes;
+    }
 
     public int getName() {
         return name;

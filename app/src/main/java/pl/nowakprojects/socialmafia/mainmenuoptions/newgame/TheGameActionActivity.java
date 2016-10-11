@@ -49,7 +49,6 @@ public class TheGameActionActivity extends AppCompatActivity {
     DayTimeFragment dayTimeFragment;
     NightTimeFragment nightTimeFragment;
     NightTimeRoleActionsFragment nightTimeRoleActionsFragment;
-    RecyclerView playersInfoRecyclerView;
 
     final String TIME_FRAGMENT = "TIME_FRAGMENT";
     final String TIME_ROLE_ACTIONS_FRAGMENT = "TIME_ROLE_ACTIONS_FRAGMENT";
@@ -67,10 +66,6 @@ public class TheGameActionActivity extends AppCompatActivity {
 
         startNightAction();
         // startDayAction();
-        //playersInfoRecyclerView = (RecyclerView) findViewById(R.id.playersStatusRecyclerView);
-        //playersInfoRecyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
-        //playersInfoRecyclerView.setAdapter(new PlayerGameStatusRoleAdapter(getApplicationContext()));
-
         //startMafiaGameAction();
     }
 
@@ -419,8 +414,14 @@ public class TheGameActionActivity extends AppCompatActivity {
                  */
                 void makeRoleAction(HumanPlayer actionPlayer, HumanPlayer choosenPlayer) {
                     switch (actionPlayer.getRoleName()) {
+                        case R.string.policeman:
+                            makePolicemanAction(choosenPlayer);
+                            break;
                         case R.string.prostitute:
                             makeProstituteAction(choosenPlayer);
+                            break;
+                        case R.string.medic:
+                            makeMedicAction(choosenPlayer);
                             break;
                         case R.string.black:
                             makeBlackManAction(choosenPlayer);
@@ -434,36 +435,87 @@ public class TheGameActionActivity extends AppCompatActivity {
                         case R.string.blackmailerBoss:
                             makeBlackmailerAction(choosenPlayer);
                             break;
+                        case R.string.darkmedic:
+                            makeDarkMedicAction();
+                            break;
+                        case R.string.dealer:
+                            makeDealerAction();
+                            break;
+                        case R.string.deathAngel:
+                            makeDeathAngelAction();
+                            break;
+                        case R.string.bartender:
+                            makeBartenderAction();
+                            break;
                     }
                 }
 
-                void makeProstituteAction(HumanPlayer choosenPlayer) {
+                private void makeProstituteAction(HumanPlayer choosenPlayer) {
                     FragmentManager fragmentManager = getFragmentManager();
                     TheGameActionShowingPlayerRoleDialog theGameActionShowingPlayerRoleDialog = new TheGameActionShowingPlayerRoleDialog(choosenPlayer);
                     theGameActionShowingPlayerRoleDialog.show(fragmentManager, "ProstituteAction");
                 }
 
-                void makeBlackManAction(HumanPlayer choosenPlayer) {
+                private void makePolicemanAction(HumanPlayer choosenPlayer) {
+                    FragmentManager fragmentManager = getFragmentManager();
+                    TheGameActionShowingPlayerRoleDialog theGameActionShowingPlayerRoleDialog = new TheGameActionShowingPlayerRoleDialog(choosenPlayer);
+                    theGameActionShowingPlayerRoleDialog.show(fragmentManager, "PolicemanAction");
+                }
+
+                private void makeBlackManAction(HumanPlayer choosenPlayer) {
                     if (!(choosenPlayer.getGuard().contains(actionPlayers.get(getAdapterPosition()))))
                         choosenPlayer.setGuard(actionPlayers.get(getAdapterPosition()));
 
                     Toast.makeText(getApplicationContext(), choosenPlayer.getPlayerName() + " " + getString(R.string.hasBlackNow), Toast.LENGTH_LONG).show();
                 }
 
-                void makeBlackmailerAction(HumanPlayer choosenPlayer) {
+                private void makeBlackmailerAction(HumanPlayer choosenPlayer) {
                     if (!(choosenPlayer.getBlackMailer().contains(actionPlayers.get(getAdapterPosition()))))
                         choosenPlayer.setBlackMailer(actionPlayers.get(getAdapterPosition()));
 
                     Toast.makeText(getApplicationContext(), choosenPlayer.getPlayerName() + " " + getString(R.string.hasBlackmailerNow), Toast.LENGTH_LONG).show();
                 }
 
-                void makePriestAction(HumanPlayer choosenPlayer1, HumanPlayer choosenPlayer2) {
+                private void makePriestAction(HumanPlayer choosenPlayer1, HumanPlayer choosenPlayer2) {
                     choosenPlayer1.setLover(choosenPlayer2);
                     choosenPlayer2.setLover(choosenPlayer1);
                     FragmentManager fragmentManager = getFragmentManager();
                     TheGameActionShowingLoversRolesDialog theGameActionShowingLoversRolesDialog = new TheGameActionShowingLoversRolesDialog(choosenPlayer1, choosenPlayer2);
                     theGameActionShowingLoversRolesDialog.show(fragmentManager, "PriestAction");
                 }
+
+                private void makeMedicAction(HumanPlayer choosenPlayer){
+                    theGame.setLastHealingByMedicPlayer(choosenPlayer);
+                    Toast.makeText(getApplicationContext(), choosenPlayer.getPlayerName() + " " + getString(R.string.isHealingThisNight), Toast.LENGTH_LONG).show();
+
+                }
+
+                private void makeDarkMedicAction(HumanPlayer choosenPlayer){
+                    theGame.setLastHeatingByDarkMedicPlayer(choosenPlayer);
+                    Toast.makeText(getApplicationContext(), choosenPlayer.getPlayerName() + " " + getString(R.string.isHeatingThisNight), Toast.LENGTH_LONG).show();
+
+                }
+
+                private void makeDealerAction(HumanPlayer choosenPlayer){
+                    theGame.setLastDealingByDealerPlayer(choosenPlayer);
+                    Toast.makeText(getApplicationContext(), choosenPlayer.getPlayerName() + " " + getString(R.string.isDealingThisNight), Toast.LENGTH_LONG).show();
+
+                }
+
+                private void makeDeathAngelAction(HumanPlayer choosenPlayer){
+                    choosenPlayer.addStigma();
+                    Toast.makeText(getApplicationContext(), choosenPlayer.getPlayerName() + " " + getString(R.string.isSignedThisNight), Toast.LENGTH_LONG).show();
+
+                }
+
+                private void makeBartenderAction(){
+                    //przusawnie strzalu, wybiera stronę i ilość
+                }
+
+                //----daytime::
+                private void makeJudgeDecisionAction(){};
+
+                //-----
 
                 public class TheGameActionShowingLoversRolesDialog extends DialogFragment {
 
@@ -556,6 +608,8 @@ public class TheGameActionActivity extends AppCompatActivity {
                     }
 
                 }
+
+
 
             }
 

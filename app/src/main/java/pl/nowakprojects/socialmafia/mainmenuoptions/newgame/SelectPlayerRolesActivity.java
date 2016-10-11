@@ -99,14 +99,49 @@ public class SelectPlayerRolesActivity extends AppCompatActivity implements Play
 
         Button assignRolesToPlayers = (Button) findViewById(R.id.assignRolesToPlayers);
         assignRolesToPlayers.setOnClickListener(new View.OnClickListener() {
+
+            private boolean isThereOnlyOneFraction(){
+                if(howManyMafiaRolesWasSelected>0&&howManySyndicateRolesWasSelected==0&&howManyTownRolesWasSelected==0)
+                    return false;
+                else if (howManyTownRolesWasSelected>0&&howManySyndicateRolesWasSelected==0&&howManyMafiaRolesWasSelected==0)
+                    return false;
+                else if(howManyMafiaRolesWasSelected>0&&howManySyndicateRolesWasSelected==0&&howManyTownRolesWasSelected==0)
+                    return false;
+                else
+                    return true;
+            }
+
+            /**
+             * DOKONCZYC!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+             * @return
+             */
+            private boolean isFractionProportionCorrect(){
+                return true;
+            }
+
+            /**
+             *
+             * @return
+             */
+            private boolean checkIfPlayersAmountIsCorrect(){
+                if ((howManyTownRolesWasSelected+howManyMafiaRolesWasSelected+howManySyndicateRolesWasSelected)<playersNamesList.size()){
+                    Toast.makeText(getApplicationContext(),R.string.tooLessFuctionsSelected, Toast.LENGTH_SHORT).show();
+                    return false;
+                } else if ((howManyTownRolesWasSelected+howManyMafiaRolesWasSelected+howManySyndicateRolesWasSelected)>playersNamesList.size()){
+                    Toast.makeText(getApplicationContext(),R.string.tooMuchFuctionsSelected, Toast.LENGTH_SHORT).show();
+                    return false;
+                } else if (isThereOnlyOneFraction()) {
+                    Toast.makeText(getApplicationContext(),R.string.onlyOneFractionSelected, Toast.LENGTH_SHORT).show();
+                    return false;
+                }else
+                    return true;
+            }
+
             @Override
             public void onClick(View view) {
                 //dodac ostrzezenia jak np. mafii jest za duzo i alertbox o zaakcpetowanie!!!
-                if ((howManyTownRolesWasSelected+howManyMafiaRolesWasSelected+howManySyndicateRolesWasSelected)<playersNamesList.size())
-                    Toast.makeText(getApplicationContext(),R.string.tooLessFuctionsSelected, Toast.LENGTH_SHORT).show();
-                else if ((howManyTownRolesWasSelected+howManyMafiaRolesWasSelected+howManySyndicateRolesWasSelected)>playersNamesList.size())
-                    Toast.makeText(getApplicationContext(),R.string.tooMuchFuctionsSelected, Toast.LENGTH_SHORT).show();
-                else {
+
+                if (checkIfPlayersAmountIsCorrect()) {
                     //przejscie do losowania ról:
                     connectSelectedRolesFromAllFractions();
                     //Tworzymy Bundle do przekazania do Activity mieszania ról
@@ -148,14 +183,17 @@ public class SelectPlayerRolesActivity extends AppCompatActivity implements Play
         updateFractionAmountTextViews();
     }
 
-    void updateFractionAmountTextViews(){
+    private void updateFractionAmountTextViews(){
         townSelectedRolesAmount.setText(String.valueOf(howManyTownRolesWasSelected));
         mafiaSelectedRolesAmount.setText(String.valueOf(howManyMafiaRolesWasSelected));
         syndicateSelectedRolesAmount.setText(String.valueOf(howManySyndicateRolesWasSelected));
         howManyFunctionsSelected.setText(String.valueOf(howManyTownRolesWasSelected+howManyMafiaRolesWasSelected+howManySyndicateRolesWasSelected));
     }
 
-    void connectSelectedRolesFromAllFractions(){
+    /**
+     * Zapisuje wszystkie wybrane role do jednej listy allSelectedRoles
+     */
+    private void connectSelectedRolesFromAllFractions(){
         allSelectedRoles = new ArrayList<>();
         for(int i=0;i<townRolesAdapter.getSelectedRolesList().size();i++)
             allSelectedRoles.add(townRolesAdapter.getSelectedRolesList().get(i));

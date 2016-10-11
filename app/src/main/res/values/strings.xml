@@ -218,5 +218,10 @@ Raz w ciągu gry,  podczas trwania dnia wybiera osobę, która aż do nocy nie b
     <string name="nigth_time_tip_title" >Podpowiedź</string>
     <string name="returnfrom">WRÓC</string>
     <string name="playersList">Lista graczy</string>
+    <string name="onlyOneFractionSelected">Proszę wybrać role z przynajmniej dwóch frakcji.</string>
+    <string name="isHealingThisNight">zostanie uleczony tej nocy.</string>
+    <string name="isHeatingThisNight">zostanie dobity tej nocy!</string>
+    <string name="isDealingThisNight">tej nocy i dnia nie wykona swojej funkcji!</string>
+    <string name="isSignedThisNight">został naznaczony tej nocy!</string>
 
 </resources>

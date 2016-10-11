@@ -53,6 +53,9 @@ public class TheGame {
 	boolean isFinished = false; //czy gra została skończona
 	//boolean coquetteMEGA = true;
 
+	private HumanPlayer lastHealingByMedicPlayer;
+	private HumanPlayer lastHeatingByDarkMedicPlayer;
+	private HumanPlayer lastDealingByDealerPlayer;
 
 	public TheGame() {
 	};
@@ -71,6 +74,30 @@ public class TheGame {
 
 	public ArrayList<HumanPlayer> getPlayersInfoList() {
 		return playersInfoList;
+	}
+
+	public void setLastDealingByDealerPlayer(HumanPlayer lastDealingByDealerPlayer) {
+		this.lastDealingByDealerPlayer = lastDealingByDealerPlayer;
+	}
+
+	public HumanPlayer getLastDealingByDealerPlayer() {
+		return lastDealingByDealerPlayer;
+	}
+
+	public void setLastHealingByMedicPlayer(HumanPlayer lastHealingByMedicPlayer) {
+		this.lastHealingByMedicPlayer = lastHealingByMedicPlayer;
+	}
+
+	public HumanPlayer getLastHealingByMedicPlayer() {
+		return lastHealingByMedicPlayer;
+	}
+
+	public void setLastHeatingByDarkMedicPlayer(HumanPlayer lastHeatingByDarkMedicPlayer) {
+		this.lastHeatingByDarkMedicPlayer = lastHeatingByDarkMedicPlayer;
+	}
+
+	public HumanPlayer getLastHeatingByDarkMedicPlayer() {
+		return lastHeatingByDarkMedicPlayer;
 	}
 
 	public void setPlayersInfoList(ArrayList<HumanPlayer> playersInfoList) {
