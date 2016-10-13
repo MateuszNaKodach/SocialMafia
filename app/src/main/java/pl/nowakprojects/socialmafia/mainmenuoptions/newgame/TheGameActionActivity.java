@@ -635,10 +635,10 @@ public class TheGameActionActivity extends AppCompatActivity {
 
     public class TheGameActionPlayersGameStatusDialogFragment extends DialogFragment {
 
-        PlayerGameStatusRoleAdapter playerGameStatusRoleAdapter;
+        private PlayerGameStatusRoleAdapter playerGameStatusRoleAdapter;
 
         TheGameActionPlayersGameStatusDialogFragment() {
-        }
+        }// TheGameActionPlayersGameStatusDialogFragment()
 
         @Nullable
         @Override
@@ -804,20 +804,20 @@ public class TheGameActionActivity extends AppCompatActivity {
 
             }
         }
-    }
+    }//public class TheGameActionPlayersGameStatusDialogFragment extends DialogFragment
 
 
 
-    ArrayList<HumanPlayer> getTownHumanPlayers() {
+    private ArrayList<HumanPlayer> getTownHumanPlayers() {
         ArrayList<HumanPlayer> result = new ArrayList<HumanPlayer>();
         for (HumanPlayer humanPlayer : theGame.getPlayersInfoList()) {
             if (humanPlayer.getPlayerRole().getFraction().equals(PlayerRole.Fraction.TOWN))
                 result.add(humanPlayer);
         }
         return result;
-    }
+    }// private ArrayList<HumanPlayer> getTownHumanPlayers()
 
-    ArrayList<HumanPlayer> getZeroNightHumanPlayers() {
+    private ArrayList<HumanPlayer> getZeroNightHumanPlayers() {
         ArrayList<HumanPlayer> result = new ArrayList<HumanPlayer>();
         for (HumanPlayer humanPlayer : theGame.getPlayersInfoList()) {
             if (humanPlayer.getPlayerRole().getActionType().equals(PlayerRole.ActionType.OnlyZeroNightAndActionRequire))
@@ -827,5 +827,6 @@ public class TheGameActionActivity extends AppCompatActivity {
         }
 
         return result;
-    }
-}
+    }// private ArrayList<HumanPlayer> getZeroNightHumanPlayers()
+
+}//public class TheGameActionActivity extends AppCompatActivity

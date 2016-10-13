@@ -109,7 +109,7 @@ public class SelectPlayerRolesActivity extends AppCompatActivity implements Play
                     return true;
                 else
                     return false;
-            }
+            }//private boolean isThereOnlyOneFraction()
 
             /**
              * DOKONCZYC!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -135,7 +135,7 @@ public class SelectPlayerRolesActivity extends AppCompatActivity implements Play
                     return false;
                 }else
                     return true;
-            }
+            }// private boolean checkIfPlayersAmountIsCorrect()
 
             @Override
             public void onClick(View view) {
@@ -151,12 +151,12 @@ public class SelectPlayerRolesActivity extends AppCompatActivity implements Play
                     Intent intent = new Intent(getApplicationContext(),ConnectPlayersToRolesActivity.class);
                     intent.putExtras(bundle);
                     startActivity(intent);
-                }
+                }// if (checkIfPlayersAmountIsCorrect())
 
-            }
+            }// public void onClick(View view)
         });
 
-    }
+    }// protected void onCreate(Bundle savedInstanceState)
 
     @Override
     public void amountDecrease(PlayerRole.Fraction fraction) {
@@ -169,7 +169,7 @@ public class SelectPlayerRolesActivity extends AppCompatActivity implements Play
             howManySyndicateRolesWasSelected--;
 
         updateFractionAmountTextViews();
-    }
+    }//public void amountDecrease(PlayerRole.Fraction fraction)
 
     @Override
     public void amountIncrease(PlayerRole.Fraction fraction) {
@@ -181,14 +181,14 @@ public class SelectPlayerRolesActivity extends AppCompatActivity implements Play
             howManySyndicateRolesWasSelected++;
 
         updateFractionAmountTextViews();
-    }
+    }//public void amountIncrease(PlayerRole.Fraction fraction)
 
     private void updateFractionAmountTextViews(){
         townSelectedRolesAmount.setText(String.valueOf(howManyTownRolesWasSelected));
         mafiaSelectedRolesAmount.setText(String.valueOf(howManyMafiaRolesWasSelected));
         syndicateSelectedRolesAmount.setText(String.valueOf(howManySyndicateRolesWasSelected));
         howManyFunctionsSelected.setText(String.valueOf(howManyTownRolesWasSelected+howManyMafiaRolesWasSelected+howManySyndicateRolesWasSelected));
-    }
+    }//private void updateFractionAmountTextViews()
 
     /**
      * Zapisuje wszystkie wybrane role do jednej listy allSelectedRoles
@@ -201,5 +201,6 @@ public class SelectPlayerRolesActivity extends AppCompatActivity implements Play
             allSelectedRoles.add(mafiaRolesAdapter.getSelectedRolesList().get(i));
         for(int i=0;i<syndicateRolesAdapter.getSelectedRolesList().size();i++)
             allSelectedRoles.add(syndicateRolesAdapter.getSelectedRolesList().get(i));
-    }
-}
+    }//private void connectSelectedRolesFromAllFractions()
+
+}// SelectPlayerRolesActivity

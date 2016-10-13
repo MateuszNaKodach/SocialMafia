@@ -56,13 +56,13 @@ public class TapPlayersNamesActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-    }
+    }// protected void onCreate(Bundle savedInstanceState)
 
     void fillEmptyNamesWithPlayerNumbers(){
         for(int i=0;i<tapPlayerNameAdapter.namesList.size();i++)
             if(tapPlayerNameAdapter.namesList.get(i).playerName.isEmpty())
                 tapPlayerNameAdapter.namesList.get(i).playerName = getString(R.string.player) +" #"+(i+1);
-    }
+    }// void fillEmptyNamesWithPlayerNumbers()
 
     ArrayList<String> makeStringArrayListFromTapPlayerNameList(){
         ArrayList<String> playersNames = new ArrayList<>();
@@ -70,7 +70,7 @@ public class TapPlayersNamesActivity extends AppCompatActivity {
             playersNames.add(tapPlayerNameAdapter.namesList.get(i).playerName);
 
         return playersNames;
-    }
+    }// ArrayList<String> makeStringArrayListFromTapPlayerNameList()
 
 
 
@@ -78,7 +78,7 @@ public class TapPlayersNamesActivity extends AppCompatActivity {
 
         class TapPlayerNameItem{
             private String playerName = "";
-        }
+        }//class TapPlayerNameItem
 
         private List<TapPlayerNameItem> namesList; //lista imion graczy
         private LayoutInflater layoutInflater;
@@ -88,20 +88,20 @@ public class TapPlayersNamesActivity extends AppCompatActivity {
             namesList = new ArrayList<>(playersAmount);
             for(int i=0;i<playersAmount;i++)
                 namesList.add(new TapPlayerNameItem()); //tworzy lista, aby byly miejsca na imiona graczy
-        }
+        }//public TapPlayerNameAdapter(int playersAmount, Context c)
 
         @Override
         public PlayerNameViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = layoutInflater.inflate(R.layout.players_names_list_item, parent, false);
             return new PlayerNameViewHolder(view);
-        }
+        }//public PlayerNameViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
 
         @Override
         public void onBindViewHolder(PlayerNameViewHolder holder, int position) {
             TapPlayerNameItem item = namesList.get(position);
             holder.playerNumberText.setText(getString(R.string.player) +" #"+(position+1));
             holder.playerNameEditText.setText(item.playerName);
-        }
+        }//public void onBindViewHolder(PlayerNameViewHolder holder, int position)
 
         @Override
         public int getItemCount() {
@@ -127,12 +127,13 @@ public class TapPlayersNamesActivity extends AppCompatActivity {
                         if (!hasFocus && !playerNameEditText.getText().toString().isEmpty()) {
                             namesList.get(getAdapterPosition()).playerName = playerNameEditText.getText().toString();
                             // Log.i("TEST",tapedPlayersNamesList.get(tapedPlayersNamesList.size()-1));
-                        }
-                    }
+                        }//if (!hasFocus && !playerNameEditText.getText().toString().isEmpty())
+                    }// public void onFocusChange(View v, boolean hasFocus)
                 });
+            }// public PlayerNameViewHolder(View itemView)
 
-            }
-        }
+        }//class PlayerNameViewHolder
 
-    }
-}
+    }//class TapPlayerNameAdapter extends RecyclerView.Adapter<TapPlayerNameAdapter.PlayerNameViewHolder>
+
+}//public class TapPlayersNamesActivity extends AppCompatActivity
