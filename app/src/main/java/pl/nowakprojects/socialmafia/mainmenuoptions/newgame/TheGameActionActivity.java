@@ -3,7 +3,6 @@ package pl.nowakprojects.socialmafia.mainmenuoptions.newgame;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Vibrator;
@@ -12,7 +11,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -34,12 +32,14 @@ import android.widget.Toast;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
 import pl.nowakprojects.socialmafia.R;
 import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses.HumanPlayer;
 import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses.PlayerRole;
 import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses.TheGame;
+import pl.nowakprojects.socialmafia.utitles.GameRolesWakeHierarchyComparator;
 
 public class TheGameActionActivity extends AppCompatActivity {
 
@@ -82,7 +82,7 @@ public class TheGameActionActivity extends AppCompatActivity {
         int itemId = item.getItemId();
         if(itemId == R.id.menu_thegame_playerslist){
             android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-            TheGameActionPlayersGameStatusDialogFragment theGameActionPlayersGameStatusDialogFragment = new  TheGameActionPlayersGameStatusDialogFragment();
+            TheGameActionPlayersGameStatusDialogFragment theGameActionPlayersGameStatusDialogFragment = new  TheGameActionPlayersGameStatusDialogFragment(theGame);
             theGameActionPlayersGameStatusDialogFragment.show(fragmentManager, "PlayersListFragment");
             return true;}
         else if(itemId == R.id.menu_thegame_savegame)
@@ -629,185 +629,6 @@ public class TheGameActionActivity extends AppCompatActivity {
     }
 
 
-    /**
-     * Adapter do przeglądania statusu gracza
-     */
-
-    public class TheGameActionPlayersGameStatusDialogFragment extends DialogFragment {
-
-        private PlayerGameStatusRoleAdapter playerGameStatusRoleAdapter;
-
-        TheGameActionPlayersGameStatusDialogFragment() {
-        }// TheGameActionPlayersGameStatusDialogFragment()
-
-        @Nullable
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            View view = inflater.inflate(R.layout.dialog_players_status_fragment, null); //cos tutaj dodac za prent!!!
-            //setCancelable(false);
-            getDialog().setTitle(R.string.playersList);
-
-            playerGameStatusRoleAdapter = new PlayerGameStatusRoleAdapter(getApplicationContext(),theGame.getPlayersInfoList());
-            RecyclerView playersActionsRecyclerView = (RecyclerView) view.findViewById(R.id.playersStatusRecyclerView);
-            playersActionsRecyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity(), GridLayoutManager.VERTICAL,false));
-            playersActionsRecyclerView.setAdapter(playerGameStatusRoleAdapter);
-
-            Button returnButton = (Button) view.findViewById(R.id.returnButton);
-            returnButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    dismiss();
-                }
-            });
-            return view;
-        }
-
-        public class PlayerGameStatusRoleAdapter extends RecyclerView.Adapter<PlayerGameStatusRoleAdapter.PlayerStatusViewHolder> {
-
-            private ArrayList<HumanPlayer> humanPlayersList;
-            private LayoutInflater inflater;
-            private Context context;
-
-            public PlayerGameStatusRoleAdapter(Context context, ArrayList<HumanPlayer> humanPlayersList) {
-                this.humanPlayersList = humanPlayersList;
-                this.inflater = LayoutInflater.from(context);
-                this.context = context;
-            }
-
-            @Override
-            public PlayerStatusViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-                View view = inflater.inflate(R.layout.player_game_status_layout, parent, false);
-                return new PlayerStatusViewHolder(view);
-            }
-
-            @Override
-            public void onBindViewHolder(final PlayerStatusViewHolder holder, final int position) {
-                HumanPlayer humanPlayer = humanPlayersList.get(position);
-                holder.playerName.setText(humanPlayer.getPlayerName());
-                holder.playerRoleIcon.setImageResource(humanPlayer.getPlayerRole().getIconResourceID());
-                holder.roleName.setText(getString(humanPlayer.getRoleName()));
-                holder.fractionName.setText(getString(humanPlayer.getPlayerRole().getFractionNameStringID()));
-                showProperlyPlayerStatus(humanPlayer, holder);
-
-                holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View view) {
-                        showPlayerStatusPopupMenu(holder.itemView,position, holder);
-                        return true;
-                    }
-                });
-            }
-
-            @Override
-            public int getItemCount() {
-                return humanPlayersList.size();
-            }
-
-            private void showPlayerStatusPopupMenu(View view, final int position, final PlayerStatusViewHolder playerStatusViewHolder){
-                PopupMenu popupMenu = new PopupMenu(getActivity(), view);
-                MenuInflater menuInflater = popupMenu.getMenuInflater();
-                menuInflater.inflate(R.menu.player_status_menu, popupMenu.getMenu());
-                //ustawianie kill albo revive
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch(item.getItemId()){
-                            case R.id.statusmenu_kill_the_player:{
-
-                                if(humanPlayersList.get(position).isAlive())
-                                    humanPlayersList.get(position).killThePlayer();
-                                else
-                                    humanPlayersList.get(position).reviveThePlayer();
-
-                                showProperlyPlayerStatus(humanPlayersList.get(position), playerStatusViewHolder);
-                                break;
-                            }
-                        }
-
-                        return false;
-                    }
-                });
-                popupMenu.show();
-            }
-
-            private void showProperlyPlayerStatus(HumanPlayer humanPlayer, PlayerStatusViewHolder playerStatusViewHolder) {
-                if (humanPlayer.isAlive())
-                    playerStatusViewHolder.playerStatus.setImageResource(R.drawable.icon_heart);
-                else {
-                    playerStatusViewHolder.playerStatus.setImageResource(R.drawable.icon_ghost);
-                   // playerStatusViewHolder.playerRoleIcon.setImageResource(R.drawable.icon_ghost);
-                }
-            }
-
-            class PlayerStatusViewHolder extends RecyclerView.ViewHolder {
-
-                private ImageView playerRoleIcon;
-                private TextView playerName;
-                private TextView roleName;
-                private TextView fractionName;
-                private ImageView playerStatus;
-                private ImageView menuIcon;
-
-                private AlertDialog roleDescriptionDialog;
-
-                public PlayerStatusViewHolder(View itemView) {
-                    super(itemView);
-
-                    playerRoleIcon = (ImageView) itemView.findViewById(R.id.roleIco);
-                    playerName = (TextView) itemView.findViewById(R.id.playerName);
-                    roleName = (TextView) itemView.findViewById(R.id.roleName);
-                    fractionName = (TextView) itemView.findViewById(R.id.fractionName);
-                    playerStatus = (ImageView) itemView.findViewById(R.id.playerStatusIcon);
-
-                   // menuIcon = (ImageView) itemView.findViewById(R.id.context_menu_dots);
-
-//                    playerRoleIcon.setImageResource(humanPlayersList.get(getAdapterPosition()).getPlayerRole().getIconResourceID());
-
-                    /**
-                     * Przy naciśnięciu karty roli pojawią się jej opis
-                     */
-               /* playerRoleIcon.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                            buildRoleDescriptionDialog();
-                            roleDescriptionDialog.show();}
-                });*/
-
-                    /**
-                     * Menu kontekstowe
-                     */
-
-
-                }
-
-                /**
-                 * Tworzy okienko wyświetlające opis roli
-                 */
-                public void buildRoleDescriptionDialog() {
-                    final AlertDialog.Builder descriptionDialog = new AlertDialog.Builder(context);
-                    descriptionDialog.setTitle(context.getString(humanPlayersList.get(getAdapterPosition()).getPlayerRole().getName()));
-                    descriptionDialog.setMessage(context.getString(humanPlayersList.get(getAdapterPosition()).getPlayerRole().getDescription()));
-                    descriptionDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        /**
-                         * Zamyka okno z opisem roli
-                         * @param dialog
-                         * @param which
-                         */
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            roleDescriptionDialog.cancel();
-                        }
-                    });
-
-                    roleDescriptionDialog = descriptionDialog.create();
-                }
-
-            }
-        }
-    }//public class TheGameActionPlayersGameStatusDialogFragment extends DialogFragment
-
-
-
     private ArrayList<HumanPlayer> getTownHumanPlayers() {
         ArrayList<HumanPlayer> result = new ArrayList<HumanPlayer>();
         for (HumanPlayer humanPlayer : theGame.getPlayersInfoList()) {
@@ -825,7 +646,7 @@ public class TheGameActionActivity extends AppCompatActivity {
             if (humanPlayer.getPlayerRole().getActionType().equals(PlayerRole.ActionType.OnlyZeroNight))
                 result.add(humanPlayer);
         }
-
+        Collections.sort(result,new GameRolesWakeHierarchyComparator());
         return result;
     }// private ArrayList<HumanPlayer> getZeroNightHumanPlayers()
 

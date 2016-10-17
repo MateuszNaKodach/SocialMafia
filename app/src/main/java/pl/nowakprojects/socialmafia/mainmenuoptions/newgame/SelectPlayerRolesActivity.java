@@ -2,21 +2,16 @@ package pl.nowakprojects.socialmafia.mainmenuoptions.newgame;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import org.parceler.Parcels;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -32,30 +27,30 @@ public class SelectPlayerRolesActivity extends AppCompatActivity implements Play
     static final String EXTRA_SELECTED_ROLES_LIST = "pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses.EXTRA_SELECTED_ROLES_LIST";
     static final String LOG_TAG = "SelectPlayersRolesActivity.class";
 
-    private RecyclerView townRolesList;
-    private RecyclerView mafiaRolesList;
-    private RecyclerView syndicateRolesList;
+    private RecyclerView rv_townRolesList;
+    private RecyclerView rv_mafiaRolesList;
+    private RecyclerView rv_syndicateRolesList;
 
-    private PlayerChoosingRoleAdapter townRolesAdapter;
-    private PlayerChoosingRoleAdapter mafiaRolesAdapter;
-    private PlayerChoosingRoleAdapter syndicateRolesAdapter;
+    private PlayerChoosingRoleAdapter adapter_townRolesList;
+    private PlayerChoosingRoleAdapter adapter_mafiaRolesList;
+    private PlayerChoosingRoleAdapter adapter_syndicateRolesList;
 
-    private ArrayList<PlayerRole> townRoles;
-    private ArrayList<PlayerRole> mafiaRoles;
-    private ArrayList<PlayerRole> syndicateRoles;
+    private ArrayList<PlayerRole> prlist_townRoles;
+    private ArrayList<PlayerRole> prlist_mafiaRoles;
+    private ArrayList<PlayerRole> prlist_syndicateRoles;
 
 
-    private ArrayList<PlayerRole> allSelectedRoles; //selected roles from all fractions
-    private ArrayList<String> playersNamesList; //lista imion graczy
+    private ArrayList<PlayerRole> prlist_allSelectedRoles; //selected roles from all fractions
+    private ArrayList<String> slist_playersNames; //lista imion graczy
 
-    TextView howManyFunctionsSelected;
-    TextView townSelectedRolesAmount;
-    TextView mafiaSelectedRolesAmount;
-    TextView syndicateSelectedRolesAmount;
+    TextView tv_rolesSelectedAmount;
+    TextView tv_townRolesSelectedAmount;
+    TextView tv_mafiaRolesSelectedAmount;
+    TextView tv_syndicateRolesSelectedAmount;
 
-    private int howManyTownRolesWasSelected = 0;
-    private int howManyMafiaRolesWasSelected = 0;
-    private int howManySyndicateRolesWasSelected = 0;
+    private int i_selectedTownRoles = 0;
+    private int i_selectedMafiaRoles = 0;
+    private int i_selectedSyndicateRoles = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,50 +61,51 @@ public class SelectPlayerRolesActivity extends AppCompatActivity implements Play
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //Stworzenie recyclerView dla kazdej z frakcji ---------------------------------------------------------------------------
-        townRoles = RolesDataObjects.getTownRolesList();
-        townRolesList = (RecyclerView) findViewById(R.id.selectTownRolesRecyclerView);
-        townRolesList.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
-        townRolesAdapter = new PlayerChoosingRoleAdapter(townRoles,this);
-        townRolesAdapter.setRoleAmountChangedCallback(this);
-        townRolesList.setAdapter(townRolesAdapter);
+        prlist_townRoles = RolesDataObjects.getTownRolesList();
+        rv_townRolesList = (RecyclerView) findViewById(R.id.selectTownRolesRecyclerView);
+        rv_townRolesList.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
+        adapter_townRolesList = new PlayerChoosingRoleAdapter(prlist_townRoles,this);
+        adapter_townRolesList.setRoleAmountChangedCallback(this);
+        rv_townRolesList.setAdapter(adapter_townRolesList);
 
-        mafiaRoles = RolesDataObjects.getMafiaRolesList();
-        mafiaRolesList = (RecyclerView) findViewById(R.id.selectMafiaRolesRecyclerView);
-        mafiaRolesList.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
-        mafiaRolesAdapter = new PlayerChoosingRoleAdapter(mafiaRoles,this);
-        mafiaRolesAdapter.setRoleAmountChangedCallback(this);
-        mafiaRolesList.setAdapter(mafiaRolesAdapter);
+        prlist_mafiaRoles = RolesDataObjects.getMafiaRolesList();
+        rv_mafiaRolesList = (RecyclerView) findViewById(R.id.selectMafiaRolesRecyclerView);
+        rv_mafiaRolesList.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
+        adapter_mafiaRolesList = new PlayerChoosingRoleAdapter(prlist_mafiaRoles,this);
+        adapter_mafiaRolesList.setRoleAmountChangedCallback(this);
+        rv_mafiaRolesList.setAdapter(adapter_mafiaRolesList);
 
-        syndicateRoles = RolesDataObjects.getSyndicateRolesList();
-        syndicateRolesList = (RecyclerView) findViewById(R.id.selectSyndicateRolesRecyclerView);
-        syndicateRolesList.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
-        syndicateRolesAdapter = new PlayerChoosingRoleAdapter(syndicateRoles,this);
-        syndicateRolesAdapter.setRoleAmountChangedCallback(this);
-        syndicateRolesList.setAdapter(syndicateRolesAdapter);
+        prlist_syndicateRoles = RolesDataObjects.getSyndicateRolesList();
+        rv_syndicateRolesList = (RecyclerView) findViewById(R.id.selectSyndicateRolesRecyclerView);
+        rv_syndicateRolesList.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
+        adapter_syndicateRolesList = new PlayerChoosingRoleAdapter(prlist_syndicateRoles,this);
+        adapter_syndicateRolesList.setRoleAmountChangedCallback(this);
+        rv_syndicateRolesList.setAdapter(adapter_syndicateRolesList);
         //--------------------------------------------------------------------------------------------------------------------------
         //Oderanie listy imion graczy:
-        playersNamesList = getIntent().getStringArrayListExtra(TapPlayersNamesActivity.EXTRA_PLAYERS_NAMES_LIST);
+        slist_playersNames = getIntent().getStringArrayListExtra(TapPlayersNamesActivity.EXTRA_PLAYERS_NAMES_LIST);
         TextView pickedPlayersAmount = (TextView) findViewById(R.id.pickedPlayersAmount);
-        pickedPlayersAmount.setText(String.valueOf(playersNamesList.size()));
-        townSelectedRolesAmount = (TextView) findViewById(R.id.townSelectedRolesAmount);
-        mafiaSelectedRolesAmount = (TextView) findViewById(R.id.mafiaSelectedRolesAmount);
-        syndicateSelectedRolesAmount = (TextView) findViewById(R.id.syndicateSelectedRolesAmount);
+        pickedPlayersAmount.setText(String.valueOf(slist_playersNames.size()));
+        tv_townRolesSelectedAmount = (TextView) findViewById(R.id.townSelectedRolesAmount);
+        tv_mafiaRolesSelectedAmount = (TextView) findViewById(R.id.mafiaSelectedRolesAmount);
+        tv_syndicateRolesSelectedAmount = (TextView) findViewById(R.id.syndicateSelectedRolesAmount);
 
-        howManyFunctionsSelected = (TextView) findViewById(R.id.howMuchRolesWasSelected);
+        tv_rolesSelectedAmount = (TextView) findViewById(R.id.howMuchRolesWasSelected);
 
         Button assignRolesToPlayers = (Button) findViewById(R.id.assignRolesToPlayers);
         assignRolesToPlayers.setOnClickListener(new View.OnClickListener() {
 
-            private boolean isThereOnlyOneFraction(){
-                if(howManyMafiaRolesWasSelected>0&&howManySyndicateRolesWasSelected==0&&howManyTownRolesWasSelected==0)
-                    return true;
-                else if (howManyTownRolesWasSelected>0&&howManySyndicateRolesWasSelected==0&&howManyMafiaRolesWasSelected==0)
-                    return true;
-                else if(howManyMafiaRolesWasSelected>0&&howManySyndicateRolesWasSelected==0&&howManyTownRolesWasSelected==0)
-                    return true;
-                else
-                    return false;
-            }//private boolean isThereOnlyOneFraction()
+            private boolean bOneFraction(){
+                boolean result=false;
+                if(i_selectedMafiaRoles >0&& i_selectedSyndicateRoles ==0&& i_selectedTownRoles ==0)
+                    result = true;
+                else if (i_selectedTownRoles >0&& i_selectedSyndicateRoles ==0&& i_selectedMafiaRoles ==0)
+                    result = true;
+                else if(i_selectedMafiaRoles >0&& i_selectedSyndicateRoles ==0&& i_selectedTownRoles ==0)
+                    result = true;
+
+                return result;
+            }//private boolean bOneFraction()
 
             /**
              * DOKONCZYC!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -124,13 +120,13 @@ public class SelectPlayerRolesActivity extends AppCompatActivity implements Play
              * @return
              */
             private boolean checkIfPlayersAmountIsCorrect(){
-                if ((howManyTownRolesWasSelected+howManyMafiaRolesWasSelected+howManySyndicateRolesWasSelected)<playersNamesList.size()){
+                if ((i_selectedTownRoles + i_selectedMafiaRoles + i_selectedSyndicateRoles)< slist_playersNames.size()){
                     Toast.makeText(getApplicationContext(),R.string.tooLessFuctionsSelected, Toast.LENGTH_SHORT).show();
                     return false;
-                } else if ((howManyTownRolesWasSelected+howManyMafiaRolesWasSelected+howManySyndicateRolesWasSelected)>playersNamesList.size()){
+                } else if ((i_selectedTownRoles + i_selectedMafiaRoles + i_selectedSyndicateRoles)> slist_playersNames.size()){
                     Toast.makeText(getApplicationContext(),R.string.tooMuchFuctionsSelected, Toast.LENGTH_SHORT).show();
                     return false;
-                } else if (isThereOnlyOneFraction()) {
+                } else if (bOneFraction()) {
                     Toast.makeText(getApplicationContext(),R.string.onlyOneFractionSelected, Toast.LENGTH_SHORT).show();
                     return false;
                 }else
@@ -146,8 +142,8 @@ public class SelectPlayerRolesActivity extends AppCompatActivity implements Play
                     connectSelectedRolesFromAllFractions();
                     //Tworzymy Bundle do przekazania do Activity mieszania ról
                     Bundle bundle = new Bundle();
-                    bundle.putParcelable(EXTRA_SELECTED_ROLES_LIST, Parcels.wrap(allSelectedRoles)); //wszystkie wybrane role przekazujemy
-                    bundle.putStringArrayList(TapPlayersNamesActivity.EXTRA_PLAYERS_NAMES_LIST,playersNamesList); //wszystkie imiona graczy
+                    bundle.putParcelable(EXTRA_SELECTED_ROLES_LIST, Parcels.wrap(prlist_allSelectedRoles)); //wszystkie wybrane role przekazujemy
+                    bundle.putStringArrayList(TapPlayersNamesActivity.EXTRA_PLAYERS_NAMES_LIST, slist_playersNames); //wszystkie imiona graczy
                     Intent intent = new Intent(getApplicationContext(),ConnectPlayersToRolesActivity.class);
                     intent.putExtras(bundle);
                     startActivity(intent);
@@ -162,11 +158,11 @@ public class SelectPlayerRolesActivity extends AppCompatActivity implements Play
     public void amountDecrease(PlayerRole.Fraction fraction) {
 
         if(fraction == PlayerRole.Fraction.TOWN)
-            howManyTownRolesWasSelected--;
+            i_selectedTownRoles--;
         else if(fraction == PlayerRole.Fraction.MAFIA)
-            howManyMafiaRolesWasSelected--;
+            i_selectedMafiaRoles--;
         else if(fraction == PlayerRole.Fraction.SYNDICATE)
-            howManySyndicateRolesWasSelected--;
+            i_selectedSyndicateRoles--;
 
         updateFractionAmountTextViews();
     }//public void amountDecrease(PlayerRole.Fraction fraction)
@@ -174,33 +170,33 @@ public class SelectPlayerRolesActivity extends AppCompatActivity implements Play
     @Override
     public void amountIncrease(PlayerRole.Fraction fraction) {
         if(fraction == PlayerRole.Fraction.TOWN)
-            howManyTownRolesWasSelected++;
+            i_selectedTownRoles++;
         else if(fraction == PlayerRole.Fraction.MAFIA)
-            howManyMafiaRolesWasSelected++;
+            i_selectedMafiaRoles++;
         else if(fraction == PlayerRole.Fraction.SYNDICATE)
-            howManySyndicateRolesWasSelected++;
+            i_selectedSyndicateRoles++;
 
         updateFractionAmountTextViews();
     }//public void amountIncrease(PlayerRole.Fraction fraction)
 
     private void updateFractionAmountTextViews(){
-        townSelectedRolesAmount.setText(String.valueOf(howManyTownRolesWasSelected));
-        mafiaSelectedRolesAmount.setText(String.valueOf(howManyMafiaRolesWasSelected));
-        syndicateSelectedRolesAmount.setText(String.valueOf(howManySyndicateRolesWasSelected));
-        howManyFunctionsSelected.setText(String.valueOf(howManyTownRolesWasSelected+howManyMafiaRolesWasSelected+howManySyndicateRolesWasSelected));
+        tv_townRolesSelectedAmount.setText(String.valueOf(i_selectedTownRoles));
+        tv_mafiaRolesSelectedAmount.setText(String.valueOf(i_selectedMafiaRoles));
+        tv_syndicateRolesSelectedAmount.setText(String.valueOf(i_selectedSyndicateRoles));
+        tv_rolesSelectedAmount.setText(String.valueOf(i_selectedTownRoles + i_selectedMafiaRoles + i_selectedSyndicateRoles));
     }//private void updateFractionAmountTextViews()
 
     /**
-     * Zapisuje wszystkie wybrane role do jednej listy allSelectedRoles
+     * Zapisuje wszystkie wybrane role do jednej listy prlist_allSelectedRoles
      */
     private void connectSelectedRolesFromAllFractions(){
-        allSelectedRoles = new ArrayList<>();
-        for(int i=0;i<townRolesAdapter.getSelectedRolesList().size();i++)
-            allSelectedRoles.add(townRolesAdapter.getSelectedRolesList().get(i));
-        for(int i=0;i<mafiaRolesAdapter.getSelectedRolesList().size();i++)
-            allSelectedRoles.add(mafiaRolesAdapter.getSelectedRolesList().get(i));
-        for(int i=0;i<syndicateRolesAdapter.getSelectedRolesList().size();i++)
-            allSelectedRoles.add(syndicateRolesAdapter.getSelectedRolesList().get(i));
+        prlist_allSelectedRoles = new ArrayList<>();
+        for(int i = 0; i< adapter_townRolesList.getSelectedRolesList().size(); i++)
+            prlist_allSelectedRoles.add(adapter_townRolesList.getSelectedRolesList().get(i));
+        for(int i = 0; i< adapter_mafiaRolesList.getSelectedRolesList().size(); i++)
+            prlist_allSelectedRoles.add(adapter_mafiaRolesList.getSelectedRolesList().get(i));
+        for(int i = 0; i< adapter_syndicateRolesList.getSelectedRolesList().size(); i++)
+            prlist_allSelectedRoles.add(adapter_syndicateRolesList.getSelectedRolesList().get(i));
     }//private void connectSelectedRolesFromAllFractions()
 
 }// SelectPlayerRolesActivity

@@ -12,7 +12,7 @@ import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.PickPlayersAmountAct
 
 public class MainActivity extends AppCompatActivity {
 
-    static boolean IS_PREMIUM_VESRION = false;
+    static boolean IS_PREMIUM_VESRION = false; //dodac to gdzies tam do gradle, jak na Udacity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //w opcjach czas dnia, dlugosc budzenia
         facebookLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

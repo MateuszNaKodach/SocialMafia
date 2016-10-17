@@ -59,6 +59,7 @@ public class TapPlayersNamesActivity extends AppCompatActivity {
     }// protected void onCreate(Bundle savedInstanceState)
 
     void fillEmptyNamesWithPlayerNumbers(){
+        //tapPlayerNameAdapter
         for(int i=0;i<tapPlayerNameAdapter.namesList.size();i++)
             if(tapPlayerNameAdapter.namesList.get(i).playerName.isEmpty())
                 tapPlayerNameAdapter.namesList.get(i).playerName = getString(R.string.player) +" #"+(i+1);

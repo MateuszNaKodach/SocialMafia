@@ -140,9 +140,11 @@ Raz w ciągu gry,  podczas trwania dnia wybiera osobę, która aż do nocy nie b
     <string name="blackDescription">Pierwszej nocy wybiera też osobę, którą „murzyni”, czyli ginie za nią podczas gry.</string>
     <string name="blackJudge">Sędzia Murzyn</string>
     <string name="blackJudgeDescription">Jeśli padnie wyzwanie na pojedynek, a osoba wyzwana nie wyraża na niego zgody, sędzia decyduje, czy pojedynek się odbędzie. Pierwszej nocy wybiera też osobę, którą „murzyni”, czyli ginie za nią podczas gry.</string>
+    <string name="priestParson">Proboszcz</string>
+    <string name="priestParsonDescription">O ile pobożny szef mafii żyje, ksiądz nie może zginąć zabity w nocy przez mafię. Pierwszej nocy wybiera kochanków (którzy się poznają i giną jeśli zginie też drugi z nich). Nie może powiedzieć komu udzielił sakramentu.</string>
+    <string name="jew">Żyd</string>
     <string name="priest">Ksiądz</string>
     <string name="priestDescription">O ile pobożny szef mafii żyje, ksiądz nie może zginąć zabity w nocy przez mafię. Pierwszej nocy wybiera kochanków (którzy się poznają i giną jeśli zginie też drugi z nich). Nie może powiedzieć komu udzielił sakramentu.</string>
-    <string name="jew">Żyd</string>
     <string name="jewDescription">Podczas jakiegokolwiek sprawdzania pokazywane jest ,że jest zły, chociaż należy do miasta i działa na korzyść miasta.</string>
     <string name="terrorist">Terrorysta</string>
     <string name="terroristDescription">Gdy terrorysta zostaje zabity ginie razem z nim osoba po jego prawej stronie</string>
@@ -223,5 +225,7 @@ Raz w ciągu gry,  podczas trwania dnia wybiera osobę, która aż do nocy nie b
     <string name="isHeatingThisNight">zostanie dobity tej nocy!</string>
     <string name="isDealingThisNight">tej nocy i dnia nie wykona swojej funkcji!</string>
     <string name="isSignedThisNight">został naznaczony tej nocy!</string>
+    <string name="hitler">Hitler</string>
+    <string name="hitlerDescription">Wie kto jest żydem.</string>
 
 </resources>
