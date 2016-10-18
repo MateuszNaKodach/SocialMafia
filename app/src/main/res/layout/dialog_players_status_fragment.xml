@@ -13,6 +13,11 @@
     tools:context="pl.nowakprojects.socialmafia.mainmenuoptions.newgame.ConnectPlayersToRolesActivity"
     android:background="#ffffffff">
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/gameTipFragmentPlayerStatus"/>
+
     <android.support.v7.widget.RecyclerView
     android:layout_weight="1"
     android:layout_width="match_parent"

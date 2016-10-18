@@ -94,7 +94,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#ffffffff"
     android:gravity="left|center_vertical|center_horizontal"
     android:orientation="horizontal"
     android:padding="@dimen/floating_label_inside_spacing"

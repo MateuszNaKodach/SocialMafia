@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,12 +25,15 @@ import java.util.ArrayList;
 import pl.nowakprojects.socialmafia.R;
 import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses.HumanPlayer;
 import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses.TheGame;
+import pl.nowakprojects.socialmafia.utitles.GameTipFragment;
 
 /**
  * Adapter do przeglądania statusu gracza
  */
 
 public class TheGameActionPlayersGameStatusDialogFragment extends DialogFragment {
+
+    private final String GAME_TIP_FRAGMENT = "TheGameActionPlayersGameStatusDialogFragment.GAME_TIP_FRAGMENT";
 
     private PlayerGameStatusRoleAdapter playerGameStatusRoleAdapter;
     private TheGame theGame;
@@ -48,6 +52,8 @@ public class TheGameActionPlayersGameStatusDialogFragment extends DialogFragment
         //setCancelable(false);
         getDialog().setTitle(R.string.playersList);
 
+        //showGameTipFragment(null,getString(R.string.tip_playersList));
+
         playerGameStatusRoleAdapter = new PlayerGameStatusRoleAdapter(getActivity().getApplicationContext(),theGame.getPlayersInfoList());
         RecyclerView playersActionsRecyclerView = (RecyclerView) view.findViewById(R.id.playersStatusRecyclerView);
         playersActionsRecyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity(), GridLayoutManager.VERTICAL,false));
@@ -61,6 +67,16 @@ public class TheGameActionPlayersGameStatusDialogFragment extends DialogFragment
             }
         });
         return view;
+    }
+
+    private GameTipFragment showGameTipFragment(String sTipTitle, String sTipContent){
+        GameTipFragment gameTipFragment = new GameTipFragment(sTipTitle,sTipContent,false);
+
+        FragmentTransaction fragmentTransaction = this.getActivity().getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.add(R.id.gameTipFragmentPlayerStatus, gameTipFragment, GAME_TIP_FRAGMENT);
+        fragmentTransaction.commit();
+
+        return gameTipFragment;
     }
 
     public class PlayerGameStatusRoleAdapter extends RecyclerView.Adapter<PlayerGameStatusRoleAdapter.PlayerStatusViewHolder> {
@@ -204,6 +220,7 @@ public class TheGameActionPlayersGameStatusDialogFragment extends DialogFragment
 
                 roleDescriptionDialog = descriptionDialog.create();
             }//public void buildRoleDescriptionDialog()
+
 
         }//class PlayerStatusViewHolder extends RecyclerView.ViewHolder
     }//public class PlayerGameStatusRoleAdapter extends RecyclerView.Adapter<PlayerGameStatusRoleAdapter.PlayerStatusViewHolder>

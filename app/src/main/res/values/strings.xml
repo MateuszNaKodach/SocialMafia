@@ -216,7 +216,6 @@ Raz w ciągu gry,  podczas trwania dnia wybiera osobę, która aż do nocy nie b
     <string name="ok">OK</string>
     <string name="fraction">Frakcja</string>
     <string name="playerNameHint">Wprowadź imię gracza</string>
-    <string name="night_time_tip">W ciągu nocy wykonywane i budzone są odpowiednie funkcje. Poniżej znajduje się przewijana lista z funkcjami do wykonania w ciągu nocy......................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................</string>
     <string name="nigth_time_tip_title" >Podpowiedź</string>
     <string name="returnfrom">WRÓC</string>
     <string name="playersList">Lista graczy</string>
@@ -229,5 +228,9 @@ Raz w ciągu gry,  podczas trwania dnia wybiera osobę, która aż do nocy nie b
     <string name="hitlerDescription">Wie kto jest żydem.</string>
     <string name="tip_title" >Podpowiedź</string>
     <string name="tip_content">Brak podpowiedzi...</string>
+    <string name="collapse">zwiń</string>
+    <string name="expand">rozwiń</string>
+    <string name="night_time_tip">\t W ciągu nocy wykonywane i budzone są odpowiednie funkcje. Poniżej znajduje się przewijana lista z funkcjami do wykonania w ciągu tej nocy. \n \t Aby dowiedzieć się jak wykonać poszczególne funkcje proszę kliknąć ikonkę informacji przy konkretnym graczu. \n \t Przycisk \"ZAKONCZ NOC\" stanie się aktywny po poprawnym wykonaniu wszystkich funkcji.</string>
+    <string name="tip_playersList">\t Poniżej znajduje się lista graczy. Przytrzymaj element listy, aby rozwinąć menu kontekstowe.</string>
 
 </resources>
