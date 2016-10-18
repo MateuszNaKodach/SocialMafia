@@ -27,44 +27,17 @@
         <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/dayOrNightTimeFragment"></FrameLayout>
+        android:id="@+id/dayOrNightTimeFragment"/>
 
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/dayOrNightTimeRoleActionsFragment"></FrameLayout>
+                android:id="@+id/gameTipFragment"/>
 
-            <LinearLayout
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="horizontal"
-                android:gravity="center_vertical|center_horizontal">
-                <ImageView
-                    android:layout_weight="0.1"
-                    android:layout_width="20dp"
-                    android:layout_height="100dp"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/icon_arrowhelpleft"
-                    android:layout_gravity="center"
-                    android:gravity="center_vertical|center_horizontal"
-                    android:layout_marginRight="12dp" />
-                <android.support.v7.widget.RecyclerView
-                    android:layout_weight="0.8"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/playersStatusRecyclerView"
-                    />
-                <ImageView
-                    android:layout_weight="0.1"
-                    android:layout_width="20dp"
-                    android:layout_height="100dp"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/icon_arrowhelright"
-                    android:layout_gravity="center"
-                    android:gravity="center_vertical|center_horizontal"
-                    android:layout_marginLeft="12dp" />
-            </LinearLayout>
+                android:id="@+id/dayOrNightTimeRoleActionsFragment"/>
 
 
         </LinearLayout>

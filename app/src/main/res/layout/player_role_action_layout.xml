@@ -7,6 +7,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     app:cardCornerRadius="8dp"
     app:cardPreventCornerOverlap="true"
+    android:id="@+id/cardView_playerRoleAction"
     tools:context="pl.nowakprojects.socialmafia.mainmenuoptions.newgame.TheGameActionActivity"
     xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/AppTheme.NoActionBar">

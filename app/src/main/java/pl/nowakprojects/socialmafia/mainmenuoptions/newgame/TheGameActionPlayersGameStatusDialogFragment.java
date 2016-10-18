@@ -34,9 +34,9 @@ public class TheGameActionPlayersGameStatusDialogFragment extends DialogFragment
     private PlayerGameStatusRoleAdapter playerGameStatusRoleAdapter;
     private TheGame theGame;
 
-    TheGameActionPlayersGameStatusDialogFragment() {
+   /* TheGameActionPlayersGameStatusDialogFragment() {
     }// TheGameActionPlayersGameStatusDialogFragment()
-
+*/
     TheGameActionPlayersGameStatusDialogFragment(TheGame theGame) {
         this.theGame = theGame;
     }// TheGameActionPlayersGameStatusDialogFragment()
@@ -69,7 +69,7 @@ public class TheGameActionPlayersGameStatusDialogFragment extends DialogFragment
         private LayoutInflater inflater;
         private Context context;
 
-        public PlayerGameStatusRoleAdapter(Context context, ArrayList<HumanPlayer> humanPlayersList) {
+        public PlayerGameStatusRoleAdapter(Context context, final ArrayList<HumanPlayer> humanPlayersList) {
             this.humanPlayersList = humanPlayersList;
             this.inflater = LayoutInflater.from(context);
             this.context = context;
@@ -97,7 +97,8 @@ public class TheGameActionPlayersGameStatusDialogFragment extends DialogFragment
                     return true;
                 }
             });
-        }
+        }//public void onBindViewHolder(final PlayerGameStatusRoleAdapter.PlayerStatusViewHolder holder, final int position)
+
 
         @Override
         public int getItemCount() {
@@ -129,7 +130,8 @@ public class TheGameActionPlayersGameStatusDialogFragment extends DialogFragment
                 }
             });
             popupMenu.show();
-        }
+        }//private void showPlayerStatusPopupMenu(View view, final int position, final PlayerGameStatusRoleAdapter.PlayerStatusViewHolder playerStatusViewHolder)
+
 
         private void showProperlyPlayerStatus(HumanPlayer humanPlayer, PlayerGameStatusRoleAdapter.PlayerStatusViewHolder playerStatusViewHolder) {
             if (humanPlayer.isAlive())
@@ -201,8 +203,10 @@ public class TheGameActionPlayersGameStatusDialogFragment extends DialogFragment
                 });
 
                 roleDescriptionDialog = descriptionDialog.create();
-            }
+            }//public void buildRoleDescriptionDialog()
 
-        }
-    }
+        }//class PlayerStatusViewHolder extends RecyclerView.ViewHolder
+    }//public class PlayerGameStatusRoleAdapter extends RecyclerView.Adapter<PlayerGameStatusRoleAdapter.PlayerStatusViewHolder>
+
+
 }//public class TheGameActionPlayersGameStatusDialogFragment extends DialogFragment

@@ -52,6 +52,7 @@ public class TheGameActionActivity extends AppCompatActivity {
 
     final String TIME_FRAGMENT = "TIME_FRAGMENT";
     final String TIME_ROLE_ACTIONS_FRAGMENT = "TIME_ROLE_ACTIONS_FRAGMENT";
+    final String GAME_TIP_FRAGMENT = "GAME_TIP_FRAGMENT";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,7 +102,7 @@ public class TheGameActionActivity extends AppCompatActivity {
         //GameView proporties:
         dayTimeFragment = new DayTimeFragment();
         //dayTimeRoleActionsFragment = new DayTimeRoleActionsFragment();
-        nightTimeFragment = new NightTimeFragment();
+        nightTimeFragment = new NightTimeFragment(theGame);
         //dopóki gra nie jest zakończona ciągle leci dzień - noc:
         // while(!theGame.isFinished()){
         //      startNightAction();
@@ -119,6 +120,7 @@ public class TheGameActionActivity extends AppCompatActivity {
         fragmentTransaction.add(R.id.dayOrNightTimeRoleActionsFragment, nightTimeRoleActionsFragment, TIME_ROLE_ACTIONS_FRAGMENT);
         fragmentTransaction.commit();
 
+        showGameTipFragment(null,getString(R.string.night_time_tip));
     }
 
     void endNightAction() {
@@ -226,12 +228,88 @@ public class TheGameActionActivity extends AppCompatActivity {
 
     public class NightTimeFragment extends Fragment {
 
+        TheGame theGame;
         String nightNumer;
         TextView nightNumberTextView;
         Button finishTheNightButton;
         private int madeNightActionsAmount = 0;
 
-        public NightTimeFragment() {
+        public NightTimeFragment(TheGame theGame) {
+            this.theGame = theGame;
+            // Required empty public constructor
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            // Inflate the layout for this fragment
+            View fragmentView = inflater.inflate(R.layout.fragment_night_time, container, false);
+
+            nightNumberTextView = (TextView) fragmentView.findViewById(R.id.nightNumberTextView);
+            finishTheNightButton = (Button) fragmentView.findViewById(R.id.finishTheNightButton);
+            finishTheNightButton.setEnabled(false);
+            updateNightNumberTextView();
+
+            return fragmentView;
+        }
+
+        /**
+         * Aktualizuje numer kolejnej nocy
+         */
+        void updateNightNumberTextView() {
+            nightNumberTextView.setText((getString(R.string.night_number, theGame.getNightNumber())));
+        }
+
+    }
+
+    //MOJA KONWENCJA KODOWANIA!!!
+    public class GameTipFragment extends Fragment {
+
+        TextView textView_tipTitle;
+        TextView textView_tipContent;
+        String s_tipTitle;
+        String s_tipContent;
+
+        //public GameTipFragment() {
+        //}
+
+        public GameTipFragment(String sTipTitle, String sTipContent) {
+            this.s_tipTitle=sTipTitle;
+            this.s_tipContent=sTipContent;
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            // Inflate the layout for this fragment
+            View fragmentView = inflater.inflate(R.layout.fragment_game_tip, container, false);
+            textView_tipTitle = (TextView) fragmentView.findViewById(R.id.textView_tipTitle);
+            textView_tipContent = (TextView) fragmentView.findViewById(R.id.textView_tipContent);
+
+            if(s_tipTitle==null||s_tipTitle.isEmpty())
+                s_tipTitle = getString(R.string.tip_title);
+            if(s_tipContent==null||s_tipContent.isEmpty())
+                s_tipContent = getString(R.string.tip_content);
+
+            textView_tipTitle.setText(s_tipTitle);
+            textView_tipContent.setText(s_tipContent);
+
+            return fragmentView;
+        }
+
+
+    }
+
+    public class TheGameStatsFragment extends Fragment {
+
+        TheGame theGame;
+        String nightNumer;
+        TextView nightNumberTextView;
+        Button finishTheNightButton;
+        private int madeNightActionsAmount = 0;
+
+        public TheGameStatsFragment(TheGame theGame) {
+            this.theGame = theGame;
             // Required empty public constructor
         }
 
@@ -338,6 +416,16 @@ public class TheGameActionActivity extends AppCompatActivity {
                 else
                     holder.choosingSpinner2.setVisibility(View.GONE);
 
+                //sprawdza czy akcja została wykoanna
+                holder.choosingSpinner.setEnabled(!actionPlayers.get(position).getPlayerRole().is_actionMade());
+                holder.choosingSpinner2.setEnabled(!actionPlayers.get(position).getPlayerRole().is_actionMade());
+
+                /*if(actionPlayers.get(position).getPlayerRole().isB_isRoleTurn()==false)
+                    holder.itemView.findViewById(R.id.confirmButton).setEnabled(false);
+                else
+                    holder.itemView.findViewById(R.id.confirmButton).setEnabled(true);*/
+
+
             }
 
             @Override
@@ -382,7 +470,13 @@ public class TheGameActionActivity extends AppCompatActivity {
                             choosingSpinner.setEnabled(false);
                             choosingSpinner2.setEnabled(false);
                             confirmButton.setText(R.string.roleActionDone);
-                            // madeNightActionsAmount++;
+
+                           /* if((getAdapterPosition()+1)<actionPlayers.size()){
+                                actionPlayers.get(getAdapterPosition()+1).getPlayerRole().setB_isRoleTurn(true);
+                                notifyItemChanged(getAdapterPosition()+1);}
+
+                            notifyItemChanged(getAdapterPosition());
+                             madeNightActionsAmount++;*/
                         }
 
 
@@ -402,7 +496,6 @@ public class TheGameActionActivity extends AppCompatActivity {
                             }
                         }
                     });
-
 
                 }
 
@@ -645,9 +738,21 @@ public class TheGameActionActivity extends AppCompatActivity {
                 result.add(humanPlayer);
             if (humanPlayer.getPlayerRole().getActionType().equals(PlayerRole.ActionType.OnlyZeroNight))
                 result.add(humanPlayer);
+            if(result.size()==1)
+                result.get(0).getPlayerRole().setB_isRoleTurn(true);
         }
         Collections.sort(result,new GameRolesWakeHierarchyComparator());
         return result;
     }// private ArrayList<HumanPlayer> getZeroNightHumanPlayers()
+
+   private GameTipFragment showGameTipFragment(String sTipTitle, String sTipContent){
+       GameTipFragment gameTipFragment = new GameTipFragment(sTipTitle,sTipContent);
+
+       FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+       fragmentTransaction.add(R.id.gameTipFragment, gameTipFragment, GAME_TIP_FRAGMENT);
+       fragmentTransaction.commit();
+
+       return gameTipFragment;
+   }
 
 }//public class TheGameActionActivity extends AppCompatActivity

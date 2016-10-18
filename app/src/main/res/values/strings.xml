@@ -1,6 +1,6 @@
 <resources>
     <!--GeneralGameStrings........................................................................-->
-    <string name="app_name">Social Mafia</string>
+    <string name="app_name" translatable="false">Social Mafia</string>
 
     <string name="town">Miasto</string>
     <string name="mafia">Mafia</string>
@@ -216,7 +216,7 @@ Raz w ciągu gry,  podczas trwania dnia wybiera osobę, która aż do nocy nie b
     <string name="ok">OK</string>
     <string name="fraction">Frakcja</string>
     <string name="playerNameHint">Wprowadź imię gracza</string>
-    <string name="night_time_tip">W ciągu nocy wykonywane i budzone są odpowiednie funkcje. Poniżej znajduje się przewijana lista z funkcjami do wykonania w ciągu nocy..............................................................................................................................</string>
+    <string name="night_time_tip">W ciągu nocy wykonywane i budzone są odpowiednie funkcje. Poniżej znajduje się przewijana lista z funkcjami do wykonania w ciągu nocy......................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................</string>
     <string name="nigth_time_tip_title" >Podpowiedź</string>
     <string name="returnfrom">WRÓC</string>
     <string name="playersList">Lista graczy</string>
@@ -227,5 +227,7 @@ Raz w ciągu gry,  podczas trwania dnia wybiera osobę, która aż do nocy nie b
     <string name="isSignedThisNight">został naznaczony tej nocy!</string>
     <string name="hitler">Hitler</string>
     <string name="hitlerDescription">Wie kto jest żydem.</string>
+    <string name="tip_title" >Podpowiedź</string>
+    <string name="tip_content">Brak podpowiedzi...</string>
 
 </resources>

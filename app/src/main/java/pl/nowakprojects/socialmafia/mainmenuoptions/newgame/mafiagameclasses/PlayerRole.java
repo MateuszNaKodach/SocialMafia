@@ -19,7 +19,7 @@ import pl.nowakprojects.socialmafia.R;
 @Parcel
 public class PlayerRole {
 
-    public enum Fraction {TOWN, MAFIA, SYNDICATE, NEUTRAL};
+    public enum Fraction {TOWN, MAFIA, SYNDICATE, NEUTRAL, GROUP};
     public enum ActionType {OnlyZeroNight, AllNights, AllNightsBesideZero, ActionRequire, OnceAGame, NoAction, MafiaAction, OnlyZeroNightAndActionRequire, Double };
 
     int name = 0;
@@ -31,6 +31,11 @@ public class PlayerRole {
     int rolePlayersAmount=0;
     boolean roleUsed = false;
     int lifes = 0;
+
+    //PlayerActionViewHolder
+    boolean b_isRoleTurn = false;
+    HumanPlayer hp_lastChoosenPlayer;
+    boolean b_actionMade = false;
 
     public PlayerRole(int name, int description, int iconResourceID, Fraction fraction, ActionType actionType, int nightWakeHierarchyNumber) {
         this.name = name;
@@ -132,6 +137,22 @@ public class PlayerRole {
         this.rolePlayersAmount = rolePlayersAmount;
     }
 
+    public boolean is_actionMade() {
+        return b_actionMade;
+    }
+
+    public void set_bActionMade(boolean b_actionMade) {
+        this.b_actionMade = b_actionMade;
+    }
+
+    public void setB_isRoleTurn(boolean b_isRoleTurn) {
+        this.b_isRoleTurn = b_isRoleTurn;
+    }
+
+    public boolean isB_isRoleTurn() {
+        return b_isRoleTurn;
+    }
+
     @Override
     public String toString() {
         return String.valueOf(name);
@@ -150,6 +171,7 @@ public class PlayerRole {
         return fraction == that.fraction;
 
     }
+
 
     @Override
     public int hashCode() {
