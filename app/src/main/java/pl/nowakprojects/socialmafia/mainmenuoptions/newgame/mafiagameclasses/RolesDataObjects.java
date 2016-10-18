@@ -42,12 +42,12 @@ public class RolesDataObjects {
         playerRoles.add(new PlayerRole(R.string.boss,R.string.madmanDescription,R.drawable.image_template, PlayerRole.Fraction.MAFIA, PlayerRole.ActionType.OnlyZeroNight,90));
         playerRoles.add(new PlayerRole(R.string.blackmailer,R.string.madmanDescription,R.drawable.image_template, PlayerRole.Fraction.MAFIA, PlayerRole.ActionType.OnlyZeroNight,80));
         playerRoles.add(new PlayerRole(R.string.blackmailerBoss,R.string.madmanDescription,R.drawable.image_template, PlayerRole.Fraction.MAFIA, PlayerRole.ActionType.OnlyZeroNight,100));
-        playerRoles.add(new PlayerRole(R.string.coquette,R.string.madmanDescription,R.drawable.icon_prostitute2, PlayerRole.Fraction.MAFIA, PlayerRole.ActionType.OnceAGame,-1));
-        playerRoles.add(new PlayerRole(R.string.darkmedic,R.string.madmanDescription,R.drawable.image_template, PlayerRole.Fraction.MAFIA, PlayerRole.ActionType.OnceAGame,120));
-        playerRoles.add(new PlayerRole(R.string.mafiaspeedy,R.string.madmanDescription,R.drawable.image_template, PlayerRole.Fraction.MAFIA, PlayerRole.ActionType.OnceAGame,-1));
-        playerRoles.add(new PlayerRole(R.string.dealer,R.string.madmanDescription,R.drawable.icon_dealer, PlayerRole.Fraction.MAFIA, PlayerRole.ActionType.OnceAGame,30));
-        playerRoles.add(new PlayerRole(R.string.gravedigger,R.string.madmanDescription,R.drawable.image_template, PlayerRole.Fraction.MAFIA, PlayerRole.ActionType.OnceAGame,70));
-        playerRoles.add(new PlayerRole(R.string.rapist,R.string.madmanDescription,R.drawable.image_template, PlayerRole.Fraction.MAFIA, PlayerRole.ActionType.OnceAGame,130));
+        playerRoles.add(new PlayerRole(R.string.coquette,R.string.madmanDescription,R.drawable.icon_prostitute2, PlayerRole.Fraction.MAFIA, PlayerRole.ActionType.NoAction,-1));
+        playerRoles.add(new PlayerRole(R.string.darkmedic,R.string.madmanDescription,R.drawable.image_template, PlayerRole.Fraction.MAFIA, PlayerRole.ActionType.AllNightsBesideZero,120));
+        playerRoles.add(new PlayerRole(R.string.mafiaspeedy,R.string.madmanDescription,R.drawable.image_template, PlayerRole.Fraction.MAFIA, PlayerRole.ActionType.ActionRequire,-1));
+        playerRoles.add(new PlayerRole(R.string.dealer,R.string.madmanDescription,R.drawable.icon_dealer, PlayerRole.Fraction.MAFIA, PlayerRole.ActionType.AllNightsBesideZero,30));
+        playerRoles.add(new PlayerRole(R.string.gravedigger,R.string.madmanDescription,R.drawable.image_template, PlayerRole.Fraction.MAFIA, PlayerRole.ActionType.AllNightsBesideZero,70));
+        playerRoles.add(new PlayerRole(R.string.rapist,R.string.madmanDescription,R.drawable.image_template, PlayerRole.Fraction.MAFIA, PlayerRole.ActionType.OnlyZeroNight,130));
         playerRoles.add(new PlayerRole(R.string.hitler,R.string.hitlerDescription,R.drawable.image_template, PlayerRole.Fraction.MAFIA, PlayerRole.ActionType.OnlyZeroNight,150));
 
         return playerRoles;
@@ -55,16 +55,16 @@ public class RolesDataObjects {
 
     public static ArrayList<PlayerRole> getSyndicateRolesList(){
         ArrayList<PlayerRole> playerRoles = new ArrayList<>();
-        playerRoles.add(new PlayerRole(R.string.sindicateBoss,R.string.madmanDescription,R.drawable.image_template, PlayerRole.Fraction.SYNDICATE, PlayerRole.ActionType.OnceAGame,-1));
-        playerRoles.add(new PlayerRole(R.string.deathAngel,R.string.madmanDescription,R.drawable.icon_deathangel, PlayerRole.Fraction.SYNDICATE, PlayerRole.ActionType.OnceAGame,140));
-        playerRoles.add(new PlayerRole(R.string.witch,R.string.madmanDescription,R.drawable.image_template, PlayerRole.Fraction.SYNDICATE, PlayerRole.ActionType.OnceAGame,190));
-        playerRoles.add(new PlayerRole(R.string.saint,R.string.madmanDescription,R.drawable.image_template, PlayerRole.Fraction.SYNDICATE, PlayerRole.ActionType.OnceAGame,-1));
-        playerRoles.add(new PlayerRole(R.string.sindicateSpeedy,R.string.madmanDescription,R.drawable.image_template, PlayerRole.Fraction.SYNDICATE, PlayerRole.ActionType.OnceAGame,-1));
-        playerRoles.add(new PlayerRole(R.string.conductor,R.string.madmanDescription,R.drawable.icon_conductor, PlayerRole.Fraction.SYNDICATE, PlayerRole.ActionType.OnceAGame,-1));
+        playerRoles.add(new PlayerRole(R.string.sindicateBoss,R.string.madmanDescription,R.drawable.image_template, PlayerRole.Fraction.SYNDICATE, PlayerRole.ActionType.OnlyZeroNight,-1));
+        playerRoles.add(new PlayerRole(R.string.deathAngel,R.string.madmanDescription,R.drawable.icon_deathangel, PlayerRole.Fraction.SYNDICATE, PlayerRole.ActionType.AllNightsBesideZero,140));
+        playerRoles.add(new PlayerRole(R.string.witch,R.string.madmanDescription,R.drawable.image_template, PlayerRole.Fraction.SYNDICATE, PlayerRole.ActionType.AllNightsBesideZero,190));
+        playerRoles.add(new PlayerRole(R.string.saint,R.string.madmanDescription,R.drawable.image_template, PlayerRole.Fraction.SYNDICATE, PlayerRole.ActionType.ActionRequire,-1));
+        playerRoles.add(new PlayerRole(R.string.sindicateSpeedy,R.string.madmanDescription,R.drawable.image_template, PlayerRole.Fraction.SYNDICATE, PlayerRole.ActionType.ActionRequire,-1));
+        playerRoles.add(new PlayerRole(R.string.conductor,R.string.madmanDescription,R.drawable.icon_conductor, PlayerRole.Fraction.SYNDICATE, PlayerRole.ActionType.ActionRequire,-1));
         playerRoles.add(new PlayerRole(R.string.bartender,R.string.madmanDescription,R.drawable.image_template, PlayerRole.Fraction.SYNDICATE, PlayerRole.ActionType.OnceAGame,110));
-        playerRoles.add(new PlayerRole(R.string.timestopper,R.string.madmanDescription,R.drawable.icon_timestopper, PlayerRole.Fraction.SYNDICATE, PlayerRole.ActionType.OnceAGame,-1));
-        playerRoles.add(new PlayerRole(R.string.hunter,R.string.madmanDescription,R.drawable.image_template, PlayerRole.Fraction.SYNDICATE, PlayerRole.ActionType.OnceAGame,-1));
-        playerRoles.add(new PlayerRole(R.string.dentist,R.string.madmanDescription,R.drawable.icon_dentist, PlayerRole.Fraction.SYNDICATE, PlayerRole.ActionType.OnceAGame,-1));
+        playerRoles.add(new PlayerRole(R.string.timestopper,R.string.madmanDescription,R.drawable.icon_timestopper, PlayerRole.Fraction.SYNDICATE, PlayerRole.ActionType.ActionRequire,-1));
+        playerRoles.add(new PlayerRole(R.string.hunter,R.string.madmanDescription,R.drawable.image_template, PlayerRole.Fraction.SYNDICATE, PlayerRole.ActionType.ActionRequire,-1));
+        playerRoles.add(new PlayerRole(R.string.dentist,R.string.madmanDescription,R.drawable.icon_dentist, PlayerRole.Fraction.SYNDICATE, PlayerRole.ActionType.AllNightsBesideZero,-1));
 
         return playerRoles;
     }

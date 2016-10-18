@@ -52,7 +52,7 @@ public class TheGameActionPlayersGameStatusDialogFragment extends DialogFragment
         //setCancelable(false);
         getDialog().setTitle(R.string.playersList);
 
-        //showGameTipFragment(null,getString(R.string.tip_playersList));
+        showGameTipFragment(null,getString(R.string.tip_playersList));
 
         playerGameStatusRoleAdapter = new PlayerGameStatusRoleAdapter(getActivity().getApplicationContext(),theGame.getPlayersInfoList());
         RecyclerView playersActionsRecyclerView = (RecyclerView) view.findViewById(R.id.playersStatusRecyclerView);
@@ -72,8 +72,8 @@ public class TheGameActionPlayersGameStatusDialogFragment extends DialogFragment
     private GameTipFragment showGameTipFragment(String sTipTitle, String sTipContent){
         GameTipFragment gameTipFragment = new GameTipFragment(sTipTitle,sTipContent,false);
 
-        FragmentTransaction fragmentTransaction = this.getActivity().getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.gameTipFragmentPlayerStatus, gameTipFragment, GAME_TIP_FRAGMENT);
+        FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
+        fragmentTransaction.add(R.id.gameTipFragmentPlayerStatusDialog, gameTipFragment, GAME_TIP_FRAGMENT);
         fragmentTransaction.commit();
 
         return gameTipFragment;

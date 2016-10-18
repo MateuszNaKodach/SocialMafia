@@ -78,7 +78,6 @@ public class GameTipFragment extends Fragment {
 
     }
 
-
     private void collapse(){
 
         b_isCollapsed = !(b_isCollapsed);

@@ -53,14 +53,32 @@ public class TheGame {
 	boolean isFinished = false; //czy gra została skończona
 	//boolean coquetteMEGA = true;
 
-	HumanPlayer lastHealingByMedicPlayer;
-	HumanPlayer lastHeatingByDarkMedicPlayer;
-	HumanPlayer lastDealingByDealerPlayer;
+	private int i_actions_made_this_time = 0;
+
+	//To wszystko muszą być listy, bo jest kilka możliwości!!!
+	/*ArrayList*/HumanPlayer lastHealingByMedicPlayer;
+	/*ArrayList*/HumanPlayer lastHeatingByDarkMedicPlayer;
+	/*ArrayList*/HumanPlayer lastDealingByDealerPlayer;
+	ArrayList<HumanPlayer> lastOperateByDentistPlayer;
+	ArrayList<HumanPlayer> lastKilledPlayer;
 
 	public TheGame() {
+		lastOperateByDentistPlayer = new ArrayList<>();
+		lastKilledPlayer = new ArrayList<>();
 	};
 
+	public int iActionMadeThisTime(){
+		// i_actions_made_this_time++;
+		return ++i_actions_made_this_time;
+	}
 
+	public int iGetActionsMadeThisTime(){
+		return i_actions_made_this_time;
+	}
+
+	public void clearMadeActionsCount(){
+
+	}
 
 	/*
 	 * Lista graczy i ich ról (do odkrywania i zakryawnia)

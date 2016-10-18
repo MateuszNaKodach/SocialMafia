@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:minHeight="140dp"
+
     android:id="@+id/game_status_layout"
     android:background="@android:color/white"
     android:gravity="left"
@@ -38,6 +40,16 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
+        <TextView
+            android:text="the name of the player"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/playerName"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:layout_marginTop="16dp"
+            android:textColor="@android:color/black" />
+
         <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -53,14 +65,6 @@
             android:textColor="@android:color/black"
             android:textColorHighlight="@android:color/black" />
 
-        <TextView
-            android:text="the name of the player"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/playerName"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:layout_marginTop="16dp"
-            android:textColor="@android:color/black" />
 
         <TextView
             android:text="Fraction"

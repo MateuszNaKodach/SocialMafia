@@ -1,5 +1,6 @@
 package pl.nowakprojects.socialmafia.mainmenuoptions.newgame;
 
+import android.content.DialogInterface;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.content.Context;
@@ -234,6 +235,7 @@ public class TheGameActionActivity extends AppCompatActivity {
         TextView nightNumberTextView;
         Button finishTheNightButton;
         private int madeNightActionsAmount = 0;
+        AlertDialog confirmationAlertDialog;
 
         public NightTimeFragment(TheGame theGame) {
             this.theGame = theGame;
@@ -251,6 +253,14 @@ public class TheGameActionActivity extends AppCompatActivity {
             finishTheNightButton.setEnabled(false);
             updateNightNumberTextView();
 
+            finishTheNightButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    buildConfirmationAlertDialog();
+                    confirmationAlertDialog.show();
+                }
+            });
+
             return fragmentView;
         }
 
@@ -259,6 +269,32 @@ public class TheGameActionActivity extends AppCompatActivity {
          */
         void updateNightNumberTextView() {
             nightNumberTextView.setText((getString(R.string.night_number, theGame.getNightNumber())));
+        }
+
+        public void buildConfirmationAlertDialog() {
+            final AlertDialog.Builder confirmationDialog = new AlertDialog.Builder(this.getActivity());
+            confirmationDialog.setTitle(getString(R.string.fisnish_the_night));
+            confirmationDialog.setMessage(getString(R.string.finish_the_night_are_you_sure));
+            confirmationDialog.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                /**
+                 * Zamyka okno z opisem roli
+                 * @param dialog
+                 * @param which
+                 */
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    confirmationAlertDialog.cancel();
+                }
+            });
+
+            confirmationDialog.setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+
+                }
+            });
+
+            confirmationAlertDialog = confirmationDialog.create();
         }
 
     }
@@ -424,15 +460,26 @@ public class TheGameActionActivity extends AppCompatActivity {
                     //zatwierdzenie wykonania roli gracza
                     confirmButton.setOnClickListener(new View.OnClickListener() {
 
+                        private boolean isAllActionsMade(){
+                            return theGame.iGetActionsMadeThisTime()==actionPlayers.size();
+                        }
+
+                        private void enableEndOfDayTimeButton(){
+                            if(isAllActionsMade())
+                                nightTimeFragment.finishTheNightButton.setEnabled(true);
+                        }
                         /**
                          * Rola została wykonana
                          * Nie jest już możliwa zmiana wybranych graczy
                          * Dodajemy do sumy wykonanych ról
                          */
                         void roleActionWasMade() {
+                            theGame.iActionMadeThisTime();
                             choosingSpinner.setEnabled(false);
                             choosingSpinner2.setEnabled(false);
                             confirmButton.setText(R.string.roleActionDone);
+
+                            enableEndOfDayTimeButton();
 
                            /* if((getAdapterPosition()+1)<actionPlayers.size()){
                                 actionPlayers.get(getAdapterPosition()+1).getPlayerRole().setB_isRoleTurn(true);

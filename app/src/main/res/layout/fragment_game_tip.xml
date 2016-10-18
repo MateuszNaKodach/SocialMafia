@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:animateLayoutChanges="true"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="8dp">
@@ -31,6 +32,16 @@
             android:cursorVisible="true"
             tools:text="@string/tip_title" />
 
+        <Button
+            android:text="ZWIN"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button_collapseButton"
+            android:layout_weight="0.1"
+            android:layout_gravity="right"
+            style="@android:style/Widget.Material.Button.Borderless.Colored"
+            tools:text="@string/collapse" />
+
     </LinearLayout>
 
     <View android:background="#000000"
@@ -47,13 +58,4 @@
         android:layout_marginTop="16dp"
         android:layout_marginLeft="32dp" />
 
-    <Button
-        android:text="ZWIN"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/button_collapseButton"
-        android:layout_weight="0.3"
-        android:layout_gravity="right"
-        style="@android:style/Widget.Material.Button.Borderless.Colored"
-        tools:text="@string/collapse" />
 </LinearLayout>

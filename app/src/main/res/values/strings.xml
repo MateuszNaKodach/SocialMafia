@@ -232,5 +232,8 @@ Raz w ciągu gry,  podczas trwania dnia wybiera osobę, która aż do nocy nie b
     <string name="expand">rozwiń</string>
     <string name="night_time_tip">\t W ciągu nocy wykonywane i budzone są odpowiednie funkcje. Poniżej znajduje się przewijana lista z funkcjami do wykonania w ciągu tej nocy. \n \t Aby dowiedzieć się jak wykonać poszczególne funkcje proszę kliknąć ikonkę informacji przy konkretnym graczu. \n \t Przycisk \"ZAKONCZ NOC\" stanie się aktywny po poprawnym wykonaniu wszystkich funkcji.</string>
     <string name="tip_playersList">\t Poniżej znajduje się lista graczy. Przytrzymaj element listy, aby rozwinąć menu kontekstowe.</string>
+    <string name="yes">tak</string>
+    <string name="no">nie</string>
+    <string name="finish_the_night_are_you_sure">Czy jesteś pewien, że chcesz zakończyć noc?</string>
 
 </resources>
