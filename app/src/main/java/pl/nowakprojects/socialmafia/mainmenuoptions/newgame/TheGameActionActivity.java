@@ -63,6 +63,7 @@ public class TheGameActionActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
         receiveGameSettings(); //odbiera ustawienia gry
 
         startMafiaGameAction();
@@ -70,6 +71,12 @@ public class TheGameActionActivity extends AppCompatActivity {
         startNightAction();
         // startDayAction();
         //startMafiaGameAction();
+    }
+
+    @Override
+    public void onBackPressed() {
+        //okienko potwierdzenia czy na pewno opuscic gre
+        //super.onBackPressed();
     }
 
     @Override
@@ -126,19 +133,24 @@ public class TheGameActionActivity extends AppCompatActivity {
     }
 
     void endNightAction() {
+        if(!(theGame.getNightNumber()==0))
+            makeJudgmentAction();
         theGame.setNightNumber(theGame.getNightNumber() + 1);
+    }
+
+    void makeJudgmentAction(){
+
     }
 
     void startDayAction() {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        //fragmentTransaction.add(R.id.dayOrNightTimeFragment,dayTimeFragment,TIME_FRAGMENT);
+        fragmentTransaction.replace(R.id.dayOrNightTimeFragment,dayTimeFragment,TIME_FRAGMENT);
         fragmentTransaction.commit();
     }
 
     void endTheGameAndShowResults() {
     }
 
-    ;
 
     /**
      * Game app functions:
@@ -283,6 +295,8 @@ public class TheGameActionActivity extends AppCompatActivity {
                  */
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
+                    endNightAction();
+                    startDayAction();
                     confirmationAlertDialog.cancel();
                 }
             });
@@ -290,7 +304,7 @@ public class TheGameActionActivity extends AppCompatActivity {
             confirmationDialog.setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-
+                    confirmationAlertDialog.cancel();
                 }
             });
 
@@ -409,21 +423,25 @@ public class TheGameActionActivity extends AppCompatActivity {
                 ArrayAdapter<String> choosingSpinnerAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, playerNames);
                 choosingSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 holder.choosingSpinner.setAdapter(choosingSpinnerAdapter);
+                //-------------------------------------------------------
 
-                if (playerRole.getName() == R.string.priest)
+                if (playerRole.getName() == R.string.priest){
+                    holder.choosingSpinner2.setVisibility(View.VISIBLE);
                     holder.choosingSpinner2.setAdapter(choosingSpinnerAdapter);
+                    }
                 else
                     holder.choosingSpinner2.setVisibility(View.GONE);
 
                 //sprawdza czy akcja została wykoanna
-                holder.choosingSpinner.setEnabled(!actionPlayers.get(position).getPlayerRole().is_actionMade());
-                holder.choosingSpinner2.setEnabled(!actionPlayers.get(position).getPlayerRole().is_actionMade());
+                holder.choosingSpinner.setEnabled(false);
+                holder.choosingSpinner2.setEnabled(false);
 
-                /*if(actionPlayers.get(position).getPlayerRole().isB_isRoleTurn()==false)
-                    holder.itemView.findViewById(R.id.confirmButton).setEnabled(false);
+                if(playerRole.isB_isRoleTurn()){
+                    holder.itemView.findViewById(R.id.confirmButton).setEnabled(true);
+                    holder.choosingSpinner.setEnabled(!playerRole.is_actionMade());
+                    holder.choosingSpinner2.setEnabled(!playerRole.is_actionMade());}
                 else
-                    holder.itemView.findViewById(R.id.confirmButton).setEnabled(true);*/
-
+                    holder.itemView.findViewById(R.id.confirmButton).setEnabled(false);
 
             }
 
@@ -474,35 +492,39 @@ public class TheGameActionActivity extends AppCompatActivity {
                          * Dodajemy do sumy wykonanych ról
                          */
                         void roleActionWasMade() {
+                            if(!(actionPlayers.get(getAdapterPosition()).getPlayerRole().is_actionMade())){
                             theGame.iActionMadeThisTime();
                             choosingSpinner.setEnabled(false);
                             choosingSpinner2.setEnabled(false);
                             confirmButton.setText(R.string.roleActionDone);
 
                             enableEndOfDayTimeButton();
-
-                           /* if((getAdapterPosition()+1)<actionPlayers.size()){
+                            actionPlayers.get(getAdapterPosition()).getPlayerRole().set_bActionMade(true);
+                            }
+                            if((getAdapterPosition()+1)<actionPlayers.size()){
                                 actionPlayers.get(getAdapterPosition()+1).getPlayerRole().setB_isRoleTurn(true);
-                                notifyItemChanged(getAdapterPosition()+1);}
+                                notifyItemChanged(getAdapterPosition()+1);
+                            }
 
-                            notifyItemChanged(getAdapterPosition());
-                             madeNightActionsAmount++;*/
+                            //notifyItemChanged(getAdapterPosition());
                         }
 
 
                         @Override
                         public void onClick(View view) {
-                            //sprawdza czy to ksiądz, aby wykonać odpowiednią funkcję
-                            if (actionPlayers.get(getAdapterPosition()).getRoleName() == R.string.priest) {
-                                if (theGame.findHumanPlayerByName(choosingSpinner.getSelectedItem().toString()).equals(theGame.findHumanPlayerByName(choosingSpinner2.getSelectedItem().toString())))
-                                    Toast.makeText(getApplicationContext(), getString(R.string.theSameLovers), Toast.LENGTH_LONG).show();
-                                else {
-                                    makePriestAction(theGame.findHumanPlayerByName(choosingSpinner.getSelectedItem().toString()), theGame.findHumanPlayerByName(choosingSpinner2.getSelectedItem().toString()));
+                            if(confirmButton.isEnabled()&&confirmButton.getText()!=getString(R.string.roleActionDone)) {
+                                //sprawdza czy to ksiądz, aby wykonać odpowiednią funkcję
+                                if (actionPlayers.get(getAdapterPosition()).getRoleName() == R.string.priest) {
+                                    if (theGame.findHumanPlayerByName(choosingSpinner.getSelectedItem().toString()).equals(theGame.findHumanPlayerByName(choosingSpinner2.getSelectedItem().toString())))
+                                        Toast.makeText(getApplicationContext(), getString(R.string.theSameLovers), Toast.LENGTH_LONG).show();
+                                    else {
+                                        makePriestAction(theGame.findHumanPlayerByName(choosingSpinner.getSelectedItem().toString()), theGame.findHumanPlayerByName(choosingSpinner2.getSelectedItem().toString()));
+                                        roleActionWasMade();
+                                    }
+                                } else {
+                                    makeRoleAction(actionPlayers.get(getAdapterPosition()), theGame.findHumanPlayerByName(choosingSpinner.getSelectedItem().toString()));
                                     roleActionWasMade();
                                 }
-                            } else {
-                                makeRoleAction(actionPlayers.get(getAdapterPosition()), theGame.findHumanPlayerByName(choosingSpinner.getSelectedItem().toString()));
-                                roleActionWasMade();
                             }
                         }
                     });
@@ -588,19 +610,19 @@ public class TheGameActionActivity extends AppCompatActivity {
                 }
 
                 private void makeMedicAction(HumanPlayer choosenPlayer){
-                    theGame.setLastHealingByMedicPlayer(choosenPlayer);
+                    theGame.addLastNightHealingByMedicPlayers(choosenPlayer);
                     Toast.makeText(getApplicationContext(), choosenPlayer.getPlayerName() + " " + getString(R.string.isHealingThisNight), Toast.LENGTH_LONG).show();
 
                 }
 
                 private void makeDarkMedicAction(HumanPlayer choosenPlayer){
-                    theGame.setLastHeatingByDarkMedicPlayer(choosenPlayer);
+                    theGame.addLastNightHeatingByDarkMedicPlayers(choosenPlayer);
                     Toast.makeText(getApplicationContext(), choosenPlayer.getPlayerName() + " " + getString(R.string.isHeatingThisNight), Toast.LENGTH_LONG).show();
 
                 }
 
                 private void makeDealerAction(HumanPlayer choosenPlayer){
-                    theGame.setLastDealingByDealerPlayer(choosenPlayer);
+                    theGame.addLastNightDealingByDealerPlayers(choosenPlayer);
                     Toast.makeText(getApplicationContext(), choosenPlayer.getPlayerName() + " " + getString(R.string.isDealingThisNight), Toast.LENGTH_LONG).show();
 
                 }
@@ -748,12 +770,26 @@ public class TheGameActionActivity extends AppCompatActivity {
                 result.add(humanPlayer);
             if (humanPlayer.getPlayerRole().getActionType().equals(PlayerRole.ActionType.OnlyZeroNight))
                 result.add(humanPlayer);
-            if(result.size()==1)
-                result.get(0).getPlayerRole().setB_isRoleTurn(true);
         }
         Collections.sort(result,new GameRolesWakeHierarchyComparator());
+        result.get(0).getPlayerRole().setB_isRoleTurn(true);
         return result;
     }// private ArrayList<HumanPlayer> getZeroNightHumanPlayers()
+
+    private ArrayList<HumanPlayer> getAllNightsBesideZeroHumanPlayers() {
+        ArrayList<HumanPlayer> result = new ArrayList<HumanPlayer>();
+        for (HumanPlayer humanPlayer : theGame.getPlayersInfoList()) {
+            if(humanPlayer.isAlive()) {
+                if (humanPlayer.getPlayerRole().getActionType().equals(PlayerRole.ActionType.AllNights))
+                    result.add(humanPlayer);
+                if (humanPlayer.getPlayerRole().getActionType().equals(PlayerRole.ActionType.AllNightsBesideZero))
+                    result.add(humanPlayer);
+            }
+        }
+        Collections.sort(result,new GameRolesWakeHierarchyComparator());
+        result.get(0).getPlayerRole().setB_isRoleTurn(true);
+        return result;
+    }// private ArrayList<HumanPlayer> getAllNightsBesideZeroHumanPlayers()
 
    private GameTipFragment showGameTipFragment(String sTipTitle, String sTipContent){
        GameTipFragment gameTipFragment = new GameTipFragment(sTipTitle,sTipContent);

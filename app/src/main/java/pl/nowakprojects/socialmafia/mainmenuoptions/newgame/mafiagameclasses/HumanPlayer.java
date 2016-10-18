@@ -63,7 +63,8 @@ public class HumanPlayer {
     }
 
     public void setLover(HumanPlayer lover) {
-        this.lover.add(lover);
+        if(!this.lover.contains(lover))
+            this.lover.add(lover);
     }
 
     public ArrayList<HumanPlayer> getLover() {
@@ -79,7 +80,8 @@ public class HumanPlayer {
     }
 
     public void setBlackMailer(HumanPlayer blackMailer) {
-        this.blackMailer.add(blackMailer);
+        if(!this.blackMailer.contains(blackMailer))
+            this.blackMailer.add(blackMailer);
     }
 
     public void killThePlayer(){

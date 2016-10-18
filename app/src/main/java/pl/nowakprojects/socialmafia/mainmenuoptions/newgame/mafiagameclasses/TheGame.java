@@ -26,6 +26,7 @@ import javafx.stage.Stage;
 /**
  * daytime - ograniczenie czasowe na dzien, gracz i tak decyfuje czy konczy
  * teraz DODAC CZAS GRY ( BEDZIE POTRZEBNY DO SAVE!!!)
+ * Parceler wymaga nieprywatnych pól!!!
  */
 
 @Parcel
@@ -53,18 +54,21 @@ public class TheGame {
 	boolean isFinished = false; //czy gra została skończona
 	//boolean coquetteMEGA = true;
 
-	private int i_actions_made_this_time = 0;
+	int i_actions_made_this_time = 0;
 
 	//To wszystko muszą być listy, bo jest kilka możliwości!!!
-	/*ArrayList*/HumanPlayer lastHealingByMedicPlayer;
-	/*ArrayList*/HumanPlayer lastHeatingByDarkMedicPlayer;
-	/*ArrayList*/HumanPlayer lastDealingByDealerPlayer;
-	ArrayList<HumanPlayer> lastOperateByDentistPlayer;
-	ArrayList<HumanPlayer> lastKilledPlayer;
+	ArrayList<HumanPlayer> lastNightHealingByMedicPlayers;
+	ArrayList<HumanPlayer> lastNightHeatingByDarkMedicPlayers;
+	ArrayList<HumanPlayer> lastNightDealingByDealerPlayers;
+	ArrayList<HumanPlayer> lastDayOperateByDentistPlayer;
+	ArrayList<HumanPlayer> lastNightKilledPlayer;
 
 	public TheGame() {
-		lastOperateByDentistPlayer = new ArrayList<>();
-		lastKilledPlayer = new ArrayList<>();
+		lastNightHealingByMedicPlayers = new ArrayList<>();
+		lastNightHeatingByDarkMedicPlayers = new ArrayList<>();
+		lastNightDealingByDealerPlayers = new ArrayList<>();
+		lastDayOperateByDentistPlayer = new ArrayList<>();
+		lastNightKilledPlayer = new ArrayList<>();
 	};
 
 	public int iActionMadeThisTime(){
@@ -94,28 +98,49 @@ public class TheGame {
 		return playersInfoList;
 	}
 
-	public void setLastDealingByDealerPlayer(HumanPlayer lastDealingByDealerPlayer) {
-		this.lastDealingByDealerPlayer = lastDealingByDealerPlayer;
+	public void addLastNightHealingByMedicPlayers(HumanPlayer humanPlayer){
+		if(!lastNightHealingByMedicPlayers.contains(humanPlayer))
+			lastNightHealingByMedicPlayers.add(humanPlayer);
 	}
 
-	public HumanPlayer getLastDealingByDealerPlayer() {
-		return lastDealingByDealerPlayer;
+	public void addLastDayOperateByDentistPlayer(HumanPlayer humanPlayer){
+		if(!lastDayOperateByDentistPlayer.contains(humanPlayer))
+			lastDayOperateByDentistPlayer.add(humanPlayer);
 	}
 
-	public void setLastHealingByMedicPlayer(HumanPlayer lastHealingByMedicPlayer) {
-		this.lastHealingByMedicPlayer = lastHealingByMedicPlayer;
+	public void addLastNightDealingByDealerPlayers(HumanPlayer humanPlayer){
+		if(!lastNightDealingByDealerPlayers.contains(humanPlayer))
+			lastNightDealingByDealerPlayers.add(humanPlayer);
 	}
 
-	public HumanPlayer getLastHealingByMedicPlayer() {
-		return lastHealingByMedicPlayer;
+	public void addLastNightKilledPlayer(HumanPlayer humanPlayer){
+		if(!lastNightKilledPlayer.contains(humanPlayer))
+			lastNightKilledPlayer.add(humanPlayer);
 	}
 
-	public void setLastHeatingByDarkMedicPlayer(HumanPlayer lastHeatingByDarkMedicPlayer) {
-		this.lastHeatingByDarkMedicPlayer = lastHeatingByDarkMedicPlayer;
+	public void addLastNightHeatingByDarkMedicPlayers(HumanPlayer humanPlayer){
+		if(!lastNightHeatingByDarkMedicPlayers.contains(humanPlayer))
+			lastNightHeatingByDarkMedicPlayers.add(humanPlayer);
 	}
 
-	public HumanPlayer getLastHeatingByDarkMedicPlayer() {
-		return lastHeatingByDarkMedicPlayer;
+	public ArrayList<HumanPlayer> getLastDayOperateByDentistPlayers() {
+		return lastDayOperateByDentistPlayer;
+	}
+
+	public ArrayList<HumanPlayer> getLastNightDealingByDealerPlayers() {
+		return lastNightDealingByDealerPlayers;
+	}
+
+	public ArrayList<HumanPlayer> getLastNightHealingByMedicPlayers() {
+		return lastNightHealingByMedicPlayers;
+	}
+
+	public ArrayList<HumanPlayer> getLastNightHeatingByDarkMedicPlayers() {
+		return lastNightHeatingByDarkMedicPlayers;
+	}
+
+	public ArrayList<HumanPlayer> getLastNightKilledPlayer() {
+		return lastNightKilledPlayer;
 	}
 
 	public void setPlayersInfoList(ArrayList<HumanPlayer> playersInfoList) {
