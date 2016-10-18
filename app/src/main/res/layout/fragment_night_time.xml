@@ -96,7 +96,7 @@
     android:layout_height="wrap_content"
     android:gravity="left|center_vertical|center_horizontal"
     android:orientation="horizontal"
-    android:padding="@dimen/floating_label_inside_spacing"
+    android:padding="16dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     app:orientation="horizontal"
     tools:context="pl.nowakprojects.socialmafia.mainmenuoptions.newgame.TheGameActionActivity">

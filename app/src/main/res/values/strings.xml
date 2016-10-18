@@ -235,5 +235,10 @@ Raz w ciągu gry,  podczas trwania dnia wybiera osobę, która aż do nocy nie b
     <string name="yes">tak</string>
     <string name="no">nie</string>
     <string name="finish_the_night_are_you_sure">Czy jesteś pewien, że chcesz zakończyć noc?</string>
+    <string name="checkedPlayer">Sprawdzony gracz</string>
+    <string name="dayjudgment">Codzienne Głosowanie</string>
+    <string name="checking">Sprawdzanie:</string>
+    <string name="killing">Zabijanie:</string>
+    <string name="confirmVoting">Zatwierdź</string>
 
 </resources>

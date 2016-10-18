@@ -65,9 +65,14 @@ public class ConnectPlayersToRolesActivity extends AppCompatActivity {
                 if (showedRolesAmount < playersInfoList.size())
                     Toast.makeText(getApplicationContext(), R.string.tooLessPlayersRolesShowed, Toast.LENGTH_LONG).show();
                 else {
-                    //tworzenie nowej gry:
+                    //tworzenie nowej gry, podstawowe ustawienia:
                     TheGame newGame = new TheGame();
                     newGame.setPlayersInfoList(playersInfoList);
+                    newGame.setPlayers(playersInfoList.size());
+                    newGame.setMafia(iCountFractionRoles(playersInfoList, PlayerRole.Fraction.MAFIA));
+                    newGame.setTown(iCountFractionRoles(playersInfoList, PlayerRole.Fraction.TOWN));
+                    newGame.setSindicate(iCountFractionRoles(playersInfoList, PlayerRole.Fraction.SYNDICATE));
+
                     Bundle bundle = new Bundle();
                     Log.i("SRATATA", "Dajemy parcele.");
                     bundle.putParcelable(EXTRA_NEW_GAME, Parcels.wrap(newGame));
@@ -81,7 +86,7 @@ public class ConnectPlayersToRolesActivity extends AppCompatActivity {
         });
     }
 
-    void makeHumanPlayerWithRolesList() {
+    private void makeHumanPlayerWithRolesList() {
         playersInfoList = new ArrayList<>();
         Collections.shuffle(this.selectedGameRoles); // pomieszanie roli, żeby nie były według wyboru
         // przydzielenie pomieszanych ról do graczy:
@@ -89,6 +94,15 @@ public class ConnectPlayersToRolesActivity extends AppCompatActivity {
         for (int i = 0; i < this.selectedGameRoles.size(); i++) {
             playersInfoList.add(new HumanPlayer(playersNamesList.get(i), selectedGameRoles.get(i)));
         }
+    }
+
+    private int iCountFractionRoles(ArrayList<HumanPlayer> playersInfoList, PlayerRole.Fraction fraction){
+        int i_fractionRolesQuantity = 0;
+        for(HumanPlayer hp: playersInfoList){
+            if(hp.getPlayerRole().getFraction()== fraction)
+                i_fractionRolesQuantity++;
+        }
+        return i_fractionRolesQuantity;
     }
 
     public class PlayerShowingRoleAdapter extends RecyclerView.Adapter<PlayerShowingRoleAdapter.HumanPlayerViewHolder> {

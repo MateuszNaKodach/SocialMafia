@@ -16,35 +16,26 @@
     android:gravity="left|center_vertical|center_horizontal"
     android:background="#ffffffff">
 
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Player Name"
-        android:textSize="30dp"
+        android:textSize="50dp"
         android:id="@+id/showedPlayerName"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="10dp" />
 
         <ImageView
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_height="200dp"
             android:scaleType="fitCenter"
-            android:id="@+id/roleIco"
-            android:src="@drawable/image_template"
+            android:id="@+id/thumb"
+            android:src="@drawable/icon_thumbdown2"
             android:layout_gravity="center_horizontal"
-            android:layout_margin="8dp" />
+            android:layout_width="200dp"
+            android:layout_marginTop="16dp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Player Role"
-            android:textSize="60dp"
-            android:id="@+id/showedPlayerRoleText"
-            android:layout_gravity="center"
-            android:gravity="center_vertical|center_horizontal" />
-        <!-- android:maxLines="1"-->
 
         <!--<com.vj.widgets.AutoResizeTextView
             android:layout_width="wrap_content"
@@ -58,15 +49,6 @@
             android:layout_gravity="center_horizontal"/>  maximum size -->
 
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Player Fraction"
-            android:textSize="30dp"
-            android:id="@+id/showedPlayerFraction"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp" />
 
         <Button
             android:layout_width="wrap_content"

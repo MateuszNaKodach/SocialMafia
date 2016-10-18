@@ -42,6 +42,7 @@ public class TheGame {
 	// STATYSTYKI GRY:
 	long daytime = 180000; // czas dnia w milisekundach
 
+	//początkowe ustawienia
 	int players = 0;
 	int mafia = 0;
 	int town = 0;

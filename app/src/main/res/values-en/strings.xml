@@ -4,4 +4,5 @@
     <string name="tip_title">Game Tip</string>
     <string name="status_died">DEATH</string>
     <string name="syndicate">Syndicate</string>
+    <string name="dayjudgment">Daily Voting</string>
 </resources>
