@@ -7,6 +7,7 @@ import org.parceler.Parcel;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -223,4 +224,13 @@ public class TheGame {
 
 		return null;
 	}
+
+	public List<HumanPlayer> getLiveHumanPlayers() {
+		ArrayList<HumanPlayer> result = new ArrayList<HumanPlayer>();
+		for (HumanPlayer humanPlayer : playersInfoList) {
+			if (humanPlayer.isAlive())
+				result.add(humanPlayer);
+		}
+		return result;
+	}// private ArrayList<HumanPlayer> getTownHumanPlayers()
 }

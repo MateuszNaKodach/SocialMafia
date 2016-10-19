@@ -39,7 +39,7 @@ public class RolesDataObjects {
 
     public static ArrayList<PlayerRole> getMafiaRolesList(){
         ArrayList<PlayerRole> playerRoles = new ArrayList<>();
-        playerRoles.add(new PlayerRole(R.string.boss,R.string.madmanDescription,R.drawable.image_template, PlayerRole.Fraction.MAFIA, PlayerRole.ActionType.OnlyZeroNight,90));
+        playerRoles.add(new PlayerRole(R.string.boss,R.string.madmanDescription,R.drawable.image_template, PlayerRole.Fraction.MAFIA, PlayerRole.ActionType.NoAction,90));
         playerRoles.add(new PlayerRole(R.string.blackmailer,R.string.madmanDescription,R.drawable.image_template, PlayerRole.Fraction.MAFIA, PlayerRole.ActionType.OnlyZeroNight,80));
         playerRoles.add(new PlayerRole(R.string.blackmailerBoss,R.string.madmanDescription,R.drawable.image_template, PlayerRole.Fraction.MAFIA, PlayerRole.ActionType.OnlyZeroNight,100));
         playerRoles.add(new PlayerRole(R.string.coquette,R.string.madmanDescription,R.drawable.icon_prostitute2, PlayerRole.Fraction.MAFIA, PlayerRole.ActionType.NoAction,-1));

@@ -3,7 +3,6 @@ package pl.nowakprojects.socialmafia.mainmenuoptions.newgame;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
@@ -15,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -263,13 +261,13 @@ public class RoleActionsFragment extends Fragment {
 
             private void makeProstituteAction(HumanPlayer choosenPlayer) {
                 FragmentManager fragmentManager = getFragmentManager();
-                DayOrNightRoleActionsAdapter.PlayerRoleActionViewHolder.TheGameActionShowingPlayerRoleDialog theGameActionShowingPlayerRoleDialog = new DayOrNightRoleActionsAdapter.PlayerRoleActionViewHolder.TheGameActionShowingPlayerRoleDialog(choosenPlayer);
+                TheGameActionShowingPlayerRoleDialog theGameActionShowingPlayerRoleDialog = new TheGameActionShowingPlayerRoleDialog(choosenPlayer);
                 theGameActionShowingPlayerRoleDialog.show(fragmentManager, "ProstituteAction");
             }
 
             private void makePolicemanAction(HumanPlayer choosenPlayer) {
                 FragmentManager fragmentManager = getFragmentManager();
-                DayOrNightRoleActionsAdapter.PlayerRoleActionViewHolder.TheGameActionShowingPlayerGoodOrBad theGameActionShowingPlayerGoodOrBad = new DayOrNightRoleActionsAdapter.PlayerRoleActionViewHolder.TheGameActionShowingPlayerGoodOrBad(choosenPlayer);
+                TheGameActionShowingPlayerGoodOrBad theGameActionShowingPlayerGoodOrBad = new TheGameActionShowingPlayerGoodOrBad(choosenPlayer);
                 theGameActionShowingPlayerGoodOrBad.show(fragmentManager, "PolicemanAction");
             }
 
@@ -291,7 +289,7 @@ public class RoleActionsFragment extends Fragment {
                 choosenPlayer1.setLover(choosenPlayer2);
                 choosenPlayer2.setLover(choosenPlayer1);
                 FragmentManager fragmentManager = getFragmentManager();
-                DayOrNightRoleActionsAdapter.PlayerRoleActionViewHolder.TheGameActionShowingLoversRolesDialog theGameActionShowingLoversRolesDialog = new DayOrNightRoleActionsAdapter.PlayerRoleActionViewHolder.TheGameActionShowingLoversRolesDialog(choosenPlayer1, choosenPlayer2);
+                TheGameActionShowingLoversRolesDialog theGameActionShowingLoversRolesDialog = new TheGameActionShowingLoversRolesDialog(this, choosenPlayer1, choosenPlayer2);
                 theGameActionShowingLoversRolesDialog.show(fragmentManager, "PriestAction");
             }
 
@@ -331,153 +329,11 @@ public class RoleActionsFragment extends Fragment {
 
             //-----
 
-            public class TheGameActionShowingLoversRolesDialog extends DialogFragment {
-
-                private HumanPlayer choosenPlayer;
-                private HumanPlayer choosenPlayer2;
-                private Button understandButton;
-                private TextView showedPlayerRoleText;
-                private TextView showedPlayerRoleText2;
-                private TextView showedPlayerFraction;
-                private TextView showedPlayerFraction2;
-                private ImageView showedPlayerRoleIcon;
-                private ImageView showedPlayerRoleIcon2;
-
-                TheGameActionShowingLoversRolesDialog(HumanPlayer choosenPlayer, HumanPlayer choosenPlayer2) {
-                    this.choosenPlayer = choosenPlayer;
-                    this.choosenPlayer2 = choosenPlayer2;
-                }
-
-                @Nullable
-                @Override
-                public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-                    View view = inflater.inflate(R.layout.dialog_showing_lovers_roles, null);
-                    setCancelable(false);
-                    getDialog().setTitle(R.string.loversRoles);
-
-                    //showingPlayerRoleExplanation = (TextView) view.findViewById(R.id.showingPlayerRoleExplanation);
-                    showedPlayerRoleText = (TextView) view.findViewById(R.id.showedPlayerRoleText2);
-                    showedPlayerRoleText.setText(getString(choosenPlayer.getRoleName()));
-                    showedPlayerFraction = (TextView) view.findViewById(R.id.showedPlayerFraction2);
-                    showedPlayerFraction.setText(getString(choosenPlayer.getPlayerRole().getFractionNameStringID()));
-                    //  showedPlayerRoleIcon = (ImageView) view.findViewById(R.id.loverIcon1);
-                    //  showedPlayerRoleIcon.setImageResource(choosenPlayer.getPlayerRole().getIconResourceID());
-
-                    showedPlayerRoleText2 = (TextView) view.findViewById(R.id.showedPlayerRoleText);
-                    showedPlayerRoleText2.setText(getString(choosenPlayer2.getRoleName()));
-                    showedPlayerFraction2 = (TextView) view.findViewById(R.id.showedPlayerFraction);
-                    showedPlayerFraction2.setText(getString(choosenPlayer2.getPlayerRole().getFractionNameStringID()));
-                    //  showedPlayerRoleIcon2 = (ImageView) view.findViewById(R.id.loverIcon2);
-                    //  showedPlayerRoleIcon2.setImageResource(choosenPlayer2.getPlayerRole().getIconResourceID());
-
-
-                    Button understandButton = (Button) view.findViewById(R.id.understandButton);
-                    understandButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            dismiss();
-                        }
-                    });
-                    return view;
-                }
-
-            }
-
-            public class TheGameActionShowingPlayerRoleDialog extends DialogFragment {
-
-                private HumanPlayer choosenPlayer;
-                private Button understandButton;
-                //private AutoResizeTextView showedPlayerRoleText;
-                private TextView showedPlayerRoleText;
-                private TextView showedPlayerFraction;
-                private TextView showedPlayerName;
-                private ImageView showedPlayerRoleIcon;
-
-                TheGameActionShowingPlayerRoleDialog(HumanPlayer choosenPlayer) {
-                    this.choosenPlayer = choosenPlayer;
-                }
-
-                @Nullable
-                @Override
-                public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-                    View view = inflater.inflate(R.layout.dialog_showing_player_role, null);
-                    setCancelable(false);
-                    getDialog().setTitle(R.string.checkedRole);
-
-                    showedPlayerName = (TextView) view.findViewById(R.id.showedPlayerName);
-                    showedPlayerName.setText(choosenPlayer.getPlayerName());
-                    showedPlayerRoleIcon = (ImageView) view.findViewById(R.id.roleIco);
-                    showedPlayerRoleIcon.setImageResource(choosenPlayer.getPlayerRole().getIconResourceID());
-                    // showedPlayerRoleText = (AutoResizeTextView) view.findViewById(R.id.showedPlayerRoleText);
-                    showedPlayerRoleText = (TextView) view.findViewById(R.id.showedPlayerRoleText);
-                    showedPlayerRoleText.setText(getString(choosenPlayer.getRoleName()));
-                    showedPlayerFraction = (TextView) view.findViewById(R.id.showedPlayerFraction);
-                    showedPlayerFraction.setText(getString(choosenPlayer.getPlayerRole().getFractionNameStringID()));
-
-                    understandButton = (Button) view.findViewById(R.id.understandButton);
-                    understandButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            dismiss();
-                        }
-                    });
-                    return view;
-                }
-
-            }
-
-            public class TheGameActionShowingPlayerGoodOrBad extends DialogFragment {
-
-                private HumanPlayer choosenPlayer;
-                private Button understandButton;
-                private TextView showedPlayerName;
-                private ImageView thumbIcon;
-
-                TheGameActionShowingPlayerGoodOrBad(HumanPlayer choosenPlayer) {
-                    this.choosenPlayer = choosenPlayer;
-                }
-
-                @Nullable
-                @Override
-                public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-                    View view = inflater.inflate(R.layout.dialog_showing_player_role, null);
-                    setCancelable(false);
-                    getDialog().setTitle(R.string.checkedPlayer);
-
-                    showedPlayerName = (TextView) view.findViewById(R.id.showedPlayerName);
-                    showedPlayerName.setText(choosenPlayer.getPlayerName());
-                    thumbIcon = (ImageView) view.findViewById(R.id.roleIco);
-                    if (choosenPlayer.getPlayerRole().getFraction() == PlayerRole.Fraction.TOWN)
-                        thumbIcon.setImageResource(R.drawable.icon_thumbup3);
-                    else
-                        thumbIcon.setImageResource(R.drawable.icon_thumbdown2);
-
-                    understandButton = (Button) view.findViewById(R.id.understandButton);
-                    understandButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            dismiss();
-                        }
-                    });
-                    return view;
-                }
-
-            }
-
 
         }
 
 
     }
-
-    /**
-     * Spinner adapter - do wyboru innego gracza
-     */
-    //  public class ChoosingPlayerSpinnerAdapter extends ArrayAdapter<HumanPlayer>{
-
-    //  public ChoosingPlayerSpinnerAdapter(){}
-
-    // }
 
 
 }

@@ -8,23 +8,56 @@
     android:padding="8dp">
 
     <TextView
-        android:text="DAY JUDGMENT"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/textView4"
-        tools:text="@string/dayjudgment"
+        android:text="@string/dayjudgment"
+        android:textColor="@android:color/black"
         android:textAppearance="@android:style/TextAppearance.DeviceDefault.DialogWindowTitle" />
 
     <View android:background="#000000"
         android:layout_width = "match_parent"
         android:layout_height="2dp" />
 
-    <ImageView
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/icon_judgment"
-        android:id="@+id/imageView2"
-        android:padding="16dp" />
+        android:layout_height="match_parent">
+
+        <TextView
+            android:text="99"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView_iCheckingVotes"
+            android:layout_weight="0.2"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:maxLines="2"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="32dp"
+            android:gravity="right|center_vertical" />
+
+        <ImageView
+            android:src="@drawable/ic_dailyjudgment"
+            android:id="@+id/dailyJudgmentIcon"
+            android:padding="16dp"
+            android:scaleType="fitCenter"
+            android:layout_height="220dp"
+            android:layout_width="0dp"
+            android:layout_weight="0.75" />
+
+        <TextView
+            android:text="99"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView_iKillingVotes"
+            android:layout_weight="0.2"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:maxLines="2"
+            android:layout_gravity="top"
+            android:layout_marginTop="64dp"
+            android:gravity="left|center_vertical" />
+
+    </LinearLayout>
 
     <GridLayout
         android:layout_width="match_parent"
@@ -34,11 +67,10 @@
         android:padding="8dp">
 
         <TextView
-            android:text="TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/checkingText"
-            tools:text="@string/checking"
+            android:text="@string/checking"
             android:layout_weight="0.1"
             android:gravity="right"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
@@ -53,11 +85,10 @@
             android:layout_height="10dp" />
 
         <TextView
-            android:text="TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/killingText"
-            tools:text="@string/killing"
+            android:text="@string/killing"
             android:layout_weight="0.1"
             android:gravity="right"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"

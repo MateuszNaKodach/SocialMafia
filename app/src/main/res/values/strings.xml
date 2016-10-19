@@ -240,5 +240,7 @@ Raz w ciągu gry,  podczas trwania dnia wybiera osobę, która aż do nocy nie b
     <string name="checking">Sprawdzanie:</string>
     <string name="killing">Zabijanie:</string>
     <string name="confirmVoting">Zatwierdź</string>
+    <string name="confirmKilling">Czy jesteście pewni, że chciecie kogoś zabić?</string>
+    <string name="confirmChecking">Czy jesteście pewni, że chciecie sprawdzać, a nie zabijać?</string>
 
 </resources>

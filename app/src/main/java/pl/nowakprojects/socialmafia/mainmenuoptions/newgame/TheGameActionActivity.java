@@ -10,7 +10,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -35,10 +34,12 @@ public class TheGameActionActivity extends AppCompatActivity {
     DayTimeFragment dayTimeFragment;
     NightTimeFragment nightTimeFragment;
     RoleActionsFragment roleActionsFragment;
+    TheGameDailyVotingFragment gameDailyVotingFragment;
 
     final String TIME_FRAGMENT = "TheGameActionActivity.TIME_FRAGMENT";
     final String TIME_ROLE_ACTIONS_FRAGMENT = "TheGameActionActivity.TIME_ROLE_ACTIONS_FRAGMENT";
     final String GAME_TIP_FRAGMENT = "TheGameActionActivity.GAME_TIP_FRAGMENT";
+    final String DAILY_VOTING_FRAGMENT = "TheGameActionActivity.DAILY_VOTING_FRAGMENT";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,9 +109,12 @@ public class TheGameActionActivity extends AppCompatActivity {
         if (theGame.getNightNumber() == 0){
             roleActionsFragment = new RoleActionsFragment(this, getZeroNightHumanPlayers());
             fragmentTransaction.add(R.id.dayOrNightTimeFragment, nightTimeFragment, TIME_FRAGMENT);
-            fragmentTransaction.add(R.id.dayOrNightTimeRoleActionsFragment, roleActionsFragment, TIME_ROLE_ACTIONS_FRAGMENT);
-        }else
+        }else {
             roleActionsFragment = new RoleActionsFragment(this, getAllNightsBesideZeroHumanPlayers());
+            fragmentTransaction.remove(gameDailyVotingFragment);
+        }
+
+        fragmentTransaction.add(R.id.dayOrNightTimeRoleActionsFragment, roleActionsFragment, TIME_ROLE_ACTIONS_FRAGMENT);
 
         fragmentTransaction.commit();
 
@@ -135,10 +139,12 @@ public class TheGameActionActivity extends AppCompatActivity {
 
     void startDayAction() {
         //roleActionsFragment = new RoleActionsFragment(getDayHumanPlayers());
+        gameDailyVotingFragment = new TheGameDailyVotingFragment(this, theGame);
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.dayOrNightTimeFragment,dayTimeFragment,TIME_FRAGMENT);
         fragmentTransaction.add(R.id.dayOrNightTimeRoleActionsFragment, roleActionsFragment, TIME_ROLE_ACTIONS_FRAGMENT);
+        fragmentTransaction.add(R.id.dayJudgmentFragment, gameDailyVotingFragment, DAILY_VOTING_FRAGMENT);
         fragmentTransaction.commit();
     }
 
@@ -208,30 +214,6 @@ public class TheGameActionActivity extends AppCompatActivity {
 
     }
 
-    public class TheGameDailyVotingFragment extends Fragment {
-
-        TheGame theGame;
-        SeekBar seekbar_checkingVote;
-        SeekBar seekbar_killingVote;
-        Button button_confirmVoting;
-
-        public TheGameDailyVotingFragment(TheGame theGame) {
-            this.theGame = theGame;
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            // Inflate the layout for this fragment
-            View fragmentView = inflater.inflate(R.layout.fragment_night_time, container, false);
-            seekbar_checkingVote = (SeekBar) fragmentView.findViewById(R.id.checkingSlider);
-
-            return fragmentView;
-        }
-
-
-    }
-
 
     private ArrayList<HumanPlayer> getTownHumanPlayers() {
         ArrayList<HumanPlayer> result = new ArrayList<HumanPlayer>();
@@ -251,7 +233,8 @@ public class TheGameActionActivity extends AppCompatActivity {
                 result.add(humanPlayer);
         }
         Collections.sort(result,new GameRolesWakeHierarchyComparator());
-        result.get(0).getPlayerRole().setB_isRoleTurn(true);
+        if(!result.isEmpty())
+            result.get(0).getPlayerRole().setB_isRoleTurn(true);
         return result;
     }// private ArrayList<HumanPlayer> getZeroNightHumanPlayers()
 
@@ -266,7 +249,8 @@ public class TheGameActionActivity extends AppCompatActivity {
             }
         }
         Collections.sort(result,new GameRolesWakeHierarchyComparator());
-        result.get(0).getPlayerRole().setB_isRoleTurn(true);
+        if(!result.isEmpty())
+            result.get(0).getPlayerRole().setB_isRoleTurn(true);
         return result;
     }// private ArrayList<HumanPlayer> getAllNightsBesideZeroHumanPlayers()
 
@@ -281,7 +265,8 @@ public class TheGameActionActivity extends AppCompatActivity {
             }
         }
         Collections.sort(result,new GameRolesWakeHierarchyComparator());
-        result.get(0).getPlayerRole().setB_isRoleTurn(true);
+        if(!result.isEmpty())
+            result.get(0).getPlayerRole().setB_isRoleTurn(true);
         return result;
     }// private ArrayList<HumanPlayer> getAllNightsBesideZeroHumanPlayers()*/
 
