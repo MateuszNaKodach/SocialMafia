@@ -37,7 +37,7 @@ public class DayTimeFragment extends Fragment {
 
         //Odliczanie czasu na jeden dzień (czas ustawiony wczesniej):
         dayTimerTextView = (TextView) fragmentView.findViewById(R.id.dayTimerTextView);
-        final TimeCounterClass dayTimeTimer = new TimeCounterClass(theGameActionActivity.theGame.getDaytime(), 1000);
+        final TimeCounterClass dayTimeTimer = new TimeCounterClass(theGameActionActivity.theGame.getMLONG_MAX_DAY_TIME(), 1000);
         dayTimeTimer.start();
 
         //Przycisk konczacy dzien:

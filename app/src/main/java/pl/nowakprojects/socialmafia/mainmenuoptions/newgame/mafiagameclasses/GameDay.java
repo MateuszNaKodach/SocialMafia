@@ -1,27 +1,25 @@
 package pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses;
 
+import org.parceler.Parcel;
+
 import java.util.ArrayList;
 import java.util.Set;
 
 /**
  * Created by Mateusz on 23.10.2016.
  */
+@Parcel
+class GameDay extends GameDaytime{
 
-class GameDay {
-    TheGame mTheGame;
-
-    int miThisDayNumber;
     int miThisDayRemainedDuels;
-    int miThisDayThrownChallenges;
-    int miBeginAlivePlayersAmount;
-    int miBeginTownPlayersAmount;
-    int miBeginMafiaPlayersAmount;
-    int miBeginSyndicatePlayersAmount;
+    int miThisDayThrownChallenges=0;
 
-    Set<HumanPlayer> msetThisDayKilledPlayers;  //m - member set- zbior new name conventionb
-
-    public GameDay(TheGame theGame){
-        this.mTheGame=theGame;
+    GameDay(){
+        super();
     }
 
+    GameDay(TheGame theGame, TheGame.Daytime dayTime) {
+        super(theGame, dayTime);
+        miThisDayRemainedDuels=mTheGame.I_MAX_DUELS_AMOUNT;
+    }
 }

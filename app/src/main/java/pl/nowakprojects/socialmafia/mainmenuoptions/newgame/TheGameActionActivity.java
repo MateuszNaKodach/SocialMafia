@@ -16,17 +16,17 @@ import android.support.v4.app.FragmentTransaction;
 
 import org.parceler.Parcels;
 
-import java.util.ArrayList;
-import java.util.Collections;
-
 import pl.nowakprojects.socialmafia.R;
-import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses.HumanPlayer;
-import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses.PlayerRole;
 import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses.TheGame;
-import pl.nowakprojects.socialmafia.utitles.GameRolesWakeHierarchyComparator;
 import pl.nowakprojects.socialmafia.utitles.GameTipFragment;
 
 public class TheGameActionActivity extends AppCompatActivity {
+
+    final String TIME_FRAGMENT = "TheGameActionActivity.TIME_FRAGMENT";
+    final String TIME_ROLE_ACTIONS_FRAGMENT = "TheGameActionActivity.TIME_ROLE_ACTIONS_FRAGMENT";
+    final String GAME_TIP_FRAGMENT = "TheGameActionActivity.GAME_TIP_FRAGMENT";
+    final String DAILY_VOTING_FRAGMENT = "TheGameActionActivity.DAILY_VOTING_FRAGMENT";
+    final String DAILY_DUELS_FRAGMENT = "TheGameActionActivity.DAILY_DUELS_FRAGMENT";
 
     TheGame theGame;
     boolean IS_LOADED_GAME = false;
@@ -37,11 +37,6 @@ public class TheGameActionActivity extends AppCompatActivity {
     TheGameDailyVotingFragment gameDailyVotingFragment;
     TheGameDailyDuelChallengesFragment gameDailyDuelChallengesFragment;
 
-    final String TIME_FRAGMENT = "TheGameActionActivity.TIME_FRAGMENT";
-    final String TIME_ROLE_ACTIONS_FRAGMENT = "TheGameActionActivity.TIME_ROLE_ACTIONS_FRAGMENT";
-    final String GAME_TIP_FRAGMENT = "TheGameActionActivity.GAME_TIP_FRAGMENT";
-    final String DAILY_VOTING_FRAGMENT = "TheGameActionActivity.DAILY_VOTING_FRAGMENT";
-    final String DAILY_DUELS_FRAGMENT = "TheGameActionActivity.DAILY_DUELS_FRAGMENT";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,7 +94,7 @@ public class TheGameActionActivity extends AppCompatActivity {
         startNightAction();
 
         //dopóki gra nie jest zakończona ciągle leci dzień - noc:
-        // while(!theGame.isFinished()){
+        // while(!theGame.isMbFinished()){
         //      startNightAction();
         //      startDayAction();}
 
@@ -108,11 +103,11 @@ public class TheGameActionActivity extends AppCompatActivity {
 
     void startNightAction() {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        if (theGame.getI_current_night_number() == 0){
-            roleActionsFragment = new RoleActionsFragment(this, getZeroNightHumanPlayers());
+        if (theGame.getMiCurrentNightNumber() == 0){
+            roleActionsFragment = new RoleActionsFragment(theGame);
             fragmentTransaction.add(R.id.dayOrNightTimeFragment, nightTimeFragment, TIME_FRAGMENT);
         }else {
-            roleActionsFragment = new RoleActionsFragment(this, getAllNightsBesideZeroHumanPlayers());
+            roleActionsFragment = new RoleActionsFragment(theGame);
             fragmentTransaction.remove(gameDailyVotingFragment);
         }
 
@@ -124,14 +119,14 @@ public class TheGameActionActivity extends AppCompatActivity {
     }
 
     void endNightAction() {
-        if(!(theGame.getI_current_night_number()==0))
+        if(!(theGame.getMiCurrentNightNumber()==0))
             makeJudgmentAction();
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.remove(roleActionsFragment);
         fragmentTransaction.commit();
 
-        theGame.setI_current_night_number(theGame.getI_current_night_number() + 1);
+        theGame.setMiCurrentNightNumber(theGame.getMiCurrentNightNumber() + 1);
 
     }
 
@@ -159,7 +154,7 @@ public class TheGameActionActivity extends AppCompatActivity {
     /**
      * Game app functions:
      */
-    void receiveGameSettings() {
+    private void receiveGameSettings() {
         if (IS_LOADED_GAME)
             receiveLoadGameSettings();
         else
@@ -170,13 +165,14 @@ public class TheGameActionActivity extends AppCompatActivity {
     /**
      * Odbieranie ustawień z nowej gry
      */
-    void receiveNewGameSettings() {
+    private void receiveNewGameSettings() {
         theGame = Parcels.unwrap(getIntent().getParcelableExtra(ConnectPlayersToRolesActivity.EXTRA_NEW_GAME));
+        theGame.setmTheGameActionActivity(this);
     }
 
     ;
 
-    void receiveLoadGameSettings() {
+    private void receiveLoadGameSettings() {
         //WCZYTYWANIE Z BAZDY DANYCH i tworzenie theGame na podstawie tego
     }
 
@@ -213,50 +209,11 @@ public class TheGameActionActivity extends AppCompatActivity {
          * Aktualizuje numer kolejnej nocy
          */
         void updateNightNumberTextView() {
-            nightNumberTextView.setText((getString(R.string.night_number, theGame.getI_current_night_number())));
+            nightNumberTextView.setText((getString(R.string.night_number, theGame.getMiCurrentNightNumber())));
         }
 
     }
 
-
-    private ArrayList<HumanPlayer> getTownHumanPlayers() {
-        ArrayList<HumanPlayer> result = new ArrayList<HumanPlayer>();
-        for (HumanPlayer humanPlayer : theGame.getPlayersInfoList()) {
-            if (humanPlayer.getPlayerRole().getFraction().equals(PlayerRole.Fraction.TOWN))
-                result.add(humanPlayer);
-        }
-        return result;
-    }// private ArrayList<HumanPlayer> getTownHumanPlayers()
-
-    private ArrayList<HumanPlayer> getZeroNightHumanPlayers() {
-        ArrayList<HumanPlayer> result = new ArrayList<HumanPlayer>();
-        for (HumanPlayer humanPlayer : theGame.getPlayersInfoList()) {
-            if (humanPlayer.getPlayerRole().getActionType().equals(PlayerRole.ActionType.OnlyZeroNightAndActionRequire))
-                result.add(humanPlayer);
-            if (humanPlayer.getPlayerRole().getActionType().equals(PlayerRole.ActionType.OnlyZeroNight))
-                result.add(humanPlayer);
-        }
-        Collections.sort(result,new GameRolesWakeHierarchyComparator());
-        if(!result.isEmpty())
-            result.get(0).getPlayerRole().setB_isRoleTurn(true);
-        return result;
-    }// private ArrayList<HumanPlayer> getZeroNightHumanPlayers()
-
-    private ArrayList<HumanPlayer> getAllNightsBesideZeroHumanPlayers() {
-        ArrayList<HumanPlayer> result = new ArrayList<HumanPlayer>();
-        for (HumanPlayer humanPlayer : theGame.getPlayersInfoList()) {
-            if(humanPlayer.isAlive()) {
-                if (humanPlayer.getPlayerRole().getActionType().equals(PlayerRole.ActionType.AllNights))
-                    result.add(humanPlayer);
-                if (humanPlayer.getPlayerRole().getActionType().equals(PlayerRole.ActionType.AllNightsBesideZero))
-                    result.add(humanPlayer);
-            }
-        }
-        Collections.sort(result,new GameRolesWakeHierarchyComparator());
-        if(!result.isEmpty())
-            result.get(0).getPlayerRole().setB_isRoleTurn(true);
-        return result;
-    }// private ArrayList<HumanPlayer> getAllNightsBesideZeroHumanPlayers()
 
     /*private ArrayList<HumanPlayer> getDayHumanPlayers() {
         ArrayList<HumanPlayer> result = new ArrayList<HumanPlayer>();

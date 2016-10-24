@@ -71,7 +71,7 @@ public class ConnectPlayersToRolesActivity extends AppCompatActivity {
                     newGame.setPlayers(playersInfoList.size());
                     newGame.setMafia(iCountFractionRoles(playersInfoList, PlayerRole.Fraction.MAFIA));
                     newGame.setTown(iCountFractionRoles(playersInfoList, PlayerRole.Fraction.TOWN));
-                    newGame.setSindicate(iCountFractionRoles(playersInfoList, PlayerRole.Fraction.SYNDICATE));
+                    newGame.setMiSyndicateStartAmount(iCountFractionRoles(playersInfoList, PlayerRole.Fraction.SYNDICATE));
 
                     Bundle bundle = new Bundle();
                     Log.i("SRATATA", "Dajemy parcele.");

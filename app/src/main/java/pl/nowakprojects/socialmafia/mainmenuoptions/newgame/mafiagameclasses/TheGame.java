@@ -6,7 +6,9 @@ package pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses;
 import org.parceler.Parcel;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -22,9 +24,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.TheGameActionActivity;
+import pl.nowakprojects.socialmafia.utitles.GameRolesWakeHierarchyComparator;
 
 /**
- * daytime - ograniczenie czasowe na dzien, gracz i tak decyfuje czy konczy
+ * MLONG_MAX_DAY_TIME - ograniczenie czasowe na dzien, gracz i tak decyfuje czy konczy
  * teraz DODAC CZAS GRY ( BEDZIE POTRZEBNY DO SAVE!!!)
  * Parceler wymaga nieprywatnych pól!!!
  */
@@ -32,30 +36,33 @@ import javafx.stage.Stage;
 @Parcel
 public class TheGame {
 
-	public enum DayTime {DAY, NIGHT, JUDGEMENT};
+	public enum Daytime {DAY, NIGHT, JUDGEMENT};
 
+	TheGameActionActivity mTheGameActionActivity;
 	ArrayList<HumanPlayer> playersInfoList; 	// LISTA ZAPISANYCH GRACZY
+	ArrayList<Daytime> msetTheGameDaytimes;
 
 	// LISTA WSZYSTKICH WYBRANYCH RÓL (Z POWTÓRZENIAMI)
 	//ArrayList<PlayerRole> currentGameRoles = new ArrayList<PlayerRole>();
 
 	// STATYSTYKI GRY:
-	static long daytime = 180000; // czas dnia w milisekundach
-	static int I_MAX_DUELS_AMOUNT = 3; //maksymalna ilosc pojedynkow na dzien
-	static int I_MAX_DUELS_CHALLENGES = 10; //maksymalna ilosc  wyzwan na dzien
+	final long MLONG_MAX_DAY_TIME = 180000; // czas dnia w milisekundach
+	final int I_MAX_DUELS_AMOUNT = 3; //maksymalna ilosc pojedynkow na dzien
+	final int I_MAX_DUELS_CHALLENGES = 10; //maksymalna ilosc  wyzwan na dzien
 
 	//początkowe ustawienia
 	int players = 0;
 	int mafia = 0;
 	int town = 0;
-	int sindicate = 0;
+	int miSyndicateStartAmount = 0;
 	int doublers = 0;
 
 	//zrobic nowa zmienna, GameDay of the game, i dodawac na poczatku kazdego dnia, nocy, i beda dane konkretnego dnia i nocy!!!
-	int i_current_night_number = 0;
-	int i_current_day_number = 1;
+	int miCurrentNightNumber = 0;
+	int miCurrentDayNumber = 1;
+	Daytime mdaytimeCurrentDaytime;
 
-	boolean isFinished = false; //czy gra została skończona
+	boolean mbFinished = false; //czy gra została skończona
 	//boolean coquetteMEGA = true;
 
 	int i_actions_made_this_time = 0;
@@ -75,28 +82,48 @@ public class TheGame {
 		lastNightKilledPlayer = new ArrayList<>();
 	};
 
-	public int iActionMadeThisTime(){
-		// i_actions_made_this_time++;
-		return ++i_actions_made_this_time;
-	}
-
-	public int iGetActionsMadeThisTime(){
-		return i_actions_made_this_time;
-	}
-
 	public void clearMadeActionsCount(){
 
 	}
 
-	/*
-	 * Lista graczy i ich ról (do odkrywania i zakryawnia)
-	 */
+	public ArrayList<HumanPlayer> getAllNightsBesideZeroHumanPlayers() {
+		ArrayList<HumanPlayer> result = new ArrayList<HumanPlayer>();
+		for (HumanPlayer humanPlayer : getPlayersInfoList()) {
+			if(humanPlayer.isAlive()) {
+				if (humanPlayer.getPlayerRole().getActionType().equals(PlayerRole.ActionType.AllNights))
+					result.add(humanPlayer);
+				if (humanPlayer.getPlayerRole().getActionType().equals(PlayerRole.ActionType.AllNightsBesideZero))
+					result.add(humanPlayer);
+			}
+		}
+		Collections.sort(result,new GameRolesWakeHierarchyComparator());
+		if(!result.isEmpty())
+			result.get(0).getPlayerRole().setB_isRoleTurn(true);
+		return result;
+	}// private ArrayList<HumanPlayer> getAllNightsBesideZeroHumanPlayers()
 
+	public ArrayList<HumanPlayer> getZeroNightHumanPlayers() {
+		ArrayList<HumanPlayer> result = new ArrayList<HumanPlayer>();
+		for (HumanPlayer humanPlayer : getPlayersInfoList()) {
+			if (humanPlayer.getPlayerRole().getActionType().equals(PlayerRole.ActionType.OnlyZeroNightAndActionRequire))
+				result.add(humanPlayer);
+			if (humanPlayer.getPlayerRole().getActionType().equals(PlayerRole.ActionType.OnlyZeroNight))
+				result.add(humanPlayer);
+		}
+		Collections.sort(result,new GameRolesWakeHierarchyComparator());
+		if(!result.isEmpty())
+			result.get(0).getPlayerRole().setB_isRoleTurn(true);
+		return result;
+	}// private ArrayList<HumanPlayer> getZeroNightHumanPlayers()
 
-	/*
-	 * Scena, generowanie liczby graczy i wproawdzanie ich imion
-	 */
-
+	public ArrayList<HumanPlayer> getTownHumanPlayers() {
+		ArrayList<HumanPlayer> result = new ArrayList<HumanPlayer>();
+		for (HumanPlayer humanPlayer : getPlayersInfoList()) {
+			if (humanPlayer.getPlayerRole().getFraction().equals(PlayerRole.Fraction.TOWN))
+				result.add(humanPlayer);
+		}
+		return result;
+	}// private ArrayList<HumanPlayer> getTownHumanPlayers()
 
 	public ArrayList<HumanPlayer> getPlayersInfoList() {
 		return playersInfoList;
@@ -127,6 +154,88 @@ public class TheGame {
 			lastNightHeatingByDarkMedicPlayers.add(humanPlayer);
 	}
 
+	public int iActionMadeThisTime(){
+		// i_actions_made_this_time++;
+		return ++i_actions_made_this_time;
+	}
+
+	public HumanPlayer findHumanPlayerByName(String playerName){
+		for(HumanPlayer humanPlayer: playersInfoList)
+			if(humanPlayer.getPlayerName().equals(playerName))
+				return humanPlayer;
+
+		return null;
+	}
+
+	public void setmTheGameActionActivity(TheGameActionActivity mTheGameActionActivity) {
+		this.mTheGameActionActivity = mTheGameActionActivity;
+	}
+
+	public TheGameActionActivity getmTheGameActionActivity() {
+		return mTheGameActionActivity;
+	}
+
+	public HumanPlayer findHumanPlayerByRoleName(String sRoleName){
+		for(HumanPlayer humanPlayer: playersInfoList)
+			if(humanPlayer.getPlayerName().equals(sRoleName))
+				return humanPlayer;
+
+		return null;
+	}
+
+	public List<HumanPlayer> getLiveHumanPlayers() {
+		ArrayList<HumanPlayer> result = new ArrayList<HumanPlayer>();
+		for (HumanPlayer humanPlayer : playersInfoList) {
+			if (humanPlayer.isAlive())
+				result.add(humanPlayer);
+		}
+		return result;
+	}// private ArrayList<HumanPlayer> getTownHumanPlayers()
+
+	public List<HumanPlayer> getLiveMafiaPlayers(){
+		return getLiveSelectedFractionPlayers(PlayerRole.Fraction.MAFIA);
+	}
+
+	public List<HumanPlayer> getLiveTownPlayers(){
+		return getLiveSelectedFractionPlayers(PlayerRole.Fraction.TOWN);
+	}
+
+	public List<HumanPlayer> getLiveSyndicatePlayers(){
+		return getLiveSelectedFractionPlayers(PlayerRole.Fraction.SYNDICATE);
+	}
+
+	private List<HumanPlayer> getLiveSelectedFractionPlayers(PlayerRole.Fraction fraction) {
+		ArrayList<HumanPlayer> result = new ArrayList<HumanPlayer>();
+		for (HumanPlayer humanPlayer : playersInfoList) {
+			if (humanPlayer.getPlayerRole().isFractionRole(fraction))
+				result.add(humanPlayer);
+		}
+		return result;
+	}// private ArrayList<HumanPlayer> getTownHumanPlayers()
+
+	public boolean isNightDaytimeNow(){
+		return isDaytimeNow(Daytime.NIGHT);
+	}
+
+	public boolean isDayDaytimeNow(){
+		return isDaytimeNow(Daytime.DAY);
+	}
+
+	public boolean isSpecialZeroNightNow(){
+		return isNightDaytimeNow()&&(this.getMiCurrentNightNumber()==0);
+	}
+
+	private boolean isDaytimeNow(Daytime daytime){
+		return mdaytimeCurrentDaytime==daytime;
+	}
+
+	//GETTERS AND SETTERS-----------------------------------------------------------------------------
+
+	public int iGetActionsMadeThisTime(){
+		return i_actions_made_this_time;
+	}
+
+
 	public ArrayList<HumanPlayer> getLastDayOperateByDentistPlayers() {
 		return lastDayOperateByDentistPlayer;
 	}
@@ -152,8 +261,8 @@ public class TheGame {
 	}
 
 
-	public long getDaytime() {
-		return daytime;
+	public long getMLONG_MAX_DAY_TIME() {
+		return MLONG_MAX_DAY_TIME;
 	}
 
 	public int getPlayers() {
@@ -168,24 +277,24 @@ public class TheGame {
 		return town;
 	}
 
-	public int getSindicate() {
-		return sindicate;
+	public int getMiSyndicateStartAmount() {
+		return miSyndicateStartAmount;
 	}
 
 	public int getDoublers() {
 		return doublers;
 	}
 
-	public int getI_current_night_number() {
-		return i_current_night_number;
+	public int getMiCurrentNightNumber() {
+		return miCurrentNightNumber;
 	}
 
-	public int getI_current_day_number() {
-		return i_current_day_number;
+	public int getMiCurrentDayNumber() {
+		return miCurrentDayNumber;
 	}
 
-	public void setDaytime(long daytime) {
-		this.daytime = daytime;
+	public void setMLONG_MAX_DAY_TIME(long MLONG_MAX_DAY_TIME) {
+		this.MLONG_MAX_DAY_TIME = MLONG_MAX_DAY_TIME;
 	}
 
 	public void setPlayers(int players) {
@@ -200,48 +309,24 @@ public class TheGame {
 		this.town = town;
 	}
 
-	public void setSindicate(int sindicate) {
-		this.sindicate = sindicate;
+	public void setMiSyndicateStartAmount(int miSyndicateStartAmount) {
+		this.miSyndicateStartAmount = miSyndicateStartAmount;
 	}
 
 	public void setDoublers(int doublers) {
 		this.doublers = doublers;
 	}
 
-	public void setI_current_night_number(int i_current_night_number) {
-		this.i_current_night_number = i_current_night_number;
+	public void setMiCurrentNightNumber(int miCurrentNightNumber) {
+		this.miCurrentNightNumber = miCurrentNightNumber;
 	}
 
-	public void setI_current_day_number(int i_current_day_number) {
-		this.i_current_day_number = i_current_day_number;
+	public void setMiCurrentDayNumber(int miCurrentDayNumber) {
+		this.miCurrentDayNumber = miCurrentDayNumber;
 	}
 
-	public boolean isFinished() {
-		return isFinished;
+	public boolean isMbFinished() {
+		return mbFinished;
 	}
 
-	public HumanPlayer findHumanPlayerByName(String playerName){
-		for(HumanPlayer humanPlayer: playersInfoList)
-			if(humanPlayer.getPlayerName().equals(playerName))
-				return humanPlayer;
-
-		return null;
-	}
-
-	public HumanPlayer findHumanPlayerByRoleName(String sRoleName){
-		for(HumanPlayer humanPlayer: playersInfoList)
-			if(humanPlayer.getPlayerName().equals(sRoleName))
-				return humanPlayer;
-
-		return null;
-	}
-
-	public List<HumanPlayer> getLiveHumanPlayers() {
-		ArrayList<HumanPlayer> result = new ArrayList<HumanPlayer>();
-		for (HumanPlayer humanPlayer : playersInfoList) {
-			if (humanPlayer.isAlive())
-				result.add(humanPlayer);
-		}
-		return result;
-	}// private ArrayList<HumanPlayer> getTownHumanPlayers()
 }

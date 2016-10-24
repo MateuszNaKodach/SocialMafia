@@ -56,7 +56,35 @@ public class PlayerRole {
 
     }
 
+    public boolean isMafiaRole(){
+        return fraction==Fraction.MAFIA;
+    }
 
+    public boolean isTownRole(){
+        return fraction==Fraction.TOWN;
+    }
+
+    public boolean isSyndicateRoles(){
+        return fraction==Fraction.SYNDICATE;
+    }
+
+    public boolean isFractionRole(Fraction checkedFraction){
+        return fraction==checkedFraction;
+    }
+
+    public int getFractionNameStringID() {
+        if(fraction.equals(Fraction.TOWN))
+            return R.string.town;
+        if(fraction.equals(Fraction.MAFIA))
+            return R.string.mafia;
+        if(fraction.equals(Fraction.SYNDICATE))
+            return R.string.syndicate;
+
+        return R.string.fraction;
+    }
+
+
+    //GETTERS AND SETTERS:
     public int getLifes() {
         return lifes;
     }
@@ -93,16 +121,6 @@ public class PlayerRole {
         return fraction;
     }
 
-    public int getFractionNameStringID() {
-        if(fraction.equals(Fraction.TOWN))
-            return R.string.town;
-        if(fraction.equals(Fraction.MAFIA))
-            return R.string.mafia;
-        if(fraction.equals(Fraction.SYNDICATE))
-            return R.string.syndicate;
-
-        return R.string.fraction;
-    }
 
     public void setFraction(Fraction fraction) {
         this.fraction = fraction;
@@ -152,6 +170,7 @@ public class PlayerRole {
     public boolean isB_isRoleTurn() {
         return b_isRoleTurn;
     }
+
 
     @Override
     public String toString() {

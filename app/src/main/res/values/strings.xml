@@ -108,7 +108,7 @@ Raz w ciągu gry,  podczas trwania dnia wybiera osobę, która aż do nocy nie b
 
 
     <string name="playersAmount">Liczba graczy:</string>
-    <string name="daytime">Czas trwania dnia:</string>
+    <string name="MLONG_MAX_DAY_TIME">Czas trwania dnia:</string>
     <string name="rolesSettings">Wybór ról</string>
 
     <string name="playersAmountChanged">Liczba graczy została zmieniona.</string>

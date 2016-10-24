@@ -23,31 +23,32 @@ import java.util.ArrayList;
 import pl.nowakprojects.socialmafia.R;
 import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses.HumanPlayer;
 import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses.PlayerRole;
+import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses.TheGame;
 
 /**
  * Created by Mateusz on 19.10.2016.
  */
 public class RoleActionsFragment extends Fragment {
 
-    private TheGameActionActivity theGameActionActivity;
+    private TheGame mTheGame;
+    //private TheGameActionActivity theGameActionActivity;
     DayOrNightRoleActionsAdapter dayOrNightRoleActionsAdapter;
     ArrayList<HumanPlayer> dayOrNightHumanPlayers;
 
 
-    public RoleActionsFragment(TheGameActionActivity theGameActionActivity) {
-        this.theGameActionActivity = theGameActionActivity;
-        // Required empty public constructor
-    }
+    public RoleActionsFragment(TheGame theGame) {
+        mTheGame=theGame;
+        if(theGame.isSpecialZeroNightNow())
+            this.dayOrNightHumanPlayers = mTheGame.getZeroNightHumanPlayers();
+        else if(theGame.isNightDaytimeNow())
+            this.dayOrNightHumanPlayers = mTheGame.getAllNightsBesideZeroHumanPlayers();
 
-    public RoleActionsFragment(TheGameActionActivity theGameActionActivity, ArrayList<HumanPlayer> dayOrNightHumanPlayers) {
-        this.theGameActionActivity = theGameActionActivity;
-        this.dayOrNightHumanPlayers = dayOrNightHumanPlayers;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        dayOrNightRoleActionsAdapter = new DayOrNightRoleActionsAdapter(theGameActionActivity.getApplicationContext(), dayOrNightHumanPlayers);
+        dayOrNightRoleActionsAdapter = new DayOrNightRoleActionsAdapter(getActivity().getApplicationContext(), dayOrNightHumanPlayers);
     }
 
     @Override
@@ -97,11 +98,11 @@ public class RoleActionsFragment extends Fragment {
 
             //Dodawanie opcji do Spinnera
             ArrayList<String> playerNames = new ArrayList<String>();
-            for (HumanPlayer humanPlayer : theGameActionActivity.theGame.getLiveHumanPlayers()) {
+            for (HumanPlayer humanPlayer : mTheGame.getLiveHumanPlayers()) {
                 if (!(humanPlayer.getPlayerName().equals(actionPlayers.get(position).getPlayerName()))) //wszystkich oprócz samego gracza
                     playerNames.add(humanPlayer.getPlayerName());
             }
-            ArrayAdapter<String> choosingSpinnerAdapter = new ArrayAdapter<String>(theGameActionActivity.getApplicationContext(), android.R.layout.simple_spinner_item, playerNames);
+            ArrayAdapter<String> choosingSpinnerAdapter = new ArrayAdapter<String>(getActivity().getApplicationContext(), android.R.layout.simple_spinner_item, playerNames);
             choosingSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             holder.choosingSpinner.setAdapter(choosingSpinnerAdapter);
             //-------------------------------------------------------
@@ -159,12 +160,13 @@ public class RoleActionsFragment extends Fragment {
                 confirmButton.setOnClickListener(new View.OnClickListener() {
 
                     private boolean isAllActionsMade() {
-                        return theGameActionActivity.theGame.iGetActionsMadeThisTime() == actionPlayers.size();
+                        return mTheGame.iGetActionsMadeThisTime() == actionPlayers.size();
                     }
 
                     private void enableEndOfDayTimeButton() {
                         if (isAllActionsMade())
-                            theGameActionActivity.nightTimeFragment.finishTheNightButton.setEnabled(true);
+                            mTheGame.getmTheGameActionActivity().nightTimeFragment.finishTheNightButton.setEnabled(true);
+                        //TYMCZASOWE ROZWIAZANIE - ZMIENIC!!!!
                     }
 
                     /**
@@ -174,7 +176,7 @@ public class RoleActionsFragment extends Fragment {
                      */
                     void roleActionWasMade() {
                         if (!(actionPlayers.get(getAdapterPosition()).getPlayerRole().is_actionMade())) {
-                            theGameActionActivity.theGame.iActionMadeThisTime();
+                            mTheGame.iActionMadeThisTime();
                             choosingSpinner.setEnabled(false);
                             choosingSpinner2.setEnabled(false);
                             confirmButton.setText(R.string.roleActionDone);
@@ -278,14 +280,14 @@ public class RoleActionsFragment extends Fragment {
                 if (!(choosenPlayer.getGuard().contains(actionPlayers.get(getAdapterPosition()))))
                     choosenPlayer.setGuard(actionPlayers.get(getAdapterPosition()));
 
-                Toast.makeText(theGameActionActivity.getApplicationContext(), choosenPlayer.getPlayerName() + " " + getString(R.string.hasBlackNow), Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity().getApplicationContext(), choosenPlayer.getPlayerName() + " " + getString(R.string.hasBlackNow), Toast.LENGTH_LONG).show();
             }
 
             private void makeBlackmailerAction(HumanPlayer choosenPlayer) {
                 if (!(choosenPlayer.getBlackMailer().contains(actionPlayers.get(getAdapterPosition()))))
                     choosenPlayer.setBlackMailer(actionPlayers.get(getAdapterPosition()));
 
-                Toast.makeText(theGameActionActivity.getApplicationContext(), choosenPlayer.getPlayerName() + " " + getString(R.string.hasBlackmailerNow), Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity().getApplicationContext(), choosenPlayer.getPlayerName() + " " + getString(R.string.hasBlackmailerNow), Toast.LENGTH_LONG).show();
             }
 
             private void makePriestAction(HumanPlayer choosenPlayer1, HumanPlayer choosenPlayer2) {
@@ -297,26 +299,26 @@ public class RoleActionsFragment extends Fragment {
             }
 
             private void makeMedicAction(HumanPlayer choosenPlayer) {
-                theGameActionActivity.theGame.addLastNightHealingByMedicPlayers(choosenPlayer);
-                Toast.makeText(theGameActionActivity.getApplicationContext(), choosenPlayer.getPlayerName() + " " + getString(R.string.isHealingThisNight), Toast.LENGTH_LONG).show();
+                mTheGame.addLastNightHealingByMedicPlayers(choosenPlayer);
+                Toast.makeText(getActivity().getApplicationContext(), choosenPlayer.getPlayerName() + " " + getString(R.string.isHealingThisNight), Toast.LENGTH_LONG).show();
 
             }
 
             private void makeDarkMedicAction(HumanPlayer choosenPlayer) {
-                theGameActionActivity.theGame.addLastNightHeatingByDarkMedicPlayers(choosenPlayer);
-                Toast.makeText(theGameActionActivity.getApplicationContext(), choosenPlayer.getPlayerName() + " " + getString(R.string.isHeatingThisNight), Toast.LENGTH_LONG).show();
+                mTheGame.addLastNightHeatingByDarkMedicPlayers(choosenPlayer);
+                Toast.makeText(getActivity().getApplicationContext(), choosenPlayer.getPlayerName() + " " + getString(R.string.isHeatingThisNight), Toast.LENGTH_LONG).show();
 
             }
 
             private void makeDealerAction(HumanPlayer choosenPlayer) {
-                theGameActionActivity.theGame.addLastNightDealingByDealerPlayers(choosenPlayer);
-                Toast.makeText(theGameActionActivity.getApplicationContext(), choosenPlayer.getPlayerName() + " " + getString(R.string.isDealingThisNight), Toast.LENGTH_LONG).show();
+                mTheGame.addLastNightDealingByDealerPlayers(choosenPlayer);
+                Toast.makeText(getActivity().getApplicationContext(), choosenPlayer.getPlayerName() + " " + getString(R.string.isDealingThisNight), Toast.LENGTH_LONG).show();
 
             }
 
             private void makeDeathAngelAction(HumanPlayer choosenPlayer) {
                 choosenPlayer.addStigma();
-                Toast.makeText(theGameActionActivity.getApplicationContext(), choosenPlayer.getPlayerName() + " " + getString(R.string.isSignedThisNight), Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity().getApplicationContext(), choosenPlayer.getPlayerName() + " " + getString(R.string.isSignedThisNight), Toast.LENGTH_LONG).show();
 
             }
 
