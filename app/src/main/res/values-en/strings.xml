@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Social Mafia</string>
     <string name="tip_title">Game Tip</string>
     <string name="status_died">DEATH</string>
     <string name="syndicate">Syndicate</string>

@@ -19,7 +19,6 @@ import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses.The
  */
 public class TheGameDailyVotingFragment extends Fragment {
 
-    private TheGameActionActivity theGameActionActivity;
     TheGame theGame;
     SeekBar seekbar_checkingVote;
     SeekBar seekbar_killingVote;
@@ -28,15 +27,12 @@ public class TheGameDailyVotingFragment extends Fragment {
     Button button_confirmVoting;
     AlertDialog confirmVotingDialog;
 
-    // int i_checkingVotes=0;
-    //int i_killingVotes=0;
 
     public TheGameDailyVotingFragment(){
 
     }
 
-    public TheGameDailyVotingFragment(TheGameActionActivity theGameActionActivity, TheGame theGame) {
-        this.theGameActionActivity = theGameActionActivity;
+    public TheGameDailyVotingFragment(TheGame theGame) {
         this.theGame = theGame;
         //i_checkingVotes=theGame.getLiveHumanPlayers().size();
     }
@@ -104,9 +100,7 @@ public class TheGameDailyVotingFragment extends Fragment {
 
             @Override
             public void onClick(View view) {
-                if (seekbar_killingVote.getProgress() > seekbar_checkingVote.getProgress())
-                    killing = true;
-                createPopupAlertDialog(getString(R.string.confirmVoting), (killing ? getString(R.string.confirmKilling) : getString(R.string.confirmChecking)), null, null).show();
+                createPopupAlertDialog(getString(R.string.confirmVoting), ((seekbar_killingVote.getProgress() > seekbar_checkingVote.getProgress()) ? getString(R.string.confirmKilling) : getString(R.string.confirmChecking)), null, null).show();
                 confirmVotingDialog.show();
             }
         });

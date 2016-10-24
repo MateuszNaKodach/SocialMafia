@@ -97,7 +97,7 @@ public class RoleActionsFragment extends Fragment {
 
             //Dodawanie opcji do Spinnera
             ArrayList<String> playerNames = new ArrayList<String>();
-            for (HumanPlayer humanPlayer : theGameActionActivity.theGame.getPlayersInfoList()) {
+            for (HumanPlayer humanPlayer : theGameActionActivity.theGame.getLiveHumanPlayers()) {
                 if (!(humanPlayer.getPlayerName().equals(actionPlayers.get(position).getPlayerName()))) //wszystkich oprócz samego gracza
                     playerNames.add(humanPlayer.getPlayerName());
             }
@@ -250,6 +250,9 @@ public class RoleActionsFragment extends Fragment {
                     case R.string.rapist:
                         makeProstituteAction(choosenPlayer);
                         break;
+                    case R.string.hitler:
+                        makeProstituteAction(choosenPlayer);
+                        break;
                     case R.string.deathAngel:
                         makeDeathAngelAction(choosenPlayer);
                         break;
@@ -319,6 +322,12 @@ public class RoleActionsFragment extends Fragment {
 
             private void makeBartenderAction() {
                 //przusawnie strzalu, wybiera stronę i ilość
+            }
+
+            private void makeHitlerAction() {
+                FragmentManager fragmentManager = getFragmentManager();
+                //TheGameActionShowingJewPlayerName theGameActionShowingJewPlayerName = new TheGameActionShowingJewPlayerName(theGameActionActivity.theGame.findHumanPlayerByRoleName(getString(R.string.jew)));
+                //theGameActionShowingJewPlayerName.show(fragmentManager, "ProstituteAction");
             }
 
             //----daytime::

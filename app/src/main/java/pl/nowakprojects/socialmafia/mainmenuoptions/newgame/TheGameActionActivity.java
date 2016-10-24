@@ -35,11 +35,13 @@ public class TheGameActionActivity extends AppCompatActivity {
     NightTimeFragment nightTimeFragment;
     RoleActionsFragment roleActionsFragment;
     TheGameDailyVotingFragment gameDailyVotingFragment;
+    TheGameDailyDuelChallengesFragment gameDailyDuelChallengesFragment;
 
     final String TIME_FRAGMENT = "TheGameActionActivity.TIME_FRAGMENT";
     final String TIME_ROLE_ACTIONS_FRAGMENT = "TheGameActionActivity.TIME_ROLE_ACTIONS_FRAGMENT";
     final String GAME_TIP_FRAGMENT = "TheGameActionActivity.GAME_TIP_FRAGMENT";
     final String DAILY_VOTING_FRAGMENT = "TheGameActionActivity.DAILY_VOTING_FRAGMENT";
+    final String DAILY_DUELS_FRAGMENT = "TheGameActionActivity.DAILY_DUELS_FRAGMENT";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,7 +108,7 @@ public class TheGameActionActivity extends AppCompatActivity {
 
     void startNightAction() {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        if (theGame.getNightNumber() == 0){
+        if (theGame.getI_current_night_number() == 0){
             roleActionsFragment = new RoleActionsFragment(this, getZeroNightHumanPlayers());
             fragmentTransaction.add(R.id.dayOrNightTimeFragment, nightTimeFragment, TIME_FRAGMENT);
         }else {
@@ -122,14 +124,14 @@ public class TheGameActionActivity extends AppCompatActivity {
     }
 
     void endNightAction() {
-        if(!(theGame.getNightNumber()==0))
+        if(!(theGame.getI_current_night_number()==0))
             makeJudgmentAction();
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.remove(roleActionsFragment);
         fragmentTransaction.commit();
 
-        theGame.setNightNumber(theGame.getNightNumber() + 1);
+        theGame.setI_current_night_number(theGame.getI_current_night_number() + 1);
 
     }
 
@@ -139,12 +141,14 @@ public class TheGameActionActivity extends AppCompatActivity {
 
     void startDayAction() {
         //roleActionsFragment = new RoleActionsFragment(getDayHumanPlayers());
-        gameDailyVotingFragment = new TheGameDailyVotingFragment(this, theGame);
+        gameDailyVotingFragment = new TheGameDailyVotingFragment(theGame);
+        gameDailyDuelChallengesFragment = new TheGameDailyDuelChallengesFragment(theGame);
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.dayOrNightTimeFragment,dayTimeFragment,TIME_FRAGMENT);
         fragmentTransaction.add(R.id.dayOrNightTimeRoleActionsFragment, roleActionsFragment, TIME_ROLE_ACTIONS_FRAGMENT);
         fragmentTransaction.add(R.id.dayJudgmentFragment, gameDailyVotingFragment, DAILY_VOTING_FRAGMENT);
+        fragmentTransaction.add(R.id.dayDuelsFragment, gameDailyDuelChallengesFragment, DAILY_DUELS_FRAGMENT);
         fragmentTransaction.commit();
     }
 
@@ -209,7 +213,7 @@ public class TheGameActionActivity extends AppCompatActivity {
          * Aktualizuje numer kolejnej nocy
          */
         void updateNightNumberTextView() {
-            nightNumberTextView.setText((getString(R.string.night_number, theGame.getNightNumber())));
+            nightNumberTextView.setText((getString(R.string.night_number, theGame.getI_current_night_number())));
         }
 
     }

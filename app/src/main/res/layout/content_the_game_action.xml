@@ -13,7 +13,8 @@
     tools:context="pl.nowakprojects.socialmafia.mainmenuoptions.newgame.TheGameActionActivity"
     tools:showIn="@layout/activity_the_game_action"
     android:orientation="vertical"
-    android:gravity="center_horizontal">
+    android:gravity="center_horizontal"
+    android:background="@android:color/white">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -38,6 +39,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/dayOrNightTimeRoleActionsFragment"/>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/dayDuelsFragment"/>
 
             <FrameLayout
                 android:layout_width="match_parent"

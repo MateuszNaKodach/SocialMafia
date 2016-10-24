@@ -58,7 +58,7 @@ public class NightTimeFragment extends Fragment {
      * Aktualizuje numer kolejnej nocy
      */
     void updateNightNumberTextView() {
-        nightNumberTextView.setText((getString(R.string.night_number, theGame.getNightNumber())));
+        nightNumberTextView.setText((getString(R.string.night_number, theGame.getI_current_night_number())));
     }
 
     public void buildConfirmationAlertDialog() {

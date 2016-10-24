@@ -39,7 +39,7 @@
             android:id="@+id/button_collapseButton"
             android:layout_weight="0.1"
             android:layout_gravity="right"
-            style="@android:style/Widget.Material.Button.Borderless.Colored"
+            style="@android:style/Widget.DeviceDefault.Light.Button.Borderless.Small"
             tools:text="@string/collapse" />
 
     </LinearLayout>

@@ -12,6 +12,5 @@
         app:srcCompat="@drawable/icon_night"
         tools:layout_editor_absoluteY="67dp"
         android:id="@+id/imageView"
-        app:layout_constraintRight_toRightOf="@+id/constraintLayout"
         android:adjustViewBounds="true" />
 </android.support.constraint.ConstraintLayout>

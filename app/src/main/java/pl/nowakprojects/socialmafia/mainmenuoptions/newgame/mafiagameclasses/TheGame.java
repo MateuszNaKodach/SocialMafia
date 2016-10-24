@@ -6,7 +6,6 @@ package pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses;
 import org.parceler.Parcel;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javafx.collections.FXCollections;
@@ -41,7 +40,9 @@ public class TheGame {
 	//ArrayList<PlayerRole> currentGameRoles = new ArrayList<PlayerRole>();
 
 	// STATYSTYKI GRY:
-	long daytime = 180000; // czas dnia w milisekundach
+	static long daytime = 180000; // czas dnia w milisekundach
+	static int I_MAX_DUELS_AMOUNT = 3; //maksymalna ilosc pojedynkow na dzien
+	static int I_MAX_DUELS_CHALLENGES = 10; //maksymalna ilosc  wyzwan na dzien
 
 	//początkowe ustawienia
 	int players = 0;
@@ -50,8 +51,9 @@ public class TheGame {
 	int sindicate = 0;
 	int doublers = 0;
 
-	int nightNumber = 0;
-	int dayNumber = 1;
+	//zrobic nowa zmienna, GameDay of the game, i dodawac na poczatku kazdego dnia, nocy, i beda dane konkretnego dnia i nocy!!!
+	int i_current_night_number = 0;
+	int i_current_day_number = 1;
 
 	boolean isFinished = false; //czy gra została skończona
 	//boolean coquetteMEGA = true;
@@ -149,6 +151,7 @@ public class TheGame {
 		this.playersInfoList = playersInfoList;
 	}
 
+
 	public long getDaytime() {
 		return daytime;
 	}
@@ -173,12 +176,12 @@ public class TheGame {
 		return doublers;
 	}
 
-	public int getNightNumber() {
-		return nightNumber;
+	public int getI_current_night_number() {
+		return i_current_night_number;
 	}
 
-	public int getDayNumber() {
-		return dayNumber;
+	public int getI_current_day_number() {
+		return i_current_day_number;
 	}
 
 	public void setDaytime(long daytime) {
@@ -205,12 +208,12 @@ public class TheGame {
 		this.doublers = doublers;
 	}
 
-	public void setNightNumber(int nightNumber) {
-		this.nightNumber = nightNumber;
+	public void setI_current_night_number(int i_current_night_number) {
+		this.i_current_night_number = i_current_night_number;
 	}
 
-	public void setDayNumber(int dayNumber) {
-		this.dayNumber = dayNumber;
+	public void setI_current_day_number(int i_current_day_number) {
+		this.i_current_day_number = i_current_day_number;
 	}
 
 	public boolean isFinished() {
@@ -220,6 +223,14 @@ public class TheGame {
 	public HumanPlayer findHumanPlayerByName(String playerName){
 		for(HumanPlayer humanPlayer: playersInfoList)
 			if(humanPlayer.getPlayerName().equals(playerName))
+				return humanPlayer;
+
+		return null;
+	}
+
+	public HumanPlayer findHumanPlayerByRoleName(String sRoleName){
+		for(HumanPlayer humanPlayer: playersInfoList)
+			if(humanPlayer.getPlayerName().equals(sRoleName))
 				return humanPlayer;
 
 		return null;
