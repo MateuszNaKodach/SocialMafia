@@ -31,12 +31,23 @@ import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses.The
 public class RoleActionsFragment extends Fragment {
 
     private TheGame mTheGame;
-    //private TheGameActionActivity theGameActionActivity;
+    private TheGameActionActivity theGameActionActivity;
     DayOrNightRoleActionsAdapter dayOrNightRoleActionsAdapter;
     ArrayList<HumanPlayer> dayOrNightHumanPlayers;
 
 
     public RoleActionsFragment(TheGame theGame) {
+        mTheGame=theGame;
+        if(theGame.isSpecialZeroNightNow())
+            this.dayOrNightHumanPlayers = mTheGame.getZeroNightHumanPlayers();
+        else if(theGame.isNightDaytimeNow())
+            this.dayOrNightHumanPlayers = mTheGame.getAllNightsBesideZeroHumanPlayers();
+
+    }
+
+    //TYMCZASOWE
+    public RoleActionsFragment(TheGame theGame,  TheGameActionActivity theGameActionActivity) {
+        this.theGameActionActivity = theGameActionActivity;
         mTheGame=theGame;
         if(theGame.isSpecialZeroNightNow())
             this.dayOrNightHumanPlayers = mTheGame.getZeroNightHumanPlayers();
@@ -165,7 +176,7 @@ public class RoleActionsFragment extends Fragment {
 
                     private void enableEndOfDayTimeButton() {
                         if (isAllActionsMade())
-                            mTheGame.getmTheGameActionActivity().nightTimeFragment.finishTheNightButton.setEnabled(true);
+                            theGameActionActivity.nightTimeFragment.finishTheNightButton.setEnabled(true);
                         //TYMCZASOWE ROZWIAZANIE - ZMIENIC!!!!
                     }
 

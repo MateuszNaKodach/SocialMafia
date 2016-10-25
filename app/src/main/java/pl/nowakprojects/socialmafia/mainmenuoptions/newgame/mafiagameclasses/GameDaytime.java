@@ -10,15 +10,15 @@ import java.util.Set;
  */
 
 @Parcel
-abstract class GameDaytime {
+class GameDaytime {
 
     TheGame mTheGame;
-    final TheGame.Daytime mDayTime;
-    final int miThisDaytimeNumber;
-    final int miBeginAlivePlayersAmount;
-    final int miBeginTownPlayersAmount;
-    final int miBeginMafiaPlayersAmount;
-    final int miBeginSyndicatePlayersAmount;
+    TheGame.Daytime mDayTime;
+    int miThisDaytimeNumber;
+    int miBeginAlivePlayersAmount;
+    int miBeginTownPlayersAmount;
+    int miBeginMafiaPlayersAmount;
+    int miBeginSyndicatePlayersAmount;
 
     ArrayList<HumanPlayer> mlistThisDaytimeKilledPlayers = new ArrayList<>();
 

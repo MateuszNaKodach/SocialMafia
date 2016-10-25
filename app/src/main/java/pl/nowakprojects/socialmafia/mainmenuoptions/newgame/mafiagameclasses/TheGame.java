@@ -4,6 +4,7 @@ package pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses;
  */
 
 import org.parceler.Parcel;
+import org.parceler.ParcelProperty;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,17 +39,16 @@ public class TheGame {
 
 	public enum Daytime {DAY, NIGHT, JUDGEMENT};
 
-	TheGameActionActivity mTheGameActionActivity;
 	ArrayList<HumanPlayer> playersInfoList; 	// LISTA ZAPISANYCH GRACZY
-	ArrayList<Daytime> msetTheGameDaytimes;
+	ArrayList<GameDaytime> mlistTheGameDaytimes;
 
 	// LISTA WSZYSTKICH WYBRANYCH RÓL (Z POWTÓRZENIAMI)
 	//ArrayList<PlayerRole> currentGameRoles = new ArrayList<PlayerRole>();
 
 	// STATYSTYKI GRY:
-	final long MLONG_MAX_DAY_TIME = 180000; // czas dnia w milisekundach
-	final int I_MAX_DUELS_AMOUNT = 3; //maksymalna ilosc pojedynkow na dzien
-	final int I_MAX_DUELS_CHALLENGES = 10; //maksymalna ilosc  wyzwan na dzien
+	long MLONG_MAX_DAY_TIME = 180000; // czas dnia w milisekundach
+	int I_MAX_DUELS_AMOUNT = 3; //maksymalna ilosc pojedynkow na dzien
+	int I_MAX_DUELS_CHALLENGES = 10; //maksymalna ilosc  wyzwan na dzien
 
 	//początkowe ustawienia
 	int players = 0;
@@ -58,8 +58,8 @@ public class TheGame {
 	int doublers = 0;
 
 	//zrobic nowa zmienna, GameDay of the game, i dodawac na poczatku kazdego dnia, nocy, i beda dane konkretnego dnia i nocy!!!
-	int miCurrentNightNumber = 0;
-	int miCurrentDayNumber = 1;
+	int miCurrentNightNumber = -1;
+	int miCurrentDayNumber = 0;
 	Daytime mdaytimeCurrentDaytime;
 
 	boolean mbFinished = false; //czy gra została skończona
@@ -84,6 +84,18 @@ public class TheGame {
 
 	public void clearMadeActionsCount(){
 
+	}
+
+	public void startNewNight(){
+		miCurrentNightNumber++;
+		this.mdaytimeCurrentDaytime=Daytime.NIGHT;
+		mlistTheGameDaytimes.add(new GameNight(this,Daytime.NIGHT));
+	}
+
+	public void startNewDay(){
+		miCurrentDayNumber++;
+		this.mdaytimeCurrentDaytime=Daytime.DAY;
+		mlistTheGameDaytimes.add(new GameDay(this,Daytime.DAY));
 	}
 
 	public ArrayList<HumanPlayer> getAllNightsBesideZeroHumanPlayers() {
@@ -167,13 +179,6 @@ public class TheGame {
 		return null;
 	}
 
-	public void setmTheGameActionActivity(TheGameActionActivity mTheGameActionActivity) {
-		this.mTheGameActionActivity = mTheGameActionActivity;
-	}
-
-	public TheGameActionActivity getmTheGameActionActivity() {
-		return mTheGameActionActivity;
-	}
 
 	public HumanPlayer findHumanPlayerByRoleName(String sRoleName){
 		for(HumanPlayer humanPlayer: playersInfoList)

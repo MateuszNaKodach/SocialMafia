@@ -102,12 +102,13 @@ public class TheGameActionActivity extends AppCompatActivity {
     }
 
     void startNightAction() {
+        theGame.startNewNight();
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        if (theGame.getMiCurrentNightNumber() == 0){
-            roleActionsFragment = new RoleActionsFragment(theGame);
+        if (theGame.isSpecialZeroNightNow()){
+            roleActionsFragment = new RoleActionsFragment(theGame,this);
             fragmentTransaction.add(R.id.dayOrNightTimeFragment, nightTimeFragment, TIME_FRAGMENT);
         }else {
-            roleActionsFragment = new RoleActionsFragment(theGame);
+            roleActionsFragment = new RoleActionsFragment(theGame,this);
             fragmentTransaction.remove(gameDailyVotingFragment);
         }
 
@@ -135,6 +136,7 @@ public class TheGameActionActivity extends AppCompatActivity {
     }
 
     void startDayAction() {
+        theGame.startNewDay();
         //roleActionsFragment = new RoleActionsFragment(getDayHumanPlayers());
         gameDailyVotingFragment = new TheGameDailyVotingFragment(theGame);
         gameDailyDuelChallengesFragment = new TheGameDailyDuelChallengesFragment(theGame);
@@ -167,7 +169,7 @@ public class TheGameActionActivity extends AppCompatActivity {
      */
     private void receiveNewGameSettings() {
         theGame = Parcels.unwrap(getIntent().getParcelableExtra(ConnectPlayersToRolesActivity.EXTRA_NEW_GAME));
-        theGame.setmTheGameActionActivity(this);
+        //theGame.setmTheGameActionActivity(this);
     }
 
     ;

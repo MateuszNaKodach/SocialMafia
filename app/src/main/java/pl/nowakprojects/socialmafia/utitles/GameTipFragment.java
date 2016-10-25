@@ -92,4 +92,10 @@ public class GameTipFragment extends Fragment {
 
     }
 
+    public void setS_tipContent(String s_tipContent) {
+        this.s_tipContent = s_tipContent;
+        this.textView_tipContent.setText(s_tipContent);
+        collapse(true);
+    }
+
 }
