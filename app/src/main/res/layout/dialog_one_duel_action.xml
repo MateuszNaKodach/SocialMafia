@@ -16,7 +16,7 @@
             android:text="99"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:id="@+id/textView_iCheckingVotes"
+            android:id="@+id/textView_iKillAgressivePlayerVotes"
             android:layout_weight="0.2"
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
             android:maxLines="2"
@@ -38,7 +38,7 @@
             android:text="99"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:id="@+id/textView_iKillingVotes"
+            android:id="@+id/textView_iKillInsultedPlayerVotes"
             android:layout_weight="0.2"
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
             android:maxLines="2"
@@ -63,7 +63,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/textView_agressivePlayerName"
+            android:id="@+id/textView_sAgressivePlayerName"
             android:layout_weight="0.1"
             android:gravity="right"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
@@ -71,9 +71,11 @@
 
         <SeekBar
             android:layout_height="wrap_content"
-            android:id="@+id/checkingSlider"
-            android:layout_width="238dp"
-            android:layout_gravity="fill_horizontal" />
+            android:id="@+id/agressiveKillingSlider"
+            android:layout_gravity="fill_horizontal"
+            android:layout_width="0dp"
+            android:progress="0"
+            android:layout_columnWeight="1" />
 
         <Space android:layout_columnSpan="3"
             android:layout_width="match_parent"
@@ -82,7 +84,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/textView_sDefiantPlayerName"
+            android:id="@+id/textView_sInsultedPlayerName"
             android:text="Player 2"
             android:layout_weight="0.1"
             android:gravity="right"
@@ -91,9 +93,11 @@
 
         <SeekBar
             android:layout_height="wrap_content"
-            android:id="@+id/killingSlider"
-            android:layout_width="238dp"
-            android:layout_gravity="fill_horizontal" />
+            android:id="@+id/insultedKillingSlider"
+            android:layout_gravity="fill_horizontal"
+            android:elevation="1dp"
+            android:layout_columnWeight="1"
+            android:progress="0" />
 
     </GridLayout>
 
@@ -105,8 +109,8 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/button_confirmJudge"
-        android:text="@string/confirmVoting"
+        android:id="@+id/button_confirmDuel"
+        android:text="@string/confirm"
         android:textAlignment="center" />
 
 

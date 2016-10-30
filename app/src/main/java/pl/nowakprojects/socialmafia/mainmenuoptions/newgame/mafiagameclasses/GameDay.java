@@ -14,6 +14,9 @@ class GameDay extends GameDaytime{
     int miThisDayRemainedDuels;
     int miThisDayThrownChallenges=0;
 
+    ArrayList<HumanPlayer> mlistDuelsKilledHumanPlayers = new ArrayList<>();
+
+
     GameDay(){
         super();
     }

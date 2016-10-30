@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:minHeight="140dp"
+
+    android:id="@+id/game_status_layout"
+    android:background="@android:color/white"
+    android:gravity="left"
+    android:padding="8dp"
+    android:weightSum="1">
+
+    <ImageView
+        android:layout_width="93dp"
+        android:layout_height="84dp"
+        android:src="@drawable/image_template"
+        android:id="@+id/roleIco"
+        android:scaleType="fitCenter"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="16dp" />
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:text="the name of the player"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/playerName"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:layout_marginTop="16dp"
+            android:textColor="@android:color/black" />
+
+        <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+            android:text="Role name"
+            android:id="@+id/roleName"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+            android:textColorLink="@android:color/black"
+            android:textColorHint="@android:color/black"
+            android:textColor="@android:color/black"
+            android:textColorHighlight="@android:color/black" />
+
+
+        <TextView
+            android:text="Fraction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fractionName"
+            android:layout_marginTop="16dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            android:textColor="@android:color/black" />
+
+    </LinearLayout>
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/checkBox_votingSelection"
+        android:layout_weight="1"
+        android:checked="false"
+        android:duplicateParentState="false"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp" />
+
+</LinearLayout>
+   <!-- <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:padding="@dimen/player_status_padding"
+    android:id="@+id/constraintLayout"
+    android:theme="@style/AppTheme.NoActionBar">
+
+
+        <ImageView
+            android:layout_width="119dp"
+            android:layout_height="84dp"
+            app:srcCompat="@drawable/image_template"
+            android:id="@+id/roleIco"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="@+id/constraintLayout"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toTopOf="@+id/constraintLayout"
+            app:layout_constraintLeft_toLeftOf="@+id/constraintLayout"
+            app:layout_constraintVertical_bias="0.49" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="the name of the player"
+        android:id="@+id/playerName"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toTopOf="@+id/constraintLayout"
+        android:layout_marginStart="8dp"
+        app:layout_constraintLeft_toRightOf="@+id/roleIco"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintRight_toRightOf="@+id/constraintLayout"
+        android:layout_marginRight="16dp" />
+
+    <TextView
+        android:text="Role name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/roleName"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        app:layout_constraintLeft_toLeftOf="@+id/playerName"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/playerName" />
+
+    <TextView
+        android:text="Fraction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/fractionName"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/roleName"
+        android:layout_marginStart="16dp"
+        app:layout_constraintLeft_toRightOf="@+id/roleIco"
+        android:layout_marginLeft="16dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
+
+    <ImageView
+        android:layout_width="74dp"
+        android:layout_height="63dp"
+        app:srcCompat="@drawable/icon_heart"
+        android:id="@+id/playerStatusIcon"
+        app:layout_constraintBottom_toBottomOf="@+id/roleName"
+        app:layout_constraintTop_toTopOf="@+id/roleName"
+        app:layout_constraintVertical_bias="0.19"
+        android:scaleType="fitCenter"
+        android:layout_marginStart="32dp"
+        app:layout_constraintLeft_toRightOf="@+id/roleName"
+        android:layout_marginLeft="32dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintRight_toRightOf="@+id/constraintLayout"
+        android:layout_marginRight="16dp" />
+
+    <ImageView
+        android:layout_width="37dp"
+        android:layout_height="33dp"
+        app:srcCompat="@drawable/ic_menu_moreoverflow_normal_holo_light"
+        android:id="@+id/optionsDots"
+        app:layout_constraintBottom_toTopOf="@+id/playerStatusIcon"
+        app:layout_constraintLeft_toRightOf="@+id/playerStatusIcon"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintVertical_bias="0.14" />
+</android.support.constraint.ConstraintLayout>-->
+<!--
+<android.support.v7.widget.CardView xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="300dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="@dimen/cardview_default_radius"
+    android:layout_margin="32dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    app:cardElevation="9dp"
+    android:theme="@style/AppTheme">
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:gravity="center_vertical|center_horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="the name of the player"
+            android:id="@+id/playerName"
+            android:gravity="center_horizontal"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp" />
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="125dp"
+            android:id="@+id/playerIco"
+            android:src="@drawable/image_template"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Role name"
+            android:id="@+id/roleName"
+            android:gravity="center_horizontal"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="(Fraction)"
+            android:id="@+id/fractionName"
+            android:gravity="center_horizontal"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="ŻYWY"
+            android:id="@+id/playerStatus"
+            android:gravity="center_horizontal"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_gravity="center_horizontal"
+            android:textStyle="bold"/>
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>-->

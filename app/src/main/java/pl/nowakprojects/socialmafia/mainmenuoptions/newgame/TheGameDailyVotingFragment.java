@@ -96,11 +96,14 @@ public class TheGameDailyVotingFragment extends Fragment {
         textView_iKillingVotes.setText(String.valueOf(seekbar_killingVote.getProgress()));
 
         button_confirmVoting.setOnClickListener(new View.OnClickListener() {
-            boolean killing = false;
 
             @Override
             public void onClick(View view) {
-                createPopupAlertDialog(getString(R.string.confirmVoting), ((seekbar_killingVote.getProgress() > seekbar_checkingVote.getProgress()) ? getString(R.string.confirmKilling) : getString(R.string.confirmChecking)), null, null).show();
+                createPopupAlertDialog(((seekbar_killingVote.getProgress() > seekbar_checkingVote.getProgress()) ?
+                                getString(R.string.killing) : getString(R.string.checking)),
+                        ((seekbar_killingVote.getProgress() > seekbar_checkingVote.getProgress()) ?
+                                getString(R.string.confirmKilling) : getString(R.string.confirmChecking)),
+                        null, null).show();
                 confirmVotingDialog.show();
             }
         });

@@ -7,25 +7,33 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import pl.nowakprojects.socialmafia.mainmenuoptions.gamerules.GameRulesActivity;
 import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.PickPlayersAmountActivity;
+
+import static android.R.attr.onClick;
 
 public class MainActivity extends AppCompatActivity {
 
     static boolean IS_PREMIUM_VESRION = false; //dodac to gdzies tam do gradle, jak na Udacity
     static boolean ALL_TIPS_COLLAPSED = false; //do preferencji czy wszystkie podpowiedzi maja byc zwiniecte, rozwiniete, ustawienia zalecane
 
+    @BindView(R.id.buttonStartNewGame) ImageButton buttonStartNewGame;
+    @BindView(R.id.buttonLoadGame) ImageButton buttonLoadGame;
+    @BindView(R.id.buttonGameRules) ImageButton buttonGameRules;
+    @BindView(R.id.buttonAppPreferences) ImageButton buttonAppPreferences;
+    @BindView(R.id.facebookFanPageLayout) View facebookLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
+        setButtonsListeners();
+    }
 
-        ImageButton buttonStartNewGame = (ImageButton) findViewById(R.id.buttonStartNewGame);
-        ImageButton buttonLoadGame = (ImageButton) findViewById(R.id.buttonLoadGame);
-        ImageButton buttonGameRules = (ImageButton) findViewById(R.id.buttonGameRules);
-        ImageButton buttonAppPreferences = (ImageButton) findViewById(R.id.buttonAppPreferences);
-        View facebookLayout = (View) findViewById(R.id.facebookFanPageLayout);
-
+    private void setButtonsListeners(){
         buttonStartNewGame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -52,4 +60,5 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 }

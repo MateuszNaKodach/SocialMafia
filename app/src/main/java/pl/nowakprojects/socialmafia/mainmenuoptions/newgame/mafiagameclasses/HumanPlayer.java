@@ -71,9 +71,31 @@ public class HumanPlayer {
         return lover;
     }
 
-    public ArrayList<HumanPlayer> getGuard() {
+    public ArrayList<HumanPlayer> getGuardsList() {
         return guard;
     }
+
+    //dochodzi do obroncy, ktory ma zginac metoda rekurencji
+    public static HumanPlayer getFirstGuard(HumanPlayer player){
+        if(player.getGuardsList().isEmpty())
+            return player;
+        else
+            return getFirstGuard(player.getAliveFirstGuard());
+    }
+
+    //zwraca pierwszego zywego obronce:
+    public HumanPlayer getAliveFirstGuard(){
+        for(HumanPlayer x: guard)
+            if(x.isAlive())
+                return x;
+        return this;
+    }
+
+
+    //public static ArrayList<HumanPlayer> getLoversToKill(HumanPlayer player){
+     //   if(player.getLover().isEmpty())
+      //      return player;
+    //}
 
     public ArrayList<HumanPlayer> getBlackMailer() {
         return blackMailer;
@@ -86,6 +108,36 @@ public class HumanPlayer {
 
     public void killThePlayer(){
         alive = false;
+    }
+
+    private static ArrayList<HumanPlayer> killDuringTheGame(HumanPlayer humanPlayer){
+        ArrayList<HumanPlayer> playersToKill = new ArrayList<>();
+            playersToKill.add(HumanPlayer.getFirstGuard(humanPlayer)); //zabija ostatniego z ciagu murzynów, np. jesli murzyn murszyni murzyna
+            //pomyslec tutaj nad rekursja ogonowa! Bo co jesli murzynia siebie nawzajem!? Albo dwa arguemty do poprzedniego wyniku
+
+        //jesli znaleziono murzyna, to zmieniamy gracza na niego i lecimy dalej:
+            if(!playersToKill.isEmpty())
+                humanPlayer = playersToKill.get(0);
+
+                //teraz sprawdzimy kochanków (dla gracza albo dla murzyna):
+                //if(humanPlayer.get)
+                //
+
+        for(HumanPlayer hp: playersToKill)
+            hp.killThePlayer();
+
+        return playersToKill;
+    }
+
+    public static ArrayList<HumanPlayer> killThemDuringTheGame(ArrayList<HumanPlayer> humanPlayersToKill) {
+        ArrayList<HumanPlayer> killedPlayers = new ArrayList<HumanPlayer>();
+
+        for(HumanPlayer hp: humanPlayersToKill)
+            if(hp.isAlive())
+                killedPlayers.addAll(HumanPlayer.killDuringTheGame(hp));
+
+        return killedPlayers;
+
     }
 
     public int howManyLifes(){

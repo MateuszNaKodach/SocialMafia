@@ -239,7 +239,7 @@ Raz w ciągu gry,  podczas trwania dnia wybiera osobę, która aż do nocy nie b
     <string name="dayjudgment">Głosowanie</string>
     <string name="checking">Sprawdzanie:</string>
     <string name="killing">Zabijanie:</string>
-    <string name="confirmVoting">Zatwierdź</string>
+    <string name="confirmDuelResult">Czy jesteś pewien, że gracz %1$s wygrał głosowanie z graczem %2$s?</string>
     <string name="confirmKilling">Czy jesteście pewni, że chciecie kogoś zabić?</string>
     <string name="confirmChecking">Czy jesteście pewni, że chciecie sprawdzać, a nie zabijać?</string>
     <string name="daily_duels">Pojedynki</string>

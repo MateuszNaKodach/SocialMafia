@@ -288,7 +288,7 @@ public class RoleActionsFragment extends Fragment {
             }
 
             private void makeBlackManAction(HumanPlayer choosenPlayer) {
-                if (!(choosenPlayer.getGuard().contains(actionPlayers.get(getAdapterPosition()))))
+                if (!(choosenPlayer.getGuardsList().contains(actionPlayers.get(getAdapterPosition()))))
                     choosenPlayer.setGuard(actionPlayers.get(getAdapterPosition()));
 
                 Toast.makeText(getActivity().getApplicationContext(), choosenPlayer.getPlayerName() + " " + getString(R.string.hasBlackNow), Toast.LENGTH_LONG).show();

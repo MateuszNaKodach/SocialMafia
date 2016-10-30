@@ -81,8 +81,7 @@
         <SeekBar
             android:layout_height="wrap_content"
             android:id="@+id/checkingSlider"
-            android:layout_width="238dp"
-            android:layout_gravity="left" />
+            android:layout_gravity="fill_horizontal" />
 
         <Space android:layout_columnSpan="2"
             android:layout_width="match_parent"
@@ -101,8 +100,8 @@
         <SeekBar
             android:layout_height="wrap_content"
             android:id="@+id/killingSlider"
-            android:layout_width="238dp"
-            android:layout_gravity="left" />
+            android:layout_gravity="fill_horizontal"
+            android:layout_columnWeight="1" />
 
     </GridLayout>
 
@@ -115,7 +114,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/confirmJudge"
-        android:text="@string/confirmVoting"
+        android:text="@string/confirmDuelResult"
         android:textAlignment="center" />
 
 

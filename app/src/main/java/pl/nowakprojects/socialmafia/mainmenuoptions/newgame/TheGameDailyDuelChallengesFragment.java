@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -32,7 +31,11 @@ public class TheGameDailyDuelChallengesFragment extends Fragment {
     Spinner spinner_hpInsulted;
     Button button_confirmChallenge;
 
+    String msCurrentAgressivePlayer;
+    String msCurrentInsultedPlayer;
+
     AlertDialog confirmationDialog;
+    android.support.v4.app.FragmentManager fragmentManager;
 
     public TheGameDailyDuelChallengesFragment(){
 
@@ -66,16 +69,21 @@ public class TheGameDailyDuelChallengesFragment extends Fragment {
 
         button_confirmChallenge = (Button) fragmentView.findViewById(R.id.button_confirmChallenge);;
         button_confirmChallenge.setOnClickListener(new View.OnClickListener() {
-            String s_hpAgressive = spinner_hpAgressive.getSelectedItem().toString();
-            String s_hpInsulted = spinner_hpInsulted.getSelectedItem().toString();
-
             @Override
             public void onClick(View view) {
-                createPopupAlertDialog(getString(R.string.duelActionDialogTitle,
-                        s_hpAgressive,
-                        s_hpInsulted),
-                        getString(R.string.confirmDuelChallenge,s_hpAgressive,s_hpInsulted), null, null).show();
-                confirmationDialog.show();
+
+                //msCurrentAgressivePlayer = spinner_hpAgressive.getSelectedItem().toString();
+                //msCurrentInsultedPlayer = spinner_hpInsulted.getSelectedItem().toString();
+
+                //createPopupAlertDialog(getString(R.string.duelActionDialogTitle,
+                        //msCurrentAgressivePlayer,
+                        //msCurrentInsultedPlayer),
+                //        getString(R.string.confirmDuelChallenge, msCurrentAgressivePlayer, msCurrentInsultedPlayer), null, null).show();
+                //confirmationDialog.show();
+
+                fragmentManager = getChildFragmentManager();
+                TheGameDuelActionVotingFragment theGameDuelActionVotingFragment = new TheGameDuelActionVotingFragment(theGame, theGame.findHumanPlayerByName(spinner_hpAgressive.getSelectedItem().toString()), theGame.findHumanPlayerByName(spinner_hpInsulted.getSelectedItem().toString()));
+                theGameDuelActionVotingFragment.show(fragmentManager, "DuelVotingFragment");
             }
         });
 
@@ -100,10 +108,12 @@ public class TheGameDailyDuelChallengesFragment extends Fragment {
              */
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                confirmationDialog.cancel();
+
+                if(sMessage.equals(getString(R.string.agreeDuelChallenge,msCurrentInsultedPlayer,msCurrentAgressivePlayer))){
                 createPopupAlertDialog(sTitle,
-                        getString(R.string.agreeDuelChallenge), null, null).show();
-                confirmationDialog.show();
+                        getString(R.string.agreeDuelChallenge,msCurrentInsultedPlayer,msCurrentAgressivePlayer), null, null).show();
+                }
+
             }
         });
 

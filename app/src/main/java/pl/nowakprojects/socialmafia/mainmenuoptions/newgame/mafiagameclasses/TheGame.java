@@ -37,10 +37,12 @@ import pl.nowakprojects.socialmafia.utitles.GameRolesWakeHierarchyComparator;
 @Parcel
 public class TheGame {
 
+	static TheGame instance;
+
 	public enum Daytime {DAY, NIGHT, JUDGEMENT};
 
 	ArrayList<HumanPlayer> playersInfoList; 	// LISTA ZAPISANYCH GRACZY
-	ArrayList<GameDaytime> mlistTheGameDaytimes;
+	ArrayList<GameDaytime> mlistTheGameDaytimes = new ArrayList<>();
 
 	// LISTA WSZYSTKICH WYBRANYCH RÓL (Z POWTÓRZENIAMI)
 	//ArrayList<PlayerRole> currentGameRoles = new ArrayList<PlayerRole>();
