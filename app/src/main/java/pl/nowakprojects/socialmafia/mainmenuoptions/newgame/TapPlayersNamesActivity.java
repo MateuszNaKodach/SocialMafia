@@ -23,8 +23,8 @@ public class TapPlayersNamesActivity extends AppCompatActivity {
 
     static final String EXTRA_PLAYERS_NAMES_LIST = "pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses.EXTRA_PLAYERS_NAMES_LIST";
 
-    private TapPlayerNameAdapter mTapPlayersNameAdapter;
-    private RecyclerView tapPlayerNamesRecyclerView;
+    private TapPlayerNameAdapter mTapPlayersNamesAdapter;
+    private RecyclerView mTapPlayersNamesRecyclerView;
     private int pickedPlayersAmount;
 
 
@@ -40,10 +40,10 @@ public class TapPlayersNamesActivity extends AppCompatActivity {
         //przypisujemy wczesniej wybrana liczbe graczy
         pickedPlayersAmount = getIntent().getIntExtra(PickPlayersAmountActivity.EXTRA_PLAYERS_AMOUNT,5);
 
-        tapPlayerNamesRecyclerView = (RecyclerView) findViewById(R.id.playersNamesRecyclerView);
-        tapPlayerNamesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mTapPlayersNameAdapter = new TapPlayerNameAdapter(pickedPlayersAmount,this);
-        tapPlayerNamesRecyclerView.setAdapter(mTapPlayersNameAdapter);
+        mTapPlayersNamesRecyclerView = (RecyclerView) findViewById(R.id.playersNamesRecyclerView);
+        mTapPlayersNamesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mTapPlayersNamesAdapter = new TapPlayerNameAdapter(pickedPlayersAmount,this);
+        mTapPlayersNamesRecyclerView.setAdapter(mTapPlayersNamesAdapter);
 
         Button goToSelectRolesButton = (Button) findViewById(R.id.goToSelectRolesButton);
         goToSelectRolesButton.setOnClickListener(new View.OnClickListener() {
@@ -58,22 +58,23 @@ public class TapPlayersNamesActivity extends AppCompatActivity {
         });
     }// protected void onCreate(Bundle savedInstanceState)
 
+
+
+
     void fillEmptyNamesWithPlayerNumbers(){
-        //mTapPlayersNameAdapter
-        for(int i = 0; i< mTapPlayersNameAdapter.namesList.size(); i++)
-            if(mTapPlayersNameAdapter.namesList.get(i).playerName.isEmpty())
-                mTapPlayersNameAdapter.namesList.get(i).playerName = getString(R.string.player) +" #"+(i+1);
+        //mTapPlayersNamesAdapter
+        for(int i = 0; i< mTapPlayersNamesAdapter.namesList.size(); i++)
+            if(mTapPlayersNamesAdapter.namesList.get(i).playerName.isEmpty())
+                mTapPlayersNamesAdapter.namesList.get(i).playerName = getString(R.string.player) +" #"+(i+1);
     }// void fillEmptyNamesWithPlayerNumbers()
 
     ArrayList<String> makeStringArrayListFromTapPlayerNameList(){
         ArrayList<String> playersNames = new ArrayList<>();
-        for(int i = 0; i< mTapPlayersNameAdapter.namesList.size(); i++)
-            playersNames.add(mTapPlayersNameAdapter.namesList.get(i).playerName);
+        for(int i = 0; i< mTapPlayersNamesAdapter.namesList.size(); i++)
+            playersNames.add(mTapPlayersNamesAdapter.namesList.get(i).playerName);
 
         return playersNames;
     }// ArrayList<String> makeStringArrayListFromTapPlayerNameList()
-
-
 
     class TapPlayerNameAdapter extends RecyclerView.Adapter<TapPlayerNameAdapter.PlayerNameViewHolder>{
 

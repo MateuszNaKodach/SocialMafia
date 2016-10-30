@@ -251,6 +251,6 @@ Raz w ciągu gry,  podczas trwania dnia wybiera osobę, która aż do nocy nie b
     <string name="newChallenge">Nowe wyzwanie</string>
     <string name="confirmDuelChallenge">Czy gracz %1$s jest pewien, że chce wyzwać na pojedynek gracza %2$s?</string>
     <string name="agreeDuelChallenge">Czy gracz %1$s zgadza się na pojedynek z graczem %2$s?</string>
-    <string name="duelActionDialogTitle">Pojedynek: %1$s VS %2$s</string>
+    <string name="duelActionDialogTitle">Pojedynek:\n%1$s VS %2$s</string>
 
 </resources>

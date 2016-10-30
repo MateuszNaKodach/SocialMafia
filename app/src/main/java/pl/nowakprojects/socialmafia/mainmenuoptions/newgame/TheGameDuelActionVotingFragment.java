@@ -26,21 +26,21 @@ import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses.The
  */
 public class TheGameDuelActionVotingFragment extends DialogFragment {
 
+    DialogFragment mInstance;
     //Members:
-    TheGame theGame;
-    DialogFragment dialogFragment;
-    HumanPlayer mAgressivePlayer;
-    HumanPlayer mInsultedPlayer;
-    AlertDialog confirmVotingDialog;
-    ArrayList<HumanPlayer> loosers;
+    TheGame mTheGame;
+    HumanPlayer mAgressiveHumanPlayer;
+    HumanPlayer mInsultedHumanPlayer;
+    AlertDialog mConfirmVotingAlertDialog;
+    ArrayList<HumanPlayer> mLoosersList;
 
     public TheGameDuelActionVotingFragment(){}
 
-    public TheGameDuelActionVotingFragment(TheGame theGame, HumanPlayer hpAgressivePlayer, HumanPlayer hpInsultedPlayer) {
-        this.theGame = theGame;
-        mAgressivePlayer=hpAgressivePlayer;
-        mInsultedPlayer=hpInsultedPlayer;
-        dialogFragment = this;
+    public TheGameDuelActionVotingFragment(TheGame mTheGame, HumanPlayer hpAgressivePlayer, HumanPlayer hpInsultedPlayer) {
+        this.mTheGame = mTheGame;
+        mAgressiveHumanPlayer =hpAgressivePlayer;
+        mInsultedHumanPlayer =hpInsultedPlayer;
+        mInstance = this;
     }
 
     //Views
@@ -60,6 +60,7 @@ public class TheGameDuelActionVotingFragment extends DialogFragment {
         // Inflate the layout for this fragment
         fragmentView = inflater.inflate(R.layout.dialog_one_duel_action, container, false);
         ButterKnife.bind(this,fragmentView);
+        vUiSetupDialog();
         vUiSetupUserInterface();
         return fragmentView;
     }
@@ -83,49 +84,55 @@ public class TheGameDuelActionVotingFragment extends DialogFragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 submitDuelResult();
-                dialogFragment.dismiss();
+                mInstance.dismiss();
             }
         });
 
         popupAlertDialog.setNegativeButton(sNegative, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                confirmVotingDialog.cancel();
+                mConfirmVotingAlertDialog.cancel();
             }
         });
 
-        confirmVotingDialog = popupAlertDialog.create();
-        return confirmVotingDialog;
+        mConfirmVotingAlertDialog = popupAlertDialog.create();
+        return mConfirmVotingAlertDialog;
     }
 
     private void submitDuelResult(){
         hpCalculateDuelResult();
         Log.i(stringDuelResults(),"WYNIK POJEDYNKU");
     }
+
     private void hpCalculateDuelResult(){
-        loosers = new ArrayList<>();
+        mLoosersList = new ArrayList<>();
         if(seekbarKillInsultedPlayerVotes.getProgress()==seekbarKillAgressivePlayerVotes.getProgress()){
-            loosers.add(mAgressivePlayer);
-            loosers.add(mInsultedPlayer);
+            mLoosersList.add(mAgressiveHumanPlayer);
+            mLoosersList.add(mInsultedHumanPlayer);
         }
         else if(seekbarKillInsultedPlayerVotes.getProgress()>seekbarKillAgressivePlayerVotes.getProgress())
-            loosers.add(mAgressivePlayer);
+            mLoosersList.add(mAgressiveHumanPlayer);
         else
-            loosers.add(mInsultedPlayer);
+            mLoosersList.add(mInsultedHumanPlayer);
 
-        loosers = HumanPlayer.killThemDuringTheGame(loosers);
+        mLoosersList = HumanPlayer.killThemDuringTheGame(mLoosersList);
     }
 
     private String stringDuelResults(){
 
         String result = "Zabici zostali: ";
-        for(HumanPlayer hp: loosers)
+        for(HumanPlayer hp: mLoosersList)
             result+=hp.getPlayerName()+", ";
 
         return result;
     }
 
     //UserInterface Methods:
+    private void vUiSetupDialog(){
+        getDialog().setTitle(R.string.duel);
+        getDialog().setCancelable(false);
+    }
+
     private void vUiSetupUserInterface(){
         vUiSetupSeekBars();
         vUiSetupTextViews();
@@ -133,8 +140,8 @@ public class TheGameDuelActionVotingFragment extends DialogFragment {
     }
 
     private void vUiSetupTextViews(){
-        textView_sAgressivePlayerName.setText(mAgressivePlayer.getPlayerName());
-        textView_sInsultedPlayerName.setText(mInsultedPlayer.getPlayerName());
+        textView_sAgressivePlayerName.setText(mAgressiveHumanPlayer.getPlayerName());
+        textView_sInsultedPlayerName.setText(mInsultedHumanPlayer.getPlayerName());
     }
 
     private void vUiSetupSeekBars(){
@@ -182,7 +189,7 @@ public class TheGameDuelActionVotingFragment extends DialogFragment {
             public void onClick(View view) {
                 createPopupAlertDialog(getString(R.string.confirm),"Result",
                         null, null).show();
-                confirmVotingDialog.show();
+                mConfirmVotingAlertDialog.show();
             }
         });
     }
@@ -203,8 +210,8 @@ public class TheGameDuelActionVotingFragment extends DialogFragment {
     }
 
     private void vUiUpdateSeekBarsMaxValues(){
-        seekbarKillAgressivePlayerVotes.setMax(theGame.getLiveHumanPlayers().size()-seekbarKillInsultedPlayerVotes.getProgress());
-        seekbarKillInsultedPlayerVotes.setMax(theGame.getLiveHumanPlayers().size()-seekbarKillAgressivePlayerVotes.getProgress());
+        seekbarKillAgressivePlayerVotes.setMax(mTheGame.getLiveHumanPlayers().size()-seekbarKillInsultedPlayerVotes.getProgress());
+        seekbarKillInsultedPlayerVotes.setMax(mTheGame.getLiveHumanPlayers().size()-seekbarKillAgressivePlayerVotes.getProgress());
     }
 
     private void vUiUpdateProgressTextViews(){

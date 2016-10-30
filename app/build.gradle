@@ -44,5 +44,6 @@ dependencies {
     compile 'com.github.AndroidDeveloperLB:AutoFitTextView:3'
     compile 'com.jakewharton:butterknife:8.4.0' //ButterKnife
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
+    compile 'com.afollestad.material-dialogs:core:0.9.0.2'
    // compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha8'
 }

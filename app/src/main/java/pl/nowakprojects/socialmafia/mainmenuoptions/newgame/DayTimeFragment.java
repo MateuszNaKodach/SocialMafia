@@ -21,11 +21,11 @@ import pl.nowakprojects.socialmafia.R;
 public class DayTimeFragment extends Fragment {
 
 
-    private TheGameActionActivity theGameActionActivity;
+    private TheGameActionActivity mTheGameAction;
     TextView dayTimerTextView;
 
     public DayTimeFragment(TheGameActionActivity theGameActionActivity) {
-        this.theGameActionActivity = theGameActionActivity;
+        this.mTheGameAction = theGameActionActivity;
         // Required empty public constructor
     }
 
@@ -37,7 +37,7 @@ public class DayTimeFragment extends Fragment {
 
         //Odliczanie czasu na jeden dzień (czas ustawiony wczesniej):
         dayTimerTextView = (TextView) fragmentView.findViewById(R.id.dayTimerTextView);
-        final TimeCounterClass dayTimeTimer = new TimeCounterClass(theGameActionActivity.theGame.getMLONG_MAX_DAY_TIME(), 1000);
+        final TimeCounterClass dayTimeTimer = new TimeCounterClass(mTheGameAction.theGame.getMLONG_MAX_DAY_TIME(), 1000);
         dayTimeTimer.start();
 
         //Przycisk konczacy dzien:
@@ -75,7 +75,7 @@ public class DayTimeFragment extends Fragment {
         @Override
         public void onFinish() {
             dayTimerTextView.setText(R.id.dayTimeEnded);
-            Vibrator vibrator = (Vibrator) theGameActionActivity.getSystemService(theGameActionActivity.getApplicationContext().VIBRATOR_SERVICE);
+            Vibrator vibrator = (Vibrator) mTheGameAction.getSystemService(mTheGameAction.getApplicationContext().VIBRATOR_SERVICE);
             vibrator.vibrate(1500);
         }
     }

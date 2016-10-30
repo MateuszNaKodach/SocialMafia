@@ -339,7 +339,7 @@ public class RoleActionsFragment extends Fragment {
 
             private void makeHitlerAction() {
                 FragmentManager fragmentManager = getFragmentManager();
-                //TheGameActionShowingJewPlayerName theGameActionShowingJewPlayerName = new TheGameActionShowingJewPlayerName(theGameActionActivity.theGame.findHumanPlayerByRoleName(getString(R.string.jew)));
+                //TheGameActionShowingJewPlayerName theGameActionShowingJewPlayerName = new TheGameActionShowingJewPlayerName(theGameActionActivity.mTheGame.findHumanPlayerByRoleName(getString(R.string.jew)));
                 //theGameActionShowingJewPlayerName.show(fragmentManager, "ProstituteAction");
             }
 

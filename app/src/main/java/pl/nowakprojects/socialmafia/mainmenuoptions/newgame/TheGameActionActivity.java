@@ -3,20 +3,16 @@ package pl.nowakprojects.socialmafia.mainmenuoptions.newgame;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 
 import org.parceler.Parcels;
 
 import pl.nowakprojects.socialmafia.R;
+import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.fragments.DailyVotingFragment;
+import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.fragments.DuelChallengesFragment;
 import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses.TheGame;
 import pl.nowakprojects.socialmafia.utitles.GameTipFragment;
 
@@ -34,8 +30,8 @@ public class TheGameActionActivity extends AppCompatActivity {
     DayTimeFragment dayTimeFragment;
     NightTimeFragment nightTimeFragment;
     RoleActionsFragment roleActionsFragment;
-    TheGameDailyVotingFragment gameDailyVotingFragment;
-    TheGameDailyDuelChallengesFragment gameDailyDuelChallengesFragment;
+    DailyVotingFragment gameDailyVotingFragment;
+    DuelChallengesFragment gameDailyDuelChallengesFragment;
 
 
     @Override
@@ -94,7 +90,7 @@ public class TheGameActionActivity extends AppCompatActivity {
         startNightAction();
 
         //dopóki gra nie jest zakończona ciągle leci dzień - noc:
-        // while(!theGame.isMbFinished()){
+        // while(!mTheGame.isMbFinished()){
         //      startNightAction();
         //      startDayAction();}
 
@@ -138,8 +134,8 @@ public class TheGameActionActivity extends AppCompatActivity {
     void startDayAction() {
         theGame.startNewDay();
         //roleActionsFragment = new RoleActionsFragment(getDayHumanPlayers());
-        gameDailyVotingFragment = new TheGameDailyVotingFragment(theGame);
-        gameDailyDuelChallengesFragment = new TheGameDailyDuelChallengesFragment(theGame);
+        gameDailyVotingFragment = new DailyVotingFragment(theGame);
+        gameDailyDuelChallengesFragment = new DuelChallengesFragment(theGame);
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.dayOrNightTimeFragment,dayTimeFragment,TIME_FRAGMENT);
@@ -169,57 +165,21 @@ public class TheGameActionActivity extends AppCompatActivity {
      */
     private void receiveNewGameSettings() {
         theGame = Parcels.unwrap(getIntent().getParcelableExtra(ConnectPlayersToRolesActivity.EXTRA_NEW_GAME));
-        //theGame.setmTheGameActionActivity(this);
+        //mTheGame.setmTheGameActionActivity(this);
     }
 
     ;
 
     private void receiveLoadGameSettings() {
-        //WCZYTYWANIE Z BAZDY DANYCH i tworzenie theGame na podstawie tego
+        //WCZYTYWANIE Z BAZDY DANYCH i tworzenie mTheGame na podstawie tego
     }
 
     ;
 
-    public class TheGameStatsFragment extends Fragment {
-
-        TheGame theGame;
-        String nightNumer;
-        TextView nightNumberTextView;
-        Button finishTheNightButton;
-        private int madeNightActionsAmount = 0;
-
-        public TheGameStatsFragment(TheGame theGame) {
-            this.theGame = theGame;
-            // Required empty public constructor
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            // Inflate the layout for this fragment
-            View fragmentView = inflater.inflate(R.layout.fragment_night_time, container, false);
-
-            nightNumberTextView = (TextView) fragmentView.findViewById(R.id.nightNumberTextView);
-            finishTheNightButton = (Button) fragmentView.findViewById(R.id.finishTheNightButton);
-            finishTheNightButton.setEnabled(false);
-            updateNightNumberTextView();
-
-            return fragmentView;
-        }
-
-        /**
-         * Aktualizuje numer kolejnej nocy
-         */
-        void updateNightNumberTextView() {
-            nightNumberTextView.setText((getString(R.string.night_number, theGame.getMiCurrentNightNumber())));
-        }
-
-    }
-
 
     /*private ArrayList<HumanPlayer> getDayHumanPlayers() {
         ArrayList<HumanPlayer> result = new ArrayList<HumanPlayer>();
-        for (HumanPlayer humanPlayer : theGame.getPlayersInfoList()) {
+        for (HumanPlayer humanPlayer : mTheGame.getPlayersInfoList()) {
             if(humanPlayer.isAlive()) {
                 if (humanPlayer.getPlayerRole().getActionType().equals(PlayerRole.ActionType.))
                     result.add(humanPlayer);

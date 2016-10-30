@@ -24,6 +24,8 @@ import org.parceler.Parcels;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import pl.nowakprojects.socialmafia.R;
 import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses.HumanPlayer;
 import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses.PlayerRole;
@@ -33,49 +35,96 @@ public class ConnectPlayersToRolesActivity extends AppCompatActivity {
 
     static final String EXTRA_NEW_GAME = "pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses.EXTRA_NEW_GAME";
 
-    ArrayList<HumanPlayer> playersInfoList;
-    ArrayList<PlayerRole> selectedGameRoles;
-    private ArrayList<String> playersNamesList; //lista imion graczy
+    TheGame mNewGame;
 
-    private int showedRolesAmount = 0;
+    private ArrayList<HumanPlayer> mPlayersInfoList;
+    private ArrayList<PlayerRole> mSelectedPlayersRoles;
+    private ArrayList<String> mPlayersNamesList;
+    private int mShowedRolesAmount = 0;
+    PlayerShowingRoleAdapter mPlayerShowingRoleAdapter;
 
-    PlayerShowingRoleAdapter playerShowingRoleAdapter;
-    RecyclerView allPlayersRolesRecyclerView;
+
+    @BindView(R.id.allPlayersRolesRecyclerView) RecyclerView mPlayersRolesRecyclerView;
+    @BindView(R.id.startTheGameButton) Button mStartTheGameButton;
+    @BindView(R.id.toolbar) Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connect_players_to_roles);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true); // cos nie dziala!!!
+        ButterKnife.bind(this);
 
-        selectedGameRoles = Parcels.unwrap(getIntent().getParcelableExtra(SelectPlayerRolesActivity.EXTRA_SELECTED_ROLES_LIST));
-        playersNamesList = getIntent().getStringArrayListExtra(TapPlayersNamesActivity.EXTRA_PLAYERS_NAMES_LIST);
-        makeHumanPlayerWithRolesList(); //utowrzenie już listy graczy z przydzielonymi rolami
-        playerShowingRoleAdapter = new PlayerShowingRoleAdapter(playersInfoList, this);
-        allPlayersRolesRecyclerView = (RecyclerView) findViewById(R.id.allPlayersRolesRecyclerView);
-        allPlayersRolesRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        allPlayersRolesRecyclerView.setAdapter(playerShowingRoleAdapter);
+        vUiSetupUserInterface();
 
-        Button startTheGameButton = (Button) findViewById(R.id.startTheGameButton);
-        startTheGameButton.setOnClickListener(new View.OnClickListener() {
+        vReceiveExtraObjects();
+
+        vConnectPlayersToRoles();
+
+        vUiSetupRecyclerView();
+
+
+    }
+
+    private void vConnectPlayersToRoles(){
+        mPlayersInfoList = createHumanPlayerWithRolesList(mSelectedPlayersRoles, mPlayersNamesList); //create new list of players (connected with Roles)
+    }
+
+    private ArrayList<HumanPlayer> createHumanPlayerWithRolesList(ArrayList<PlayerRole> selectedPlayerRolesList, ArrayList<String> playersNamesList) {
+        ArrayList<HumanPlayer> playersInfoList = new ArrayList<>();
+        Collections.shuffle(selectedPlayerRolesList); // pomieszanie roli, żeby nie były według wyboru
+        // przydzielenie pomieszanych ról do graczy:
+        //tworzymy nowe obiekty z imienia i roli gracza
+        for (int i = 0; i < selectedPlayerRolesList.size(); i++) {
+            playersInfoList.add(new HumanPlayer(playersNamesList.get(i), selectedPlayerRolesList.get(i)));
+        }
+        return playersInfoList;
+    }
+
+    private int iCountFractionRoles(ArrayList<HumanPlayer> playersInfoList, PlayerRole.Fraction fraction){
+        int i_fractionRolesQuantity = 0;
+        for(HumanPlayer hp: playersInfoList){
+            if(hp.getPlayerRole().getFraction()== fraction)
+                i_fractionRolesQuantity++;
+        }
+        return i_fractionRolesQuantity;
+    }
+
+    private void vReceiveExtraObjects(){
+        mSelectedPlayersRoles = Parcels.unwrap(getIntent().getParcelableExtra(SelectPlayerRolesActivity.EXTRA_SELECTED_ROLES_LIST));
+        mPlayersNamesList = getIntent().getStringArrayListExtra(TapPlayersNamesActivity.EXTRA_PLAYERS_NAMES_LIST);
+    }
+
+    private void vCreateNewGame(){
+        mNewGame = new TheGame();
+        mNewGame.setPlayersInfoList(mPlayersInfoList);
+        mNewGame.setPlayers(mPlayersInfoList.size());
+        mNewGame.setMafia(iCountFractionRoles(mPlayersInfoList, PlayerRole.Fraction.MAFIA));
+        mNewGame.setTown(iCountFractionRoles(mPlayersInfoList, PlayerRole.Fraction.TOWN));
+        mNewGame.setMiSyndicateStartAmount(iCountFractionRoles(mPlayersInfoList, PlayerRole.Fraction.SYNDICATE));
+    }
+
+    //Setup User Interface Methods:-----------------------------------------------------------------
+    private void vUiSetupUserInterface(){
+        vUiSetupToolbar();
+        vUiSetupButtonListener();
+    }
+
+    private void vUiSetupToolbar(){
+        setSupportActionBar(mToolbar);
+    }
+
+    private void vUiSetupButtonListener(){
+        mStartTheGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (showedRolesAmount < playersInfoList.size())
+                if (mShowedRolesAmount < mPlayersInfoList.size())
                     Toast.makeText(getApplicationContext(), R.string.tooLessPlayersRolesShowed, Toast.LENGTH_LONG).show();
                 else {
-                    //tworzenie nowej gry, podstawowe ustawienia:
-                    TheGame newGame = new TheGame();
-                    newGame.setPlayersInfoList(playersInfoList);
-                    newGame.setPlayers(playersInfoList.size());
-                    newGame.setMafia(iCountFractionRoles(playersInfoList, PlayerRole.Fraction.MAFIA));
-                    newGame.setTown(iCountFractionRoles(playersInfoList, PlayerRole.Fraction.TOWN));
-                    newGame.setMiSyndicateStartAmount(iCountFractionRoles(playersInfoList, PlayerRole.Fraction.SYNDICATE));
+                    vCreateNewGame();
 
                     Bundle bundle = new Bundle();
                     Log.i("SRATATA", "Dajemy parcele.");
-                    bundle.putParcelable(EXTRA_NEW_GAME, Parcels.wrap(newGame));
+                    bundle.putParcelable(EXTRA_NEW_GAME, Parcels.wrap(mNewGame));
                     Log.i("SRATATA", "Dajemy parcele.");
                     Intent intent = new Intent(getApplicationContext(), TheGameActionActivity.class);
                     intent.putExtras(bundle);
@@ -86,23 +135,10 @@ public class ConnectPlayersToRolesActivity extends AppCompatActivity {
         });
     }
 
-    private void makeHumanPlayerWithRolesList() {
-        playersInfoList = new ArrayList<>();
-        Collections.shuffle(this.selectedGameRoles); // pomieszanie roli, żeby nie były według wyboru
-        // przydzielenie pomieszanych ról do graczy:
-        //tworzymy nowe obiekty z imienia i roli gracza
-        for (int i = 0; i < this.selectedGameRoles.size(); i++) {
-            playersInfoList.add(new HumanPlayer(playersNamesList.get(i), selectedGameRoles.get(i)));
-        }
-    }
-
-    private int iCountFractionRoles(ArrayList<HumanPlayer> playersInfoList, PlayerRole.Fraction fraction){
-        int i_fractionRolesQuantity = 0;
-        for(HumanPlayer hp: playersInfoList){
-            if(hp.getPlayerRole().getFraction()== fraction)
-                i_fractionRolesQuantity++;
-        }
-        return i_fractionRolesQuantity;
+    private void vUiSetupRecyclerView(){
+        mPlayerShowingRoleAdapter = new PlayerShowingRoleAdapter(mPlayersInfoList, this);
+        mPlayersRolesRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        mPlayersRolesRecyclerView.setAdapter(mPlayerShowingRoleAdapter);
     }
 
     public class PlayerShowingRoleAdapter extends RecyclerView.Adapter<PlayerShowingRoleAdapter.HumanPlayerViewHolder> {
@@ -164,7 +200,7 @@ public class ConnectPlayersToRolesActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         if (humanPlayersList.get(getAdapterPosition()).isWasRoleShowed() == false)
-                            showedRolesAmount++;
+                            mShowedRolesAmount++;
 
                         humanPlayersList.get(getAdapterPosition()).setWasRoleShowed(true);
                         wasRoleShowed.setChecked(humanPlayersList.get(getAdapterPosition()).isWasRoleShowed());

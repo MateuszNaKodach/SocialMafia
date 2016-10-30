@@ -120,8 +120,9 @@ public class HumanPlayer {
                 humanPlayer = playersToKill.get(0);
 
                 //teraz sprawdzimy kochanków (dla gracza albo dla murzyna):
-                //if(humanPlayer.get)
-                //
+                if(!humanPlayer.getLover().isEmpty())
+                    for(HumanPlayer playerLover: humanPlayer.getLover())
+                        HumanPlayer.killDuringTheGame(playerLover);
 
         for(HumanPlayer hp: playersToKill)
             hp.killThePlayer();

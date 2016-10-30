@@ -12,33 +12,87 @@ import pl.nowakprojects.socialmafia.R;
 
 public class GameAlertDialog {
 
-   /* AlertDialog confirmVotingDialog;
-    Context context;
+    private AlertDialog mAlertDialog;
+    private Context context;
+    String mTitle;
+    String mBodyMessage;
+    DialogInterface.OnClickListener mPositiveButtonClickListener;
+    DialogInterface.OnClickListener mNegativeButtonClickListener;
+    String mPositive = null;
+    String mNegative = null;
 
-    public AlertDialog createPopupAlertDialog(String sTitle, String sMessage, String sPositive, String sNegative) {
-        if (sPositive == null)
-            //sPositive = getString(R.string.yes);
-        if (sNegative == null)
-            //sNegative = getString(R.string.no);
+
+    public GameAlertDialog(Context context, String mTitle, String mBodyMessage, DialogInterface.OnClickListener mPositiveButtonClickListener, DialogInterface.OnClickListener mNegativeButtonClickListener, String mPositive, String mNegative) {
+        this.context = context;
+        this.mTitle = mTitle;
+        this.mBodyMessage = mBodyMessage;
+        this.mPositive = mPositive;
+        this.mNegative = mNegative;
+        this.mPositiveButtonClickListener = mPositiveButtonClickListener;
+        this.mNegativeButtonClickListener = mNegativeButtonClickListener;
+        createPopupAlertDialog();
+    }
+
+    public GameAlertDialog(Context context, String mTitle, String mBodyMessage, DialogInterface.OnClickListener mPositiveButtonClickListener, DialogInterface.OnClickListener mNegativeButtonClickListener) {
+        this.context = context;
+        this.mTitle = mTitle;
+        this.mBodyMessage = mBodyMessage;
+        this.mPositiveButtonClickListener = mPositiveButtonClickListener;
+        this.mNegativeButtonClickListener = mNegativeButtonClickListener;
+        createPopupAlertDialog();
+    }
+
+    public GameAlertDialog(Context context, String mTitle, String mBodyMessage) {
+        this.context = context;
+        this.mTitle = mTitle;
+        this.mBodyMessage = mBodyMessage;
+        createPopupAlertDialog();
+    }
+
+    /*public GameAlertDialog(Context context, DialogInterface.OnClickListener mPositiveButtonClickListener, DialogInterface.OnClickListener mNegativeButtonClickListener) {
+        this.context = context;
+        this.mPositiveButtonClickListener = mPositiveButtonClickListener;
+        this.mNegativeButtonClickListener = mNegativeButtonClickListener;
+    }*/
+
+    public AlertDialog getAlertDialog(){
+        return mAlertDialog;
+    }
+
+    public void show(){
+        mAlertDialog.show();
+    }
+
+    public void cancel(){
+        mAlertDialog.cancel();
+    }
+
+    public void setmPositiveButtonClickListener(DialogInterface.OnClickListener mPositiveButtonClickListener) {
+        this.mPositiveButtonClickListener = mPositiveButtonClickListener;
+        createPopupAlertDialog();
+    }
+
+    public void setmNegativeButtonClickListener(DialogInterface.OnClickListener mNegativeButtonClickListener) {
+        this.mNegativeButtonClickListener = mNegativeButtonClickListener;
+        createPopupAlertDialog();
+    }
+
+    public void createPopupAlertDialog() {
+        if(mTitle == null)
+            mTitle = context.getString(R.string.confirm);
+        if (mPositive == null)
+            mPositive = context.getString(R.string.yes);
+        if (mNegative == null)
+            mNegative = context.getString(R.string.no);
 
         AlertDialog.Builder popupAlertDialog = new AlertDialog.Builder(context.getApplicationContext());
-        popupAlertDialog.setTitle(sTitle);
-        popupAlertDialog.setMessage(sMessage);
-        popupAlertDialog.setPositiveButton(sPositive, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
+        popupAlertDialog.setTitle(mTitle);
+        popupAlertDialog.setMessage(mBodyMessage);
+        if(mPositiveButtonClickListener!=null)
+            popupAlertDialog.setPositiveButton(mPositive, mPositiveButtonClickListener);
+        if(mNegativeButtonClickListener!=null)
+            popupAlertDialog.setNegativeButton(mNegative, mNegativeButtonClickListener);
 
-            }
-        });
-
-        popupAlertDialog.setNegativeButton(sNegative, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                confirmVotingDialog.cancel();
-            }
-        });
-
-        confirmVotingDialog = popupAlertDialog.create();
-        return confirmVotingDialog;
-    }*/
+        mAlertDialog = popupAlertDialog.create();
+    }
 }
