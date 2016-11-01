@@ -1,4 +1,4 @@
-package pl.nowakprojects.socialmafia.mainmenuoptions.newgame;
+package pl.nowakprojects.socialmafia.mainmenuoptions.newgame.adapters;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -14,7 +14,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import pl.nowakprojects.socialmafia.R;
-import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses.PlayerRole;
+import pl.nowakprojects.socialmafia.mafiagameclasses.PlayerRole;
 
 /**
  * Created by Mateusz on 08.08.2016.
@@ -79,8 +79,8 @@ public class PlayerChoosingRoleAdapter extends RecyclerView.Adapter<PlayerChoosi
         private TextView roleAmount;
         private ImageButton increaseRoleAmount;
         private ImageButton decreaseRoleAmount;
-        private View container;
         private AlertDialog roleDescriptionDialog;
+
 
         public PlayerRoleViewHolder(View itemView) {
             super(itemView);

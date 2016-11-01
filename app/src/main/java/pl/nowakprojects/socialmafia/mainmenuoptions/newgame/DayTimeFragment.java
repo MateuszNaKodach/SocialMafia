@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Vibrator;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,21 +12,27 @@ import android.widget.TextView;
 
 import java.util.concurrent.TimeUnit;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import pl.nowakprojects.socialmafia.R;
+import pl.nowakprojects.socialmafia.mafiagameclasses.TheGame;
+
+import static android.content.Context.VIBRATOR_SERVICE;
 
 /**
  * Created by Mateusz on 19.10.2016.
  */
 public class DayTimeFragment extends Fragment {
 
+    TheGame mTheGame;
 
-    private TheGameActionActivity mTheGameAction;
-    TextView dayTimerTextView;
-
-    public DayTimeFragment(TheGameActionActivity theGameActionActivity) {
-        this.mTheGameAction = theGameActionActivity;
-        // Required empty public constructor
+    public DayTimeFragment(TheGame theGame) {
+        this.mTheGame=theGame;
     }
+
+    @BindView(R.id.dayTimerTextView)    TextView mDayTimerTextView;
+    @BindView(R.id.dayNumberTextView)    TextView mDayNumberTextView;
+    @BindView(R.id.finishTheDayButton)  Button finishDayButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -35,23 +40,38 @@ public class DayTimeFragment extends Fragment {
         // Inflate the layout for this fragment
         View fragmentView = inflater.inflate(R.layout.fragment_day_time, container, false);
 
-        //Odliczanie czasu na jeden dzień (czas ustawiony wczesniej):
-        dayTimerTextView = (TextView) fragmentView.findViewById(R.id.dayTimerTextView);
-        final TimeCounterClass dayTimeTimer = new TimeCounterClass(mTheGameAction.theGame.getMLONG_MAX_DAY_TIME(), 1000);
-        dayTimeTimer.start();
+        ButterKnife.bind(this,fragmentView);
 
-        //Przycisk konczacy dzien:
-        Button finishDayButton = (Button) fragmentView.findViewById(R.id.finishTheDayButton);
+        vUiSetupUserInterface();
+        startDayTimer();
+
+
+        return fragmentView;
+    }
+
+
+    private void startDayTimer(){
+        final TimeCounterClass dayTimeTimer = new TimeCounterClass(mTheGame.getMdMaxDayTime(), 1000);
+        dayTimeTimer.start();
+    }
+
+    private void vUiSetupUserInterface(){
+        vUiSetupTextView();
+        vUiSetupButtonListener();
+    }
+
+    private void vUiSetupTextView(){
+        mDayNumberTextView.setText(getString(R.string.day_number,mTheGame.getMiCurrentDayNumber()));
+    }
+
+    private void vUiSetupButtonListener(){
         finishDayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.i("finishDayButton.onClick", "Przycisk Wcisniety!");
 
             }
         });
 
-
-        return fragmentView;
     }
 
 
@@ -69,13 +89,13 @@ public class DayTimeFragment extends Fragment {
                     TimeUnit.MILLISECONDS.toMinutes(l) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(l)),
                     TimeUnit.MILLISECONDS.toSeconds(l) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(l)));
 
-            dayTimerTextView.setText(hms);
+            mDayTimerTextView.setText(hms);
         }
 
         @Override
         public void onFinish() {
-            dayTimerTextView.setText(R.id.dayTimeEnded);
-            Vibrator vibrator = (Vibrator) mTheGameAction.getSystemService(mTheGameAction.getApplicationContext().VIBRATOR_SERVICE);
+            mDayTimerTextView.setText(getString(R.string.dayTimeEnded));
+            Vibrator vibrator = (Vibrator) getActivity().getSystemService(VIBRATOR_SERVICE);
             vibrator.vibrate(1500);
         }
     }

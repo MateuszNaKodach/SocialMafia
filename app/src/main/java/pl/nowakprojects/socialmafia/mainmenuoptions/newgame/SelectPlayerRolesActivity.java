@@ -18,15 +18,16 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import pl.nowakprojects.socialmafia.R;
-import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses.PlayerRole;
-import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses.RolesDataObjects;
+import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.adapters.PlayerChoosingRoleAdapter;
+import pl.nowakprojects.socialmafia.mafiagameclasses.PlayerRole;
+import pl.nowakprojects.socialmafia.mafiagameclasses.RolesDataObjects;
 
 /**
  * Wybór ról jakie znajdą się w aktualnej grze
  */
 public class SelectPlayerRolesActivity extends AppCompatActivity implements PlayerChoosingRoleAdapter.RoleAmountChangedCallback {
 
-    static final String EXTRA_SELECTED_ROLES_LIST = "pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses.EXTRA_SELECTED_ROLES_LIST";
+    static final String EXTRA_SELECTED_ROLES_LIST = "pl.nowakprojects.socialmafia.mafiagameclasses.EXTRA_SELECTED_ROLES_LIST";
     static final String LOG_TAG = "SelectPlayersRolesActivity.class";
 
     private PlayerChoosingRoleAdapter adapter_townRolesList;

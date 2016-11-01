@@ -27,13 +27,13 @@ import java.util.Collections;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import pl.nowakprojects.socialmafia.R;
-import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses.HumanPlayer;
-import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses.PlayerRole;
-import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses.TheGame;
+import pl.nowakprojects.socialmafia.mafiagameclasses.HumanPlayer;
+import pl.nowakprojects.socialmafia.mafiagameclasses.PlayerRole;
+import pl.nowakprojects.socialmafia.mafiagameclasses.TheGame;
 
 public class ConnectPlayersToRolesActivity extends AppCompatActivity {
 
-    static final String EXTRA_NEW_GAME = "pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses.EXTRA_NEW_GAME";
+    static final String EXTRA_NEW_GAME = "pl.nowakprojects.socialmafia.mafiagameclasses.EXTRA_NEW_GAME";
 
     TheGame mNewGame;
 
@@ -101,6 +101,7 @@ public class ConnectPlayersToRolesActivity extends AppCompatActivity {
         mNewGame.setMafia(iCountFractionRoles(mPlayersInfoList, PlayerRole.Fraction.MAFIA));
         mNewGame.setTown(iCountFractionRoles(mPlayersInfoList, PlayerRole.Fraction.TOWN));
         mNewGame.setMiSyndicateStartAmount(iCountFractionRoles(mPlayersInfoList, PlayerRole.Fraction.SYNDICATE));
+        //mNewGame.setMdMaxDayTime(Long.valueOf(getResources().getString(R.string.sharedpref_daytime)));
     }
 
     //Setup User Interface Methods:-----------------------------------------------------------------

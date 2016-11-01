@@ -30,7 +30,7 @@ public class TheGameDailyJudgmentActionDialogFragment extends DialogFragment {
 
         //showGameTipFragment(null,getString(R.string.tip_playersList));
 
-       /* playerGameStatusRoleAdapter = new TheGameActionPlayersGameStatusDialogFragment.PlayerGameStatusRoleAdapter(getActivity().getApplicationContext(),mTheGame.getPlayersInfoList());
+       /* playerGameStatusRoleAdapter = new PlayersStatusDialogFragment.PlayersStatusAdapter(getActivity().getApplicationContext(),mTheGame.getPlayersInfoList());
         RecyclerView playersActionsRecyclerView = (RecyclerView) view.findViewById(R.id.playersStatusRecyclerView);
         playersActionsRecyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity(), GridLayoutManager.VERTICAL,false));
         playersActionsRecyclerView.setAdapter(playerGameStatusRoleAdapter);*/

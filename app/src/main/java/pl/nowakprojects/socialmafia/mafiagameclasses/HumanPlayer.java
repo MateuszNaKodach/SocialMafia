@@ -1,4 +1,4 @@
-package pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses;
+package pl.nowakprojects.socialmafia.mafiagameclasses;
 
 import org.parceler.Parcel;
 
@@ -164,7 +164,10 @@ public class HumanPlayer {
         this.getPlayerRole().lifes-=1;
         if(getPlayerRole().getLifes()<=0)
             this.setNotAlive();
+
+        return isAlive();
     }
+
     public boolean hasTerroristRole(){
         return getRoleName()== R.string.terrorist;
     }

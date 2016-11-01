@@ -24,5 +24,6 @@ android:padding="16dp">
     android:layout_weight="1"
     android:paddingLeft="16dp"
     android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp" />
+    android:layout_marginRight="16dp"
+    android:descendantFocusability="afterDescendants"/>
 </LinearLayout>

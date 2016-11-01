@@ -1,9 +1,8 @@
-package pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses;
+package pl.nowakprojects.socialmafia.mafiagameclasses;
 
 import org.parceler.Parcel;
 
 import java.util.ArrayList;
-import java.util.Set;
 
 /**
  * Created by Mateusz on 25.10.2016.

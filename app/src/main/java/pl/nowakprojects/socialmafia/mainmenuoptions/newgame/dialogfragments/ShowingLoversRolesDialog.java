@@ -1,4 +1,4 @@
-package pl.nowakprojects.socialmafia.mainmenuoptions.newgame;
+package pl.nowakprojects.socialmafia.mainmenuoptions.newgame.dialogfragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,14 +10,13 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import pl.nowakprojects.socialmafia.R;
-import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses.HumanPlayer;
+import pl.nowakprojects.socialmafia.mafiagameclasses.HumanPlayer;
 
 /**
  * Created by Mateusz on 19.10.2016.
  */
-public class TheGameActionShowingLoversRolesDialog extends DialogFragment {
+public class ShowingLoversRolesDialog extends DialogFragment {
 
-    private RoleActionsFragment.DayOrNightRoleActionsAdapter.PlayerRoleActionViewHolder playerRoleActionViewHolder;
     private HumanPlayer choosenPlayer;
     private HumanPlayer choosenPlayer2;
     private TextView showedPlayerRoleText;
@@ -25,8 +24,7 @@ public class TheGameActionShowingLoversRolesDialog extends DialogFragment {
     private TextView showedPlayerFraction;
     private TextView showedPlayerFraction2;
 
-    TheGameActionShowingLoversRolesDialog(RoleActionsFragment.DayOrNightRoleActionsAdapter.PlayerRoleActionViewHolder playerRoleActionViewHolder, HumanPlayer choosenPlayer, HumanPlayer choosenPlayer2) {
-        this.playerRoleActionViewHolder = playerRoleActionViewHolder;
+    public ShowingLoversRolesDialog(HumanPlayer choosenPlayer, HumanPlayer choosenPlayer2) {
         this.choosenPlayer = choosenPlayer;
         this.choosenPlayer2 = choosenPlayer2;
     }

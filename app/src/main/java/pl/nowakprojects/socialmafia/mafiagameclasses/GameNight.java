@@ -1,4 +1,4 @@
-package pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses;
+package pl.nowakprojects.socialmafia.mafiagameclasses;
 
 import org.parceler.Parcel;
 

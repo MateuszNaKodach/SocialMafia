@@ -108,7 +108,7 @@ Raz w ciągu gry,  podczas trwania dnia wybiera osobę, która aż do nocy nie b
 
 
     <string name="playersAmount">Liczba graczy:</string>
-    <string name="MLONG_MAX_DAY_TIME">Czas trwania dnia:</string>
+    <string name="mdMaxDayTime">Czas trwania dnia:</string>
     <string name="rolesSettings">Wybór ról</string>
 
     <string name="playersAmountChanged">Liczba graczy została zmieniona.</string>
@@ -255,5 +255,20 @@ Raz w ciągu gry,  podczas trwania dnia wybiera osobę, która aż do nocy nie b
     <string name="pref_tips">Podpowiedzi</string>
     <string name="pref_tips_summ">Czy podpowiedzi mają być rozwinięte?</string>
     <string name="text_default">Domyślnie</string>
+    <string name="mafioso">Mafiozo</string>
+    <string name="mafiosoDescription">Zwykły członek mafii. Poza braniem udziału w zabijaniu nie wykonuje żadnej specjalnej funkcji.</string>
+    <string name="citizen">Miastowy</string>
+    <string name="citizenDescription">Zwykły mieszkaniec miasta. Jednym słowem: nic specjalnego...</string>
+    <string name="draw">Remis</string>
+    <string name="cancel_voting">Unieważnij głosowanie</string>
+    <string name="grave_will">Głos zza grobu</string>
+    <string name="random_kill_or_vote">Losowa decyzja</string>
+    <string name="draw_how_to_solve">W końcowym głosowaniu nie może być remisu. Jak rozwiązać ten problem?</string>
+    <string name="choose">wybierz</string>
+    <string name="dayTimeEnded">Koniec dnia...</string>
+    <string name="pick_day_time_explanation">Oraz czas trwania dnia</string>
+    <string name="timeofdaytime"> %1$s minut</string>
+    <string name="sharedpref_daytime">sharedpref_daytime</string>
+    <string name="title_new_game">Nowa gra</string>
 
 </resources>

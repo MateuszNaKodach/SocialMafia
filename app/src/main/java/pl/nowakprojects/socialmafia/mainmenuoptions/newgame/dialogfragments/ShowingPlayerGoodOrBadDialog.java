@@ -1,4 +1,4 @@
-package pl.nowakprojects.socialmafia.mainmenuoptions.newgame;
+package pl.nowakprojects.socialmafia.mainmenuoptions.newgame.dialogfragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,20 +11,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import pl.nowakprojects.socialmafia.R;
-import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses.HumanPlayer;
-import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses.PlayerRole;
+import pl.nowakprojects.socialmafia.mafiagameclasses.HumanPlayer;
+import pl.nowakprojects.socialmafia.mafiagameclasses.PlayerRole;
 
 /**
  * Created by Mateusz on 19.10.2016.
  */
-public class TheGameActionShowingPlayerGoodOrBad extends DialogFragment {
+public class ShowingPlayerGoodOrBadDialog extends DialogFragment {
 
     private HumanPlayer choosenPlayer;
     private Button understandButton;
     private TextView showedPlayerName;
     private ImageView thumbIcon;
 
-    TheGameActionShowingPlayerGoodOrBad(HumanPlayer choosenPlayer) {
+    public ShowingPlayerGoodOrBadDialog(HumanPlayer choosenPlayer) {
         this.choosenPlayer = choosenPlayer;
     }
 

@@ -10,8 +10,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import pl.nowakprojects.socialmafia.R;
-import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses.TheGame;
+import pl.nowakprojects.socialmafia.mafiagameclasses.TheGame;
 
 /**
  * Created by Mateusz on 19.10.2016.
@@ -20,7 +23,6 @@ public class NightTimeFragment extends Fragment {
 
     private TheGameActionActivity theGameActionActivity;
     TheGame theGame;
-    String nightNumer;
     TextView nightNumberTextView;
     Button finishTheNightButton;
     private int madeNightActionsAmount = 0;
@@ -33,6 +35,19 @@ public class NightTimeFragment extends Fragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -40,7 +55,10 @@ public class NightTimeFragment extends Fragment {
 
         nightNumberTextView = (TextView) fragmentView.findViewById(R.id.nightNumberTextView);
         finishTheNightButton = (Button) fragmentView.findViewById(R.id.finishTheNightButton);
-        finishTheNightButton.setEnabled(false);
+
+        if(theGame.getThisNightHumanPlayers().size()!=0)
+            finishTheNightButton.setEnabled(false);
+
         updateNightNumberTextView();
 
         finishTheNightButton.setOnClickListener(new View.OnClickListener() {
@@ -59,6 +77,12 @@ public class NightTimeFragment extends Fragment {
      */
     void updateNightNumberTextView() {
         nightNumberTextView.setText((getString(R.string.night_number, theGame.getMiCurrentNightNumber())));
+    }
+
+    @Subscribe
+    public void onCheckingRolesActionsMadeEvent(Boolean bool){
+        if(bool)
+            finishTheNightButton.setEnabled(true);
     }
 
     public void buildConfirmationAlertDialog() {

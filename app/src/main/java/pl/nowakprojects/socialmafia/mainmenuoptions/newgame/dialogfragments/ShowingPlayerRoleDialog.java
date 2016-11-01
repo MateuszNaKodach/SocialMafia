@@ -1,4 +1,4 @@
-package pl.nowakprojects.socialmafia.mainmenuoptions.newgame;
+package pl.nowakprojects.socialmafia.mainmenuoptions.newgame.dialogfragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,17 +13,17 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import pl.nowakprojects.socialmafia.R;
-import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses.HumanPlayer;
+import pl.nowakprojects.socialmafia.mafiagameclasses.HumanPlayer;
 
 /**
  * Created by Mateusz on 19.10.2016.
  */
-public class TheGameActionShowingPlayerRoleDialog extends DialogFragment {
+public class ShowingPlayerRoleDialog extends DialogFragment {
 
     //Members:
     private HumanPlayer mChoosenHumanPlayer;
 
-    TheGameActionShowingPlayerRoleDialog(HumanPlayer choosenHumanPlayer) {
+    public ShowingPlayerRoleDialog(HumanPlayer choosenHumanPlayer) {
         this.mChoosenHumanPlayer = choosenHumanPlayer;
     }
 

@@ -13,7 +13,7 @@ import org.parceler.Parcels;
 import pl.nowakprojects.socialmafia.R;
 import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.fragments.DailyVotingFragment;
 import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.fragments.DuelChallengesFragment;
-import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses.TheGame;
+import pl.nowakprojects.socialmafia.mafiagameclasses.TheGame;
 import pl.nowakprojects.socialmafia.utitles.GameTipFragment;
 
 public class TheGameActionActivity extends AppCompatActivity {
@@ -66,7 +66,7 @@ public class TheGameActionActivity extends AppCompatActivity {
         int itemId = item.getItemId();
         if(itemId == R.id.menu_thegame_playerslist){
             android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-            TheGameActionPlayersGameStatusDialogFragment theGameActionPlayersGameStatusDialogFragment = new  TheGameActionPlayersGameStatusDialogFragment(theGame);
+            PlayersStatusDialogFragment theGameActionPlayersGameStatusDialogFragment = new PlayersStatusDialogFragment(theGame);
             theGameActionPlayersGameStatusDialogFragment.show(fragmentManager, "PlayersListFragment");
             return true;}
         else if(itemId == R.id.menu_thegame_savegame)
@@ -84,7 +84,7 @@ public class TheGameActionActivity extends AppCompatActivity {
     void startMafiaGameAction() {
         nightTimeFragment = new NightTimeFragment(this, theGame);
         //GameView proporties:
-        dayTimeFragment = new DayTimeFragment(this);
+        dayTimeFragment = new DayTimeFragment(theGame);
         //dayTimeRoleActionsFragment = new DayTimeRoleActionsFragment();
 
         startNightAction();
@@ -101,10 +101,10 @@ public class TheGameActionActivity extends AppCompatActivity {
         theGame.startNewNight();
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         if (theGame.isSpecialZeroNightNow()){
-            roleActionsFragment = new RoleActionsFragment(theGame,this);
+            roleActionsFragment = new RoleActionsFragment(theGame);
             fragmentTransaction.add(R.id.dayOrNightTimeFragment, nightTimeFragment, TIME_FRAGMENT);
         }else {
-            roleActionsFragment = new RoleActionsFragment(theGame,this);
+            roleActionsFragment = new RoleActionsFragment(theGame);
             fragmentTransaction.remove(gameDailyVotingFragment);
         }
 

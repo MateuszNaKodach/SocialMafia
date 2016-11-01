@@ -19,9 +19,8 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import pl.nowakprojects.socialmafia.R;
-import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.TheGameDuelActionVotingFragment;
-import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses.HumanPlayer;
-import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses.TheGame;
+import pl.nowakprojects.socialmafia.mafiagameclasses.HumanPlayer;
+import pl.nowakprojects.socialmafia.mafiagameclasses.TheGame;
 
 /**
  * Created by Mateusz on 19.10.2016.
@@ -129,7 +128,7 @@ public class DuelChallengesFragment extends Fragment {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         fragmentManager = getChildFragmentManager();
-                        TheGameDuelActionVotingFragment theGameDuelActionVotingFragment = new TheGameDuelActionVotingFragment(mTheGame, mTheGame.findHumanPlayerByName(mAgresivePlayerSpinner.getSelectedItem().toString()), mTheGame.findHumanPlayerByName(mInsultedPlayerSpinner.getSelectedItem().toString()));
+                        DuelVotingFragment theGameDuelActionVotingFragment = new DuelVotingFragment(mTheGame, mTheGame.findHumanPlayerByName(mAgresivePlayerSpinner.getSelectedItem().toString()), mTheGame.findHumanPlayerByName(mInsultedPlayerSpinner.getSelectedItem().toString()));
                         theGameDuelActionVotingFragment.show(fragmentManager, "DuelVotingFragment");
                     }
                 })
@@ -175,7 +174,7 @@ public class DuelChallengesFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 fragmentManager = getChildFragmentManager();
-                TheGameDuelActionVotingFragment theGameDuelActionVotingFragment = new TheGameDuelActionVotingFragment(mTheGame, mTheGame.findHumanPlayerByName(mAgresivePlayerSpinner.getSelectedItem().toString()), mTheGame.findHumanPlayerByName(mInsultedPlayerSpinner.getSelectedItem().toString()));
+                DuelVotingFragment theGameDuelActionVotingFragment = new DuelVotingFragment(mTheGame, mTheGame.findHumanPlayerByName(mAgresivePlayerSpinner.getSelectedItem().toString()), mTheGame.findHumanPlayerByName(mInsultedPlayerSpinner.getSelectedItem().toString()));
                 theGameDuelActionVotingFragment.show(fragmentManager, "DuelVotingFragment");
                 mChallengedInsultedAgreeDialog.cancel();
             }

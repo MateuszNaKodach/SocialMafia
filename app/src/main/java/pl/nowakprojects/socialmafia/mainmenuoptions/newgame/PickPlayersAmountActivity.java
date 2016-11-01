@@ -1,17 +1,19 @@
 package pl.nowakprojects.socialmafia.mainmenuoptions.newgame;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.NumberPicker;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
-import pl.nowakprojects.socialmafia.MainActivity;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import pl.nowakprojects.socialmafia.R;
 
 /**
@@ -19,37 +21,48 @@ import pl.nowakprojects.socialmafia.R;
  */
 public class PickPlayersAmountActivity extends AppCompatActivity {
 
-    static final String EXTRA_PLAYERS_AMOUNT = "pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses.EXTRA_PLAYERS_AMOUNT";
-
+    static final String EXTRA_PLAYERS_AMOUNT = "pl.nowakprojects.socialmafia.mafiagameclasses.EXTRA_PLAYERS_AMOUNT";
     private final String LOG_TAG = "SOCIALMAFIA: PickPlayersAmountActivity.class"; //tag dla logów
 
-    private NumberPicker playersAmountNumberPicker;
-    private Button goToPlayerNamesButton;
 
     private static final int PLAYERS_MAX_AMOUNT = 70; //maksymalna liczba graczy
     private static final int PLAYERS_MIN_AMOUNT = 5; //minimalna liczba graczy
-    private int pickedPlayersAmount = PLAYERS_MIN_AMOUNT; //poczatkowa wybrana liczba graczy
+    private long miPickedDayTime = 5;
+
+
+    private int mPickedPlayersAmount = PLAYERS_MIN_AMOUNT; //poczatkowa wybrana liczba graczy
+
+
+    @BindView(R.id.playersamountpicker) NumberPicker mPlayersAmountNumberPicker;
+    @BindView(R.id.goToPlayerNamesButton)   Button mNextSettingsButton;
+    @BindView(R.id.daytimeSeekBar) SeekBar mDaytimeSeekBar;
+    @BindView(R.id.pickedDayTimeTextView) TextView mPickedDayTimeTextView;
+    @BindView(R.id.toolbar) Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pick_players_amount);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        ButterKnife.bind(this);
+
+        vUiSetupUserInterface();
+    }
+
+    private void vUiSetupUserInterface(){
+        vUiSetupToolbar();
+        vUiSetupNumberPicker();
+        vUiSetupButtonListener();
+        vUiSetupSeekBar();
+        vUiUpdateTextView();
+    }
+
+    private void vUiSetupToolbar(){
+        setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
 
-        playersAmountNumberPicker = (NumberPicker) findViewById(R.id.playersamountpicker);
-        playersAmountNumberPicker.setMinValue(PLAYERS_MIN_AMOUNT);
-        playersAmountNumberPicker.setMaxValue(PLAYERS_MAX_AMOUNT);
-        playersAmountNumberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-            @Override
-            public void onValueChange(NumberPicker numberPicker, int oldValue, int newValue) {
-                pickedPlayersAmount=newValue; //przy zmianie wartości nadpisuje wybraną liczbę graczy
-            }
-        });
-
-        goToPlayerNamesButton = (Button) findViewById(R.id.goToPlayerNamesButton);
-        goToPlayerNamesButton.setOnClickListener(new View.OnClickListener() {
+    private void vUiSetupButtonListener(){
+        mNextSettingsButton.setOnClickListener(new View.OnClickListener() {
             /**
              * Przekazuje liczbe graczy do aktywności wpisywania imion
              * @param view
@@ -57,13 +70,53 @@ public class PickPlayersAmountActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Log.i(LOG_TAG,String.valueOf(pickedPlayersAmount));
+                miPickedDayTime*=60000;
+                SharedPreferences.Editor sharedPreferences = getPreferences(Context.MODE_PRIVATE).edit();
+                sharedPreferences.putString(getString(R.string.sharedpref_daytime), String.valueOf(miPickedDayTime));
+                sharedPreferences.apply();
+
                 Intent intent = new Intent(getApplicationContext(), TapPlayersNamesActivity.class);
-                intent.putExtra(EXTRA_PLAYERS_AMOUNT,pickedPlayersAmount);
+                intent.putExtra(EXTRA_PLAYERS_AMOUNT, mPickedPlayersAmount);
                 startActivity(intent);
             }
         });
-
     }
 
+    private void vUiSetupNumberPicker(){
+        mPlayersAmountNumberPicker.setMinValue(PLAYERS_MIN_AMOUNT);
+        mPlayersAmountNumberPicker.setMaxValue(PLAYERS_MAX_AMOUNT);
+        mPlayersAmountNumberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker numberPicker, int oldValue, int newValue) {
+                mPickedPlayersAmount =newValue; //przy zmianie wartości nadpisuje wybraną liczbę graczy
+            }
+        });
+    }
+
+    private void vUiSetupSeekBar(){
+        mDaytimeSeekBar.setMax(30);
+        mDaytimeSeekBar.setProgress(10);
+
+        mDaytimeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                miPickedDayTime=mDaytimeSeekBar.getProgress();
+                vUiUpdateTextView();
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+    }
+
+    private void vUiUpdateTextView(){
+        mPickedDayTimeTextView.setText(getString(R.string.timeofdaytime, miPickedDayTime));
+    }
 }

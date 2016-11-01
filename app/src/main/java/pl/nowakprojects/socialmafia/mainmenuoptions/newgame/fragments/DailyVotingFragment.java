@@ -1,10 +1,8 @@
 package pl.nowakprojects.socialmafia.mainmenuoptions.newgame.fragments;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,17 +16,18 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import pl.nowakprojects.socialmafia.R;
-import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.TheGameDuelActionVotingFragment;
-import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses.TheGame;
+import pl.nowakprojects.socialmafia.mafiagameclasses.TheGame;
 
 /**
  * Created by Mateusz on 19.10.2016.
  */
 public class DailyVotingFragment extends Fragment {
 
+    private enum OUTVOTED {KILLING, CHECKING, DRAW};
+    private enum DRAWSOLUTION {CANCEL, GRAVEWILL, RANDOMKILLORCHECK};
+
     private TheGame mTheGame;
     private MaterialDialog mConfirmMaterialDialog;
-
 
     public DailyVotingFragment(){}
 
@@ -54,12 +53,39 @@ public class DailyVotingFragment extends Fragment {
     }
 
 
+    private OUTVOTED calculateVotingResult(){
+        if(mKillingVoteSeekBar.getProgress() > mCheckingVoteSeekBar.getProgress())
+            return OUTVOTED.KILLING;
+        else if (mKillingVoteSeekBar.getProgress() < mCheckingVoteSeekBar.getProgress())
+            return OUTVOTED.CHECKING;
+        else
+            return OUTVOTED.DRAW;
+    }
+
+    private String sVotingResultTitle(OUTVOTED votingResult){
+        if(votingResult==OUTVOTED.KILLING)
+            return getString(R.string.killing);
+        else if(votingResult==OUTVOTED.CHECKING)
+            return getString(R.string.checking);
+        else
+            return getString(R.string.draw);
+    }
+
+    private DRAWSOLUTION bringDrawSolution(int solutionIndex){
+        if(solutionIndex==2)
+            return DRAWSOLUTION.RANDOMKILLORCHECK;
+        else if(solutionIndex==1)
+            return DRAWSOLUTION.GRAVEWILL;
+        else
+         return DRAWSOLUTION.CANCEL;
+    }
+
 
     //Setting User Interface methods:--------------------------------------------------------------
     private void vUiSetupUserInterface(){
         vUiSetupButtonListener();
-        vUiSetupTextView();
         vUiSetupSeekBar();
+        vUiSetupTextView();
     }
 
     private void vUiSetupSeekBar(){
@@ -129,14 +155,44 @@ public class DailyVotingFragment extends Fragment {
 
     private void vUiSetupMaterialDialog(){
 
-        mConfirmMaterialDialog = new MaterialDialog.Builder(this.getActivity())
-                .title(((mKillingVoteSeekBar.getProgress() > mCheckingVoteSeekBar.getProgress()) ?
-                        getString(R.string.killing) : getString(R.string.checking)))
-                .content((mKillingVoteSeekBar.getProgress() > mCheckingVoteSeekBar.getProgress()) ?
-                        getString(R.string.confirmKilling) : getString(R.string.confirmChecking))
-                .positiveText(R.string.yes)
-                .negativeText(R.string.no)
-                .build();
+        if(calculateVotingResult()==OUTVOTED.KILLING|| calculateVotingResult()==OUTVOTED.CHECKING) {
+            mConfirmMaterialDialog = new MaterialDialog.Builder(this.getActivity())
+                    .title(sVotingResultTitle(calculateVotingResult()))
+                    .content((mKillingVoteSeekBar.getProgress() > mCheckingVoteSeekBar.getProgress()) ?
+                            getString(R.string.confirmKilling) : getString(R.string.confirmChecking))
+                    .positiveText(R.string.yes)
+                    .negativeText(R.string.no)
+                    .build();
+        }else{
+
+            mConfirmMaterialDialog = new MaterialDialog.Builder(this.getActivity())
+                    .title(R.string.draw)
+                    .content(R.string.draw_how_to_solve)
+                    .items(R.array.voting_draw_solutions)
+                    .autoDismiss(false)
+                    .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
+                        @Override
+                        public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                            return true;
+                        }
+                    })
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            if(bringDrawSolution(mConfirmMaterialDialog.getSelectedIndex())==DRAWSOLUTION.GRAVEWILL) {
+                                if (!mTheGame.getmTemporaryLastTimeKilledPlayerList().isEmpty());
+                                //graveWillMaterialDialog(od ostatniego, ktory zostal dodany do listy)
+                            }else if(bringDrawSolution(mConfirmMaterialDialog.getSelectedIndex())==DRAWSOLUTION.RANDOMKILLORCHECK);
+
+                            else
+                            mConfirmMaterialDialog.dismiss();
+                        }
+                    })
+                    .positiveText(R.string.choose)
+                    .show();
+        }
+
+
 
 
 

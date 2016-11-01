@@ -1,4 +1,4 @@
-package pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses;
+package pl.nowakprojects.socialmafia.mafiagameclasses;
 
 import java.util.ArrayList;
 
@@ -15,6 +15,7 @@ public class RolesDataObjects {
 
     public static ArrayList<PlayerRole> getTownRolesList(){
         ArrayList<PlayerRole> playerRoles = new ArrayList<>();
+        playerRoles.add(new PlayerRole(R.string.citizen,R.string.citizenDescription,R.drawable.image_template, PlayerRole.Fraction.TOWN, PlayerRole.ActionType.NoAction,-1));
         playerRoles.add(new PlayerRole(R.string.madman,R.string.madmanDescription,R.drawable.image_template, PlayerRole.Fraction.TOWN, PlayerRole.ActionType.OnceAGame,-1));
         playerRoles.add(new PlayerRole(R.string.armshop,R.string.armshopDescription,R.drawable.image_template, PlayerRole.Fraction.TOWN, PlayerRole.ActionType.ActionRequire,-1));
         playerRoles.add(new PlayerRole(R.string.policeman,R.string.policemanDescription,R.drawable.icon_policeman, PlayerRole.Fraction.TOWN, PlayerRole.ActionType.AllNightsBesideZero,50));
@@ -39,6 +40,7 @@ public class RolesDataObjects {
 
     public static ArrayList<PlayerRole> getMafiaRolesList(){
         ArrayList<PlayerRole> playerRoles = new ArrayList<>();
+        playerRoles.add(new PlayerRole(R.string.mafioso,R.string.mafiosoDescription,R.drawable.image_template, PlayerRole.Fraction.MAFIA, PlayerRole.ActionType.NoAction,-1));
         playerRoles.add(new PlayerRole(R.string.boss,R.string.madmanDescription,R.drawable.image_template, PlayerRole.Fraction.MAFIA, PlayerRole.ActionType.NoAction,90));
         playerRoles.add(new PlayerRole(R.string.blackmailer,R.string.madmanDescription,R.drawable.image_template, PlayerRole.Fraction.MAFIA, PlayerRole.ActionType.OnlyZeroNight,80));
         playerRoles.add(new PlayerRole(R.string.blackmailerBoss,R.string.madmanDescription,R.drawable.image_template, PlayerRole.Fraction.MAFIA, PlayerRole.ActionType.OnlyZeroNight,100));

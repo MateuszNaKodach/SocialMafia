@@ -21,7 +21,7 @@ import pl.nowakprojects.socialmafia.R;
 
 public class TapPlayersNamesActivity extends AppCompatActivity {
 
-    static final String EXTRA_PLAYERS_NAMES_LIST = "pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses.EXTRA_PLAYERS_NAMES_LIST";
+    static final String EXTRA_PLAYERS_NAMES_LIST = "pl.nowakprojects.socialmafia.mafiagameclasses.EXTRA_PLAYERS_NAMES_LIST";
 
     private TapPlayerNameAdapter mTapPlayersNamesAdapter;
     private RecyclerView mTapPlayersNamesRecyclerView;

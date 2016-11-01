@@ -7,7 +7,7 @@ package pl.nowakprojects.socialmafia.utitles;
 
 import java.util.Comparator;
 
-import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses.HumanPlayer;
+import pl.nowakprojects.socialmafia.mafiagameclasses.HumanPlayer;
 
 public class GameRolesWakeHierarchyComparator implements Comparator<HumanPlayer> {
 

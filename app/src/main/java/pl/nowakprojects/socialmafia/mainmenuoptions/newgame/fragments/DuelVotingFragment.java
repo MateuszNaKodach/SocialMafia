@@ -1,4 +1,4 @@
-package pl.nowakprojects.socialmafia.mainmenuoptions.newgame;
+package pl.nowakprojects.socialmafia.mainmenuoptions.newgame.fragments;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -18,13 +18,13 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import pl.nowakprojects.socialmafia.R;
-import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses.HumanPlayer;
-import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses.TheGame;
+import pl.nowakprojects.socialmafia.mafiagameclasses.HumanPlayer;
+import pl.nowakprojects.socialmafia.mafiagameclasses.TheGame;
 
 /**
  * Created by Mateusz on 19.10.2016.
  */
-public class TheGameDuelActionVotingFragment extends DialogFragment {
+public class DuelVotingFragment extends DialogFragment {
 
     DialogFragment mInstance;
     //Members:
@@ -34,9 +34,9 @@ public class TheGameDuelActionVotingFragment extends DialogFragment {
     AlertDialog mConfirmVotingAlertDialog;
     ArrayList<HumanPlayer> mLoosersList;
 
-    public TheGameDuelActionVotingFragment(){}
+    public DuelVotingFragment(){}
 
-    public TheGameDuelActionVotingFragment(TheGame mTheGame, HumanPlayer hpAgressivePlayer, HumanPlayer hpInsultedPlayer) {
+    public DuelVotingFragment(TheGame mTheGame, HumanPlayer hpAgressivePlayer, HumanPlayer hpInsultedPlayer) {
         this.mTheGame = mTheGame;
         mAgressiveHumanPlayer =hpAgressivePlayer;
         mInsultedHumanPlayer =hpInsultedPlayer;
@@ -115,13 +115,16 @@ public class TheGameDuelActionVotingFragment extends DialogFragment {
         else
             mLoosersList.add(mInsultedHumanPlayer);
 
-        mLoosersList = HumanPlayer.killThemDuringTheGame(mLoosersList);
+       for(HumanPlayer hp: mLoosersList)
+           mTheGame.kill(hp);
     }
 
     private String stringDuelResults(){
 
+        mTheGame.getmTemporaryLastTimeKilledPlayerList().clear();
+
         String result = "Zabici zostali: ";
-        for(HumanPlayer hp: mLoosersList)
+        for(HumanPlayer hp: mTheGame.getmTemporaryLastTimeKilledPlayerList())
             result+=hp.getPlayerName()+", ";
 
         return result;
@@ -187,7 +190,7 @@ public class TheGameDuelActionVotingFragment extends DialogFragment {
 
             @Override
             public void onClick(View view) {
-                createPopupAlertDialog(getString(R.string.confirm),"Result",
+                createPopupAlertDialog(getString(R.string.confirm),stringDuelResults(),
                         null, null).show();
                 mConfirmVotingAlertDialog.show();
             }

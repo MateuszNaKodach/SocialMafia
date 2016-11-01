@@ -1,4 +1,4 @@
-package pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses;
+package pl.nowakprojects.socialmafia.mafiagameclasses;
 /**
  * Created by Mateusz on 2016-02-20.
  */
@@ -26,7 +26,7 @@ import javafx.stage.Stage;
 import pl.nowakprojects.socialmafia.utitles.GameRolesWakeHierarchyComparator;
 
 /**
- * MLONG_MAX_DAY_TIME - ograniczenie czasowe na dzien, gracz i tak decyfuje czy konczy
+ * mdMaxDayTime - ograniczenie czasowe na dzien, gracz i tak decyfuje czy konczy
  * teraz DODAC CZAS GRY ( BEDZIE POTRZEBNY DO SAVE!!!)
  * Parceler wymaga nieprywatnych pól!!!
  */
@@ -45,7 +45,7 @@ public class TheGame {
 	//ArrayList<PlayerRole> currentGameRoles = new ArrayList<PlayerRole>();
 
 	// STATYSTYKI GRY:
-	long MLONG_MAX_DAY_TIME = 180000; // czas dnia w milisekundach
+	long mdMaxDayTime = 180000; // czas dnia w milisekundach
 	int I_MAX_DUELS_AMOUNT = 3; //maksymalna ilosc pojedynkow na dzien
 	int I_MAX_DUELS_CHALLENGES = 10; //maksymalna ilosc  wyzwan na dzien
 
@@ -72,6 +72,7 @@ public class TheGame {
 	ArrayList<HumanPlayer> lastNightDealingByDealerPlayers;
 	ArrayList<HumanPlayer> lastDayOperateByDentistPlayer;
 	ArrayList<HumanPlayer> lastNightKilledPlayer;
+	ArrayList<HumanPlayer> mTemporaryLastTimeKilledPlayerList;
 
 	public TheGame() {
 		lastNightHealingByMedicPlayers = new ArrayList<>();
@@ -79,9 +80,12 @@ public class TheGame {
 		lastNightDealingByDealerPlayers = new ArrayList<>();
 		lastDayOperateByDentistPlayer = new ArrayList<>();
 		lastNightKilledPlayer = new ArrayList<>();
+		mTemporaryLastTimeKilledPlayerList = new ArrayList<>();
 	};
 
 
+	//przeiwdziec jak murzyn murzyni murzyna!
+	//dodac wybór łowcy
 	public void kill(HumanPlayer humanPlayer){
 		if(humanPlayer.isAlive()) {
 			if (humanPlayer.hasGuard())
@@ -90,6 +94,7 @@ public class TheGame {
 					humanPlayer.hit(); //dostaje hita, jak jest emo to nie ginie, sprawdamy czy nie byl emo, czyli czy zginal
 
 				if(!humanPlayer.isAlive()) {
+					mTemporaryLastTimeKilledPlayerList.add(humanPlayer); //dodawanie do licy ostatnio zabitych
 					if (humanPlayer.hasLover()) {
 						for (HumanPlayer hp : humanPlayer.getAliveLovers())
 							kill(hp); //zabija wszystkich kochanków
@@ -119,6 +124,10 @@ public class TheGame {
 
 	}
 
+	public ArrayList<HumanPlayer> getmTemporaryLastTimeKilledPlayerList() {
+		return mTemporaryLastTimeKilledPlayerList;
+	}
+
 	public void startNewNight(){
 		miCurrentNightNumber++;
 		this.mdaytimeCurrentDaytime=Daytime.NIGHT;
@@ -146,6 +155,13 @@ public class TheGame {
 			result.get(0).getPlayerRole().setB_isRoleTurn(true);
 		return result;
 	}// private ArrayList<HumanPlayer> getAllNightsBesideZeroHumanPlayers()
+
+	public ArrayList<HumanPlayer> getThisNightHumanPlayers(){
+		if(miCurrentNightNumber==0)
+			return getZeroNightHumanPlayers();
+		else
+			return getAllNightsBesideZeroHumanPlayers();
+	}
 
 	public ArrayList<HumanPlayer> getZeroNightHumanPlayers() {
 		ArrayList<HumanPlayer> result = new ArrayList<HumanPlayer>();
@@ -299,8 +315,8 @@ public class TheGame {
 	}
 
 
-	public long getMLONG_MAX_DAY_TIME() {
-		return MLONG_MAX_DAY_TIME;
+	public long getMdMaxDayTime() {
+		return mdMaxDayTime;
 	}
 
 	public int getPlayers() {
@@ -319,6 +335,7 @@ public class TheGame {
 		return miSyndicateStartAmount;
 	}
 
+
 	public int getDoublers() {
 		return doublers;
 	}
@@ -331,8 +348,8 @@ public class TheGame {
 		return miCurrentDayNumber;
 	}
 
-	public void setMLONG_MAX_DAY_TIME(long MLONG_MAX_DAY_TIME) {
-		this.MLONG_MAX_DAY_TIME = MLONG_MAX_DAY_TIME;
+	public void setMdMaxDayTime(long mdMaxDayTime) {
+		this.mdMaxDayTime = mdMaxDayTime;
 	}
 
 	public void setPlayers(int players) {
