@@ -2,4 +2,5 @@
 <resources>
     <item name="tooLessRolesSelected" type="id">Wybrano zbyt mało ról!</item>
     <item name="dayTimeEnded" type="id">Koniec dnia...</item>
+    <item name="statusmenu_kill_the_player_during_the_game" type="id">game_kill</item>
 </resources>

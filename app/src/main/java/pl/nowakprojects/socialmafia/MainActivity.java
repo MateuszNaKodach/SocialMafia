@@ -11,8 +11,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import pl.nowakprojects.socialmafia.mainmenuoptions.gamerules.GameRulesActivity;
 import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.PickPlayersAmountActivity;
-
-import static android.R.attr.onClick;
+import pl.nowakprojects.socialmafia.mainmenuoptions.settings.SettingsActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,10 +29,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        setButtonsListeners();
+        vUiSetupUserInterface();
     }
 
-    private void setButtonsListeners(){
+
+    private void vUiSetupUserInterface(){
+        vUiSetupButtonListener();
+    }
+
+    private void vUiSetupButtonListener(){
         buttonStartNewGame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -50,6 +54,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        buttonAppPreferences.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+                startActivity(intent);
+            }
+        });
+
         //w opcjach czas dnia, dlugosc budzenia
         facebookLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,5 +72,4 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
 }

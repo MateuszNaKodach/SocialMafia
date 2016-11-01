@@ -4,12 +4,10 @@ package pl.nowakprojects.socialmafia.mainmenuoptions.newgame.mafiagameclasses;
  */
 
 import org.parceler.Parcel;
-import org.parceler.ParcelProperty;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -25,7 +23,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.TheGameActionActivity;
 import pl.nowakprojects.socialmafia.utitles.GameRolesWakeHierarchyComparator;
 
 /**
@@ -83,6 +80,40 @@ public class TheGame {
 		lastDayOperateByDentistPlayer = new ArrayList<>();
 		lastNightKilledPlayer = new ArrayList<>();
 	};
+
+
+	public void kill(HumanPlayer humanPlayer){
+		if(humanPlayer.isAlive()) {
+			if (humanPlayer.hasGuard())
+				kill(humanPlayer.getFirstAliveGuard()); //to przejdzie do zabicia odpowiedniego gracza
+			else {
+					humanPlayer.hit(); //dostaje hita, jak jest emo to nie ginie, sprawdamy czy nie byl emo, czyli czy zginal
+
+				if(!humanPlayer.isAlive()) {
+					if (humanPlayer.hasLover()) {
+						for (HumanPlayer hp : humanPlayer.getAliveLovers())
+							kill(hp); //zabija wszystkich kochanków
+					}//if (humanPlayer.hasLover())
+
+					if (humanPlayer.hasTerroristRole())
+						kill(findPreviousPlayerTo(humanPlayer));
+				}//if(!humanPlayer.isAlive())
+			}//else
+		}//if(humanPlayer.isAlive())
+	}//public static void kill(HumanPlayer humanPlayer)
+
+
+	public HumanPlayer findPreviousPlayerTo(HumanPlayer humanPlayer){
+		for(int i=playersInfoList.indexOf(humanPlayer)-1; i>=0;i--)
+			if(playersInfoList.get(i).isAlive())
+				return playersInfoList.get(i);
+
+		for(int i=playersInfoList.size()-1; i>playersInfoList.indexOf(humanPlayer);i--)
+			if(playersInfoList.get(i).isAlive())
+				return playersInfoList.get(i);
+
+		return null;
+	}
 
 	public void clearMadeActionsCount(){
 

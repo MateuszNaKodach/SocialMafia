@@ -9,6 +9,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.HBox;
+import pl.nowakprojects.socialmafia.R;
 
 @Parcel
 public class HumanPlayer {
@@ -22,6 +23,7 @@ public class HumanPlayer {
     ArrayList<HumanPlayer> guard = new ArrayList<>(); //ochroniarz, ktos kto ginie za danego gracza I OCHRONIARZ TEŻ!!!
     ArrayList<HumanPlayer> blackMailer = new ArrayList<>(); //szantazysta, nie moze na niego zaglosowac itp. CHYBA ZROBIC LISTE SZANTAZYSTÓW!!!
     ArrayList<HumanPlayer> lover = new ArrayList<>(); //kochanek - nie mozna na niego glosowac, jesli ginie jeden z nich - gina oboje I KOCHANKÓW TEŻ
+    boolean isDealed = false;
 
     //For ShowingRoles:
     boolean wasRoleShowed = false;
@@ -106,10 +108,73 @@ public class HumanPlayer {
             this.blackMailer.add(blackMailer);
     }
 
-    public void killThePlayer(){
+    public void setNotAlive(){
         alive = false;
     }
 
+    public boolean hasGuard(){
+        if(guard.isEmpty())
+            return false;
+        for(HumanPlayer hp: guard)
+            if(hp.isAlive()&&hp.isNotDealed())
+                return true;
+
+        return false;
+    }
+
+    public boolean isNotDealed(){
+        return !isDealed;
+    }
+
+    public boolean isDealed() {
+        return isDealed;
+    }
+
+    public boolean hasLover(){
+        if(lover.isEmpty())
+            return false;
+        for(HumanPlayer hp: lover)
+            if(hp.isAlive()&&hp.isNotDealed())
+                return true;
+
+        return false;
+    }
+
+    public ArrayList<HumanPlayer> getAliveLovers(){
+        ArrayList<HumanPlayer> aliveLoversList = new ArrayList<>();
+
+        for(HumanPlayer hp: lover)
+            if(hp.isAlive()&&hp.isNotDealed())
+                aliveLoversList.add(hp);
+
+        return aliveLoversList;
+
+    }
+
+    public HumanPlayer getFirstAliveGuard(){
+        if(hasGuard())
+            for(HumanPlayer hp: guard)
+                if(hp.isAlive()&&hp.isNotDealed())
+                    return hp;
+
+        return null;
+    }
+
+    public boolean hit(){
+        this.getPlayerRole().lifes-=1;
+        if(getPlayerRole().getLifes()<=0)
+            this.setNotAlive();
+    }
+    public boolean hasTerroristRole(){
+        return getRoleName()== R.string.terrorist;
+    }
+
+    public boolean hasEmoRole(){
+        return getRoleName()== R.string.emo;
+    }
+
+
+    /*
     private static ArrayList<HumanPlayer> killDuringTheGame(HumanPlayer humanPlayer){
         ArrayList<HumanPlayer> playersToKill = new ArrayList<>();
             playersToKill.add(HumanPlayer.getFirstGuard(humanPlayer)); //zabija ostatniego z ciagu murzynów, np. jesli murzyn murszyni murzyna
@@ -120,12 +185,14 @@ public class HumanPlayer {
                 humanPlayer = playersToKill.get(0);
 
                 //teraz sprawdzimy kochanków (dla gracza albo dla murzyna):
-                if(!humanPlayer.getLover().isEmpty())
-                    for(HumanPlayer playerLover: humanPlayer.getLover())
+                if(!humanPlayer.getLover().isEmpty()) {
+                    for (HumanPlayer playerLover : humanPlayer.getLover()) {
                         HumanPlayer.killDuringTheGame(playerLover);
+                    }
+                }
 
         for(HumanPlayer hp: playersToKill)
-            hp.killThePlayer();
+            hp.setNotAlive();
 
         return playersToKill;
     }
@@ -140,7 +207,7 @@ public class HumanPlayer {
         return killedPlayers;
 
     }
-
+    */
     public int howManyLifes(){
         return this.playerRole.getLifes();
     }
@@ -148,6 +215,7 @@ public class HumanPlayer {
     public void reviveThePlayer(){
         alive = true;
     }
+
     public boolean isAlive() {
         return alive;
     }

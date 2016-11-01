@@ -62,7 +62,6 @@ public class SelectPlayerRolesActivity extends AppCompatActivity implements Play
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_player_roles);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ButterKnife.bind(this);
 
         vUiSetupUserInterface();
@@ -152,6 +151,7 @@ public class SelectPlayerRolesActivity extends AppCompatActivity implements Play
 
     private void vUiSetupToolbar(){
         setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private void vUiSetupButtonListener(){

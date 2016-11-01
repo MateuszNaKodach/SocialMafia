@@ -133,9 +133,18 @@ public class TheGameActionPlayersGameStatusDialogFragment extends DialogFragment
                         case R.id.statusmenu_kill_the_player:{
 
                             if(humanPlayersList.get(position).isAlive())
-                                humanPlayersList.get(position).killThePlayer();
+                                humanPlayersList.get(position).setNotAlive();
                             else
                                 humanPlayersList.get(position).reviveThePlayer();
+
+                            showProperlyPlayerStatus(humanPlayersList.get(position), playerStatusViewHolder);
+                            break;
+                        }
+
+                        case R.id.statusmenu_kill_the_player_during_the_game:{
+
+                            if(humanPlayersList.get(position).isAlive())
+                                theGame.kill(humanPlayersList.get(position));
 
                             showProperlyPlayerStatus(humanPlayersList.get(position), playerStatusViewHolder);
                             break;

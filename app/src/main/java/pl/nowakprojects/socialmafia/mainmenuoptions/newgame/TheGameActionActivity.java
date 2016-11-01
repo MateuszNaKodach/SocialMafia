@@ -50,7 +50,7 @@ public class TheGameActionActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         //okienko potwierdzenia czy na pewno opuscic gre
-        //super.onBackPressed();
+        super.onBackPressed();
     }
 
     @Override

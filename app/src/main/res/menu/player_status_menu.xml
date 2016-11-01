@@ -6,6 +6,11 @@
         android:icon="@drawable/ic_menu_skull"
         android:orderInCategory="101"/>
 
+    <item android:title="Game Kill"
+        android:id="@+id/statusmenu_kill_the_player_during_the_game"
+        android:icon="@drawable/ic_menu_skull"
+        android:orderInCategory="101" />
+
     <item android:title="Add warn"
         android:id="@+id/statusmenu_add_warn"
         android:icon="@drawable/ic_menu_skull"

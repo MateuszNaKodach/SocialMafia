@@ -38,6 +38,15 @@
                 android:value="pl.nowakprojects.socialmafia.MainActivity" />
         </activity>
         <activity
+            android:name=".mainmenuoptions.settings.SettingsActivity"
+            android:label="@string/title_activity_game_settings"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="pl.nowakprojects.socialmafia.MainActivity" />
+        </activity>
+        <activity
             android:name=".mainmenuoptions.newgame.TapPlayersNamesActivity"
             android:label="@string/title_activity_tap_players_names"
             android:parentActivityName=".mainmenuoptions.newgame.PickPlayersAmountActivity"
@@ -64,6 +73,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="pl.nowakprojects.socialmafia.mainmenuoptions.newgame.SelectPlayerRolesActivity" />
         </activity>
+
         <activity
             android:name=".mainmenuoptions.newgame.TheGameActionActivity"
             android:label="@string/title_activity_the_game_action"
