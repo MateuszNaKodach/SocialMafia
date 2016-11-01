@@ -1,4 +1,4 @@
-package pl.nowakprojects.socialmafia.mainmenuoptions.newgame;
+package pl.nowakprojects.socialmafia.mainmenuoptions.newgame.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

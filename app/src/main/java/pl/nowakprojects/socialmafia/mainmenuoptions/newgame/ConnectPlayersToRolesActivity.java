@@ -101,7 +101,7 @@ public class ConnectPlayersToRolesActivity extends AppCompatActivity {
         mNewGame.setMafia(iCountFractionRoles(mPlayersInfoList, PlayerRole.Fraction.MAFIA));
         mNewGame.setTown(iCountFractionRoles(mPlayersInfoList, PlayerRole.Fraction.TOWN));
         mNewGame.setMiSyndicateStartAmount(iCountFractionRoles(mPlayersInfoList, PlayerRole.Fraction.SYNDICATE));
-        //mNewGame.setMdMaxDayTime(Long.valueOf(getResources().getString(R.string.sharedpref_daytime)));
+        mNewGame.setMdMaxDayTime(Long.valueOf(getResources().getString(R.string.sharedpref_daytime)));
     }
 
     //Setup User Interface Methods:-----------------------------------------------------------------

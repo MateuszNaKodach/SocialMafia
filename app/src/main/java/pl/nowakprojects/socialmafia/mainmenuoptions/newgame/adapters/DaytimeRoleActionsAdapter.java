@@ -18,7 +18,7 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.ArrayList;
 
 import pl.nowakprojects.socialmafia.R;
-import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.RoleActionsFragment;
+import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.fragments.RoleActionsFragment;
 import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.dialogfragments.ShowingLoversRolesDialog;
 import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.dialogfragments.ShowingPlayerGoodOrBadDialog;
 import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.dialogfragments.ShowingPlayerRoleDialog;

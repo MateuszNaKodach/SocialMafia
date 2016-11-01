@@ -176,6 +176,10 @@ public class HumanPlayer {
         return getRoleName()== R.string.emo;
     }
 
+    public boolean hasSpeedyRole(){
+        return getRoleName()== R.string.mafiaspeedy || getRoleName()== R.string.townspeedy || getRoleName()== R.string.sindicateSpeedy;
+    }
+
 
     /*
     private static ArrayList<HumanPlayer> killDuringTheGame(HumanPlayer humanPlayer){

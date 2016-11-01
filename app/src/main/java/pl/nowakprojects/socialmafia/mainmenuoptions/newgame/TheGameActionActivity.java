@@ -11,9 +11,11 @@ import android.support.v4.app.FragmentTransaction;
 import org.parceler.Parcels;
 
 import pl.nowakprojects.socialmafia.R;
+import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.dialogfragments.PlayersStatusDialogFragment;
 import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.fragments.DailyVotingFragment;
 import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.fragments.DuelChallengesFragment;
 import pl.nowakprojects.socialmafia.mafiagameclasses.TheGame;
+import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.fragments.RoleActionsFragment;
 import pl.nowakprojects.socialmafia.utitles.GameTipFragment;
 
 public class TheGameActionActivity extends AppCompatActivity {

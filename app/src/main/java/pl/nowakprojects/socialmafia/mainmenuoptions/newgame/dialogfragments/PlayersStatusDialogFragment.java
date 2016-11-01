@@ -1,9 +1,8 @@
-package pl.nowakprojects.socialmafia.mainmenuoptions.newgame;
+package pl.nowakprojects.socialmafia.mainmenuoptions.newgame.dialogfragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import pl.nowakprojects.socialmafia.R;
 import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.adapters.PlayersStatusAdapter;
 import pl.nowakprojects.socialmafia.mafiagameclasses.TheGame;
@@ -23,15 +24,13 @@ import pl.nowakprojects.socialmafia.utitles.GameTipFragment;
 
 public class PlayersStatusDialogFragment extends DialogFragment {
 
-    private final String GAME_TIP_FRAGMENT = "PlayersStatusDialogFragment.GAME_TIP_FRAGMENT";
 
     private PlayersStatusAdapter mPlayersStatusAdapter;
     private TheGame mTheGame;
+    @BindView(R.id.playersStatusRecyclerView)   RecyclerView mPlayersStatusRecyclerView;
+    @BindView(R.id.returnButton) Button mDialogCancelButton;
 
-   /* PlayersStatusDialogFragment() {
-    }// PlayersStatusDialogFragment()
-*/
-    PlayersStatusDialogFragment(TheGame theGame) {
+    public PlayersStatusDialogFragment(TheGame theGame) {
         this.mTheGame = theGame;
     }// PlayersStatusDialogFragment()
 
@@ -39,34 +38,45 @@ public class PlayersStatusDialogFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dialog_players_status_fragment, null); //cos tutaj dodac za prent!!!
+
+        ButterKnife.bind(this,view);
+
+        vUiSetupUserInterface();
+
+        return view;
+    }
+
+
+
+    private void vUiSetupUserInterface(){
+        vUiSetupDialogFragment();
+        vUiShowGameTipFragment();
+        vUiSetupRecyclerView();
+        vUiSetupButtonListener();
+    }
+
+    private void vUiSetupDialogFragment(){
         //setCancelable(false);
         getDialog().setTitle(R.string.playersList);
+    }
 
-        showGameTipFragment(null,getString(R.string.tip_playersList));
-
+    private void vUiSetupRecyclerView(){
         mPlayersStatusAdapter = new PlayersStatusAdapter(this, getActivity().getApplicationContext(), mTheGame);
-        RecyclerView playersActionsRecyclerView = (RecyclerView) view.findViewById(R.id.playersStatusRecyclerView);
-        playersActionsRecyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity(), GridLayoutManager.VERTICAL,false));
-        playersActionsRecyclerView.setAdapter(mPlayersStatusAdapter);
+        mPlayersStatusRecyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity(), GridLayoutManager.VERTICAL,false));
+        mPlayersStatusRecyclerView.setAdapter(mPlayersStatusAdapter);
+    }
 
-        Button returnButton = (Button) view.findViewById(R.id.returnButton);
-        returnButton.setOnClickListener(new View.OnClickListener() {
+    private void vUiSetupButtonListener(){
+        mDialogCancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 dismiss();
             }
         });
-        return view;
     }
 
-    private GameTipFragment showGameTipFragment(String sTipTitle, String sTipContent){
-        GameTipFragment gameTipFragment = new GameTipFragment(sTipTitle,sTipContent,false);
-
-        FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.gameTipFragmentPlayerStatusDialog, gameTipFragment, GAME_TIP_FRAGMENT);
-        fragmentTransaction.commit();
-
-        return gameTipFragment;
+    private void vUiShowGameTipFragment(){
+        GameTipFragment.vShow(this,null,getString(R.string.tip_playersList),false);
     }
 
 

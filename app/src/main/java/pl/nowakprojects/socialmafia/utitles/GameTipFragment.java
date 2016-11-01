@@ -1,7 +1,11 @@
 package pl.nowakprojects.socialmafia.utitles;
 
+import android.app.Activity;
+import android.support.v4.app.ActivityCompat;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +19,7 @@ import pl.nowakprojects.socialmafia.R;
  */ //MOJA KONWENCJA KODOWANIA!!!
 public class GameTipFragment extends Fragment {
 
+    private final static String GAME_TIP_FRAGMENT = "GAME_TIP_FRAGMENT";
     private boolean b_isCollapsed = false;
     private TextView textView_tipTitle;
     private TextView textView_tipContent;
@@ -96,6 +101,22 @@ public class GameTipFragment extends Fragment {
         this.s_tipContent = s_tipContent;
         this.textView_tipContent.setText(s_tipContent);
         collapse(true);
+    }
+
+    public static void vShow(Fragment fragment,String sTipTitle, String sTipContent, Boolean collapsed){
+        GameTipFragment gameTipFragment = new GameTipFragment(sTipTitle,sTipContent,collapsed);
+
+        FragmentTransaction fragmentTransaction = fragment.getChildFragmentManager().beginTransaction();
+        fragmentTransaction.add(R.id.gameTipFragment, gameTipFragment, GAME_TIP_FRAGMENT);
+        fragmentTransaction.commit();
+    }
+
+    public static void vShow(AppCompatActivity activity, String sTipTitle, String sTipContent, Boolean collapsed){
+        GameTipFragment gameTipFragment = new GameTipFragment(sTipTitle,sTipContent,collapsed);
+
+        FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.add(R.id.gameTipFragment, gameTipFragment, GAME_TIP_FRAGMENT);
+        fragmentTransaction.commit();
     }
 
 }

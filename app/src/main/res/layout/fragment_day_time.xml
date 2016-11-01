@@ -27,7 +27,8 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="@string/day_number"
-                    android:id="@+id/dayNumberTextView" />
+                    android:id="@+id/dayNumberTextView"
+                    android:textStyle="normal|bold" />
 
                 <TextView
                     android:layout_width="wrap_content"

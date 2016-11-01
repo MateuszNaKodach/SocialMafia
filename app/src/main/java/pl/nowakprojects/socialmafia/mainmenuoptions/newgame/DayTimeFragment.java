@@ -26,13 +26,14 @@ public class DayTimeFragment extends Fragment {
 
     TheGame mTheGame;
 
+    @BindView(R.id.dayTimerTextView)    TextView mDayTimerTextView;
+    @BindView(R.id.dayNumberTextView)    TextView mDayNumberTextView;
+    @BindView(R.id.finishTheDayButton)  Button mFinishDayButton;
+
+
     public DayTimeFragment(TheGame theGame) {
         this.mTheGame=theGame;
     }
-
-    @BindView(R.id.dayTimerTextView)    TextView mDayTimerTextView;
-    @BindView(R.id.dayNumberTextView)    TextView mDayNumberTextView;
-    @BindView(R.id.finishTheDayButton)  Button finishDayButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -65,7 +66,7 @@ public class DayTimeFragment extends Fragment {
     }
 
     private void vUiSetupButtonListener(){
-        finishDayButton.setOnClickListener(new View.OnClickListener() {
+        mFinishDayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 

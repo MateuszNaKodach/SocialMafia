@@ -22,6 +22,11 @@
         android:layout_width = "match_parent"
         android:layout_height="2dp" />
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/gameTipFragment"/>
+
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -105,10 +110,6 @@
 
     </GridLayout>
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/gameTipFragment"/>
 
     <Button
         android:layout_width="match_parent"

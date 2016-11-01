@@ -270,5 +270,6 @@ Raz w ciągu gry,  podczas trwania dnia wybiera osobę, która aż do nocy nie b
     <string name="timeofdaytime"> %1$s minut</string>
     <string name="sharedpref_daytime">sharedpref_daytime</string>
     <string name="title_new_game">Nowa gra</string>
+    <string name="tip_duel">Wybierz ile graczy chce, aby pojedyńczy gracz przegrał pojedynek.</string>
 
 </resources>

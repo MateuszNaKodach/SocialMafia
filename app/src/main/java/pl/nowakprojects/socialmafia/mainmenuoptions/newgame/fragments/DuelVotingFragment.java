@@ -3,6 +3,7 @@ package pl.nowakprojects.socialmafia.mainmenuoptions.newgame.fragments;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,6 +21,7 @@ import butterknife.ButterKnife;
 import pl.nowakprojects.socialmafia.R;
 import pl.nowakprojects.socialmafia.mafiagameclasses.HumanPlayer;
 import pl.nowakprojects.socialmafia.mafiagameclasses.TheGame;
+import pl.nowakprojects.socialmafia.utitles.GameTipFragment;
 
 /**
  * Created by Mateusz on 19.10.2016.
@@ -106,11 +108,15 @@ public class DuelVotingFragment extends DialogFragment {
 
     private void hpCalculateDuelResult(){
         mLoosersList = new ArrayList<>();
-        if(seekbarKillInsultedPlayerVotes.getProgress()==seekbarKillAgressivePlayerVotes.getProgress()){
+        if(mAgressiveHumanPlayer.hasSpeedyRole()&&!mInsultedHumanPlayer.hasSpeedyRole())
+            mLoosersList.add(mInsultedHumanPlayer);
+        else if(!mAgressiveHumanPlayer.hasSpeedyRole()&&mInsultedHumanPlayer.hasSpeedyRole())
+            mLoosersList.add(mAgressiveHumanPlayer);
+        else if(seekbarKillInsultedPlayerVotes.getProgress()==seekbarKillAgressivePlayerVotes.getProgress()){
             mLoosersList.add(mAgressiveHumanPlayer);
             mLoosersList.add(mInsultedHumanPlayer);
         }
-        else if(seekbarKillInsultedPlayerVotes.getProgress()>seekbarKillAgressivePlayerVotes.getProgress())
+        else if(seekbarKillInsultedPlayerVotes.getProgress()<seekbarKillAgressivePlayerVotes.getProgress())
             mLoosersList.add(mAgressiveHumanPlayer);
         else
             mLoosersList.add(mInsultedHumanPlayer);
@@ -121,14 +127,15 @@ public class DuelVotingFragment extends DialogFragment {
 
     private String stringDuelResults(){
 
-        mTheGame.getmTemporaryLastTimeKilledPlayerList().clear();
-
         String result = "Zabici zostali: ";
         for(HumanPlayer hp: mTheGame.getmTemporaryLastTimeKilledPlayerList())
             result+=hp.getPlayerName()+", ";
 
+        mTheGame.getmTemporaryLastTimeKilledPlayerList().clear();
+
         return result;
     }
+
 
     //UserInterface Methods:
     private void vUiSetupDialog(){
@@ -137,6 +144,7 @@ public class DuelVotingFragment extends DialogFragment {
     }
 
     private void vUiSetupUserInterface(){
+        vUiShowGameTipFragment();
         vUiSetupSeekBars();
         vUiSetupTextViews();
         vUiSetButtonsListeners();
@@ -225,5 +233,11 @@ public class DuelVotingFragment extends DialogFragment {
     private void vUiUpdateProgressTextView(SeekBar seekBar, TextView textView) {
         textView.setText(String.valueOf(seekBar.getProgress()));
     }
+
+    private void vUiShowGameTipFragment(){
+        GameTipFragment.vShow(this,null,getString(R.string.tip_duel),false);
+    }
+
+
 
 }
