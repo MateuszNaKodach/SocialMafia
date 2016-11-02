@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -23,22 +24,36 @@ import pl.nowakprojects.socialmafia.mafiagameclasses.TheGame;
  */
 public class DailyVotingFragment extends Fragment {
 
-    private enum OUTVOTED {KILLING, CHECKING, DRAW};
-    private enum DRAWSOLUTION {CANCEL, GRAVEWILL, RANDOMKILLORCHECK};
+    public enum OUTVOTED {KILLING, CHECKING, DRAW}
+
+
+    private enum DRAWSOLUTION {CANCEL, GRAVEWILL, RANDOMKILLORCHECK}
+
 
     private TheGame mTheGame;
     private MaterialDialog mConfirmMaterialDialog;
+    private MaterialDialog mGraveWillMaterialDialog;
+    private boolean mbVotingConfirmed;
+    OUTVOTED mVotedResult;
 
-    public DailyVotingFragment(){}
+    public DailyVotingFragment() {
+    }
 
-    public DailyVotingFragment(TheGame theGame) {this.mTheGame = theGame;}
+    public DailyVotingFragment(TheGame theGame) {
+        this.mTheGame = theGame;
+    }
 
 
-    @BindView(R.id.checkingSlider)   SeekBar mCheckingVoteSeekBar;
-    @BindView(R.id.killingSlider)   SeekBar mKillingVoteSeekBar;
-    @BindView(R.id.textView_iCheckingVotes)  TextView mCheckingVotesTextView;
-    @BindView(R.id.textView_iKillingVotes)  TextView mKillingVotesTextView;
-    @BindView(R.id.confirmJudge)  Button mConfirmVotingButton;
+    @BindView(R.id.checkingSlider)
+    SeekBar mCheckingVoteSeekBar;
+    @BindView(R.id.killingSlider)
+    SeekBar mKillingVoteSeekBar;
+    @BindView(R.id.textView_iCheckingVotes)
+    TextView mCheckingVotesTextView;
+    @BindView(R.id.textView_iKillingVotes)
+    TextView mKillingVotesTextView;
+    @BindView(R.id.confirmJudge)
+    Button mConfirmVotingButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -46,15 +61,15 @@ public class DailyVotingFragment extends Fragment {
         // Inflate the layout for this fragment
         View fragmentView = inflater.inflate(R.layout.fragment_day_judgment, container, false);
 
-        ButterKnife.bind(this,fragmentView);
+        ButterKnife.bind(this, fragmentView);
         vUiSetupUserInterface();
 
         return fragmentView;
     }
 
 
-    private OUTVOTED calculateVotingResult(){
-        if(mKillingVoteSeekBar.getProgress() > mCheckingVoteSeekBar.getProgress())
+    private OUTVOTED calculateVotingResult() {
+        if (mKillingVoteSeekBar.getProgress() > mCheckingVoteSeekBar.getProgress())
             return OUTVOTED.KILLING;
         else if (mKillingVoteSeekBar.getProgress() < mCheckingVoteSeekBar.getProgress())
             return OUTVOTED.CHECKING;
@@ -62,33 +77,57 @@ public class DailyVotingFragment extends Fragment {
             return OUTVOTED.DRAW;
     }
 
-    private String sVotingResultTitle(OUTVOTED votingResult){
-        if(votingResult==OUTVOTED.KILLING)
+    private String sVotingResultTitle(OUTVOTED votingResult) {
+        if (votingResult == OUTVOTED.KILLING)
             return getString(R.string.killing);
-        else if(votingResult==OUTVOTED.CHECKING)
+        else if (votingResult == OUTVOTED.CHECKING)
             return getString(R.string.checking);
         else
             return getString(R.string.draw);
     }
 
-    private DRAWSOLUTION bringDrawSolution(int solutionIndex){
-        if(solutionIndex==2)
+    private DRAWSOLUTION bringDrawSolution(int solutionIndex) {
+        if (solutionIndex == 2)
             return DRAWSOLUTION.RANDOMKILLORCHECK;
-        else if(solutionIndex==1)
+        else if (solutionIndex == 1)
             return DRAWSOLUTION.GRAVEWILL;
         else
-         return DRAWSOLUTION.CANCEL;
+            return DRAWSOLUTION.CANCEL;
+    }
+
+    private void vConfrimVoting() {
+        mbVotingConfirmed = true;
+        mCheckingVoteSeekBar.setEnabled(false);
+        mKillingVoteSeekBar.setEnabled(false);
+        mConfirmVotingButton.setEnabled(false);
+        mConfirmVotingButton.setText(R.string.confirmed);
+        mTheGame.setCurrentDayOutVoted(mVotedResult);
+    }
+
+    private OUTVOTED randomVotingResult() {
+        int random = (int) (Math.random() * 2);
+        if (random == 0)
+            return OUTVOTED.KILLING;
+        else
+            return OUTVOTED.CHECKING;
     }
 
 
     //Setting User Interface methods:--------------------------------------------------------------
-    private void vUiSetupUserInterface(){
+    private void vUiSetupUserInterface() {
         vUiSetupButtonListener();
         vUiSetupSeekBar();
         vUiSetupTextView();
     }
 
-    private void vUiSetupSeekBar(){
+    public void vUiUpdateUserInterface() {
+        if (mbVotingConfirmed == false) {
+            vUiSetupTextView();
+            vUiSetupSeekBar();
+        }
+    }
+
+    private void vUiSetupSeekBar() {
         mCheckingVoteSeekBar.setMax(mTheGame.getLiveHumanPlayers().size());
         mCheckingVoteSeekBar.setProgress(mCheckingVoteSeekBar.getMax());
         mCheckingVoteSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -133,16 +172,16 @@ public class DailyVotingFragment extends Fragment {
         });
     }
 
-    private void vUiSetupTextView(){
+    private void vUiSetupTextView() {
         mCheckingVotesTextView.setText(String.valueOf(mCheckingVoteSeekBar.getProgress()));
         mKillingVotesTextView.setText(String.valueOf(mKillingVoteSeekBar.getProgress()));
     }
 
-    private void vUiSetupButtonListener(){
+    private void vUiSetupButtonListener() {
         mConfirmVotingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                vUiSetupMaterialDialog();
+                vUiSetMaterialDialog();
                 mConfirmMaterialDialog.show();
             }
         });
@@ -153,24 +192,41 @@ public class DailyVotingFragment extends Fragment {
         return textView.getText().toString();
     }
 
-    private void vUiSetupMaterialDialog(){
+    private void vUiSetMaterialDialog() {
+        if (mVotedResult == null)
+            mVotedResult = calculateVotingResult();
 
-        if(calculateVotingResult()==OUTVOTED.KILLING|| calculateVotingResult()==OUTVOTED.CHECKING) {
+        if (mVotedResult == OUTVOTED.KILLING || mVotedResult == OUTVOTED.CHECKING) {
             mConfirmMaterialDialog = new MaterialDialog.Builder(this.getActivity())
-                    .title(sVotingResultTitle(calculateVotingResult()))
-                    .content((mKillingVoteSeekBar.getProgress() > mCheckingVoteSeekBar.getProgress()) ?
+                    .title(sVotingResultTitle(mVotedResult))
+                    .autoDismiss(false)
+                    .content(mVotedResult == OUTVOTED.KILLING ?
                             getString(R.string.confirmKilling) : getString(R.string.confirmChecking))
                     .positiveText(R.string.yes)
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            mTheGame.setCurrentDayOutVoted(mVotedResult);
+                            vConfrimVoting();
+                            mConfirmMaterialDialog.dismiss();
+                        }
+                    })
+                    .onNegative(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            mConfirmMaterialDialog.dismiss();
+                        }
+                    })
                     .negativeText(R.string.no)
                     .build();
-        }else{
+        } else {
 
             mConfirmMaterialDialog = new MaterialDialog.Builder(this.getActivity())
                     .title(R.string.draw)
                     .content(R.string.draw_how_to_solve)
                     .items(R.array.voting_draw_solutions)
                     .autoDismiss(false)
-                    .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
+                    .itemsCallbackSingleChoice(0, new MaterialDialog.ListCallbackSingleChoice() {
                         @Override
                         public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
                             return true;
@@ -179,13 +235,20 @@ public class DailyVotingFragment extends Fragment {
                     .onPositive(new MaterialDialog.SingleButtonCallback() {
                         @Override
                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            if(bringDrawSolution(mConfirmMaterialDialog.getSelectedIndex())==DRAWSOLUTION.GRAVEWILL) {
-                                if (!mTheGame.getmTemporaryLastTimeKilledPlayerList().isEmpty());
-                                //graveWillMaterialDialog(od ostatniego, ktory zostal dodany do listy)
-                            }else if(bringDrawSolution(mConfirmMaterialDialog.getSelectedIndex())==DRAWSOLUTION.RANDOMKILLORCHECK);
+                            if (bringDrawSolution(mConfirmMaterialDialog.getSelectedIndex()) == DRAWSOLUTION.GRAVEWILL) {
+                                if (mTheGame.getLastKilledPlayer()!=null){
+                                    //mVotedResult =
+                                }else
+                                    Toast.makeText(getActivity(),R.string.nobody_killed,Toast.LENGTH_SHORT).show();
 
-                            else
-                            mConfirmMaterialDialog.dismiss();
+                            } else if (bringDrawSolution(mConfirmMaterialDialog.getSelectedIndex()) == DRAWSOLUTION.RANDOMKILLORCHECK) {
+                                mVotedResult = randomVotingResult();
+                                mConfirmMaterialDialog.dismiss();
+                                vUiSetMaterialDialog();
+                            } else {
+                                mVotedResult = null;
+                                mConfirmMaterialDialog.dismiss();
+                            }
                         }
                     })
                     .positiveText(R.string.choose)
@@ -193,10 +256,38 @@ public class DailyVotingFragment extends Fragment {
         }
 
 
+        if(mTheGame.getLastKilledPlayer()!=null) {
+            mGraveWillMaterialDialog = new MaterialDialog.Builder(this.getActivity())
+                    .title(getString(R.string.gravewilltitle, mTheGame.getLastKilledPlayer().getPlayerName()))
+                    .content(R.string.gravewill_explanation)
+                    .items(R.array.check_kill_choice)
+                    .autoDismiss(false)
+                    .itemsCallbackSingleChoice(0, new MaterialDialog.ListCallbackSingleChoice() {
+                        @Override
+                        public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                            return true;
+                        }
+                    })
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            if (mGraveWillMaterialDialog.getSelectedIndex() == 0)
+                                mVotedResult = OUTVOTED.CHECKING;
+                            else
+                                mVotedResult = OUTVOTED.KILLING;
+
+                            mConfirmMaterialDialog.dismiss();
+                            vUiSetMaterialDialog();
+                        }
+                    })
+                    .positiveText(R.string.choose)
+                    .show();
+        }
+    }
+
 
 
 
     }
 
 
-}

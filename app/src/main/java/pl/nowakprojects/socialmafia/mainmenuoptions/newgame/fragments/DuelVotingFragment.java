@@ -1,9 +1,9 @@
 package pl.nowakprojects.socialmafia.mainmenuoptions.newgame.fragments;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,11 +22,14 @@ import pl.nowakprojects.socialmafia.R;
 import pl.nowakprojects.socialmafia.mafiagameclasses.HumanPlayer;
 import pl.nowakprojects.socialmafia.mafiagameclasses.TheGame;
 import pl.nowakprojects.socialmafia.utitles.GameTipFragment;
+import pl.nowakprojects.socialmafia.utitles.OnPlayerKilledListener;
 
 /**
  * Created by Mateusz on 19.10.2016.
  */
 public class DuelVotingFragment extends DialogFragment {
+
+    OnPlayerKilledListener mPlayerKillCallback;
 
     DialogFragment mInstance;
     //Members:
@@ -55,6 +58,20 @@ public class DuelVotingFragment extends DialogFragment {
     @BindView(R.id.textView_sInsultedPlayerName) TextView textView_sInsultedPlayerName;
     @BindView(R.id.button_confirmDuel) Button button_confirmVoting;
     @BindView(R.id.oneDuelIcon) ImageView gunIcon;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        // This makes sure that the container activity has implemented
+        // the callback interface. If not, it throws an exception
+        try {
+            mPlayerKillCallback = (OnPlayerKilledListener) getActivity();
+        } catch (ClassCastException e) {
+            throw new ClassCastException(getActivity().toString()
+                    + " must implement OnPlayerKilledListener");
+        }
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -86,6 +103,7 @@ public class DuelVotingFragment extends DialogFragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 submitDuelResult();
+                mPlayerKillCallback.onPlayerKilled();
                 mInstance.dismiss();
             }
         });
@@ -138,6 +156,7 @@ public class DuelVotingFragment extends DialogFragment {
 
 
     //UserInterface Methods:
+
     private void vUiSetupDialog(){
         getDialog().setTitle(R.string.duel);
         getDialog().setCancelable(false);

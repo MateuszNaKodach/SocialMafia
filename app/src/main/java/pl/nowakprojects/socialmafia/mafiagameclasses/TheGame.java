@@ -23,6 +23,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.fragments.DailyVotingFragment;
 import pl.nowakprojects.socialmafia.utitles.GameRolesWakeHierarchyComparator;
 
 /**
@@ -36,7 +37,7 @@ public class TheGame {
 
 	static TheGame instance;
 
-	public enum Daytime {DAY, NIGHT, JUDGEMENT};
+	public enum Daytime {DAY, NIGHT, JUDGEMENT}
 
 	ArrayList<HumanPlayer> playersInfoList; 	// LISTA ZAPISANYCH GRACZY
 	ArrayList<GameDaytime> mlistTheGameDaytimes = new ArrayList<>();
@@ -46,8 +47,9 @@ public class TheGame {
 
 	// STATYSTYKI GRY:
 	long mdMaxDayTime = 180000; // czas dnia w milisekundach
-	int I_MAX_DUELS_AMOUNT = 3; //maksymalna ilosc pojedynkow na dzien
-	int I_MAX_DUELS_CHALLENGES = 10; //maksymalna ilosc  wyzwan na dzien
+	int mdMaxDuelAmount = 3; //maksymalna ilosc pojedynkow na dzien
+	int mdMaxDuelChallenges = 10; //maksymalna ilosc  wyzwan na dzien
+	boolean mbFinished = false; //czy gra została skończona
 
 	//początkowe ustawienia
 	int players = 0;
@@ -56,23 +58,28 @@ public class TheGame {
 	int miSyndicateStartAmount = 0;
 	int doublers = 0;
 
-	//zrobic nowa zmienna, GameDay of the game, i dodawac na poczatku kazdego dnia, nocy, i beda dane konkretnego dnia i nocy!!!
+	//Ogolne zmienne do gry:
 	int miCurrentNightNumber = -1;
 	int miCurrentDayNumber = 0;
+
+
+	//Zmienne do aktualnego Daytime
 	Daytime mdaytimeCurrentDaytime;
+	DailyVotingFragment.OUTVOTED mCurrentDayOutVoted;
+	int miDaytimeRolesActionsMadeThis = 0;
+	ArrayList<HumanPlayer> mTemporaryLastTimeKilledPlayerList;
 
-	boolean mbFinished = false; //czy gra została skończona
-	//boolean coquetteMEGA = true;
 
-	int i_actions_made_this_time = 0;
-
-	//To wszystko muszą być listy, bo jest kilka możliwości!!!
+	//Zmienne do aktualnej nocy
 	ArrayList<HumanPlayer> lastNightHealingByMedicPlayers;
 	ArrayList<HumanPlayer> lastNightHeatingByDarkMedicPlayers;
 	ArrayList<HumanPlayer> lastNightDealingByDealerPlayers;
-	ArrayList<HumanPlayer> lastDayOperateByDentistPlayer;
 	ArrayList<HumanPlayer> lastNightKilledPlayer;
-	ArrayList<HumanPlayer> mTemporaryLastTimeKilledPlayerList;
+
+	//Zmienne do aktualnego dnia
+	ArrayList<HumanPlayer> lastDayOperateByDentistPlayer;
+	int miThisDayRemainedDuels;
+	int miThisDayThrownChallenges=0;
 
 	public TheGame() {
 		lastNightHealingByMedicPlayers = new ArrayList<>();
@@ -107,6 +114,12 @@ public class TheGame {
 		}//if(humanPlayer.isAlive())
 	}//public static void kill(HumanPlayer humanPlayer)
 
+	public HumanPlayer getLastKilledPlayer(){
+		if(mTemporaryLastTimeKilledPlayerList.isEmpty())
+			return null;
+		else
+			return mTemporaryLastTimeKilledPlayerList.get(mTemporaryLastTimeKilledPlayerList.size()-1);
+	}
 
 	public HumanPlayer findPreviousPlayerTo(HumanPlayer humanPlayer){
 		for(int i=playersInfoList.indexOf(humanPlayer)-1; i>=0;i--)
@@ -129,15 +142,33 @@ public class TheGame {
 	}
 
 	public void startNewNight(){
+		lastNightHealingByMedicPlayers.clear();
+		lastNightHeatingByDarkMedicPlayers.clear();
+		lastNightDealingByDealerPlayers.clear();
+		lastNightKilledPlayer.clear();
+		mTemporaryLastTimeKilledPlayerList.clear();
+		miDaytimeRolesActionsMadeThis = 0;
 		miCurrentNightNumber++;
 		this.mdaytimeCurrentDaytime=Daytime.NIGHT;
 		mlistTheGameDaytimes.add(new GameNight(this,Daytime.NIGHT));
 	}
 
 	public void startNewDay(){
+		lastDayOperateByDentistPlayer.clear();
+		mTemporaryLastTimeKilledPlayerList.clear();
+		miDaytimeRolesActionsMadeThis = 0;
+		mCurrentDayOutVoted=null;
 		miCurrentDayNumber++;
 		this.mdaytimeCurrentDaytime=Daytime.DAY;
 		mlistTheGameDaytimes.add(new GameDay(this,Daytime.DAY));
+	}
+
+	public void setCurrentDayOutVoted(DailyVotingFragment.OUTVOTED mCurrentDayOutVoted) {
+		this.mCurrentDayOutVoted = mCurrentDayOutVoted;
+	}
+
+	public DailyVotingFragment.OUTVOTED getCurrentDayOutVoted() {
+		return mCurrentDayOutVoted;
 	}
 
 	public ArrayList<HumanPlayer> getAllNightsBesideZeroHumanPlayers() {
@@ -216,8 +247,8 @@ public class TheGame {
 	}
 
 	public int iActionMadeThisTime(){
-		// i_actions_made_this_time++;
-		return ++i_actions_made_this_time;
+		// miDaytimeRolesActionsMadeThis++;
+		return ++miDaytimeRolesActionsMadeThis;
 	}
 
 	public HumanPlayer findHumanPlayerByName(String playerName){
@@ -236,6 +267,15 @@ public class TheGame {
 
 		return null;
 	}
+
+	public List<String> getLiveHumanPlayersNames() {
+		ArrayList<String> result = new ArrayList<>();
+		for (HumanPlayer humanPlayer : playersInfoList) {
+			if (humanPlayer.isAlive())
+				result.add(humanPlayer.getPlayerName());
+		}
+		return result;
+	}// private ArrayList<HumanPlayer> getTownHumanPlayers()
 
 	public List<HumanPlayer> getLiveHumanPlayers() {
 		ArrayList<HumanPlayer> result = new ArrayList<HumanPlayer>();
@@ -286,7 +326,7 @@ public class TheGame {
 	//GETTERS AND SETTERS-----------------------------------------------------------------------------
 
 	public int iGetActionsMadeThisTime(){
-		return i_actions_made_this_time;
+		return miDaytimeRolesActionsMadeThis;
 	}
 
 

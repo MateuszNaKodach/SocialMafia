@@ -21,11 +21,13 @@ import butterknife.ButterKnife;
 import pl.nowakprojects.socialmafia.R;
 import pl.nowakprojects.socialmafia.mafiagameclasses.HumanPlayer;
 import pl.nowakprojects.socialmafia.mafiagameclasses.TheGame;
+import pl.nowakprojects.socialmafia.utitles.Communicator;
 
 /**
  * Created by Mateusz on 19.10.2016.
  */
-public class DuelChallengesFragment extends Fragment {
+public class DuelChallengesFragment extends Fragment{
+
 
     TheGame mTheGame;
     String msCurrentAgressivePlayer;
@@ -62,13 +64,19 @@ public class DuelChallengesFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        vUiUpdateSpinners();
+       // vUiUpdateSpinners();
     }
+
+
 
     //Setting User Interface methods:---------------------------------------------------------------
     private void vUiSetupUserInterface(){
         vUiSetupSpinners();
         vUiSetupButtonsListeners();
+    }
+
+    public void vUiUpdateUserInterface(){
+        vUiUpdateSpinners();
     }
 
     private void vUiSetupSpinners(){
@@ -139,46 +147,6 @@ public class DuelChallengesFragment extends Fragment {
                     }
                 })
                 .build();
-
-       /* mChallengeConfirmationDialog = new GameAlertDialog(
-                getActivity(),
-                getString(R.string.duelActionDialogTitle, msCurrentAgressivePlayer, msCurrentInsultedPlayer),
-                getString(R.string.confirmDuelChallenge, msCurrentAgressivePlayer, msCurrentInsultedPlayer));
-        mChallengeConfirmationDialog.setmNegativeButtonClickListener(new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                mChallengeConfirmationDialog.cancel();
-            }
-        });
-        mChallengeConfirmationDialog.setmPositiveButtonClickListener(new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                mChallengedInsultedAgreeDialog.show();
-                mChallengeConfirmationDialog.cancel();
-            }
-        });
-
-
-        mChallengedInsultedAgreeDialog = new GameAlertDialog(
-                getActivity(),
-                getString(R.string.duelActionDialogTitle, msCurrentAgressivePlayer, msCurrentInsultedPlayer),
-                getString(R.string.agreeDuelChallenge, msCurrentAgressivePlayer, msCurrentInsultedPlayer));
-        mChallengedInsultedAgreeDialog.setmNegativeButtonClickListener(new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                mChallengedInsultedAgreeDialog.cancel();
-                //BUDZENIE SEDZIEGO!!
-            }
-        });
-        mChallengedInsultedAgreeDialog.setmPositiveButtonClickListener(new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                fragmentManager = getChildFragmentManager();
-                DuelVotingFragment theGameDuelActionVotingFragment = new DuelVotingFragment(mTheGame, mTheGame.findHumanPlayerByName(mAgresivePlayerSpinner.getSelectedItem().toString()), mTheGame.findHumanPlayerByName(mInsultedPlayerSpinner.getSelectedItem().toString()));
-                theGameDuelActionVotingFragment.show(fragmentManager, "DuelVotingFragment");
-                mChallengedInsultedAgreeDialog.cancel();
-            }
-        });*/
 
 
     }

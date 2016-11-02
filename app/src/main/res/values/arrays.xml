@@ -15,4 +15,12 @@
         <item>@string/grave_will</item>
         <item>@string/random_kill_or_vote</item>
     </string-array>
+    <string-array name="yes_no_choice">
+        <item>@string/yes</item>
+        <item>@string/no</item>
+    </string-array>
+    <string-array name="check_kill_choice">
+        <item>@string/checking</item>
+        <item>@string/killing</item>
+    </string-array>
 </resources>

@@ -19,6 +19,7 @@ import pl.nowakprojects.socialmafia.R;
 import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.dialogfragments.PlayersStatusDialogFragment;
 import pl.nowakprojects.socialmafia.mafiagameclasses.HumanPlayer;
 import pl.nowakprojects.socialmafia.mafiagameclasses.TheGame;
+import pl.nowakprojects.socialmafia.utitles.OnPlayerKilledListener;
 
 /**
  * Created by Mateusz on 01.11.2016.
@@ -30,6 +31,7 @@ public class PlayersStatusAdapter extends RecyclerView.Adapter<PlayersStatusAdap
     private ArrayList<HumanPlayer> humanPlayersList;
     private LayoutInflater inflater;
     private Context context;
+    private OnPlayerKilledListener mPlayerKillCallback;
 
     public PlayersStatusAdapter(PlayersStatusDialogFragment playersStatusDialogFragment, Context context, TheGame theGame) {
         this.playersStatusDialogFragment = playersStatusDialogFragment;
@@ -37,6 +39,18 @@ public class PlayersStatusAdapter extends RecyclerView.Adapter<PlayersStatusAdap
         this.humanPlayersList = mTheGame.getPlayersInfoList();
         this.inflater = LayoutInflater.from(context);
         this.context = context;
+    }
+
+    @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        /*try {
+            mPlayerKillCallback = (OnPlayerKilledListener) context
+        } catch (ClassCastException e) {
+            throw new ClassCastException(getActivity().toString()
+                    + " must implement OnPlayerKilledListener");
+        }*/
+
     }
 
     @Override

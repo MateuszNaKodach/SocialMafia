@@ -17,8 +17,9 @@ import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.fragments.DuelChalle
 import pl.nowakprojects.socialmafia.mafiagameclasses.TheGame;
 import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.fragments.RoleActionsFragment;
 import pl.nowakprojects.socialmafia.utitles.GameTipFragment;
+import pl.nowakprojects.socialmafia.utitles.OnPlayerKilledListener;
 
-public class TheGameActionActivity extends AppCompatActivity {
+public class TheGameActionActivity extends AppCompatActivity implements OnPlayerKilledListener {
 
     final String TIME_FRAGMENT = "TheGameActionActivity.TIME_FRAGMENT";
     final String TIME_ROLE_ACTIONS_FRAGMENT = "TheGameActionActivity.TIME_ROLE_ACTIONS_FRAGMENT";
@@ -114,7 +115,7 @@ public class TheGameActionActivity extends AppCompatActivity {
 
         fragmentTransaction.commit();
 
-        showGameTipFragment(null,getString(R.string.night_time_tip));
+        vUiShowGameTipFragment();
     }
 
     void endNightAction() {
@@ -167,42 +168,31 @@ public class TheGameActionActivity extends AppCompatActivity {
      */
     private void receiveNewGameSettings() {
         theGame = Parcels.unwrap(getIntent().getParcelableExtra(ConnectPlayersToRolesActivity.EXTRA_NEW_GAME));
-        //mTheGame.setmTheGameActionActivity(this);
     }
 
-    ;
 
     private void receiveLoadGameSettings() {
         //WCZYTYWANIE Z BAZDY DANYCH i tworzenie mTheGame na podstawie tego
     }
 
-    ;
 
+    private void vUiShowGameTipFragment(){
+        GameTipFragment.vShow(this,null,getString(R.string.night_time_tip),false);
+    }
 
-    /*private ArrayList<HumanPlayer> getDayHumanPlayers() {
-        ArrayList<HumanPlayer> result = new ArrayList<HumanPlayer>();
-        for (HumanPlayer humanPlayer : mTheGame.getPlayersInfoList()) {
-            if(humanPlayer.isAlive()) {
-                if (humanPlayer.getPlayerRole().getActionType().equals(PlayerRole.ActionType.))
-                    result.add(humanPlayer);
-                if (humanPlayer.getPlayerRole().getActionType().equals(PlayerRole.ActionType.AllNightsBesideZero))
-                    result.add(humanPlayer);
-            }
-        }
-        Collections.sort(result,new GameRolesWakeHierarchyComparator());
-        if(!result.isEmpty())
-            result.get(0).getPlayerRole().setB_isRoleTurn(true);
-        return result;
-    }// private ArrayList<HumanPlayer> getAllNightsBesideZeroHumanPlayers()*/
+    @Override
+    public void onPlayerKilled() {
+        DuelChallengesFragment duelChallengesFragment = (DuelChallengesFragment)
+                getSupportFragmentManager().findFragmentById(R.id.dayDuelsFragment);
 
-   private GameTipFragment showGameTipFragment(String sTipTitle, String sTipContent){
-       GameTipFragment gameTipFragment = new GameTipFragment(sTipTitle,sTipContent);
+        if(duelChallengesFragment!=null)
+            duelChallengesFragment.vUiUpdateUserInterface();
 
-       FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-       fragmentTransaction.add(R.id.gameTipFragment, gameTipFragment, GAME_TIP_FRAGMENT);
-       fragmentTransaction.commit();
+        DailyVotingFragment dailyVotingFragment = (DailyVotingFragment)
+                getSupportFragmentManager().findFragmentById(R.id.dayJudgmentFragment);
 
-       return gameTipFragment;
-   }
+        if (dailyVotingFragment != null)
+            dailyVotingFragment.vUiUpdateUserInterface();
+    }
 
 }//public class TheGameActionActivity extends AppCompatActivity

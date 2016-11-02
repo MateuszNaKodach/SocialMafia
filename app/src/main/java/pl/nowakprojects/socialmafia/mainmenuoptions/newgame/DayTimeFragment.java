@@ -3,19 +3,27 @@ package pl.nowakprojects.socialmafia.mainmenuoptions.newgame;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Vibrator;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import pl.nowakprojects.socialmafia.R;
+import pl.nowakprojects.socialmafia.mafiagameclasses.HumanPlayer;
 import pl.nowakprojects.socialmafia.mafiagameclasses.TheGame;
+import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.fragments.DailyVotingFragment;
 
 import static android.content.Context.VIBRATOR_SERVICE;
 
@@ -25,6 +33,8 @@ import static android.content.Context.VIBRATOR_SERVICE;
 public class DayTimeFragment extends Fragment {
 
     TheGame mTheGame;
+    MaterialDialog mChoosingPlayerMaterialDialog;
+    ArrayList<HumanPlayer> mChoosedPlayersToDailyJudgment;
 
     @BindView(R.id.dayTimerTextView)    TextView mDayTimerTextView;
     @BindView(R.id.dayNumberTextView)    TextView mDayNumberTextView;
@@ -33,6 +43,7 @@ public class DayTimeFragment extends Fragment {
 
     public DayTimeFragment(TheGame theGame) {
         this.mTheGame=theGame;
+        mChoosedPlayersToDailyJudgment = new ArrayList<HumanPlayer>();
     }
 
     @Override
@@ -56,6 +67,13 @@ public class DayTimeFragment extends Fragment {
         dayTimeTimer.start();
     }
 
+    private String sDailyJudgmentTitle(){
+        if(mTheGame.getCurrentDayOutVoted()== DailyVotingFragment.OUTVOTED.KILLING)
+            return getString(R.string.killing);
+        else
+            return getString(R.string.checking);
+    }
+
     private void vUiSetupUserInterface(){
         vUiSetupTextView();
         vUiSetupButtonListener();
@@ -69,12 +87,57 @@ public class DayTimeFragment extends Fragment {
         mFinishDayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if(mTheGame.getCurrentDayOutVoted()==null)
+                    Toast.makeText(getActivity(),R.string.no_kill_check_choose,Toast.LENGTH_SHORT).show();
+                else {
+                    vUiSetMaterialDialog();
+                    mChoosingPlayerMaterialDialog.show();
+                }
             }
         });
 
     }
 
+    private void vUiSetMaterialDialog(){
+
+            mChoosingPlayerMaterialDialog = new MaterialDialog.Builder(this.getActivity())
+                        .title(sDailyJudgmentTitle())
+                        .autoDismiss(false)
+                        .items(mTheGame.getLiveHumanPlayersNames())
+                        .content(R.string.players_voting_explanation)
+                        .positiveText(R.string.confirm)
+                        .negativeText(R.string.cancel)
+                    .itemsCallbackMultiChoice(null, new MaterialDialog.ListCallbackMultiChoice() {
+                        @Override
+                        public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
+
+                            return true;
+                        }
+                    })
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                Integer[] selected = mChoosingPlayerMaterialDialog.getSelectedIndices();
+                                if(selected!=null&&selected.length>2){
+                                    for(int i=0;i<selected.length;i++)
+                                        mChoosedPlayersToDailyJudgment.add(mTheGame.getLiveHumanPlayers().get(selected[i]));
+
+                                    mChoosingPlayerMaterialDialog.dismiss();
+                                }else
+                                    Toast.makeText(getActivity(),R.string.needmoreplayers,Toast.LENGTH_SHORT).show();
+
+                            }
+                        })
+                        .onNegative(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                mChoosingPlayerMaterialDialog.dismiss();
+                            }
+                        })
+                        .build();
+
+
+        }
 
     /**
      * Odliczanie czasu do końca dnia - timer

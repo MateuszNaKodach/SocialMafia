@@ -22,6 +22,7 @@ public class PlayerRole {
     int rolePlayersAmount=0;
     boolean roleUsed = false;
     int lifes = 0;
+    boolean onlyPremium=false;
 
     //PlayerActionViewHolder
     boolean b_isRoleTurn = false;
@@ -39,6 +40,21 @@ public class PlayerRole {
             lifes=2;
         else
             lifes=1;
+    }
+
+    public PlayerRole(int name, int description, int iconResourceID, Fraction fraction, ActionType actionType, int nightWakeHierarchyNumber, boolean onlyPremium) {
+        this.name = name;
+        this.description = description;
+        this.iconResourceID = iconResourceID;
+        this.fraction = fraction;
+        this.actionType = actionType;
+        this.nightWakeHierarchyNumber = nightWakeHierarchyNumber;
+        if(this.name == R.string.emo)
+            lifes=2;
+        else
+            lifes=1;
+
+        this.onlyPremium=onlyPremium;
     }
 
 

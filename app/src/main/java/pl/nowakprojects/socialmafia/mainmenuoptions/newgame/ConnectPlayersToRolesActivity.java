@@ -65,6 +65,16 @@ public class ConnectPlayersToRolesActivity extends AppCompatActivity {
 
     }
 
+    private void vCreateNewGame(){
+        mNewGame = new TheGame();
+        mNewGame.setPlayersInfoList(mPlayersInfoList);
+        mNewGame.setPlayers(mPlayersInfoList.size());
+        mNewGame.setMafia(iCountFractionRoles(mPlayersInfoList, PlayerRole.Fraction.MAFIA));
+        mNewGame.setTown(iCountFractionRoles(mPlayersInfoList, PlayerRole.Fraction.TOWN));
+        mNewGame.setMiSyndicateStartAmount(iCountFractionRoles(mPlayersInfoList, PlayerRole.Fraction.SYNDICATE));
+//        mNewGame.setMdMaxDayTime(Long.valueOf(getResources().getString(R.string.sharedpref_daytime)));
+    }
+
     private void vConnectPlayersToRoles(){
         mPlayersInfoList = createHumanPlayerWithRolesList(mSelectedPlayersRoles, mPlayersNamesList); //create new list of players (connected with Roles)
     }
@@ -94,15 +104,6 @@ public class ConnectPlayersToRolesActivity extends AppCompatActivity {
         mPlayersNamesList = getIntent().getStringArrayListExtra(TapPlayersNamesActivity.EXTRA_PLAYERS_NAMES_LIST);
     }
 
-    private void vCreateNewGame(){
-        mNewGame = new TheGame();
-        mNewGame.setPlayersInfoList(mPlayersInfoList);
-        mNewGame.setPlayers(mPlayersInfoList.size());
-        mNewGame.setMafia(iCountFractionRoles(mPlayersInfoList, PlayerRole.Fraction.MAFIA));
-        mNewGame.setTown(iCountFractionRoles(mPlayersInfoList, PlayerRole.Fraction.TOWN));
-        mNewGame.setMiSyndicateStartAmount(iCountFractionRoles(mPlayersInfoList, PlayerRole.Fraction.SYNDICATE));
-        mNewGame.setMdMaxDayTime(Long.valueOf(getResources().getString(R.string.sharedpref_daytime)));
-    }
 
     //Setup User Interface Methods:-----------------------------------------------------------------
     private void vUiSetupUserInterface(){
@@ -124,13 +125,10 @@ public class ConnectPlayersToRolesActivity extends AppCompatActivity {
                     vCreateNewGame();
 
                     Bundle bundle = new Bundle();
-                    Log.i("SRATATA", "Dajemy parcele.");
                     bundle.putParcelable(EXTRA_NEW_GAME, Parcels.wrap(mNewGame));
-                    Log.i("SRATATA", "Dajemy parcele.");
                     Intent intent = new Intent(getApplicationContext(), TheGameActionActivity.class);
                     intent.putExtras(bundle);
                     startActivity(intent);
-                    Log.i("SRATATA", "Startujemy activity.");
                 }
             }
         });

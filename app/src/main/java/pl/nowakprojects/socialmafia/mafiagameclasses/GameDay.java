@@ -22,6 +22,6 @@ class GameDay extends GameDaytime{
 
     GameDay(TheGame theGame, TheGame.Daytime dayTime) {
         super(theGame, dayTime);
-        miThisDayRemainedDuels=mTheGame.I_MAX_DUELS_AMOUNT;
+        miThisDayRemainedDuels=mTheGame.mdMaxDuelAmount;
     }
 }
