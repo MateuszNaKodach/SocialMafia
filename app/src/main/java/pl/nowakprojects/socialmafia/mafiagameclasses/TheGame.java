@@ -88,8 +88,13 @@ public class TheGame {
 		lastDayOperateByDentistPlayer = new ArrayList<>();
 		lastNightKilledPlayer = new ArrayList<>();
 		mTemporaryLastTimeKilledPlayerList = new ArrayList<>();
-	};
+	}
 
+
+	public void beginKilling(){
+		if(mTemporaryLastTimeKilledPlayerList!=null)
+			mTemporaryLastTimeKilledPlayerList.clear();
+	}
 
 	//przeiwdziec jak murzyn murzyni murzyna!
 	//dodac wybór łowcy
@@ -101,6 +106,7 @@ public class TheGame {
 					humanPlayer.hit(); //dostaje hita, jak jest emo to nie ginie, sprawdamy czy nie byl emo, czyli czy zginal
 
 				if(!humanPlayer.isAlive()) {
+					//beginKilling();
 					mTemporaryLastTimeKilledPlayerList.add(humanPlayer); //dodawanie do licy ostatnio zabitych
 					if (humanPlayer.hasLover()) {
 						for (HumanPlayer hp : humanPlayer.getAliveLovers())

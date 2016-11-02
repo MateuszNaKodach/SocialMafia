@@ -149,8 +149,6 @@ public class DuelVotingFragment extends DialogFragment {
         for(HumanPlayer hp: mTheGame.getmTemporaryLastTimeKilledPlayerList())
             result+=hp.getPlayerName()+", ";
 
-        mTheGame.getmTemporaryLastTimeKilledPlayerList().clear();
-
         return result;
     }
 

@@ -236,8 +236,8 @@ public class DailyVotingFragment extends Fragment {
                         @Override
                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                             if (bringDrawSolution(mConfirmMaterialDialog.getSelectedIndex()) == DRAWSOLUTION.GRAVEWILL) {
-                                if (mTheGame.getLastKilledPlayer()!=null){
-                                    //mVotedResult =
+                                if (mTheGame.getLastKilledPlayer()!=null&&mGraveWillMaterialDialog!=null){
+                                    mGraveWillMaterialDialog.show();
                                 }else
                                     Toast.makeText(getActivity(),R.string.nobody_killed,Toast.LENGTH_SHORT).show();
 
