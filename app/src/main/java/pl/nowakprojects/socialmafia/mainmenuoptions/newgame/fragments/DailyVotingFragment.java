@@ -100,7 +100,10 @@ public class DailyVotingFragment extends Fragment {
         mCheckingVoteSeekBar.setEnabled(false);
         mKillingVoteSeekBar.setEnabled(false);
         mConfirmVotingButton.setEnabled(false);
-        mConfirmVotingButton.setText(R.string.confirmed);
+        if(mVotedResult==OUTVOTED.KILLING)
+            mConfirmVotingButton.setText(getString(R.string.confirmed_voting,getString(R.string.killing)));
+        else
+            mConfirmVotingButton.setText(getString(R.string.confirmed_voting,getString(R.string.checking)));
         mTheGame.setCurrentDayOutVoted(mVotedResult);
     }
 
@@ -193,7 +196,7 @@ public class DailyVotingFragment extends Fragment {
     }
 
     private void vUiSetMaterialDialog() {
-        if (mVotedResult == null)
+        //if (mVotedResult == null)
             mVotedResult = calculateVotingResult();
 
         if (mVotedResult == OUTVOTED.KILLING || mVotedResult == OUTVOTED.CHECKING) {
@@ -276,12 +279,13 @@ public class DailyVotingFragment extends Fragment {
                             else
                                 mVotedResult = OUTVOTED.KILLING;
 
-                            mConfirmMaterialDialog.dismiss();
+                            //vConfrimVoting();
+                            mGraveWillMaterialDialog.dismiss();
                             vUiSetMaterialDialog();
                         }
                     })
                     .positiveText(R.string.choose)
-                    .show();
+                    .build();
         }
     }
 
