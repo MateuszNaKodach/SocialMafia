@@ -4,11 +4,6 @@ import org.parceler.Parcel;
 
 import java.util.ArrayList;
 
-import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.control.Label;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.layout.HBox;
 import pl.nowakprojects.socialmafia.R;
 
 @Parcel
