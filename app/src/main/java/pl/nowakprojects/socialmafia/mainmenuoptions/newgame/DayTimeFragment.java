@@ -118,7 +118,7 @@ public class DayTimeFragment extends Fragment {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                 Integer[] selected = mChoosingPlayerMaterialDialog.getSelectedIndices();
-                                if(selected!=null&&selected.length>2){
+                                if(selected!=null&&selected.length>=2){
                                     for(int i=0;i<selected.length;i++)
                                         mChoosedPlayersToDailyJudgment.add(mTheGame.getLiveHumanPlayers().get(selected[i]));
 
@@ -159,7 +159,7 @@ public class DayTimeFragment extends Fragment {
         @Override
         public void onFinish() {
             mDayTimerTextView.setText(getString(R.string.dayTimeEnded));
-            Vibrator vibrator = (Vibrator) getActivity().getSystemService(VIBRATOR_SERVICE);
+            Vibrator vibrator = (Vibrator) getContext().getSystemService(VIBRATOR_SERVICE);
             vibrator.vibrate(1500);
         }
     }

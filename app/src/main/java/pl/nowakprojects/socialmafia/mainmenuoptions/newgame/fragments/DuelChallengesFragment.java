@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -21,7 +22,7 @@ import butterknife.ButterKnife;
 import pl.nowakprojects.socialmafia.R;
 import pl.nowakprojects.socialmafia.mafiagameclasses.HumanPlayer;
 import pl.nowakprojects.socialmafia.mafiagameclasses.TheGame;
-import pl.nowakprojects.socialmafia.utitles.Communicator;
+import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.dialogfragments.DuelVotingDialogFragment;
 
 /**
  * Created by Mateusz on 19.10.2016.
@@ -68,6 +69,9 @@ public class DuelChallengesFragment extends Fragment{
     }
 
 
+    public boolean samePlayersChose(){
+     return (mTheGame.findHumanPlayerByName(mAgresivePlayerSpinner.getSelectedItem().toString())==mTheGame.findHumanPlayerByName(mInsultedPlayerSpinner.getSelectedItem().toString()));
+    }
 
     //Setting User Interface methods:---------------------------------------------------------------
     private void vUiSetupUserInterface(){
@@ -104,8 +108,12 @@ public class DuelChallengesFragment extends Fragment{
         mConfirmChallengeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                vUiSetupMaterialDialog();
-                mChallengeConfirmationDialog.show();
+                if(samePlayersChose())
+                    Toast.makeText(getActivity(),R.string.theSameDuelPlayers,Toast.LENGTH_SHORT).show();
+                else{
+                    vUiSetupMaterialDialog();
+                    mChallengeConfirmationDialog.show();
+                }
             }
         });
     }
@@ -136,8 +144,8 @@ public class DuelChallengesFragment extends Fragment{
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         fragmentManager = getChildFragmentManager();
-                        DuelVotingFragment theGameDuelActionVotingFragment = new DuelVotingFragment(mTheGame, mTheGame.findHumanPlayerByName(mAgresivePlayerSpinner.getSelectedItem().toString()), mTheGame.findHumanPlayerByName(mInsultedPlayerSpinner.getSelectedItem().toString()));
-                        theGameDuelActionVotingFragment.show(fragmentManager, "DuelVotingFragment");
+                        DuelVotingDialogFragment theGameDuelActionVotingFragment = new DuelVotingDialogFragment(mTheGame, mTheGame.findHumanPlayerByName(mAgresivePlayerSpinner.getSelectedItem().toString()), mTheGame.findHumanPlayerByName(mInsultedPlayerSpinner.getSelectedItem().toString()));
+                        theGameDuelActionVotingFragment.show(fragmentManager, "DuelVotingDialogFragment");
                     }
                 })
                 .onNegative(new MaterialDialog.SingleButtonCallback() {

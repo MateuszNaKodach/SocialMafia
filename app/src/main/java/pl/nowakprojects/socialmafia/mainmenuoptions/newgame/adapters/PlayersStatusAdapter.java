@@ -19,7 +19,7 @@ import pl.nowakprojects.socialmafia.R;
 import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.dialogfragments.PlayersStatusDialogFragment;
 import pl.nowakprojects.socialmafia.mafiagameclasses.HumanPlayer;
 import pl.nowakprojects.socialmafia.mafiagameclasses.TheGame;
-import pl.nowakprojects.socialmafia.utitles.OnPlayerKilledListener;
+import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.interfaces.OnPlayerKilledListener;
 
 /**
  * Created by Mateusz on 01.11.2016.

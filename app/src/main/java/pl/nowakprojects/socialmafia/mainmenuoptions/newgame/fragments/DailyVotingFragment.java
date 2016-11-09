@@ -209,7 +209,6 @@ public class DailyVotingFragment extends Fragment {
                     .onPositive(new MaterialDialog.SingleButtonCallback() {
                         @Override
                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            mTheGame.setCurrentDayOutVoted(mVotedResult);
                             vConfrimVoting();
                             mConfirmMaterialDialog.dismiss();
                         }
@@ -240,14 +239,16 @@ public class DailyVotingFragment extends Fragment {
                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                             if (bringDrawSolution(mConfirmMaterialDialog.getSelectedIndex()) == DRAWSOLUTION.GRAVEWILL) {
                                 if (mTheGame.getLastKilledPlayer()!=null&&mGraveWillMaterialDialog!=null){
+                                    mConfirmMaterialDialog.dismiss();
                                     mGraveWillMaterialDialog.show();
                                 }else
                                     Toast.makeText(getActivity(),R.string.nobody_killed,Toast.LENGTH_SHORT).show();
 
                             } else if (bringDrawSolution(mConfirmMaterialDialog.getSelectedIndex()) == DRAWSOLUTION.RANDOMKILLORCHECK) {
                                 mVotedResult = randomVotingResult();
+                                vConfrimVoting();
                                 mConfirmMaterialDialog.dismiss();
-                                vUiSetMaterialDialog();
+                                //vUiSetMaterialDialog();
                             } else {
                                 mVotedResult = null;
                                 mConfirmMaterialDialog.dismiss();
@@ -255,7 +256,7 @@ public class DailyVotingFragment extends Fragment {
                         }
                     })
                     .positiveText(R.string.choose)
-                    .show();
+                    .build();
         }
 
 
@@ -279,9 +280,10 @@ public class DailyVotingFragment extends Fragment {
                             else
                                 mVotedResult = OUTVOTED.KILLING;
 
-                            //vConfrimVoting();
+                            vConfrimVoting();
                             mGraveWillMaterialDialog.dismiss();
-                            vUiSetMaterialDialog();
+                            //vUiSetMaterialDialog();
+                            //Niby jeszcze potwierdzanie zza grobu
                         }
                     })
                     .positiveText(R.string.choose)

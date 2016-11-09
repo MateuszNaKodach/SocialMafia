@@ -17,7 +17,7 @@ import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.fragments.DuelChalle
 import pl.nowakprojects.socialmafia.mafiagameclasses.TheGame;
 import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.fragments.RoleActionsFragment;
 import pl.nowakprojects.socialmafia.utitles.GameTipFragment;
-import pl.nowakprojects.socialmafia.utitles.OnPlayerKilledListener;
+import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.interfaces.OnPlayerKilledListener;
 
 public class TheGameActionActivity extends AppCompatActivity implements OnPlayerKilledListener {
 

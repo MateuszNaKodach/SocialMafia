@@ -22,6 +22,7 @@ public class PlayerRole {
     int rolePlayersAmount=0;
     boolean roleUsed = false;
     int lifes = 0;
+    boolean mainRole = false; //jesli jest wiecej niz jedna rola, do danej funkcji, np. sędzia główny
     boolean onlyPremium=false;
 
     //PlayerActionViewHolder

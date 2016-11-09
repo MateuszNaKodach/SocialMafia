@@ -1,4 +1,4 @@
-package pl.nowakprojects.socialmafia.mainmenuoptions.newgame.fragments;
+package pl.nowakprojects.socialmafia.mainmenuoptions.newgame.dialogfragments;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -18,16 +18,17 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import me.tankery.lib.circularseekbar.CircularSeekBar;
 import pl.nowakprojects.socialmafia.R;
 import pl.nowakprojects.socialmafia.mafiagameclasses.HumanPlayer;
 import pl.nowakprojects.socialmafia.mafiagameclasses.TheGame;
 import pl.nowakprojects.socialmafia.utitles.GameTipFragment;
-import pl.nowakprojects.socialmafia.utitles.OnPlayerKilledListener;
+import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.interfaces.OnPlayerKilledListener;
 
 /**
  * Created by Mateusz on 19.10.2016.
  */
-public class DuelVotingFragment extends DialogFragment {
+public class DuelVotingDialogFragment extends DialogFragment {
 
     OnPlayerKilledListener mPlayerKillCallback;
 
@@ -39,9 +40,9 @@ public class DuelVotingFragment extends DialogFragment {
     AlertDialog mConfirmVotingAlertDialog;
     ArrayList<HumanPlayer> mLoosersList;
 
-    public DuelVotingFragment(){}
+    public DuelVotingDialogFragment(){}
 
-    public DuelVotingFragment(TheGame mTheGame, HumanPlayer hpAgressivePlayer, HumanPlayer hpInsultedPlayer) {
+    public DuelVotingDialogFragment(TheGame mTheGame, HumanPlayer hpAgressivePlayer, HumanPlayer hpInsultedPlayer) {
         this.mTheGame = mTheGame;
         mAgressiveHumanPlayer =hpAgressivePlayer;
         mInsultedHumanPlayer =hpInsultedPlayer;
@@ -58,6 +59,7 @@ public class DuelVotingFragment extends DialogFragment {
     @BindView(R.id.textView_sInsultedPlayerName) TextView textView_sInsultedPlayerName;
     @BindView(R.id.button_confirmDuel) Button button_confirmVoting;
     @BindView(R.id.oneDuelIcon) ImageView gunIcon;
+    @BindView(R.id.duelCircleSeekBar) CircularSeekBar seekBar;
 
     @Override
     public void onAttach(Context context) {
@@ -166,6 +168,7 @@ public class DuelVotingFragment extends DialogFragment {
         vUiSetupTextViews();
         vUiSetButtonsListeners();
     }
+
 
     private void vUiSetupTextViews(){
         textView_sAgressivePlayerName.setText(mAgressiveHumanPlayer.getPlayerName());
