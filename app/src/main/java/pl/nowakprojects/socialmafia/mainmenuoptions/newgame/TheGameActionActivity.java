@@ -8,18 +8,22 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.support.v4.app.FragmentTransaction;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+
 import org.parceler.Parcels;
 
 import pl.nowakprojects.socialmafia.R;
 import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.dialogfragments.PlayersStatusDialogFragment;
 import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.fragments.DailyVotingFragment;
+import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.fragments.DayTimeFragment;
 import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.fragments.DuelChallengesFragment;
 import pl.nowakprojects.socialmafia.mafiagameclasses.TheGame;
 import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.fragments.RoleActionsFragment;
+import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.interfaces.OnDaytimeFinishedListener;
 import pl.nowakprojects.socialmafia.utitles.GameTipFragment;
 import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.interfaces.OnPlayerKilledListener;
 
-public class TheGameActionActivity extends AppCompatActivity implements OnPlayerKilledListener {
+public class TheGameActionActivity extends AppCompatActivity implements OnPlayerKilledListener, OnDaytimeFinishedListener {
 
     final String TIME_FRAGMENT = "TheGameActionActivity.TIME_FRAGMENT";
     final String TIME_ROLE_ACTIONS_FRAGMENT = "TheGameActionActivity.TIME_ROLE_ACTIONS_FRAGMENT";
@@ -89,7 +93,7 @@ public class TheGameActionActivity extends AppCompatActivity implements OnPlayer
         //GameView proporties:
         dayTimeFragment = new DayTimeFragment(theGame);
         //dayTimeRoleActionsFragment = new DayTimeRoleActionsFragment();
-
+        vUiShowGameTipFragment();
         startNightAction();
 
         //dopóki gra nie jest zakończona ciągle leci dzień - noc:
@@ -107,31 +111,32 @@ public class TheGameActionActivity extends AppCompatActivity implements OnPlayer
             roleActionsFragment = new RoleActionsFragment(theGame);
             fragmentTransaction.add(R.id.dayOrNightTimeFragment, nightTimeFragment, TIME_FRAGMENT);
         }else {
+            fragmentTransaction.replace(R.id.dayOrNightTimeFragment, nightTimeFragment, TIME_FRAGMENT);
             roleActionsFragment = new RoleActionsFragment(theGame);
             fragmentTransaction.remove(gameDailyVotingFragment);
+            fragmentTransaction.remove(gameDailyDuelChallengesFragment);
         }
 
         fragmentTransaction.add(R.id.dayOrNightTimeRoleActionsFragment, roleActionsFragment, TIME_ROLE_ACTIONS_FRAGMENT);
 
         fragmentTransaction.commit();
-
-        vUiShowGameTipFragment();
     }
 
     void endNightAction() {
-        if(!(theGame.getMiCurrentNightNumber()==0))
-            makeJudgmentAction();
-
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.remove(roleActionsFragment);
         fragmentTransaction.commit();
 
-        theGame.setMiCurrentNightNumber(theGame.getMiCurrentNightNumber() + 1);
 
     }
 
-    void makeJudgmentAction(){
-
+    void finishGameAction(){
+        //Przechodzenie do nowego Activity, z zakonczona gra
+        MaterialDialog materialDialog = new MaterialDialog.Builder(this)
+                .title("GRA ZAKONCZONA!")
+                .content("GRA ZAKONCZONA!")
+                .positiveText(R.string.ok)
+                .show();
     }
 
     void startDayAction() {
@@ -146,6 +151,15 @@ public class TheGameActionActivity extends AppCompatActivity implements OnPlayer
         fragmentTransaction.add(R.id.dayJudgmentFragment, gameDailyVotingFragment, DAILY_VOTING_FRAGMENT);
         fragmentTransaction.add(R.id.dayDuelsFragment, gameDailyDuelChallengesFragment, DAILY_DUELS_FRAGMENT);
         fragmentTransaction.commit();
+
+
+    }
+
+    private void startNextDaytimeAction(){
+        if(theGame.isNightDaytimeNow())
+            startNightAction();
+        else if(theGame.isDayDaytimeNow())
+            startNightAction();
     }
 
     void endTheGameAndShowResults() {
@@ -193,6 +207,21 @@ public class TheGameActionActivity extends AppCompatActivity implements OnPlayer
 
         if (dailyVotingFragment != null)
             dailyVotingFragment.vUiUpdateUserInterface();
+
+
+
+        if(theGame.isGameFinished()){
+            finishGameAction();
+        }
+    }
+
+    @Override
+    public void onDaytimeFinished() {
+        //getSupportFragmentManager().findFragmentByTag(DayTimeFragment.DAILY_JUDGMENT_DIALOG).
+        if(theGame.isGameFinished()){
+            finishGameAction();
+        }
+        startNextDaytimeAction();
     }
 
 }//public class TheGameActionActivity extends AppCompatActivity

@@ -274,11 +274,17 @@ Raz w ciągu gry,  podczas trwania dnia wybiera osobę, która aż do nocy nie b
     <string name="no_kill_check_choose">Gracze jeszcze nie zagłosowali czy sprawdzać lub zabijać.</string>
     <string name="players_voting_explanation">Proszę wybrać kandydatów do głosowania.</string>
     <string name="cancel">anuluj</string>
-    <string name="needmoreplayers">Do głosowania potrzebnych jest conajmniej dwóch graczy.</string>
+    <string name="needmoreplayers">Do głosowania potrzebnych jest dokładnie dwóch graczy.</string>
     <string name="confirmed_voting">zatwierdzono %1$s</string>
     <string name="nobody_killed">Jeszcze nikt nie został zabity...</string>
     <string name="gravewill_explanation">Obudź ostatnio zabitego gracza i daj mu podjąć decyzję.</string>
     <string name="gravewilltitle">Głos zza grobu:\n%1$s</string>
     <string name="theSameDuelPlayers">Gracz nie może wyzwać samego siebie!</string>
+    <string name="dialy_voting_player_one">%1$s - głosów: %2$s</string>
+    <string name="dialy_voting_player_two">%1$s - głosów: %2$s</string>
+    <string name="dailyJudgment">Końcowe głosowanie</string>
+    <string name="tip_daily_judgment">Wybierz, na którego gracza głosowała większość. W tym głosowaniu nie można się wstrzymać.</string>
+    <string name="confirmChoosePlayer">Czy jesteś pewien, że gracze przegłosowali kandydaturę: %1$s</string>
+    <string name="killedWere">Zabici zostali:</string>
 
 </resources>

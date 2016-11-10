@@ -26,6 +26,7 @@ public class GameTipFragment extends Fragment {
     private Button button_collapseButton;
     private String s_tipTitle;
     private String s_tipContent;
+    static GameTipFragment gameTipFragment;
 
     //public GameTipFragment() {
     //}
@@ -104,7 +105,7 @@ public class GameTipFragment extends Fragment {
     }
 
     public static void vShow(Fragment fragment,String sTipTitle, String sTipContent, Boolean collapsed){
-        GameTipFragment gameTipFragment = new GameTipFragment(sTipTitle,sTipContent,collapsed);
+        gameTipFragment = new GameTipFragment(sTipTitle,sTipContent,collapsed);
 
         FragmentTransaction fragmentTransaction = fragment.getChildFragmentManager().beginTransaction();
         fragmentTransaction.add(R.id.gameTipFragment, gameTipFragment, GAME_TIP_FRAGMENT);
@@ -112,10 +113,22 @@ public class GameTipFragment extends Fragment {
     }
 
     public static void vShow(AppCompatActivity activity, String sTipTitle, String sTipContent, Boolean collapsed){
-        GameTipFragment gameTipFragment = new GameTipFragment(sTipTitle,sTipContent,collapsed);
+        gameTipFragment = new GameTipFragment(sTipTitle,sTipContent,collapsed);
 
         FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
         fragmentTransaction.add(R.id.gameTipFragment, gameTipFragment, GAME_TIP_FRAGMENT);
+        fragmentTransaction.commit();
+    }
+
+    public static void vRemove(Fragment fragment){
+        FragmentTransaction fragmentTransaction = fragment.getChildFragmentManager().beginTransaction();
+        fragmentTransaction.remove(gameTipFragment);
+        fragmentTransaction.commit();
+    }
+
+    public static void vRemove(AppCompatActivity activity){
+        FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.remove(gameTipFragment);
         fragmentTransaction.commit();
     }
 

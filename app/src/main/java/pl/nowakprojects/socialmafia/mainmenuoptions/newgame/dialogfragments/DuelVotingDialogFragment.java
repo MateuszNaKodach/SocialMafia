@@ -59,7 +59,6 @@ public class DuelVotingDialogFragment extends DialogFragment {
     @BindView(R.id.textView_sInsultedPlayerName) TextView textView_sInsultedPlayerName;
     @BindView(R.id.button_confirmDuel) Button button_confirmVoting;
     @BindView(R.id.oneDuelIcon) ImageView gunIcon;
-    @BindView(R.id.duelCircleSeekBar) CircularSeekBar seekBar;
 
     @Override
     public void onAttach(Context context) {

@@ -245,21 +245,21 @@ public class DaytimeRoleActionsAdapter extends RecyclerView.Adapter<DaytimeRoleA
 
         private void makeBlackManAction(HumanPlayer choosenPlayer) {
             if (!(choosenPlayer.getGuardsList().contains(actionPlayers.get(getAdapterPosition()))))
-                choosenPlayer.setGuard(actionPlayers.get(getAdapterPosition()));
+                choosenPlayer.addGuard(actionPlayers.get(getAdapterPosition()));
 
             Toast.makeText(roleActionsFragment.getActivity().getApplicationContext(), choosenPlayer.getPlayerName() + " " + roleActionsFragment.getString(R.string.hasBlackNow), Toast.LENGTH_LONG).show();
         }
 
         private void makeBlackmailerAction(HumanPlayer choosenPlayer) {
-            if (!(choosenPlayer.getBlackMailer().contains(actionPlayers.get(getAdapterPosition()))))
-                choosenPlayer.setBlackMailer(actionPlayers.get(getAdapterPosition()));
+            if (!(choosenPlayer.getBlackMailersList().contains(actionPlayers.get(getAdapterPosition()))))
+                choosenPlayer.addBlackMailer(actionPlayers.get(getAdapterPosition()));
 
             Toast.makeText(roleActionsFragment.getActivity().getApplicationContext(), choosenPlayer.getPlayerName() + " " + roleActionsFragment.getString(R.string.hasBlackmailerNow), Toast.LENGTH_LONG).show();
         }
 
         private void makePriestAction(HumanPlayer choosenPlayer1, HumanPlayer choosenPlayer2) {
-            choosenPlayer1.setLover(choosenPlayer2);
-            choosenPlayer2.setLover(choosenPlayer1);
+            choosenPlayer1.addLover(choosenPlayer2);
+            choosenPlayer2.addLover(choosenPlayer1);
             FragmentManager fragmentManager = roleActionsFragment.getFragmentManager();
             ShowingLoversRolesDialog theGameActionShowingLoversRolesDialog = new ShowingLoversRolesDialog(choosenPlayer1, choosenPlayer2);
             theGameActionShowingLoversRolesDialog.show(fragmentManager, "PriestAction");

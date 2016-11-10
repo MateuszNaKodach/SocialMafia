@@ -1,7 +1,5 @@
 package pl.nowakprojects.socialmafia.mafiagameclasses;
 
-import java.util.ArrayList;
-
 import pl.nowakprojects.socialmafia.R;
 
 /**
@@ -10,28 +8,18 @@ import pl.nowakprojects.socialmafia.R;
 
 public class Fraction {
     private PlayerRole.Fraction type;
-    private int icon;
-    private ArrayList<PlayerRole> fractionRoles = new ArrayList<PlayerRole>();
+    private int iconID;
 
     public Fraction(){
     }
 
     public Fraction(PlayerRole.Fraction type) {
         this.type = type;
-        icon = fractionToDrawable();
-        createFractionRoles();
+        iconID = fractionIconID();
     }
 
-    public void createFractionRoles(){
-            switch(this.type){
-                case TOWN:{
-                    //fractionRoles.add(new PlayerRole());
-                    //fractionRoles.add(new PlayerRole());
-                }
-            }
-    }
 
-    public int fractionToDrawable() {
+    public int fractionIconID() {
         switch (this.type) {
             case TOWN:
                 return R.drawable.icon_fractiontown;
@@ -52,27 +40,28 @@ public class Fraction {
         return type.toString();
     }
 
+    public int getFractionNameId(){
+        switch (this.type) {
+            case TOWN:
+                return R.string.town;
+            case SYNDICATE:
+                return R.string.syndicate;
+            case MAFIA:
+                return R.string.mafia;
+        }
+        return 0;
+    }
+
     public PlayerRole.Fraction getType() {
         return type;
     }
 
-    public void setType(PlayerRole.Fraction type) {
-        this.type = type;
+    public int getIconID() {
+        return iconID;
     }
 
-    public int getIcon() {
-        return icon;
+    public void setIconID(int iconID) {
+        this.iconID = iconID;
     }
 
-    public void setIcon(int icon) {
-        this.icon = icon;
-    }
-
-    public ArrayList<PlayerRole> getFractionRoles() {
-        return fractionRoles;
-    }
-
-    public void setFractionRoles(ArrayList<PlayerRole> fractionRoles) {
-        this.fractionRoles = fractionRoles;
-    }
 }

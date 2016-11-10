@@ -3,6 +3,7 @@ package pl.nowakprojects.socialmafia.mainmenuoptions.newgame.dialogfragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,12 +28,18 @@ public class ShowingPlayerRoleDialog extends DialogFragment {
         this.mChoosenHumanPlayer = choosenHumanPlayer;
     }
 
+
     //Views:
     @BindView(R.id.showedPlayerRoleText) TextView showedPlayerRoleTextView;
     @BindView(R.id.showedPlayerFraction) TextView showedPlayerFraction;
     @BindView(R.id.showedPlayerName)    TextView showedPlayerName;
     @BindView(R.id.roleIco) ImageView showedPlayerRoleIcon;
     @BindView(R.id.understandButton)    Button understandButton;
+
+    @Override
+    public void onAttachFragment(Fragment childFragment) {
+        super.onAttachFragment(childFragment);
+    }
 
     @Nullable
     @Override

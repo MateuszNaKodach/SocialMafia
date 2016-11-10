@@ -1,1 +1,2 @@
 W zabijaniu z listy graczy trzeba dodac akutalizacje liczby graczy i spinnerów!
+W glosowaniu na koniec dnia nie został przewidziany remis.

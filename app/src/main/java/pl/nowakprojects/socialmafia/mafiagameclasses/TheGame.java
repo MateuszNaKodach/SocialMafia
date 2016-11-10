@@ -76,10 +76,36 @@ public class TheGame {
 		mTemporaryLastTimeKilledPlayerList = new ArrayList<>();
 	}
 
+	public boolean isGameFinished(){
+		return calculateWinner()!= PlayerRole.Fraction.NOFRACTION;
+	}
+
+
+	private PlayerRole.Fraction calculateWinner(){
+			//if(gameWithoutSyndicate())
+				if(getLiveMafiaPlayersAmount()>=getLiveTownPlayersAmount())
+					return PlayerRole.Fraction.MAFIA;
+				else if(getLiveMafiaPlayersAmount()==0&&getLiveTownPlayersAmount()>0)
+					return PlayerRole.Fraction.TOWN;
+
+				return PlayerRole.Fraction.NOFRACTION;
+	}
+
+	public boolean gameWithoutSyndicate(){
+		return miSyndicateStartAmount==0;
+	}
 
 	public void beginKilling(){
 		if(mTemporaryLastTimeKilledPlayerList!=null)
 			mTemporaryLastTimeKilledPlayerList.clear();
+	}
+
+	public boolean isKillingJudgment(){
+		return mCurrentDayOutVoted== DailyVotingFragment.OUTVOTED.KILLING;
+	}
+
+	public boolean isCheckingJudgment(){
+		return mCurrentDayOutVoted== DailyVotingFragment.OUTVOTED.CHECKING;
 	}
 
 	//przeiwdziec jak murzyn murzyni murzyna!
@@ -91,7 +117,7 @@ public class TheGame {
 			else {
 					humanPlayer.hit(); //dostaje hita, jak jest emo to nie ginie, sprawdamy czy nie byl emo, czyli czy zginal
 
-				if(!humanPlayer.isAlive()) {
+				if(humanPlayer.isDead()) {
 					//beginKilling();
 					mTemporaryLastTimeKilledPlayerList.add(humanPlayer); //dodawanie do licy ostatnio zabitych
 					if (humanPlayer.hasLover()) {
@@ -134,11 +160,11 @@ public class TheGame {
 	}
 
 	public void startNewNight(){
+		clearMadeActions();
 		lastNightHealingByMedicPlayers.clear();
 		lastNightHeatingByDarkMedicPlayers.clear();
 		lastNightDealingByDealerPlayers.clear();
 		lastNightKilledPlayer.clear();
-		mTemporaryLastTimeKilledPlayerList.clear();
 		miDaytimeRolesActionsMadeThis = 0;
 		miCurrentNightNumber++;
 		this.mdaytimeCurrentDaytime=Daytime.NIGHT;
@@ -147,12 +173,19 @@ public class TheGame {
 
 	public void startNewDay(){
 		lastDayOperateByDentistPlayer.clear();
-		mTemporaryLastTimeKilledPlayerList.clear();
 		miDaytimeRolesActionsMadeThis = 0;
 		mCurrentDayOutVoted=null;
 		miCurrentDayNumber++;
 		this.mdaytimeCurrentDaytime=Daytime.DAY;
 		mlistTheGameDaytimes.add(new GameDay(this,Daytime.DAY));
+	}
+
+	public void clearMadeActions(){
+		for(HumanPlayer hp: this.getLiveHumanPlayers()){
+			hp.getPlayerRole().b_isRoleTurn=false;
+			hp.getPlayerRole().b_actionMade=false;
+		}
+
 	}
 
 	public void setCurrentDayOutVoted(DailyVotingFragment.OUTVOTED mCurrentDayOutVoted) {
@@ -290,10 +323,23 @@ public class TheGame {
 		return getLiveSelectedFractionPlayers(PlayerRole.Fraction.SYNDICATE);
 	}
 
+	public int getLiveMafiaPlayersAmount(){
+		return getLiveMafiaPlayers().size();
+	}
+
+	public int getLiveTownPlayersAmount(){
+		return getLiveTownPlayers().size();
+	}
+
+	public int getLiveSyndicatePlayersAmount(){
+		return getLiveSyndicatePlayers().size();
+	}
+
+
 	private List<HumanPlayer> getLiveSelectedFractionPlayers(PlayerRole.Fraction fraction) {
 		ArrayList<HumanPlayer> result = new ArrayList<HumanPlayer>();
 		for (HumanPlayer humanPlayer : playersInfoList) {
-			if (humanPlayer.getPlayerRole().isFractionRole(fraction))
+			if (humanPlayer.getPlayerRole().isFractionRole(fraction)&&humanPlayer.isAlive())
 				result.add(humanPlayer);
 		}
 		return result;

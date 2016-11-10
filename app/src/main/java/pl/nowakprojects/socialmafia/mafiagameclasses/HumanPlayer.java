@@ -15,14 +15,15 @@ public class HumanPlayer {
     boolean alive = true; // czy gracz jeszcze żyje
     int warns = 0; //ostrzezenia za lamanie zasad
     int stigmas = 0; //naznaczenia
-    ArrayList<HumanPlayer> guard = new ArrayList<>(); //ochroniarz, ktos kto ginie za danego gracza I OCHRONIARZ TEŻ!!!
-    ArrayList<HumanPlayer> blackMailer = new ArrayList<>(); //szantazysta, nie moze na niego zaglosowac itp. CHYBA ZROBIC LISTE SZANTAZYSTÓW!!!
-    ArrayList<HumanPlayer> lover = new ArrayList<>(); //kochanek - nie mozna na niego glosowac, jesli ginie jeden z nich - gina oboje I KOCHANKÓW TEŻ
-    boolean isDealed = false;
+    ArrayList<HumanPlayer> guardsList = new ArrayList<>(); //ochroniarz, ktos kto ginie za danego gracza I OCHRONIARZ TEŻ!!!
+    ArrayList<HumanPlayer> blackMailersList = new ArrayList<>(); //szantazysta, nie moze na niego zaglosowac itp. CHYBA ZROBIC LISTE SZANTAZYSTÓW!!!
+    ArrayList<HumanPlayer> loversList = new ArrayList<>(); //kochanek - nie mozna na niego glosowac, jesli ginie jeden z nich - gina oboje I KOCHANKÓW TEŻ
+    boolean dealed = false; //czy dilowany
 
     //For ShowingRoles:
     boolean wasRoleShowed = false;
 
+    //CONSTRUCTORS:
     public HumanPlayer() {
     }
 
@@ -35,42 +36,27 @@ public class HumanPlayer {
         this.playerRole = playerRole;
     }
 
-    public String getPlayerName() {
-        return this.playerName;
+
+
+    //GAME METHODS:
+    public boolean hit(){
+        this.getPlayerRole().lifes-=1;
+        if(getPlayerRole().getLifes()<=0)
+            this.setNotAlive();
+
+        return isAlive();
     }
 
-    public int getRoleName() {
-        return this.playerRole.getName();
+    public void addGuard(HumanPlayer guard) {
+        if(!this.guardsList.contains(guard))
+            this.guardsList.add(guard);
     }
 
-    public PlayerRole getPlayerRole() {
-        return playerRole;
+    public void addLover(HumanPlayer lover) {
+        if(!this.loversList.contains(lover))
+            this.loversList.add(lover);
     }
 
-    public boolean isWasRoleShowed() {
-        return wasRoleShowed;
-    }
-
-    public void setWasRoleShowed(boolean wasRoleShowed) {
-        this.wasRoleShowed = wasRoleShowed;
-    }
-
-    public void setGuard(HumanPlayer guard) {
-        this.guard.add(guard);
-    }
-
-    public void setLover(HumanPlayer lover) {
-        if(!this.lover.contains(lover))
-            this.lover.add(lover);
-    }
-
-    public ArrayList<HumanPlayer> getLover() {
-        return lover;
-    }
-
-    public ArrayList<HumanPlayer> getGuardsList() {
-        return guard;
-    }
 
     //dochodzi do obroncy, ktory ma zginac metoda rekurencji
     public static HumanPlayer getFirstGuard(HumanPlayer player){
@@ -82,25 +68,20 @@ public class HumanPlayer {
 
     //zwraca pierwszego zywego obronce:
     public HumanPlayer getAliveFirstGuard(){
-        for(HumanPlayer x: guard)
+        for(HumanPlayer x: guardsList)
             if(x.isAlive())
                 return x;
         return this;
     }
 
 
-    //public static ArrayList<HumanPlayer> getLoversToKill(HumanPlayer player){
-     //   if(player.getLover().isEmpty())
-      //      return player;
-    //}
-
-    public ArrayList<HumanPlayer> getBlackMailer() {
-        return blackMailer;
+    public ArrayList<HumanPlayer> getBlackMailersList() {
+        return blackMailersList;
     }
 
-    public void setBlackMailer(HumanPlayer blackMailer) {
-        if(!this.blackMailer.contains(blackMailer))
-            this.blackMailer.add(blackMailer);
+    public void addBlackMailer(HumanPlayer blackMailer) {
+        if(!this.blackMailersList.contains(blackMailer))
+            this.blackMailersList.add(blackMailer);
     }
 
     public void setNotAlive(){
@@ -108,9 +89,9 @@ public class HumanPlayer {
     }
 
     public boolean hasGuard(){
-        if(guard.isEmpty())
+        if(guardsList.isEmpty())
             return false;
-        for(HumanPlayer hp: guard)
+        for(HumanPlayer hp: guardsList)
             if(hp.isAlive()&&hp.isNotDealed())
                 return true;
 
@@ -118,17 +99,17 @@ public class HumanPlayer {
     }
 
     public boolean isNotDealed(){
-        return !isDealed;
+        return !dealed;
     }
 
     public boolean isDealed() {
-        return isDealed;
+        return dealed;
     }
 
     public boolean hasLover(){
-        if(lover.isEmpty())
+        if(loversList.isEmpty())
             return false;
-        for(HumanPlayer hp: lover)
+        for(HumanPlayer hp: loversList)
             if(hp.isAlive()&&hp.isNotDealed())
                 return true;
 
@@ -138,7 +119,7 @@ public class HumanPlayer {
     public ArrayList<HumanPlayer> getAliveLovers(){
         ArrayList<HumanPlayer> aliveLoversList = new ArrayList<>();
 
-        for(HumanPlayer hp: lover)
+        for(HumanPlayer hp: loversList)
             if(hp.isAlive()&&hp.isNotDealed())
                 aliveLoversList.add(hp);
 
@@ -148,68 +129,14 @@ public class HumanPlayer {
 
     public HumanPlayer getFirstAliveGuard(){
         if(hasGuard())
-            for(HumanPlayer hp: guard)
+            for(HumanPlayer hp: guardsList)
                 if(hp.isAlive()&&hp.isNotDealed())
                     return hp;
 
         return null;
     }
 
-    public boolean hit(){
-        this.getPlayerRole().lifes-=1;
-        if(getPlayerRole().getLifes()<=0)
-            this.setNotAlive();
 
-        return isAlive();
-    }
-
-    public boolean hasTerroristRole(){
-        return getRoleName()== R.string.terrorist;
-    }
-
-    public boolean hasEmoRole(){
-        return getRoleName()== R.string.emo;
-    }
-
-    public boolean hasSpeedyRole(){
-        return getRoleName()== R.string.mafiaspeedy || getRoleName()== R.string.townspeedy || getRoleName()== R.string.sindicateSpeedy;
-    }
-
-
-    /*
-    private static ArrayList<HumanPlayer> killDuringTheGame(HumanPlayer humanPlayer){
-        ArrayList<HumanPlayer> playersToKill = new ArrayList<>();
-            playersToKill.add(HumanPlayer.getFirstGuard(humanPlayer)); //zabija ostatniego z ciagu murzynów, np. jesli murzyn murszyni murzyna
-            //pomyslec tutaj nad rekursja ogonowa! Bo co jesli murzynia siebie nawzajem!? Albo dwa arguemty do poprzedniego wyniku
-
-        //jesli znaleziono murzyna, to zmieniamy gracza na niego i lecimy dalej:
-            if(!playersToKill.isEmpty())
-                humanPlayer = playersToKill.get(0);
-
-                //teraz sprawdzimy kochanków (dla gracza albo dla murzyna):
-                if(!humanPlayer.getLover().isEmpty()) {
-                    for (HumanPlayer playerLover : humanPlayer.getLover()) {
-                        HumanPlayer.killDuringTheGame(playerLover);
-                    }
-                }
-
-        for(HumanPlayer hp: playersToKill)
-            hp.setNotAlive();
-
-        return playersToKill;
-    }
-
-    public static ArrayList<HumanPlayer> killThemDuringTheGame(ArrayList<HumanPlayer> humanPlayersToKill) {
-        ArrayList<HumanPlayer> killedPlayers = new ArrayList<HumanPlayer>();
-
-        for(HumanPlayer hp: humanPlayersToKill)
-            if(hp.isAlive())
-                killedPlayers.addAll(HumanPlayer.killDuringTheGame(hp));
-
-        return killedPlayers;
-
-    }
-    */
     public int howManyLifes(){
         return this.playerRole.getLifes();
     }
@@ -218,29 +145,25 @@ public class HumanPlayer {
         alive = true;
     }
 
-    public boolean isAlive() {
-        return alive;
+
+    //ROLES CHECKING:
+    public boolean hasTerroristRole(){
+        return getRoleName()== R.string.terrorist;
     }
 
-    public void setStigmas(int stigmas) {
-        this.stigmas = stigmas;
+    public boolean hasEmoRole(){
+        return getRoleName()== R.string.emo;
     }
 
-    public int getStigmas() {
-        return stigmas;
+    public boolean hasJewRole(){
+        return getRoleName()== R.string.jew;
     }
 
-    public void addStigma(){
-        this.setStigmas(getStigmas()+1);
+    public boolean hasSpeedyRole(){
+        return getRoleName()== R.string.mafiaspeedy || getRoleName()== R.string.townspeedy || getRoleName()== R.string.sindicateSpeedy;
     }
-    /*
-	 * Widok roli, z przyciskiej odkryj/zakryj, do pokazania każdemu graczowi
-	 */
 
-	/*
-	 * Lista graczy, z stanem, do GameAction
-	 */
-
+    //OBJECT METHODS OVERRIDE:
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -260,5 +183,55 @@ public class HumanPlayer {
         result = 31 * result + playerRole.hashCode();
         result = 31 * result + (alive ? 1 : 0);
         return result;
+    }
+
+
+    //GETTERS AND SETTERS:
+    public String getPlayerName() {
+        return this.playerName;
+    }
+
+    public int getRoleName() {
+        return this.playerRole.getName();
+    }
+
+    public PlayerRole getPlayerRole() {
+        return playerRole;
+    }
+
+    public boolean isDead(){
+        return !isAlive();
+    }
+
+    public boolean isAlive() {
+        return alive;
+    }
+
+    public void setStigmas(int stigmas) {
+        this.stigmas = stigmas;
+    }
+
+    public int getStigmas() {
+        return stigmas;
+    }
+
+    public void addStigma(){
+        this.setStigmas(getStigmas()+1);
+    }
+
+    public void setWasRoleShowed(boolean wasRoleShowed) {
+        this.wasRoleShowed = wasRoleShowed;
+    }
+
+    public ArrayList<HumanPlayer> getLoversList() {
+        return loversList;
+    }
+
+    public ArrayList<HumanPlayer> getGuardsList() {
+        return guardsList;
+    }
+
+    public boolean isWasRoleShowed() {
+        return wasRoleShowed;
     }
 }
