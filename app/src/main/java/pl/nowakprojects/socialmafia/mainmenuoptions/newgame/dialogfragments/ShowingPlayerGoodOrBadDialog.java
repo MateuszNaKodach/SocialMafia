@@ -36,12 +36,10 @@ public class ShowingPlayerGoodOrBadDialog extends DialogFragment {
         this.choosenPlayer = choosenPlayer;
     }
 
-    public ShowingPlayerGoodOrBadDialog(HumanPlayer choosenPlayer, boolean dailyJudgmentShowing) {
+    public ShowingPlayerGoodOrBadDialog(HumanPlayer choosenPlayer, DailyJudgmentVotingDialogFragment dailyJudgmentVotingDialogFragment) {
         this.choosenPlayer = choosenPlayer;
-        this.dailyJudgmentShowing=dailyJudgmentShowing;
-        if(dailyJudgmentShowing)
-            dailyJudgmentVotingDialogFragment = (DailyJudgmentVotingDialogFragment) getChildFragmentManager().findFragmentByTag(DayTimeFragment.DAILY_JUDGMENT_DIALOG);
-
+        this.dailyJudgmentVotingDialogFragment = dailyJudgmentVotingDialogFragment;
+        dailyJudgmentShowing=true;
     }
 
     @Override
@@ -49,14 +47,14 @@ public class ShowingPlayerGoodOrBadDialog extends DialogFragment {
         super.onAttachFragment(childFragment);
 
         //CZEMU TO NIE DZIALA!!!??!!?!?!
-        if(dailyJudgmentShowing) {
+        /*if(dailyJudgmentShowing) {
             try {
                 mRoleCheckedCallback = (OnGoodOrBadCheckedListener) getParentFragment();
             } catch (ClassCastException e) {
                 throw new ClassCastException(getActivity().toString()
                         + " must implement interface!");
             }
-        }
+        }*/
     }
 
     @Nullable

@@ -279,6 +279,7 @@ public class DaytimeRoleActionsAdapter extends RecyclerView.Adapter<DaytimeRoleA
 
         private void makeDealerAction(HumanPlayer choosenPlayer) {
             mTheGame.addLastNightDealingByDealerPlayers(choosenPlayer);
+            mTheGame.findHumanPlayerByName(choosenPlayer.getPlayerName()).setDealed(true);
             Toast.makeText(roleActionsFragment.getActivity().getApplicationContext(), choosenPlayer.getPlayerName() + " " + roleActionsFragment.getString(R.string.isDealingThisNight), Toast.LENGTH_LONG).show();
 
         }

@@ -2,6 +2,7 @@ package pl.nowakprojects.socialmafia.mafiagameclasses;
 
 import org.parceler.Parcel;
 
+import io.realm.RealmObject;
 import pl.nowakprojects.socialmafia.R;
 
 /**

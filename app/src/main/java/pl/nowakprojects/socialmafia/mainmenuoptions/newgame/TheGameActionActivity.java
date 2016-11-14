@@ -140,6 +140,8 @@ public class TheGameActionActivity extends AppCompatActivity implements OnPlayer
     }
 
     void startDayAction() {
+        dayTimeFragment = new DayTimeFragment(theGame);
+
         theGame.startNewDay();
         //roleActionsFragment = new RoleActionsFragment(getDayHumanPlayers());
         gameDailyVotingFragment = new DailyVotingFragment(theGame);

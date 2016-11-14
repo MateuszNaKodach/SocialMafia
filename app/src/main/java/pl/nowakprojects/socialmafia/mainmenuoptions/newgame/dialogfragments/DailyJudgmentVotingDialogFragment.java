@@ -35,6 +35,7 @@ public class DailyJudgmentVotingDialogFragment extends DialogFragment implements
 
     OnDaytimeFinishedListener mDaytimeFinishedCallback;
 
+    DailyJudgmentVotingDialogFragment dailyJudgmentVotingDialogFragment;
     TheGame mTheGame;
     DailyVotingFragment.OUTVOTED mDailyVotedResult;
     HumanPlayer mFirstPlayerToVote;
@@ -77,6 +78,7 @@ public class DailyJudgmentVotingDialogFragment extends DialogFragment implements
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         onAttachFragment(getParentFragment());
+        dailyJudgmentVotingDialogFragment=this;
     }
 
     @Override
@@ -202,7 +204,7 @@ public class DailyJudgmentVotingDialogFragment extends DialogFragment implements
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         if(mTheGame.isCheckingJudgment()){
-                        ShowingPlayerGoodOrBadDialog showingPlayerGoodOrBadDialog = new ShowingPlayerGoodOrBadDialog(outvotedHumanPlayer(),true);
+                        ShowingPlayerGoodOrBadDialog showingPlayerGoodOrBadDialog = new ShowingPlayerGoodOrBadDialog(outvotedHumanPlayer(), dailyJudgmentVotingDialogFragment);
                             //showingPlayerGoodOrBadDialog.setTargetFragment(this,0);
                         showingPlayerGoodOrBadDialog.show(getChildFragmentManager(), "PolicemanAction");
                         }else if(mTheGame.isKillingJudgment()){
@@ -238,8 +240,8 @@ public class DailyJudgmentVotingDialogFragment extends DialogFragment implements
 
     @Override
     public void onGodOrBadChecked() {
-        mConfirmMaterialDialog.dismiss();
-        getDialog().dismiss();
+        //mConfirmMaterialDialog.dismiss();
+        getDialog().cancel();
         mDaytimeFinishedCallback.onDaytimeFinished();
     }
 }

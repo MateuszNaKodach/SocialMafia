@@ -10,6 +10,7 @@ import android.widget.ImageButton;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import pl.nowakprojects.socialmafia.mainmenuoptions.gamerules.GameRulesActivity;
+import pl.nowakprojects.socialmafia.mainmenuoptions.loadgame.LoadGameActivity;
 import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.PickPlayersAmountActivity;
 import pl.nowakprojects.socialmafia.mainmenuoptions.settings.SettingsActivity;
 
@@ -50,6 +51,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), GameRulesActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        buttonLoadGame.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), LoadGameActivity.class);
                 startActivity(intent);
             }
         });

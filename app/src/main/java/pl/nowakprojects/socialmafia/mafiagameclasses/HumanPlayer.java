@@ -4,6 +4,7 @@ import org.parceler.Parcel;
 
 import java.util.ArrayList;
 
+import io.realm.RealmObject;
 import pl.nowakprojects.socialmafia.R;
 
 @Parcel
@@ -116,7 +117,11 @@ public class HumanPlayer {
         return false;
     }
 
-    public ArrayList<HumanPlayer> getAliveLovers(){
+    public void setDealed(boolean dealed) {
+        this.dealed = dealed;
+    }
+
+    public ArrayList<HumanPlayer> getAliveLoversList(){
         ArrayList<HumanPlayer> aliveLoversList = new ArrayList<>();
 
         for(HumanPlayer hp: loversList)
@@ -127,7 +132,7 @@ public class HumanPlayer {
 
     }
 
-    public HumanPlayer getFirstAliveGuard(){
+    public HumanPlayer getGuardToKill(){
         if(hasGuard())
             for(HumanPlayer hp: guardsList)
                 if(hp.isAlive()&&hp.isNotDealed())
@@ -135,7 +140,6 @@ public class HumanPlayer {
 
         return null;
     }
-
 
     public int howManyLifes(){
         return this.playerRole.getLifes();
@@ -148,19 +152,19 @@ public class HumanPlayer {
 
     //ROLES CHECKING:
     public boolean hasTerroristRole(){
-        return getRoleName()== R.string.terrorist;
+        return isNotDealed() && getRoleName()== R.string.terrorist;
     }
 
     public boolean hasEmoRole(){
-        return getRoleName()== R.string.emo;
+        return isNotDealed() && getRoleName()== R.string.emo;
     }
 
     public boolean hasJewRole(){
-        return getRoleName()== R.string.jew;
+        return isNotDealed() && getRoleName()== R.string.jew;
     }
 
     public boolean hasSpeedyRole(){
-        return getRoleName()== R.string.mafiaspeedy || getRoleName()== R.string.townspeedy || getRoleName()== R.string.sindicateSpeedy;
+        return this.isNotDealed() && getRoleName()== R.string.mafiaspeedy || getRoleName()== R.string.townspeedy || getRoleName()== R.string.sindicateSpeedy;
     }
 
     //OBJECT METHODS OVERRIDE:

@@ -216,7 +216,7 @@ Raz w ciągu gry,  podczas trwania dnia wybiera osobę, która aż do nocy nie b
     <string name="ok">OK</string>
     <string name="fraction">Frakcja</string>
     <string name="playerNameHint">Wprowadź imię gracza</string>
-    <string name="nigth_time_tip_title" >Podpowiedź</string>
+    <string name="nigth_time_tip_title">Podpowiedź</string>
     <string name="returnfrom">WRÓC</string>
     <string name="playersList">Lista graczy</string>
     <string name="onlyOneFractionSelected">Proszę wybrać role z przynajmniej dwóch frakcji.</string>
@@ -226,7 +226,7 @@ Raz w ciągu gry,  podczas trwania dnia wybiera osobę, która aż do nocy nie b
     <string name="isSignedThisNight">został naznaczony tej nocy!</string>
     <string name="hitler">Hitler</string>
     <string name="hitlerDescription">Wie kto jest żydem.</string>
-    <string name="tip_title" >Podpowiedź</string>
+    <string name="tip_title">Podpowiedź</string>
     <string name="tip_content">Brak podpowiedzi...</string>
     <string name="collapse">zwiń</string>
     <string name="expand">rozwiń</string>
@@ -286,5 +286,9 @@ Raz w ciągu gry,  podczas trwania dnia wybiera osobę, która aż do nocy nie b
     <string name="tip_daily_judgment">Wybierz, na którego gracza głosowała większość. W tym głosowaniu nie można się wstrzymać.</string>
     <string name="confirmChoosePlayer">Czy jesteś pewien, że gracze przegłosowali kandydaturę: %1$s</string>
     <string name="killedWere">Zabici zostali:</string>
+    <string name="title_activity_game_finished">GameFinishedActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="mafiaKill">Mafia - Zabijanie</string>
+    <string name="mafiaKillDescription">Mafia każdej nocy wybiera jednego gracza do zabicia.</string>
 
 </resources>

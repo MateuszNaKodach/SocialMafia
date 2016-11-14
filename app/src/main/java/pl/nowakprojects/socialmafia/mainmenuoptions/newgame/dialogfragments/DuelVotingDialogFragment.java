@@ -137,7 +137,7 @@ public class DuelVotingDialogFragment extends DialogFragment {
         }
         else if(seekbarKillInsultedPlayerVotes.getProgress()<seekbarKillAgressivePlayerVotes.getProgress())
             mLoosersList.add(mAgressiveHumanPlayer);
-        else
+        else if(seekbarKillInsultedPlayerVotes.getProgress()>seekbarKillAgressivePlayerVotes.getProgress())
             mLoosersList.add(mInsultedHumanPlayer);
 
        for(HumanPlayer hp: mLoosersList)

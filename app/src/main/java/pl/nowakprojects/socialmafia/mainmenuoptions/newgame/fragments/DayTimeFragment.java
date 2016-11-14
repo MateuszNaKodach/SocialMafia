@@ -39,7 +39,6 @@ public class DayTimeFragment extends Fragment {
     public static final String DAILY_JUDGMENT_DIALOG = "TheGameActionActivity.DAILY_JUDGMENT_DIALOG";
 
     TheGame mTheGame;
-    ArrayList<HumanPlayer> mChoosedPlayersToDailyJudgment;
 
     DailyJudgmentVotingDialogFragment mDailyJudgmentVotingDialogFragment;
     MaterialDialog mChoosingPlayerMaterialDialog;
@@ -51,7 +50,6 @@ public class DayTimeFragment extends Fragment {
 
     public DayTimeFragment(TheGame theGame) {
         this.mTheGame=theGame;
-        mChoosedPlayersToDailyJudgment = new ArrayList<HumanPlayer>();
     }
 
     @Override
@@ -129,7 +127,7 @@ public class DayTimeFragment extends Fragment {
                                 Integer[] selected = mChoosingPlayerMaterialDialog.getSelectedIndices();
                                 if(selected!=null&&selected.length==2){
                                     for(int i=0;i<selected.length;i++)
-                                        mChoosedPlayersToDailyJudgment.add(mTheGame.getLiveHumanPlayers().get(selected[i]));
+                                        mTheGame.mChoosedPlayersToDailyJudgment.add(mTheGame.getLiveHumanPlayers().get(selected[i]));
 
                                     mChoosingPlayerMaterialDialog.dismiss();
                                     vUiSetAndShowDailyJudgmentFragment();
@@ -150,7 +148,7 @@ public class DayTimeFragment extends Fragment {
         }
 
     private void vUiSetAndShowDailyJudgmentFragment(){
-        mDailyJudgmentVotingDialogFragment = new DailyJudgmentVotingDialogFragment(mTheGame,mChoosedPlayersToDailyJudgment.get(0),mChoosedPlayersToDailyJudgment.get(1));
+        mDailyJudgmentVotingDialogFragment = new DailyJudgmentVotingDialogFragment(mTheGame,mTheGame.mChoosedPlayersToDailyJudgment.get(0),mTheGame.mChoosedPlayersToDailyJudgment.get(1));
         mDailyJudgmentVotingDialogFragment.show(getChildFragmentManager(),DAILY_JUDGMENT_DIALOG);
     }
 

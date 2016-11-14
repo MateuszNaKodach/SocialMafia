@@ -23,10 +23,14 @@ public class TheGame {
 
 	static TheGame instance;
 
+	int gameId = 0;
+
 	public enum Daytime {DAY, NIGHT, JUDGEMENT}
 
+
 	ArrayList<HumanPlayer> playersInfoList; 	// LISTA ZAPISANYCH GRACZY
-	ArrayList<GameDaytime> mlistTheGameDaytimes = new ArrayList<>();
+
+	//ArrayList<GameDaytime> mlistTheGameDaytimes = new ArrayList<>();
 
 	// LISTA WSZYSTKICH WYBRANYCH RÓL (Z POWTÓRZENIAMI)
 	//ArrayList<PlayerRole> currentGameRoles = new ArrayList<PlayerRole>();
@@ -54,6 +58,7 @@ public class TheGame {
 	DailyVotingFragment.OUTVOTED mCurrentDayOutVoted;
 	int miDaytimeRolesActionsMadeThis = 0;
 	ArrayList<HumanPlayer> mTemporaryLastTimeKilledPlayerList;
+	public ArrayList<HumanPlayer> mChoosedPlayersToDailyJudgment;
 
 
 	//Zmienne do aktualnej nocy
@@ -74,6 +79,7 @@ public class TheGame {
 		lastDayOperateByDentistPlayer = new ArrayList<>();
 		lastNightKilledPlayer = new ArrayList<>();
 		mTemporaryLastTimeKilledPlayerList = new ArrayList<>();
+		mChoosedPlayersToDailyJudgment = new ArrayList<>();
 	}
 
 	public boolean isGameFinished(){
@@ -113,7 +119,7 @@ public class TheGame {
 	public void kill(HumanPlayer humanPlayer){
 		if(humanPlayer.isAlive()) {
 			if (humanPlayer.hasGuard())
-				kill(humanPlayer.getFirstAliveGuard()); //to przejdzie do zabicia odpowiedniego gracza
+				kill(humanPlayer.getGuardToKill()); //to przejdzie do zabicia odpowiedniego gracza
 			else {
 					humanPlayer.hit(); //dostaje hita, jak jest emo to nie ginie, sprawdamy czy nie byl emo, czyli czy zginal
 
@@ -121,7 +127,7 @@ public class TheGame {
 					//beginKilling();
 					mTemporaryLastTimeKilledPlayerList.add(humanPlayer); //dodawanie do licy ostatnio zabitych
 					if (humanPlayer.hasLover()) {
-						for (HumanPlayer hp : humanPlayer.getAliveLovers())
+						for (HumanPlayer hp : humanPlayer.getAliveLoversList())
 							kill(hp); //zabija wszystkich kochanków
 					}//if (humanPlayer.hasLover())
 
@@ -163,21 +169,27 @@ public class TheGame {
 		clearMadeActions();
 		lastNightHealingByMedicPlayers.clear();
 		lastNightHeatingByDarkMedicPlayers.clear();
+
+		//undealed all players
+		for(HumanPlayer dealed: lastNightDealingByDealerPlayers)
+			dealed.setDealed(false);
+
 		lastNightDealingByDealerPlayers.clear();
 		lastNightKilledPlayer.clear();
 		miDaytimeRolesActionsMadeThis = 0;
 		miCurrentNightNumber++;
 		this.mdaytimeCurrentDaytime=Daytime.NIGHT;
-		mlistTheGameDaytimes.add(new GameNight(this,Daytime.NIGHT));
+		//mlistTheGameDaytimes.add(new GameNight(this,Daytime.NIGHT));
 	}
 
 	public void startNewDay(){
 		lastDayOperateByDentistPlayer.clear();
+		mChoosedPlayersToDailyJudgment.clear();
 		miDaytimeRolesActionsMadeThis = 0;
 		mCurrentDayOutVoted=null;
 		miCurrentDayNumber++;
 		this.mdaytimeCurrentDaytime=Daytime.DAY;
-		mlistTheGameDaytimes.add(new GameDay(this,Daytime.DAY));
+		//mlistTheGameDaytimes.add(new GameDay(this,Daytime.DAY));
 	}
 
 	public void clearMadeActions(){

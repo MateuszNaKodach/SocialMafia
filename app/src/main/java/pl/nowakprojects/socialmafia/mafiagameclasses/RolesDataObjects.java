@@ -83,7 +83,7 @@ public class RolesDataObjects {
      */
     public static  ArrayList<PlayerRole> getMultiPlayersRoles(){
         ArrayList<PlayerRole> playerRoles = new ArrayList<>();
-        // playerRoles.add(new PlayerRole(R.string.mafiaKill,R.string.mafiaKillDescription,R.drawable.image_template, PlayerRole.Fraction.MAFIA, PlayerRole.ActionType.OnceAGame,80));
+        playerRoles.add(new PlayerRole(R.string.mafiaKill,R.string.mafiaKillDescription,R.drawable.image_template, PlayerRole.Fraction.GROUP, PlayerRole.ActionType.AllNightsBesideZero,81));
         return playerRoles;
     }
 }
