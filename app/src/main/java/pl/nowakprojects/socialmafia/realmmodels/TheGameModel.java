@@ -7,7 +7,7 @@ import pl.nowakprojects.socialmafia.mafiagameclasses.TheGame;
 /**
  * Created by Mateusz on 14.11.2016.
  */
-
+//zapis tylko na poczatku dnia/nocy
 public class TheGameModel extends RealmObject {
 
     @PrimaryKey
@@ -36,5 +36,13 @@ public class TheGameModel extends RealmObject {
 
     public int getGameId() {
         return gameId;
+    }
+
+    public TheGameModel(){
+
+    }
+
+    public TheGameModel(TheGame theGame){
+
     }
 }

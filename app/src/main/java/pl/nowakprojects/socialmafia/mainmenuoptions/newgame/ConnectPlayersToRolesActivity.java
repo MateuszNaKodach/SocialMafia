@@ -66,7 +66,7 @@ public class ConnectPlayersToRolesActivity extends AppCompatActivity {
     }
 
     private void vCreateNewGame(){
-        mNewGame = new TheGame();
+        mNewGame = new TheGame(getApplicationContext());
         mNewGame.setPlayersInfoList(mPlayersInfoList);
         mNewGame.setPlayers(mPlayersInfoList.size());
         mNewGame.setMafia(iCountFractionRoles(mPlayersInfoList, PlayerRole.Fraction.MAFIA));
@@ -122,13 +122,7 @@ public class ConnectPlayersToRolesActivity extends AppCompatActivity {
                 if (mShowedRolesAmount < mPlayersInfoList.size())
                     Toast.makeText(getApplicationContext(), R.string.tooLessPlayersRolesShowed, Toast.LENGTH_LONG).show();
                 else {
-                    vCreateNewGame();
-
-                    Bundle bundle = new Bundle();
-                    bundle.putParcelable(EXTRA_NEW_GAME, Parcels.wrap(mNewGame));
-                    Intent intent = new Intent(getApplicationContext(), TheGameActionActivity.class);
-                    intent.putExtras(bundle);
-                    startActivity(intent);
+                    vUiGoToTheGameActionActivity();
                 }
             }
         });
@@ -138,6 +132,16 @@ public class ConnectPlayersToRolesActivity extends AppCompatActivity {
         mPlayerShowingRoleAdapter = new PlayerShowingRoleAdapter(mPlayersInfoList, this);
         mPlayersRolesRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         mPlayersRolesRecyclerView.setAdapter(mPlayerShowingRoleAdapter);
+    }
+
+    private void vUiGoToTheGameActionActivity(){
+        vCreateNewGame();
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(EXTRA_NEW_GAME, Parcels.wrap(mNewGame));
+        Intent intent = new Intent(getApplicationContext(), TheGameActionActivity.class);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
     public class PlayerShowingRoleAdapter extends RecyclerView.Adapter<PlayerShowingRoleAdapter.HumanPlayerViewHolder> {

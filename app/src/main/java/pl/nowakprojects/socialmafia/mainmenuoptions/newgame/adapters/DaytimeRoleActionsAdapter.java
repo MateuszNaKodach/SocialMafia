@@ -44,6 +44,9 @@ public class DaytimeRoleActionsAdapter extends RecyclerView.Adapter<DaytimeRoleA
             this.actionPlayers = mTheGame.getZeroNightHumanPlayers();
         else if(mTheGame.isNightDaytimeNow())
             this.actionPlayers = mTheGame.getAllNightsBesideZeroHumanPlayers();
+        //else if(mTheGame.isDayDaytimeNow())
+        //    this.actionPlayers = mTheGame.getAllDaysHumanPlayers();
+
         this.context = context;
         this.inflater = LayoutInflater.from(context);
     }
@@ -72,7 +75,8 @@ public class DaytimeRoleActionsAdapter extends RecyclerView.Adapter<DaytimeRoleA
         holder.choosingSpinner.setAdapter(choosingSpinnerAdapter);
         //-------------------------------------------------------
 
-        if (playerRole.getName() == R.string.priest) {
+        //SPRAWDZANIE CZY MAFIA MA 2 STRAZALY ITP!!!
+        if (playerRole.getName() == R.string.priest ) {
             holder.choosingSpinner2.setVisibility(View.VISIBLE);
             holder.choosingSpinner2.setAdapter(choosingSpinnerAdapter);
         } else
@@ -171,8 +175,10 @@ public class DaytimeRoleActionsAdapter extends RecyclerView.Adapter<DaytimeRoleA
                                 makePriestAction(mTheGame.findHumanPlayerByName(choosingSpinner.getSelectedItem().toString()), mTheGame.findHumanPlayerByName(choosingSpinner2.getSelectedItem().toString()));
                                 roleActionWasMade();
                             }
-                        } else {
-                            makeRoleAction(actionPlayers.get(getAdapterPosition()), mTheGame.findHumanPlayerByName(choosingSpinner.getSelectedItem().toString()));
+                        } else if (actionPlayers.get(getAdapterPosition()).getRoleName() == R.string.mafiaKill){
+                            makeMafiaAction(mTheGame.findHumanPlayerByName(choosingSpinner.getSelectedItem().toString()), null);
+                            roleActionWasMade();
+                        }else{   makeRoleAction(actionPlayers.get(getAdapterPosition()), mTheGame.findHumanPlayerByName(choosingSpinner.getSelectedItem().toString()));
                             roleActionWasMade();
                         }
                     }
@@ -265,6 +271,16 @@ public class DaytimeRoleActionsAdapter extends RecyclerView.Adapter<DaytimeRoleA
             theGameActionShowingLoversRolesDialog.show(fragmentManager, "PriestAction");
         }
 
+        //DODAC MOZLIWOSC BYCIA DILOWANYM DO WSZYSTKICH FUNKCJI!!!!
+        //DOKONCZYC GDY ZABIJE SIE WIELE SKLEPÓW Z BRONIĄ!
+        private void makeMafiaAction(HumanPlayer choosenPlayer1, HumanPlayer choosenPlayer2) {
+            mTheGame.addLastNightHittingByMafiaPlayer(choosenPlayer1);
+            if(choosenPlayer2!=null){
+                mTheGame.addLastNightHittingByMafiaPlayer(choosenPlayer2);}
+
+            Toast.makeText(roleActionsFragment.getActivity().getApplicationContext(), choosenPlayer1.getPlayerName() + " " + roleActionsFragment.getString(R.string.hadHitByMafiaNow), Toast.LENGTH_LONG).show();
+        }
+
         private void makeMedicAction(HumanPlayer choosenPlayer) {
             mTheGame.addLastNightHealingByMedicPlayers(choosenPlayer);
             Toast.makeText(roleActionsFragment.getActivity().getApplicationContext(), choosenPlayer.getPlayerName() + " " + roleActionsFragment.getString(R.string.isHealingThisNight), Toast.LENGTH_LONG).show();
@@ -272,8 +288,9 @@ public class DaytimeRoleActionsAdapter extends RecyclerView.Adapter<DaytimeRoleA
         }
 
         private void makeDarkMedicAction(HumanPlayer choosenPlayer) {
-            mTheGame.addLastNightHeatingByDarkMedicPlayers(choosenPlayer);
-            Toast.makeText(roleActionsFragment.getActivity().getApplicationContext(), choosenPlayer.getPlayerName() + " " + roleActionsFragment.getString(R.string.isHeatingThisNight), Toast.LENGTH_LONG).show();
+            if(choosenPlayer.isNotDealed()){
+                mTheGame.addLastNightHeatingByDarkMedicPlayers(choosenPlayer);
+            Toast.makeText(roleActionsFragment.getActivity().getApplicationContext(), choosenPlayer.getPlayerName() + " " + roleActionsFragment.getString(R.string.isHeatingThisNight), Toast.LENGTH_LONG).show();}
 
         }
 

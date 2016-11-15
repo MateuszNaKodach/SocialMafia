@@ -3,12 +3,14 @@ package pl.nowakprojects.socialmafia.mafiagameclasses;
 import org.parceler.Parcel;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import io.realm.RealmObject;
+import io.realm.annotations.RealmClass;
 import pl.nowakprojects.socialmafia.R;
 
 @Parcel
-public class HumanPlayer {
+public class HumanPlayer{
     //int playerIndex; // index gracza, dla ulatwienia indentyfikacji
     //int playerPoints=0; //punkty jakie gracz uzbieral w trakcie gier
     String playerName = ""; // imię gracza
@@ -16,9 +18,9 @@ public class HumanPlayer {
     boolean alive = true; // czy gracz jeszcze żyje
     int warns = 0; //ostrzezenia za lamanie zasad
     int stigmas = 0; //naznaczenia
-    ArrayList<HumanPlayer> guardsList = new ArrayList<>(); //ochroniarz, ktos kto ginie za danego gracza I OCHRONIARZ TEŻ!!!
-    ArrayList<HumanPlayer> blackMailersList = new ArrayList<>(); //szantazysta, nie moze na niego zaglosowac itp. CHYBA ZROBIC LISTE SZANTAZYSTÓW!!!
-    ArrayList<HumanPlayer> loversList = new ArrayList<>(); //kochanek - nie mozna na niego glosowac, jesli ginie jeden z nich - gina oboje I KOCHANKÓW TEŻ
+    List<HumanPlayer> guardsList = new ArrayList<>(); //ochroniarz, ktos kto ginie za danego gracza I OCHRONIARZ TEŻ!!!
+    List<HumanPlayer> blackMailersList = new ArrayList<>(); //szantazysta, nie moze na niego zaglosowac itp. CHYBA ZROBIC LISTE SZANTAZYSTÓW!!!
+    List<HumanPlayer> loversList = new ArrayList<>(); //kochanek - nie mozna na niego glosowac, jesli ginie jeden z nich - gina oboje I KOCHANKÓW TEŻ
     boolean dealed = false; //czy dilowany
 
     //For ShowingRoles:
@@ -76,7 +78,7 @@ public class HumanPlayer {
     }
 
 
-    public ArrayList<HumanPlayer> getBlackMailersList() {
+    public List<HumanPlayer> getBlackMailersList() {
         return blackMailersList;
     }
 
@@ -121,7 +123,7 @@ public class HumanPlayer {
         this.dealed = dealed;
     }
 
-    public ArrayList<HumanPlayer> getAliveLoversList(){
+    public List<HumanPlayer> getAliveLoversList(){
         ArrayList<HumanPlayer> aliveLoversList = new ArrayList<>();
 
         for(HumanPlayer hp: loversList)
@@ -227,11 +229,11 @@ public class HumanPlayer {
         this.wasRoleShowed = wasRoleShowed;
     }
 
-    public ArrayList<HumanPlayer> getLoversList() {
+    public List<HumanPlayer> getLoversList() {
         return loversList;
     }
 
-    public ArrayList<HumanPlayer> getGuardsList() {
+    public List<HumanPlayer> getGuardsList() {
         return guardsList;
     }
 

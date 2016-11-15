@@ -3,12 +3,16 @@ package pl.nowakprojects.socialmafia.mafiagameclasses;
  * Created by Mateusz on 2016-02-20.
  */
 
+import android.content.Context;
+
 import org.parceler.Parcel;
+import org.parceler.Transient;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import pl.nowakprojects.socialmafia.R;
 import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.fragments.DailyVotingFragment;
 import pl.nowakprojects.socialmafia.utitles.GameRolesWakeHierarchyComparator;
 
@@ -23,7 +27,11 @@ public class TheGame {
 
 	static TheGame instance;
 
+	@Transient
+	Context mContext;
+
 	int gameId = 0;
+
 
 	public enum Daytime {DAY, NIGHT, JUDGEMENT}
 
@@ -65,6 +73,7 @@ public class TheGame {
 	ArrayList<HumanPlayer> lastNightHealingByMedicPlayers;
 	ArrayList<HumanPlayer> lastNightHeatingByDarkMedicPlayers;
 	ArrayList<HumanPlayer> lastNightDealingByDealerPlayers;
+	ArrayList<HumanPlayer> lastNightHittingByMafiaPlayer;
 	ArrayList<HumanPlayer> lastNightKilledPlayer;
 
 	//Zmienne do aktualnego dnia
@@ -75,11 +84,28 @@ public class TheGame {
 	public TheGame() {
 		lastNightHealingByMedicPlayers = new ArrayList<>();
 		lastNightHeatingByDarkMedicPlayers = new ArrayList<>();
+		lastNightHittingByMafiaPlayer = new ArrayList<>();
 		lastNightDealingByDealerPlayers = new ArrayList<>();
 		lastDayOperateByDentistPlayer = new ArrayList<>();
 		lastNightKilledPlayer = new ArrayList<>();
 		mTemporaryLastTimeKilledPlayerList = new ArrayList<>();
 		mChoosedPlayersToDailyJudgment = new ArrayList<>();
+	}
+
+	public TheGame(Context context) {
+		mContext = context;
+		lastNightHealingByMedicPlayers = new ArrayList<>();
+		lastNightHeatingByDarkMedicPlayers = new ArrayList<>();
+		lastNightHittingByMafiaPlayer = new ArrayList<>();
+		lastNightDealingByDealerPlayers = new ArrayList<>();
+		lastDayOperateByDentistPlayer = new ArrayList<>();
+		lastNightKilledPlayer = new ArrayList<>();
+		mTemporaryLastTimeKilledPlayerList = new ArrayList<>();
+		mChoosedPlayersToDailyJudgment = new ArrayList<>();
+	}
+
+	public void setContext(Context context){
+		mContext = context;
 	}
 
 	public boolean isGameFinished(){
@@ -138,6 +164,37 @@ public class TheGame {
 		}//if(humanPlayer.isAlive())
 	}//public static void kill(HumanPlayer humanPlayer)
 
+	//Co zrobic jak np. dwaj lekarze leczyli tego gracza!?
+	public ArrayList<HumanPlayer> calculateNightimeResult(){
+		ArrayList<HumanPlayer> result = new ArrayList<HumanPlayer>();
+		for(HumanPlayer hp: getLastNightHittingByMafiaPlayer())
+			if(wasPlayerHitByDarkMedic(hp))
+				result.add(hp);
+			else if(!wasPlayerHealed(hp))
+				result.add(hp);
+
+		for(HumanPlayer hp: result)
+			kill(hp);
+
+		return result;
+	}
+
+	private boolean wasPlayerHealed(HumanPlayer humanPlayer){
+			for(HumanPlayer hp2: getLastNightHealingByMedicPlayers())
+				if(humanPlayer==hp2)
+					return true;
+
+		return false;
+	}
+
+	private boolean wasPlayerHitByDarkMedic(HumanPlayer humanPlayer){
+		for(HumanPlayer hp2: getLastNightHeatingByDarkMedicPlayers())
+			if(humanPlayer==hp2)
+				return true;
+
+		return false;
+	}
+
 	public HumanPlayer getLastKilledPlayer(){
 		if(mTemporaryLastTimeKilledPlayerList.isEmpty())
 			return null;
@@ -169,7 +226,7 @@ public class TheGame {
 		clearMadeActions();
 		lastNightHealingByMedicPlayers.clear();
 		lastNightHeatingByDarkMedicPlayers.clear();
-
+		lastNightHittingByMafiaPlayer.clear();
 		//undealed all players
 		for(HumanPlayer dealed: lastNightDealingByDealerPlayers)
 			dealed.setDealed(false);
@@ -218,6 +275,10 @@ public class TheGame {
 					result.add(humanPlayer);
 			}
 		}
+
+		if(isMafiaInTheGame())
+			result.add(new HumanPlayer(mContext.getString(R.string.mafiaKill), RolesDataObjects.getMafiaKillRole()));
+
 		Collections.sort(result,new GameRolesWakeHierarchyComparator());
 		if(!result.isEmpty())
 			result.get(0).getPlayerRole().setB_isRoleTurn(true);
@@ -261,6 +322,19 @@ public class TheGame {
 	public void addLastNightHealingByMedicPlayers(HumanPlayer humanPlayer){
 		if(!lastNightHealingByMedicPlayers.contains(humanPlayer))
 			lastNightHealingByMedicPlayers.add(humanPlayer);
+	}
+
+	public void addLastNightHittingByMafiaPlayer(HumanPlayer humanPlayer){
+		if(!lastNightHittingByMafiaPlayer.contains(humanPlayer))
+			lastNightHittingByMafiaPlayer.add(humanPlayer);
+	}
+
+	public ArrayList<HumanPlayer> getLastDayOperateByDentistPlayer() {
+		return lastDayOperateByDentistPlayer;
+	}
+
+	public ArrayList<HumanPlayer> getLastNightHittingByMafiaPlayer() {
+		return lastNightHittingByMafiaPlayer;
 	}
 
 	public void addLastDayOperateByDentistPlayer(HumanPlayer humanPlayer){
@@ -426,6 +500,13 @@ public class TheGame {
 	}
 
 
+	public boolean isMafiaInTheGame(){
+		for(HumanPlayer hp: getLiveHumanPlayers())
+			if(hp.getPlayerRole().getFraction() == PlayerRole.Fraction.MAFIA)
+				return true;
+
+		return false;
+	}
 	public int getDoublers() {
 		return doublers;
 	}

@@ -2,7 +2,7 @@ W zabijaniu z listy graczy trzeba dodac akutalizacje liczby graczy i spinnerów!
 
 W glosowaniu na koniec dnia nie został przewidziany remis.
 
-Dokonczyc normalnie, a potem dodac obsluge bazy danych!!!
+Dokonczyc normalnie, a potem dodac obsluge bazy danych!!!!!!
 
 Dodac nocne funkcje, np. zabijanie mafii itp. po tym tez sprawdzanie czy gra sie nie zakonczyla.
 

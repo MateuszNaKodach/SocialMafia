@@ -290,5 +290,7 @@ Raz w ciągu gry,  podczas trwania dnia wybiera osobę, która aż do nocy nie b
     <string name="action_settings">Settings</string>
     <string name="mafiaKill">Mafia - Zabijanie</string>
     <string name="mafiaKillDescription">Mafia każdej nocy wybiera jednego gracza do zabicia.</string>
+    <string name="seedetails">Zobacz szczegóły</string>
+    <string name="hadHitByMafiaNow">zostanie tej nocy postrzelony przez mafię!</string>
 
 </resources>

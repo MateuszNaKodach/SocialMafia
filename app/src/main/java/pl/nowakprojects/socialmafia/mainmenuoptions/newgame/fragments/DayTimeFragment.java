@@ -68,6 +68,12 @@ public class DayTimeFragment extends Fragment {
     }
 
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        dayTimeTimer.cancel();
+    }
+
     private void startDayTimer(){
         dayTimeTimer = new TimeCounterClass(mTheGame.getMdMaxDayTime(), 1000);
         dayTimeTimer.start();
@@ -96,7 +102,7 @@ public class DayTimeFragment extends Fragment {
                 if(mTheGame.getCurrentDayOutVoted()==null)
                     Toast.makeText(getActivity(),R.string.no_kill_check_choose,Toast.LENGTH_SHORT).show();
                 else {
-                    dayTimeTimer.cancel();
+                    //dayTimeTimer.cancel();
                     vUiSetMaterialDialog();
                     mChoosingPlayerMaterialDialog.show();
                 }

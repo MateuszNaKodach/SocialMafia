@@ -45,7 +45,7 @@ public class RolesDataObjects {
         playerRoles.add(new PlayerRole(R.string.blackmailer,R.string.madmanDescription,R.drawable.image_template, PlayerRole.Fraction.MAFIA, PlayerRole.ActionType.OnlyZeroNight,80));
         playerRoles.add(new PlayerRole(R.string.blackmailerBoss,R.string.madmanDescription,R.drawable.image_template, PlayerRole.Fraction.MAFIA, PlayerRole.ActionType.OnlyZeroNight,100));
         playerRoles.add(new PlayerRole(R.string.coquette,R.string.madmanDescription,R.drawable.icon_prostitute2, PlayerRole.Fraction.MAFIA, PlayerRole.ActionType.NoAction,-1));
-        playerRoles.add(new PlayerRole(R.string.darkmedic,R.string.madmanDescription,R.drawable.image_template, PlayerRole.Fraction.MAFIA, PlayerRole.ActionType.AllNightsBesideZero,120));
+        playerRoles.add(new PlayerRole(R.string.darkmedic,R.string.madmanDescription,R.drawable.image_template, PlayerRole.Fraction.MAFIA, PlayerRole.ActionType.AllNightsBesideZero,121));
         playerRoles.add(new PlayerRole(R.string.mafiaspeedy,R.string.madmanDescription,R.drawable.image_template, PlayerRole.Fraction.MAFIA, PlayerRole.ActionType.ActionRequire,-1));
         playerRoles.add(new PlayerRole(R.string.dealer,R.string.madmanDescription,R.drawable.icon_dealer, PlayerRole.Fraction.MAFIA, PlayerRole.ActionType.AllNightsBesideZero,30));
         playerRoles.add(new PlayerRole(R.string.gravedigger,R.string.madmanDescription,R.drawable.ic_gravedigger, PlayerRole.Fraction.MAFIA, PlayerRole.ActionType.AllNightsBesideZero,70));
@@ -86,4 +86,9 @@ public class RolesDataObjects {
         playerRoles.add(new PlayerRole(R.string.mafiaKill,R.string.mafiaKillDescription,R.drawable.image_template, PlayerRole.Fraction.GROUP, PlayerRole.ActionType.AllNightsBesideZero,81));
         return playerRoles;
     }
+
+    public static PlayerRole getMafiaKillRole(){
+        return new PlayerRole(R.string.mafiaKill,R.string.mafiaKillDescription,R.drawable.image_template, PlayerRole.Fraction.GROUP, PlayerRole.ActionType.AllNightsBesideZero,81);
+    }
+
 }
