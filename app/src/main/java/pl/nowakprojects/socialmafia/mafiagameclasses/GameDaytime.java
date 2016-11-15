@@ -1,12 +1,9 @@
-package pl.nowakprojects.socialmafia.mafiagameclasses;
+/*package pl.nowakprojects.socialmafia.mafiagameclasses;
 
 import org.parceler.Parcel;
 
 import java.util.ArrayList;
 
-/**
- * Created by Mateusz on 25.10.2016.
- */
 
 @Parcel
 class GameDaytime {
@@ -36,4 +33,4 @@ class GameDaytime {
         miBeginMafiaPlayersAmount=mTheGame.getLiveMafiaPlayers().size();
         miBeginSyndicatePlayersAmount=mTheGame.getLiveSyndicatePlayers().size();
     }
-}
+}*/

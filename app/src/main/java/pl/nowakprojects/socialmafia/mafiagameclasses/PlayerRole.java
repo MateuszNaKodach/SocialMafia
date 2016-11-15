@@ -2,7 +2,6 @@ package pl.nowakprojects.socialmafia.mafiagameclasses;
 
 import org.parceler.Parcel;
 
-import io.realm.RealmObject;
 import pl.nowakprojects.socialmafia.R;
 
 /**
@@ -21,15 +20,12 @@ public class PlayerRole {
     ActionType actionType;
     int nightWakeHierarchyNumber;
     int rolePlayersAmount=0;
-    boolean roleUsed = false;
-    int lifes = 0;
-    boolean mainRole = false; //jesli jest wiecej niz jedna rola, do danej funkcji, np. sędzia główny
     boolean onlyPremium=false;
 
     //PlayerActionViewHolder
-    boolean b_isRoleTurn = false;
-    HumanPlayer hp_lastChoosenPlayer;
-    boolean b_actionMade = false;
+    //boolean playerTurn = false;
+    //HumanPlayer lastChoseenPlayer;
+    //boolean roleActionMade = false;
 
     public PlayerRole(int name, int description, int iconResourceID, Fraction fraction, ActionType actionType, int nightWakeHierarchyNumber) {
         this.name = name;
@@ -38,10 +34,6 @@ public class PlayerRole {
         this.fraction = fraction;
         this.actionType = actionType;
         this.nightWakeHierarchyNumber = nightWakeHierarchyNumber;
-        if(this.name == R.string.emo)
-            lifes=2;
-        else
-            lifes=1;
     }
 
     public PlayerRole(int name, int description, int iconResourceID, Fraction fraction, ActionType actionType, int nightWakeHierarchyNumber, boolean onlyPremium) {
@@ -51,10 +43,6 @@ public class PlayerRole {
         this.fraction = fraction;
         this.actionType = actionType;
         this.nightWakeHierarchyNumber = nightWakeHierarchyNumber;
-        if(this.name == R.string.emo)
-            lifes=2;
-        else
-            lifes=1;
 
         this.onlyPremium=onlyPremium;
     }
@@ -94,13 +82,6 @@ public class PlayerRole {
 
 
     //GETTERS AND SETTERS:
-    public int getLifes() {
-        return lifes;
-    }
-
-    public void setLifes(int lifes) {
-        this.lifes = lifes;
-    }
 
     public int getName() {
         return name;
@@ -143,9 +124,6 @@ public class PlayerRole {
         this.actionType = actionType;
     }
 
-    public boolean isRoleUsed() {
-        return roleUsed;
-    }
 
     public int getNightWakeHierarchyNumber() {
         return nightWakeHierarchyNumber;
@@ -164,21 +142,21 @@ public class PlayerRole {
         this.rolePlayersAmount = rolePlayersAmount;
     }
 
-    public boolean is_actionMade() {
-        return b_actionMade;
+    /*public boolean is_actionMade() {
+        return roleActionMade;
     }
 
     public void set_bActionMade(boolean b_actionMade) {
-        this.b_actionMade = b_actionMade;
+        this.roleActionMade = b_actionMade;
+    }*/
+
+    /*public void setPlayerTurn(boolean playerTurn) {
+        this.playerTurn = playerTurn;
     }
 
-    public void setB_isRoleTurn(boolean b_isRoleTurn) {
-        this.b_isRoleTurn = b_isRoleTurn;
-    }
-
-    public boolean isB_isRoleTurn() {
-        return b_isRoleTurn;
-    }
+    public boolean isPlayerTurn() {
+        return playerTurn;
+    }*/
 
 
     @Override

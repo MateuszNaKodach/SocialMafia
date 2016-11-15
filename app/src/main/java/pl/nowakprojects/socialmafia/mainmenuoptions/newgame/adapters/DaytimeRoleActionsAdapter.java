@@ -59,6 +59,7 @@ public class DaytimeRoleActionsAdapter extends RecyclerView.Adapter<DaytimeRoleA
 
     @Override
     public void onBindViewHolder(PlayerRoleActionViewHolder holder, int position) {
+        HumanPlayer humanPlayer = actionPlayers.get(position);
         PlayerRole playerRole = actionPlayers.get(position).getPlayerRole();
         //  holder.roleIcon.setImageResource(playerRole.getIconResourceID());
         holder.roleName.setText(playerRole.getName());
@@ -66,9 +67,9 @@ public class DaytimeRoleActionsAdapter extends RecyclerView.Adapter<DaytimeRoleA
 
         //Dodawanie opcji do Spinnera
         ArrayList<String> playerNames = new ArrayList<String>();
-        for (HumanPlayer humanPlayer : mTheGame.getLiveHumanPlayers()) {
-            if (!(humanPlayer.getPlayerName().equals(actionPlayers.get(position).getPlayerName()))) //wszystkich oprócz samego gracza
-                playerNames.add(humanPlayer.getPlayerName());
+        for (HumanPlayer hp : mTheGame.getLiveHumanPlayers()) {
+            if (!(hp.getPlayerName().equals(actionPlayers.get(position).getPlayerName()))) //wszystkich oprócz samego gracza
+                playerNames.add(hp.getPlayerName());
         }
         ArrayAdapter<String> choosingSpinnerAdapter = new ArrayAdapter<String>(roleActionsFragment.getActivity().getApplicationContext(), android.R.layout.simple_spinner_item, playerNames);
         choosingSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -86,12 +87,12 @@ public class DaytimeRoleActionsAdapter extends RecyclerView.Adapter<DaytimeRoleA
         holder.choosingSpinner.setEnabled(false);
         holder.choosingSpinner2.setEnabled(false);
 
-        if (playerRole.isB_isRoleTurn()) {
-            holder.itemView.findViewById(R.id.confirmButton).setEnabled(true);
-            holder.choosingSpinner.setEnabled(!playerRole.is_actionMade());
-            holder.choosingSpinner2.setEnabled(!playerRole.is_actionMade());
+        if (humanPlayer.isPlayerTurn()) {
+            holder.itemView.findViewById(R.id.confirmButton).setEnabled(!humanPlayer.isRoleActionMade());
+            holder.choosingSpinner.setEnabled(!humanPlayer.isRoleActionMade());
+            holder.choosingSpinner2.setEnabled(!humanPlayer.isRoleActionMade());
         } else
-            holder.itemView.findViewById(R.id.confirmButton).setEnabled(false);
+            holder.itemView.findViewById(R.id.confirmButton).setEnabled(humanPlayer.isRoleActionMade());
 
     }
 
@@ -146,17 +147,17 @@ public class DaytimeRoleActionsAdapter extends RecyclerView.Adapter<DaytimeRoleA
                  * Dodajemy do sumy wykonanych ról
                  */
                 void roleActionWasMade() {
-                    if (!(actionPlayers.get(getAdapterPosition()).getPlayerRole().is_actionMade())) {
+                    if (!(actionPlayers.get(getAdapterPosition()).isRoleActionMade())) {
                         mTheGame.iActionMadeThisTime();
                         choosingSpinner.setEnabled(false);
                         choosingSpinner2.setEnabled(false);
                         confirmButton.setText(R.string.roleActionDone);
 
                         enableEndOfDayTimeButton();
-                        actionPlayers.get(getAdapterPosition()).getPlayerRole().set_bActionMade(true);
+                        actionPlayers.get(getAdapterPosition()).setRoleActionMade(true);
                     }
                     if ((getAdapterPosition() + 1) < actionPlayers.size()) {
-                        actionPlayers.get(getAdapterPosition() + 1).getPlayerRole().setB_isRoleTurn(true);
+                        actionPlayers.get(getAdapterPosition() + 1).setPlayerTurn(true);
                         notifyItemChanged(getAdapterPosition() + 1);
                     }
 

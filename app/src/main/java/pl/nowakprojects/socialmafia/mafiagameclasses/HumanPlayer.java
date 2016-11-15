@@ -22,6 +22,12 @@ public class HumanPlayer{
     List<HumanPlayer> blackMailersList = new ArrayList<>(); //szantazysta, nie moze na niego zaglosowac itp. CHYBA ZROBIC LISTE SZANTAZYSTÓW!!!
     List<HumanPlayer> loversList = new ArrayList<>(); //kochanek - nie mozna na niego glosowac, jesli ginie jeden z nich - gina oboje I KOCHANKÓW TEŻ
     boolean dealed = false; //czy dilowany
+    int lifes = 0;
+    boolean roleUsed = false;
+    boolean mainRole = false; //jesli jest wiecej niz jedna rola, do danej funkcji, np. sędzia główny
+    boolean playerTurn = false;
+    boolean roleActionMade = false;
+
 
     //For ShowingRoles:
     boolean wasRoleShowed = false;
@@ -37,14 +43,18 @@ public class HumanPlayer{
     public HumanPlayer(String playerName, PlayerRole playerRole) {
         this.playerName = playerName;
         this.playerRole = playerRole;
+        if(this.playerRole.name == R.string.emo)
+            lifes=2;
+        else
+            lifes=1;
     }
 
 
 
     //GAME METHODS:
     public boolean hit(){
-        this.getPlayerRole().lifes-=1;
-        if(getPlayerRole().getLifes()<=0)
+        this.lifes-=1;
+        if(getLifes()<=0)
             this.setNotAlive();
 
         return isAlive();
@@ -144,7 +154,7 @@ public class HumanPlayer{
     }
 
     public int howManyLifes(){
-        return this.playerRole.getLifes();
+        return this.getLifes();
     }
 
     public void reviveThePlayer(){
@@ -239,5 +249,37 @@ public class HumanPlayer{
 
     public boolean isWasRoleShowed() {
         return wasRoleShowed;
+    }
+
+    public int getLifes() {
+        return lifes;
+    }
+
+    public void setLifes(int lifes) {
+        this.lifes = lifes;
+    }
+
+    public boolean isRoleUsed() {
+        return roleUsed;
+    }
+
+    public boolean isMainRole() {
+        return mainRole;
+    }
+
+    public boolean isPlayerTurn() {
+        return playerTurn;
+    }
+
+    public void setPlayerTurn(boolean playerTurn) {
+        this.playerTurn = playerTurn;
+    }
+
+    public boolean isRoleActionMade() {
+        return roleActionMade;
+    }
+
+    public void setRoleActionMade(boolean roleActionMade) {
+        this.roleActionMade = roleActionMade;
     }
 }

@@ -1,12 +1,9 @@
-package pl.nowakprojects.socialmafia.mafiagameclasses;
+/*package pl.nowakprojects.socialmafia.mafiagameclasses;
 
 import org.parceler.Parcel;
 
 import java.util.ArrayList;
 
-/**
- * Created by Mateusz on 23.10.2016.
- */
 @Parcel
 class GameDay extends GameDaytime{
 
@@ -24,4 +21,4 @@ class GameDay extends GameDaytime{
         super(theGame, dayTime);
         miThisDayRemainedDuels=mTheGame.mdMaxDuelAmount;
     }
-}
+}*/

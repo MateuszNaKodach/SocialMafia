@@ -251,8 +251,8 @@ public class TheGame {
 
 	public void clearMadeActions(){
 		for(HumanPlayer hp: this.getLiveHumanPlayers()){
-			hp.getPlayerRole().b_isRoleTurn=false;
-			hp.getPlayerRole().b_actionMade=false;
+			hp.playerTurn =false;
+			hp.roleActionMade =false;
 		}
 
 	}
@@ -281,7 +281,7 @@ public class TheGame {
 
 		Collections.sort(result,new GameRolesWakeHierarchyComparator());
 		if(!result.isEmpty())
-			result.get(0).getPlayerRole().setB_isRoleTurn(true);
+			result.get(0).setPlayerTurn(true);
 		return result;
 	}// private ArrayList<HumanPlayer> getAllNightsBesideZeroHumanPlayers()
 
@@ -302,7 +302,7 @@ public class TheGame {
 		}
 		Collections.sort(result,new GameRolesWakeHierarchyComparator());
 		if(!result.isEmpty())
-			result.get(0).getPlayerRole().setB_isRoleTurn(true);
+			result.get(0).setPlayerTurn(true);
 		return result;
 	}// private ArrayList<HumanPlayer> getZeroNightHumanPlayers()
 

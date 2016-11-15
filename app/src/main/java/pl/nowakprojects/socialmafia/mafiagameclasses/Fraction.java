@@ -1,10 +1,7 @@
-package pl.nowakprojects.socialmafia.mafiagameclasses;
+/*package pl.nowakprojects.socialmafia.mafiagameclasses;
 
 import pl.nowakprojects.socialmafia.R;
 
-/**
- * Created by Mateusz on 20.06.2016.
- */
 
 public class Fraction {
     private PlayerRole.Fraction type;
@@ -64,4 +61,4 @@ public class Fraction {
         this.iconID = iconID;
     }
 
-}
+}*/
