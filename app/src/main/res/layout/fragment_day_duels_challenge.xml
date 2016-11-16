@@ -69,7 +69,8 @@
             android:layout_gravity="center"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            style="@style/duelSpinnerStyle" />
+            style="@style/duelSpinnerStyle"
+            android:theme="@style/duelChoosingSpinner" />
 
 
 
@@ -92,7 +93,8 @@
             android:layout_gravity="center"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            style="@style/duelSpinnerStyle" />
+            style="@style/duelSpinnerStyle"
+            android:theme="@style/duelChoosingSpinner" />
 
     </LinearLayout>
 

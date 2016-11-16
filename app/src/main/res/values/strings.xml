@@ -292,5 +292,6 @@ Raz w ciągu gry,  podczas trwania dnia wybiera osobę, która aż do nocy nie b
     <string name="mafiaKillDescription">Mafia każdej nocy wybiera jednego gracza do zabicia.</string>
     <string name="seedetails">Zobacz szczegóły</string>
     <string name="hadHitByMafiaNow">zostanie tej nocy postrzelony przez mafię!</string>
+    <string name="noduelsleast">Limit pojedynków na ten dzień został wykorzystany!</string>
 
 </resources>

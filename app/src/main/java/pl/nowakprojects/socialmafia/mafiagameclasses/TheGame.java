@@ -78,7 +78,7 @@ public class TheGame {
 
 	//Zmienne do aktualnego dnia
 	ArrayList<HumanPlayer> lastDayOperateByDentistPlayer;
-	int miThisDayRemainedDuels;
+	int miThisDayRemainedDuels=mdMaxDuelAmount;
 	int miThisDayThrownChallenges=0;
 
 	public TheGame() {
@@ -240,6 +240,8 @@ public class TheGame {
 	}
 
 	public void startNewDay(){
+		miThisDayRemainedDuels=mdMaxDuelAmount;
+		miThisDayThrownChallenges=0;
 		lastDayOperateByDentistPlayer.clear();
 		mChoosedPlayersToDailyJudgment.clear();
 		miDaytimeRolesActionsMadeThis = 0;
@@ -555,4 +557,99 @@ public class TheGame {
 		return mbFinished;
 	}
 
+	public int getMdMaxDuelAmount() {
+		return mdMaxDuelAmount;
+	}
+
+	public void setMdMaxDuelAmount(int mdMaxDuelAmount) {
+		this.mdMaxDuelAmount = mdMaxDuelAmount;
+	}
+
+	public int getMdMaxDuelChallenges() {
+		return mdMaxDuelChallenges;
+	}
+
+	public void setMdMaxDuelChallenges(int mdMaxDuelChallenges) {
+		this.mdMaxDuelChallenges = mdMaxDuelChallenges;
+	}
+
+	public void setMbFinished(boolean mbFinished) {
+		this.mbFinished = mbFinished;
+	}
+
+	public Daytime getMdaytimeCurrentDaytime() {
+		return mdaytimeCurrentDaytime;
+	}
+
+	public void setMdaytimeCurrentDaytime(Daytime mdaytimeCurrentDaytime) {
+		this.mdaytimeCurrentDaytime = mdaytimeCurrentDaytime;
+	}
+
+	public DailyVotingFragment.OUTVOTED getmCurrentDayOutVoted() {
+		return mCurrentDayOutVoted;
+	}
+
+	public void setmCurrentDayOutVoted(DailyVotingFragment.OUTVOTED mCurrentDayOutVoted) {
+		this.mCurrentDayOutVoted = mCurrentDayOutVoted;
+	}
+
+	public int getMiDaytimeRolesActionsMadeThis() {
+		return miDaytimeRolesActionsMadeThis;
+	}
+
+	public void setMiDaytimeRolesActionsMadeThis(int miDaytimeRolesActionsMadeThis) {
+		this.miDaytimeRolesActionsMadeThis = miDaytimeRolesActionsMadeThis;
+	}
+
+	public void setmTemporaryLastTimeKilledPlayerList(ArrayList<HumanPlayer> mTemporaryLastTimeKilledPlayerList) {
+		this.mTemporaryLastTimeKilledPlayerList = mTemporaryLastTimeKilledPlayerList;
+	}
+
+	public ArrayList<HumanPlayer> getmChoosedPlayersToDailyJudgment() {
+		return mChoosedPlayersToDailyJudgment;
+	}
+
+	public void setmChoosedPlayersToDailyJudgment(ArrayList<HumanPlayer> mChoosedPlayersToDailyJudgment) {
+		this.mChoosedPlayersToDailyJudgment = mChoosedPlayersToDailyJudgment;
+	}
+
+	public void setLastNightHealingByMedicPlayers(ArrayList<HumanPlayer> lastNightHealingByMedicPlayers) {
+		this.lastNightHealingByMedicPlayers = lastNightHealingByMedicPlayers;
+	}
+
+	public void setLastNightHeatingByDarkMedicPlayers(ArrayList<HumanPlayer> lastNightHeatingByDarkMedicPlayers) {
+		this.lastNightHeatingByDarkMedicPlayers = lastNightHeatingByDarkMedicPlayers;
+	}
+
+	public void setLastNightDealingByDealerPlayers(ArrayList<HumanPlayer> lastNightDealingByDealerPlayers) {
+		this.lastNightDealingByDealerPlayers = lastNightDealingByDealerPlayers;
+	}
+
+	public void setLastNightHittingByMafiaPlayer(ArrayList<HumanPlayer> lastNightHittingByMafiaPlayer) {
+		this.lastNightHittingByMafiaPlayer = lastNightHittingByMafiaPlayer;
+	}
+
+	public void setLastNightKilledPlayer(ArrayList<HumanPlayer> lastNightKilledPlayer) {
+		this.lastNightKilledPlayer = lastNightKilledPlayer;
+	}
+
+	public void setLastDayOperateByDentistPlayer(ArrayList<HumanPlayer> lastDayOperateByDentistPlayer) {
+		this.lastDayOperateByDentistPlayer = lastDayOperateByDentistPlayer;
+	}
+
+	public int getMiThisDayRemainedDuels() {
+		return miThisDayRemainedDuels;
+	}
+
+	public void setMiThisDayRemainedDuels(int miThisDayRemainedDuels) {
+		this.miThisDayRemainedDuels = miThisDayRemainedDuels;
+	}
+
+	public int getMiThisDayThrownChallenges() {
+		return miThisDayThrownChallenges;
+	}
+
+	public void setMiThisDayThrownChallenges(int miThisDayThrownChallenges) {
+		this.miThisDayThrownChallenges = miThisDayThrownChallenges;
+	}
 }
