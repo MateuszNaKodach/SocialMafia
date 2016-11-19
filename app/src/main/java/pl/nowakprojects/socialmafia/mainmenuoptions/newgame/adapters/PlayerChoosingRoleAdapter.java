@@ -81,7 +81,7 @@ public class PlayerChoosingRoleAdapter extends RecyclerView.Adapter<PlayerChoosi
         private TextView roleAmount;
         private ImageButton increaseRoleAmount;
         private ImageButton decreaseRoleAmount;
-        private AlertDialog roleDescriptionDialog;
+        //private AlertDialog roleDescriptionDialog;
 
 
         public PlayerRoleViewHolder(View itemView) {
@@ -127,8 +127,9 @@ public class PlayerChoosingRoleAdapter extends RecyclerView.Adapter<PlayerChoosi
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    buildRoleDescriptionDialog();
-                    roleDescriptionDialog.show();
+                    fractionRolesList.get(getAdapterPosition()).showRoleDescriptionDialog(context);
+                    //buildRoleDescriptionDialog();
+                    //roleDescriptionDialog.show();
                 }
             });
 
@@ -138,16 +139,12 @@ public class PlayerChoosingRoleAdapter extends RecyclerView.Adapter<PlayerChoosi
         /**
          * Tworzy okienko wyświetlające opis roli
          */
-        public void buildRoleDescriptionDialog() {
+       /* public void buildRoleDescriptionDialog() {
             final AlertDialog.Builder descriptionDialog = new AlertDialog.Builder(context);
             descriptionDialog.setTitle(context.getString(fractionRolesList.get(getAdapterPosition()).getName()));
             descriptionDialog.setMessage(context.getString(fractionRolesList.get(getAdapterPosition()).getDescription()));
             descriptionDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                /**
-                 * Zamyka okno z opisem roli
-                 * @param dialog
-                 * @param which
-                 */
+
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     roleDescriptionDialog.cancel();
@@ -155,7 +152,7 @@ public class PlayerChoosingRoleAdapter extends RecyclerView.Adapter<PlayerChoosi
             });
 
             roleDescriptionDialog = descriptionDialog.create();
-        }
+        }*/
 
 
     }

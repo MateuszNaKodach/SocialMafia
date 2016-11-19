@@ -1,5 +1,7 @@
 package pl.nowakprojects.socialmafia.mafiagameclasses;
 
+import android.content.Context;
+
 import org.parceler.Parcel;
 
 import java.util.ArrayList;
@@ -73,6 +75,10 @@ public class HumanPlayer{
             this.loversList.add(lover);
     }
 
+
+    private void showRoleDescriptionDialog(Context context){
+        playerRole.showRoleDescriptionDialog(context);
+    }
 
     //dochodzi do obroncy, ktory ma zginac metoda rekurencji
     public static HumanPlayer getFirstGuard(HumanPlayer player){

@@ -1,8 +1,20 @@
 package pl.nowakprojects.socialmafia.mafiagameclasses;
 
-import org.parceler.Parcel;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
+import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+
+import org.parceler.Parcel;
+import org.parceler.Transient;
+
+import pl.nowakprojects.socialmafia.MainActivity;
 import pl.nowakprojects.socialmafia.R;
+import pl.nowakprojects.socialmafia.SocialMafia;
 
 /**
  * Created by Mateusz on 20.06.2016.
@@ -21,6 +33,9 @@ public class PlayerRole {
     int nightWakeHierarchyNumber;
     int rolePlayersAmount=0;
     boolean onlyPremium=false;
+
+    @Transient
+    MaterialDialog roleDescriptionDialog;
 
     //PlayerActionViewHolder
     //boolean playerTurn = false;
@@ -80,6 +95,20 @@ public class PlayerRole {
         return R.string.fraction;
     }
 
+    private void buildRoleDescriptionDialog(Context context){
+        roleDescriptionDialog = new MaterialDialog.Builder(context)
+                .title(context.getString(getName()))
+                .content(context.getString(getDescription()))
+                .positiveText(R.string.ok)
+                .build();
+    }
+
+    public void showRoleDescriptionDialog(Context context){
+        if(roleDescriptionDialog==null)
+            buildRoleDescriptionDialog(context);
+
+        roleDescriptionDialog.show();
+    }
 
     //GETTERS AND SETTERS:
 

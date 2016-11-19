@@ -1,28 +1,28 @@
 package pl.nowakprojects.socialmafia.mainmenuoptions.newgame.dialogfragments;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
-import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import pl.nowakprojects.socialmafia.R;
 import pl.nowakprojects.socialmafia.mafiagameclasses.HumanPlayer;
 import pl.nowakprojects.socialmafia.mafiagameclasses.TheGame;
-import pl.nowakprojects.socialmafia.utitles.GameTipFragment;
 import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.interfaces.OnPlayerKilledListener;
+import pl.nowakprojects.socialmafia.utitles.GameTipFragment;
 
 /**
  * Created by Mateusz on 19.10.2016.
@@ -36,8 +36,16 @@ public class DuelVotingDialogFragment extends DialogFragment {
     TheGame mTheGame;
     HumanPlayer mAgressiveHumanPlayer;
     HumanPlayer mInsultedHumanPlayer;
-    AlertDialog mConfirmVotingAlertDialog;
-    ArrayList<HumanPlayer> mLoosersList;
+    ArrayList<String> mAgressivePlayersNamesVotesList = new ArrayList<>();
+    ArrayList<String> mInsultedPlayersNamesVotesList = new ArrayList<>();
+
+    MaterialDialog mVotingAgressivePlayersMaterialDialog;
+    MaterialDialog mVotingInsultedPlayersMaterialDialog;
+    MaterialDialog mConfirmVotingMaterialDialog;
+    MaterialDialog mDuelResultsMaterialDialog;
+    //AlertDialog mConfirmVotingAlertDialog;
+    ArrayList<HumanPlayer> mLoosersList = new ArrayList<>();
+
 
     public DuelVotingDialogFragment(){}
 
@@ -50,14 +58,20 @@ public class DuelVotingDialogFragment extends DialogFragment {
 
     //Views
     View fragmentView;
-    @BindView(R.id.agressiveKillingSlider) SeekBar seekbarKillAgressivePlayerVotes;
+    @BindView(R.id.agressivePlayerNameAndVotes) TextView agressivePlayerNameAndVotesTextView;
+    @BindView(R.id.insultedPlayerNameAndVotes) TextView insultedPlayerNameAndVotesTextView;
+    @BindView(R.id.agressivePlayerKillButton) Button agressivePlayerKillButton;
+    @BindView(R.id.insultedPlayerKillButton) Button insultedPlayerKillButton;
+    @BindView(R.id.button_confirmDuel) Button button_confirmVoting;
+
+    /*@BindView(R.id.agressiveKillingSlider) SeekBar seekbarKillAgressivePlayerVotes;
     @BindView(R.id.insultedKillingSlider)  SeekBar seekbarKillInsultedPlayerVotes;
     @BindView(R.id.textView_iKillAgressivePlayerVotes) TextView textView_iKillAgressivePlayerVotes;
     @BindView(R.id.textView_iKillInsultedPlayerVotes) TextView textView_iKillInsultedPlayerVotes;
     @BindView(R.id.textView_sAgressivePlayerName) TextView textView_sAgressivePlayerName;
     @BindView(R.id.textView_sInsultedPlayerName) TextView textView_sInsultedPlayerName;
     @BindView(R.id.button_confirmDuel) Button button_confirmVoting;
-    @BindView(R.id.oneDuelIcon) ImageView gunIcon;
+    @BindView(R.id.oneDuelIcon) ImageView gunIcon;*/
 
     @Override
     public void onAttach(Context context) {
@@ -77,13 +91,203 @@ public class DuelVotingDialogFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        fragmentView = inflater.inflate(R.layout.dialog_one_duel_action, container, false);
+        fragmentView = inflater.inflate(R.layout.dialog_one_duel_action_new, container, false);
         ButterKnife.bind(this,fragmentView);
-        vUiSetupDialog();
         vUiSetupUserInterface();
+        //vUiSetupDialog();
+        //vUiSetupUserInterface();
         return fragmentView;
     }
 
+
+    private void hpCalculateDuelResult(){
+        //mLoosersList = new ArrayList<>();
+        if(mAgressiveHumanPlayer.hasSpeedyRole()&&!mInsultedHumanPlayer.hasSpeedyRole())
+            mLoosersList.add(mInsultedHumanPlayer);
+        else if(!mAgressiveHumanPlayer.hasSpeedyRole()&&mInsultedHumanPlayer.hasSpeedyRole())
+            mLoosersList.add(mAgressiveHumanPlayer);
+        else if(mInsultedPlayersNamesVotesList.size()==mAgressivePlayersNamesVotesList.size()){
+            mLoosersList.add(mAgressiveHumanPlayer);
+            mLoosersList.add(mInsultedHumanPlayer);
+        }
+        else if(mInsultedPlayersNamesVotesList.size()<mAgressivePlayersNamesVotesList.size())
+            mLoosersList.add(mAgressiveHumanPlayer);
+        else if(mInsultedPlayersNamesVotesList.size()>mAgressivePlayersNamesVotesList.size())
+            mLoosersList.add(mInsultedHumanPlayer);
+
+        mTheGame.beginKilling();
+        for(HumanPlayer hp: mLoosersList)
+            mTheGame.kill(hp);
+    }
+
+    private String stringDuelResults(){
+        String result="Czy jesteś pewien, że zginie:";
+        for(HumanPlayer hp: mLoosersList)
+            result+="- "+hp.getPlayerName()+" \n";
+        return result;
+
+    }
+
+    private String killingResultString(){
+        String result="";
+        for(HumanPlayer hp: mTheGame.getTemporaryLastTimeKilledPlayersList())
+            result+="- "+hp.getPlayerName()+" \n";
+        return result;
+    }
+
+    public void vUiSetupUserInterface(){
+        vUiShowGameTipFragment();
+        vUiSetupDialog();
+        vUiUpdateTextView();
+        vUiSetupMaterialDialog();
+        vUiUpdateMaterialDialog();
+        vUiSetupButtonListeners();
+    }
+
+    private void vUiSetupDialog(){
+        getDialog().setTitle(R.string.duel);
+        getDialog().setCancelable(false);
+    }
+
+    public void vUiUpdateTextView(){
+        agressivePlayerNameAndVotesTextView.setText(getString(R.string.player_name_votes,mAgressiveHumanPlayer.getPlayerName(),mAgressivePlayersNamesVotesList.size()));
+        insultedPlayerNameAndVotesTextView.setText(getString(R.string.player_name_votes,mInsultedHumanPlayer.getPlayerName(),mInsultedPlayersNamesVotesList.size()));
+        agressivePlayerKillButton.setText(getString(R.string.who_want_kill,mAgressiveHumanPlayer.getPlayerName()));
+        insultedPlayerKillButton.setText(getString(R.string.who_want_kill,mInsultedHumanPlayer.getPlayerName()));
+    }
+
+    public void vUiUpdateMaterialDialog(){
+        List<String> itemsForAgressiveVotingPlayer = mTheGame.getLiveHumanPlayersNames();
+        itemsForAgressiveVotingPlayer.removeAll(mInsultedPlayersNamesVotesList);
+
+        List<String> itemsForInsultedVotingPlayer = mTheGame.getLiveHumanPlayersNames();
+        itemsForInsultedVotingPlayer.removeAll(mAgressivePlayersNamesVotesList);
+
+        mVotingAgressivePlayersMaterialDialog = new MaterialDialog.Builder(this.getActivity())
+                .title(agressivePlayerKillButton.getText())
+                .items(itemsForAgressiveVotingPlayer)
+                .content(R.string.duel_voting_explanation)
+                .positiveText(R.string.confirm)
+                .negativeText(R.string.cancel)
+                .itemsCallbackMultiChoice(null, new MaterialDialog.ListCallbackMultiChoice() {
+                    @Override
+                    public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
+                        return true;
+                    }
+                })
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        Integer[] selected = mVotingAgressivePlayersMaterialDialog.getSelectedIndices();
+
+                        mAgressivePlayersNamesVotesList.clear();
+
+                        if(selected!=null)
+                        for (int i = 0; i < selected.length; i++)
+                            mAgressivePlayersNamesVotesList.add(mTheGame.getLiveHumanPlayersNames().get(selected[i]));
+
+                        vUiUpdateTextView();
+                    }
+                })
+                .build();
+
+        mVotingInsultedPlayersMaterialDialog = new MaterialDialog.Builder(this.getActivity())
+                .title(insultedPlayerKillButton.getText())
+                .items(itemsForInsultedVotingPlayer)
+                .content(R.string.duel_voting_explanation)
+                .positiveText(R.string.confirm)
+                .negativeText(R.string.cancel)
+                .itemsCallbackMultiChoice(null, new MaterialDialog.ListCallbackMultiChoice() {
+                    @Override
+                    public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
+                        return true;
+                    }
+                })
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        Integer[] selected = mVotingInsultedPlayersMaterialDialog .getSelectedIndices();
+
+                        mInsultedPlayersNamesVotesList.clear();
+
+                        if(selected!=null)
+                            for (int i = 0; i < selected.length; i++)
+                                mInsultedPlayersNamesVotesList.add(mTheGame.getLiveHumanPlayersNames().get(selected[i]));
+
+                        vUiUpdateTextView();
+                    }
+                })
+                .build();
+    }
+
+    public void vUiSetupMaterialDialog(){
+        mConfirmVotingMaterialDialog = new MaterialDialog.Builder(this.getActivity())
+                .title(R.string.duel_result)
+                .content(stringDuelResults())
+                .positiveText(R.string.yes)
+                .negativeText(R.string.no)
+                .cancelable(false)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        hpCalculateDuelResult();
+                        mPlayerKillCallback.onPlayerKilled();
+                        mDuelResultsMaterialDialog.show();
+                        //mInstance.dismiss();
+                    }
+                })
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        mConfirmVotingMaterialDialog.cancel();
+                    }
+                })
+                .build();
+
+        mDuelResultsMaterialDialog = new MaterialDialog.Builder(this.getActivity())
+                .title(R.string.killedWere)
+                .content(killingResultString())
+                .positiveText(R.string.ok)
+                .cancelable(false)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        mInstance.dismiss();
+                    }
+                })
+                .build();
+    }
+
+    public void vUiSetupButtonListeners(){
+        agressivePlayerKillButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                vUiUpdateMaterialDialog();
+                mVotingAgressivePlayersMaterialDialog.show();
+            }
+        });
+
+        insultedPlayerKillButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                vUiUpdateMaterialDialog();
+                mVotingInsultedPlayersMaterialDialog.show();
+            }
+        });
+
+        button_confirmVoting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mConfirmVotingMaterialDialog.show();
+            }
+        });
+    }
+
+    private void vUiShowGameTipFragment(){
+        GameTipFragment.vShow(this,null,getString(R.string.tip_duel),false);
+    }
+
+    /*
     public AlertDialog createPopupAlertDialog(String sTitle, String sMessage, String sPositive, String sNegative) {
         if (sPositive == null)
             sPositive = getString(R.string.yes);
@@ -95,11 +299,7 @@ public class DuelVotingDialogFragment extends DialogFragment {
         popupAlertDialog.setTitle(sTitle);
         popupAlertDialog.setMessage(sMessage);
         popupAlertDialog.setPositiveButton(sPositive, new DialogInterface.OnClickListener() {
-            /**
-             * Zamyka okno z opisem roli
-             * @param dialog
-             * @param which
-             */
+
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 submitDuelResult();
@@ -169,56 +369,26 @@ public class DuelVotingDialogFragment extends DialogFragment {
 
 
     private void vUiSetupTextViews(){
-        textView_sAgressivePlayerName.setText(mAgressiveHumanPlayer.getPlayerName());
-        textView_sInsultedPlayerName.setText(mInsultedHumanPlayer.getPlayerName());
+        agressivePlayerNameAndVotesTextView.setText(getString(R.string.player_name_votes,mAgressiveHumanPlayer.getPlayerName()));
+        insultedPlayerNameAndVotesTextView.setText(getString(R.string.player_name_votes,mInsultedHumanPlayer.getPlayerName()));
     }
 
-    private void vUiSetupSeekBars(){
-        vUiUpdateSeekBarsMaxValues();
-        seekbarKillAgressivePlayerVotes.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
-                vUiUpdate();
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
-
-        seekbarKillInsultedPlayerVotes.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
-                vUiUpdate();
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
-
-    }
 
     private void vUiSetButtonsListeners(){
+        agressivePlayerKillButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
         button_confirmVoting.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
                 createPopupAlertDialog(getString(R.string.confirm),stringDuelResults(),
                         null, null).show();
-                mConfirmVotingAlertDialog.show();
+                //mConfirmVotingAlertDialog.show();
             }
         });
     }
@@ -243,19 +413,11 @@ public class DuelVotingDialogFragment extends DialogFragment {
         seekbarKillInsultedPlayerVotes.setMax(mTheGame.getLiveHumanPlayers().size()-seekbarKillAgressivePlayerVotes.getProgress());
     }
 
-    private void vUiUpdateProgressTextViews(){
-        vUiUpdateProgressTextView(seekbarKillInsultedPlayerVotes, textView_iKillInsultedPlayerVotes);
-        vUiUpdateProgressTextView(seekbarKillAgressivePlayerVotes, textView_iKillAgressivePlayerVotes);
-    }
-
-    private void vUiUpdateProgressTextView(SeekBar seekBar, TextView textView) {
-        textView.setText(String.valueOf(seekBar.getProgress()));
-    }
 
     private void vUiShowGameTipFragment(){
         GameTipFragment.vShow(this,null,getString(R.string.tip_duel),false);
     }
-
+*/
 
 
 }

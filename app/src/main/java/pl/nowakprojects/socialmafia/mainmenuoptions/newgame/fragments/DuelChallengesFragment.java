@@ -156,7 +156,7 @@ public class DuelChallengesFragment extends Fragment{
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         mTheGame.setMiThisDayThrownChallenges(mTheGame.getMiThisDayThrownChallenges()+1);
                         vUiUpdateTextView();
-                        boolean bool = mTheGame.isJudgeInTheGameSettings();
+                        //boolean bool = mTheGame.isJudgeInTheGameSettings();
                         if(mTheGame.isJudgeInTheGameSettings())
                             mChallengedInsultedAgreeDialog.show();
                         else

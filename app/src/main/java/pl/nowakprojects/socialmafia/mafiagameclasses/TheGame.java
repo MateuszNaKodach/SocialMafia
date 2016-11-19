@@ -413,6 +413,7 @@ public class TheGame {
 		return result;
 	}// private ArrayList<HumanPlayer> getTownHumanPlayers()
 
+
 	public List<HumanPlayer> getLiveHumanPlayers() {
 		ArrayList<HumanPlayer> result = new ArrayList<HumanPlayer>();
 		for (HumanPlayer humanPlayer : playersInfoList) {

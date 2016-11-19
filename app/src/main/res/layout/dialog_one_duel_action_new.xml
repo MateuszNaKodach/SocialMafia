@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:background="@android:color/white"
+    android:padding="8dp"
+    android:layout_height="wrap_content">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/gameTipFragment"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp"
+        android:layout_height="240dp"
+        android:gravity="center">
+        <ImageView
+            android:layout_width="180dp"
+            android:layout_height="200dp"
+            android:src="@drawable/ic_guns3"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/player_name_votes"
+                android:textAllCaps="false"
+                android:textStyle="normal|bold"
+                android:textSize="18sp"
+                android:id="@+id/agressivePlayerNameAndVotes" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/who_want_kill"
+                android:fontFamily="sans-serif-medium"
+                android:textSize="10sp"
+                android:layout_gravity="right"
+                android:id="@+id/agressivePlayerKillButton" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="18dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/player_name_votes"
+                android:textAllCaps="false"
+                android:textStyle="normal|bold"
+                android:textSize="18sp"
+                android:id="@+id/insultedPlayerNameAndVotes" />
+
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/who_want_kill"
+                android:fontFamily="sans-serif-medium"
+                android:textSize="10sp"
+                android:layout_gravity="right"
+                android:id="@+id/insultedPlayerKillButton" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/button_confirmDuel"
+        android:layout_marginTop="16dp"
+        android:text="@string/confirm"
+        android:textAlignment="center" />
+
+
+
+</LinearLayout>

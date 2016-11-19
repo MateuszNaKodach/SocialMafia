@@ -245,7 +245,7 @@ Raz w ciągu gry,  podczas trwania dnia wybiera osobę, która aż do nocy nie b
     <string name="daily_duels">Pojedynki</string>
     <string name="remained">Pozostało:</string>
     <string name="duel_numer">Pojedynek #1</string>
-    <string name="duel">Pojedynek #1</string>
+    <string name="duel">Pojedynek</string>
     <string name="remained_duels">Pozostało pojedynków: %1$d/%2$d</string>
     <string name="thrownChallenges">Rzuconych wyzwań: %1$d/%2$d</string>
     <string name="newChallenge">Nowe wyzwanie</string>
@@ -271,7 +271,7 @@ Raz w ciągu gry,  podczas trwania dnia wybiera osobę, która aż do nocy nie b
     <string name="timeofdaytime"> %1$s minut</string>
     <string name="sharedpref_daytime">sharedpref_daytime</string>
     <string name="title_new_game">Nowa gra</string>
-    <string name="tip_duel">Wybierz ile graczy chce, aby pojedyńczy gracz przegrał pojedynek.</string>
+    <string name="tip_duel">Pojedynek - odbywa między dwoma graczami. Zależnie od jego rozstrzygnięcia zginie jeden z nich lub oboje.</string>
     <string name="no_kill_check_choose">Gracze jeszcze nie zagłosowali czy sprawdzać lub zabijać.</string>
     <string name="players_voting_explanation">Proszę wybrać kandydatów do głosowania.</string>
     <string name="cancel">anuluj</string>
@@ -308,5 +308,9 @@ Raz w ciągu gry,  podczas trwania dnia wybiera osobę, która aż do nocy nie b
     <string name="premiu_need">Ta opcja jest dostępna tylko w wersji PREMIUM.</string>
     <string name="thisPlayerIsDeadBut">Ten gracz nie żyje, no ale zachowajmy pozory...</string>
     <string name="thereWillBeNoDuel">Sędzia nie wyraził zgody na pojedynek!</string>
+    <string name="who_want_kill">Kto chce zabić %1$s?</string>
+    <string name="player_name_votes">%1$s \n - głosów: %2$d</string>
+    <string name="duel_voting_explanation">Proszę zaznaczyć graczy, którzy głosują, aby pojedynek został przegrany przez ww. gracza.</string>
+    <string name="duel_result">Wyniki pojedynku</string>
 
 </resources>

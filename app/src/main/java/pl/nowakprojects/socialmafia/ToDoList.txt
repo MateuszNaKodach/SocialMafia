@@ -11,3 +11,5 @@ Jak dziala pojedynek gdy szybki jest Dilowany?
 Dorobic stan 0:0 do pojedynków
 
 Medyk ma móc uleczyć samego siebie!
+
+W zabijaniu na koniec dnia trzeba zrobic tyle fragmentow z mozliwoscia wyboru glosowania ile bedzie graczy (chyba tak to rozwiaze)!
