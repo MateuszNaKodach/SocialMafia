@@ -68,13 +68,12 @@ public class PlayersStatusAdapter extends RecyclerView.Adapter<PlayersStatusAdap
         holder.fractionName.setText(context.getString(humanPlayer.getPlayerRole().getFractionNameStringID()));
         showProperlyPlayerStatus(humanPlayer, holder);
 
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                showPlayerStatusPopupMenu(holder.itemView, position, holder);
-                return true;
-            }
-        });
+       holder.itemView.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+               showPlayerStatusPopupMenu(holder.itemView, position, holder);
+           }
+       });
     }//public void onBindViewHolder(final PlayersStatusAdapter.PlayerStatusViewHolder holder, final int position)
 
 
@@ -92,6 +91,12 @@ public class PlayersStatusAdapter extends RecyclerView.Adapter<PlayersStatusAdap
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
+
+                    case R.id.statusmenu_player_info:{
+                        humanPlayersList.get(position).showPlayerInfoDialog(context);
+                        break;
+                    }
+
                     case R.id.statusmenu_kill_the_player: {
 
                         if (humanPlayersList.get(position).isAlive())
@@ -136,9 +141,6 @@ public class PlayersStatusAdapter extends RecyclerView.Adapter<PlayersStatusAdap
         private TextView roleName;
         private TextView fractionName;
         private ImageView playerStatus;
-        private ImageView menuIcon;
-
-        private AlertDialog roleDescriptionDialog;
 
         public PlayerStatusViewHolder(View itemView) {
             super(itemView);
@@ -149,48 +151,7 @@ public class PlayersStatusAdapter extends RecyclerView.Adapter<PlayersStatusAdap
             fractionName = (TextView) itemView.findViewById(R.id.fractionName);
             playerStatus = (ImageView) itemView.findViewById(R.id.playerStatusIcon);
 
-            // menuIcon = (ImageView) itemView.findViewById(R.id.context_menu_dots);
-
-//                    playerRoleIcon.setImageResource(humanPlayersList.get(getAdapterPosition()).getPlayerRole().getIconResourceID());
-
-            /**
-             * Przy naciśnięciu karty roli pojawią się jej opis
-             */
-       /* playerRoleIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                    buildRoleDescriptionDialog();
-                    roleDescriptionDialog.show();}
-        });*/
-
-            /**
-             * Menu kontekstowe
-             */
-
-
         }
-
-        /**
-         * Tworzy okienko wyświetlające opis roli
-         */
-        public void buildRoleDescriptionDialog() {
-            final AlertDialog.Builder descriptionDialog = new AlertDialog.Builder(context);
-            descriptionDialog.setTitle(context.getString(humanPlayersList.get(getAdapterPosition()).getPlayerRole().getName()));
-            descriptionDialog.setMessage(context.getString(humanPlayersList.get(getAdapterPosition()).getPlayerRole().getDescription()));
-            descriptionDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                /**
-                 * Zamyka okno z opisem roli
-                 * @param dialog
-                 * @param which
-                 */
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    roleDescriptionDialog.cancel();
-                }
-            });
-
-            roleDescriptionDialog = descriptionDialog.create();
-        }//public void buildRoleDescriptionDialog()
 
 
     }//class PlayerStatusViewHolder extends RecyclerView.ViewHolder

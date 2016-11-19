@@ -71,8 +71,11 @@ public class DaytimeRoleActionsAdapter extends RecyclerView.Adapter<DaytimeRoleA
             //Dodawanie opcji do Spinnera
             ArrayList<String> playerNames = new ArrayList<String>();
             for (HumanPlayer hp : mTheGame.getLiveHumanPlayers()) {
-                if (!(hp.getPlayerName().equals(actionPlayers.get(position).getPlayerName()))) //wszystkich oprócz samego gracza
-                    playerNames.add(hp.getPlayerName());
+                if(actionPlayers.get(position).getRoleName()!=(R.string.medic)||actionPlayers.get(position).getRoleName()!=(R.string.darkmedic)) {
+                    if (!(hp.getPlayerName().equals(actionPlayers.get(position).getPlayerName()))) //wszystkich oprócz samego gracza
+                        playerNames.add(hp.getPlayerName());
+                }else
+                        playerNames.add(hp.getPlayerName());
             }
             ArrayAdapter<String> choosingSpinnerAdapter = new ArrayAdapter<String>(roleActionsFragment.getActivity().getApplicationContext(), android.R.layout.simple_spinner_item, playerNames);
             choosingSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -194,9 +197,13 @@ public class DaytimeRoleActionsAdapter extends RecyclerView.Adapter<DaytimeRoleA
                                     roleActionWasMade();
                                 }
                             } else if (actionPlayers.get(getAdapterPosition()).getRoleName() == R.string.mafiaKill) {
-                                makeMafiaAction(mTheGame.findHumanPlayerByName(choosingSpinner.getSelectedItem().toString()), null);
-                                roleActionWasMade();
-                            } else {
+                                if(mTheGame.findHumanPlayerByName(choosingSpinner.getSelectedItem().toString()).getRoleName()==R.string.priest&&mTheGame.isMafiaBossAlive()){
+                                    Toast.makeText(roleActionsFragment.getActivity().getApplicationContext(), R.string.cantKillPriestWhileBossAlive, Toast.LENGTH_LONG).show();
+                                }else {
+                                    makeMafiaAction(mTheGame.findHumanPlayerByName(choosingSpinner.getSelectedItem().toString()), null);
+                                    roleActionWasMade();
+                                }
+                                } else {
                                 makeRoleAction(actionPlayers.get(getAdapterPosition()), mTheGame.findHumanPlayerByName(choosingSpinner.getSelectedItem().toString()));
                                 roleActionWasMade();
                             }

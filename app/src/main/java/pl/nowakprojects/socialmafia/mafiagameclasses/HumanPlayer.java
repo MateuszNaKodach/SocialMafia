@@ -2,7 +2,10 @@ package pl.nowakprojects.socialmafia.mafiagameclasses;
 
 import android.content.Context;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+
 import org.parceler.Parcel;
+import org.parceler.Transient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +36,9 @@ public class HumanPlayer{
 
     //For ShowingRoles:
     boolean wasRoleShowed = false;
+
+    @Transient
+    MaterialDialog playerInfoDialog;
 
     //CONSTRUCTORS:
     public HumanPlayer() {
@@ -180,12 +186,62 @@ public class HumanPlayer{
         return isNotDealed() && getRoleName()== R.string.emo;
     }
 
+    public boolean hasSaintRole(){
+        return isNotDealed() && getRoleName()== R.string.saint;
+    }
+
     public boolean hasJewRole(){
         return isNotDealed() && getRoleName()== R.string.jew;
     }
 
     public boolean hasSpeedyRole(){
         return this.isNotDealed() && getRoleName()== R.string.mafiaspeedy || getRoleName()== R.string.townspeedy || getRoleName()== R.string.sindicateSpeedy;
+    }
+
+    private String generatePlayerLoversString(){
+        String result="";
+        for(HumanPlayer hp: loversList)
+            result+=" "+hp.getPlayerName()+", ";
+
+        if(result.equals("")) result="---";
+            return result;
+    }
+
+    private String generatePlayerBlackmailersString(){
+        String result="";
+        for(HumanPlayer hp: blackMailersList)
+            result+=" "+hp.getPlayerName()+", ";
+
+        if(result.equals("")) result="---";
+            return result;
+    }
+
+    private String generatePlayerGuardsString(){
+        String result="";
+        for(HumanPlayer hp: guardsList)
+            result+=" "+hp.getPlayerName()+", ";
+
+        if(result.equals("")) result="---";
+            return result;
+    }
+
+    private String generatePlayerDescription(Context context){
+        return context.getString(R.string.player_description, lifes, stigmas, generatePlayerGuardsString(), generatePlayerBlackmailersString(), generatePlayerLoversString());
+    }
+
+    private void buildPlayerInfoDialog(Context context){
+        playerInfoDialog = new MaterialDialog.Builder(context)
+                .title(getPlayerName())
+                .content(generatePlayerDescription(context))
+                .positiveText(R.string.ok)
+                .build();
+    }
+
+    public void showPlayerInfoDialog(Context context){
+        if( playerInfoDialog==null)
+            buildPlayerInfoDialog(context);
+
+        playerInfoDialog.show();
     }
 
     //OBJECT METHODS OVERRIDE:

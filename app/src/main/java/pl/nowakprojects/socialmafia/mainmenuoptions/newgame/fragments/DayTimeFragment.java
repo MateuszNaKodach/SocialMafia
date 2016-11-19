@@ -110,7 +110,7 @@ public class DayTimeFragment extends Fragment {
     }
 
     private void vUiSetupMaterialDialog(){
-        if(mTheGame.isFirstDay()){}
+        //if(mTheGame.isFirstDay()){}
 
         mDayBeginStatsMaterialDalog = new MaterialDialog.Builder(this.getActivity())
                 .title(R.string.game_stats)
@@ -118,8 +118,10 @@ public class DayTimeFragment extends Fragment {
                 .content(
                         getString(R.string.new_day_stats,
                                 mTheGame.getCurrentDayNumber(),
-                                mTheGame.getLastNightKilledPlayer().size()==0 ? getString(R.string.noone_died) : getString(R.string.somebody_died),
-                                getString(R.string.fraction_stats))
+                                //TUTAJ COS NIE DZIALA!? JAKBY LISTA ZAWSZE BYLA PUSTA NA POCZATKU DNIA
+                                mTheGame.getTemporaryLastTimeKilledPlayersList().isEmpty() ? getString(R.string.noone_died) : getString(R.string.somebody_died, mTheGame.lastTimeKilledPlayersString()),
+                                getString(R.string.fraction_stats,mTheGame.getPlayersStartAmount(),mTheGame.getLiveHumanPlayers().size(),mTheGame.getLiveTownPlayers().size(),mTheGame.getLiveMafiaPlayers().size(),mTheGame.getLiveSyndicatePlayers().size())
+                        )
                 )
                 .positiveText(R.string.ok)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {

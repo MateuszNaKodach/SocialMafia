@@ -61,7 +61,7 @@ public class PlayersStatusDialogFragment extends DialogFragment {
     }
 
     private void vUiSetupRecyclerView(){
-        mPlayersStatusAdapter = new PlayersStatusAdapter(this, getActivity().getApplicationContext(), mTheGame);
+        mPlayersStatusAdapter = new PlayersStatusAdapter(this, this.getContext(), mTheGame);
         mPlayersStatusRecyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity(), GridLayoutManager.VERTICAL,false));
         mPlayersStatusRecyclerView.setAdapter(mPlayersStatusAdapter);
     }

@@ -223,6 +223,13 @@ public class TheGame {
 		return temporaryLastTimeKilledPlayersList;
 	}
 
+	public String lastTimeKilledPlayersString(){
+		String result="";
+		for(HumanPlayer hp: this.getTemporaryLastTimeKilledPlayersList())
+			result+=""+hp.getPlayerName()+", ";
+		return result;
+	}
+
 	public void startNewNight(){
 		clearMadeActions();
 		lastNightHealingByMedicPlayers.clear();
@@ -471,6 +478,13 @@ public class TheGame {
 
 	private boolean isDaytimeNow(Daytime daytime){
 		return currentDaytime ==daytime;
+	}
+
+	public boolean isMafiaBossAlive() {
+		HumanPlayer mafiaboss = findLiveHumanPlayerByRoleName(context.getString(R.string.boss));
+		HumanPlayer mafiaboss2 = findLiveHumanPlayerByRoleName(context.getString(R.string.blackmailerBoss));
+
+		return mafiaboss!=null|| mafiaboss2!=null;
 	}
 
 	//GETTERS AND SETTERS-----------------------------------------------------------------------------

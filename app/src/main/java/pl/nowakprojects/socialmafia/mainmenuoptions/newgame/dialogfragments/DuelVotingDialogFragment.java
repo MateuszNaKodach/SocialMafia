@@ -101,6 +101,7 @@ public class DuelVotingDialogFragment extends DialogFragment {
 
 
     private void hpCalculateDuelResult(){
+        mLoosersList.clear();
         //mLoosersList = new ArrayList<>();
         if(mAgressiveHumanPlayer.hasSpeedyRole()&&!mInsultedHumanPlayer.hasSpeedyRole())
             mLoosersList.add(mInsultedHumanPlayer);
@@ -115,13 +116,30 @@ public class DuelVotingDialogFragment extends DialogFragment {
         else if(mInsultedPlayersNamesVotesList.size()>mAgressivePlayersNamesVotesList.size())
             mLoosersList.add(mInsultedHumanPlayer);
 
+
+    }
+
+    public void commitDuelResult(){
+
+        additionalSaintKill();
+
         mTheGame.beginKilling();
         for(HumanPlayer hp: mLoosersList)
             mTheGame.kill(hp);
     }
 
+    public void additionalSaintKill(){
+        if(mAgressiveHumanPlayer.hasSaintRole()&&mLoosersList.contains(mAgressiveHumanPlayer))
+            for(String hpName: mAgressivePlayersNamesVotesList)
+                mLoosersList.add(mTheGame.findHumanPlayerByName(hpName));
+
+        if(mInsultedHumanPlayer.hasSaintRole()&&mLoosersList.contains(mInsultedHumanPlayer))
+            for(String hpName: mInsultedPlayersNamesVotesList)
+                mLoosersList.add(mTheGame.findHumanPlayerByName(hpName));
+    }
+
     private String stringDuelResults(){
-        String result="Czy jesteś pewien, że zginie:";
+        String result=getString(R.string.duel_result_players);
         for(HumanPlayer hp: mLoosersList)
             result+="- "+hp.getPlayerName()+" \n";
         return result;
@@ -139,7 +157,6 @@ public class DuelVotingDialogFragment extends DialogFragment {
         vUiShowGameTipFragment();
         vUiSetupDialog();
         vUiUpdateTextView();
-        vUiSetupMaterialDialog();
         vUiUpdateMaterialDialog();
         vUiSetupButtonListeners();
     }
@@ -220,7 +237,7 @@ public class DuelVotingDialogFragment extends DialogFragment {
                 .build();
     }
 
-    public void vUiSetupMaterialDialog(){
+    public void vUiSetMaterialDialog(){
         mConfirmVotingMaterialDialog = new MaterialDialog.Builder(this.getActivity())
                 .title(R.string.duel_result)
                 .content(stringDuelResults())
@@ -230,8 +247,9 @@ public class DuelVotingDialogFragment extends DialogFragment {
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        hpCalculateDuelResult();
+                        commitDuelResult();
                         mPlayerKillCallback.onPlayerKilled();
+                        mDuelResultsMaterialDialog.setContent(killingResultString());
                         mDuelResultsMaterialDialog.show();
                         //mInstance.dismiss();
                     }
@@ -258,6 +276,7 @@ public class DuelVotingDialogFragment extends DialogFragment {
                 .build();
     }
 
+
     public void vUiSetupButtonListeners(){
         agressivePlayerKillButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -278,6 +297,8 @@ public class DuelVotingDialogFragment extends DialogFragment {
         button_confirmVoting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                hpCalculateDuelResult();
+                vUiSetMaterialDialog();
                 mConfirmVotingMaterialDialog.show();
             }
         });

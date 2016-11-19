@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:title="Kill/ Revive the player"
-        android:id="@+id/statusmenu_kill_the_player"
-        android:icon="@drawable/ic_menu_skull"
-        android:orderInCategory="101"/>
+    <item android:title="Player Info"
+        android:id="@+id/statusmenu_player_info"
+        android:orderInCategory="110" />
 
     <item android:title="Game Kill"
         android:id="@+id/statusmenu_kill_the_player_during_the_game"
-        android:icon="@drawable/ic_menu_skull"
-        android:orderInCategory="101" />
+        android:orderInCategory="120" />
 
-    <item android:title="Add warn"
+    <item android:title="Kill / Revive"
+        android:id="@+id/statusmenu_kill_the_player"
+        android:orderInCategory="130"/>
+
+    <!---<item android:title="Add warn"
         android:id="@+id/statusmenu_add_warn"
-        android:icon="@drawable/ic_menu_skull"
-        android:orderInCategory="101"/>
+        android:orderInCategory="101"/>-->
 </menu>
