@@ -10,9 +10,11 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import pl.nowakprojects.socialmafia.BuildConfig;
 import pl.nowakprojects.socialmafia.R;
 import pl.nowakprojects.socialmafia.mafiagameclasses.PlayerRole;
 
@@ -95,10 +97,14 @@ public class PlayerChoosingRoleAdapter extends RecyclerView.Adapter<PlayerChoosi
             increaseRoleAmount.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    if(!BuildConfig.PREMIUM_VERSION && !fractionRolesList.get(getAdapterPosition()).isBasicMafiaRole() && fractionRolesList.get(getAdapterPosition()).getRolePlayersAmount()>0)
+                        Toast.makeText(context,R.string.premiu_need,Toast.LENGTH_SHORT).show();
+                    else{
                     selectedRolesList.add(fractionRolesList.get(getAdapterPosition()));
                     fractionRolesList.get(getAdapterPosition()).setRolePlayersAmount(fractionRolesList.get(getAdapterPosition()).getRolePlayersAmount()+1);
                     roleAmount.setText(String.valueOf(fractionRolesList.get(getAdapterPosition()).getRolePlayersAmount()));
                     roleAmountChangedCallback.amountIncrease(fractionRolesList.get(getAdapterPosition()).getFraction());
+                    }
                 }
             });
 

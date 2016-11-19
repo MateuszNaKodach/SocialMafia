@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,11 +67,11 @@ public class ConnectPlayersToRolesActivity extends AppCompatActivity {
     private void vCreateNewGame(){
         mNewGame = new TheGame(getApplicationContext());
         mNewGame.setPlayersInfoList(mPlayersInfoList);
-        mNewGame.setPlayers(mPlayersInfoList.size());
-        mNewGame.setMafia(iCountFractionRoles(mPlayersInfoList, PlayerRole.Fraction.MAFIA));
-        mNewGame.setTown(iCountFractionRoles(mPlayersInfoList, PlayerRole.Fraction.TOWN));
-        mNewGame.setMiSyndicateStartAmount(iCountFractionRoles(mPlayersInfoList, PlayerRole.Fraction.SYNDICATE));
-//        mNewGame.setMdMaxDayTime(Long.valueOf(getResources().getString(R.string.sharedpref_daytime)));
+        mNewGame.setPlayersStartAmount(mPlayersInfoList.size());
+        mNewGame.setMafiaStartAmount(iCountFractionRoles(mPlayersInfoList, PlayerRole.Fraction.MAFIA));
+        mNewGame.setTownStartAmount(iCountFractionRoles(mPlayersInfoList, PlayerRole.Fraction.TOWN));
+        mNewGame.setSyndicateStartAmount(iCountFractionRoles(mPlayersInfoList, PlayerRole.Fraction.SYNDICATE));
+//        mNewGame.setMaxDailyTime(Long.valueOf(getResources().getString(R.string.sharedpref_daytime)));
     }
 
     private void vConnectPlayersToRoles(){

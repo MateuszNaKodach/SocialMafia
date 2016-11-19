@@ -5,8 +5,6 @@ import android.os.CountDownTimer;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,17 +15,13 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
-import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import pl.nowakprojects.socialmafia.R;
-import pl.nowakprojects.socialmafia.mafiagameclasses.HumanPlayer;
 import pl.nowakprojects.socialmafia.mafiagameclasses.TheGame;
 import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.dialogfragments.DailyJudgmentVotingDialogFragment;
-import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.fragments.DailyVotingFragment;
-import pl.nowakprojects.socialmafia.utitles.GameTipFragment;
 
 import static android.content.Context.VIBRATOR_SERVICE;
 
@@ -42,6 +36,7 @@ public class DayTimeFragment extends Fragment {
 
     DailyJudgmentVotingDialogFragment mDailyJudgmentVotingDialogFragment;
     MaterialDialog mChoosingPlayerMaterialDialog;
+    MaterialDialog mDayBeginStatsMaterialDalog;
     TimeCounterClass dayTimeTimer;
     @BindView(R.id.dayTimerTextView)    TextView mDayTimerTextView;
     @BindView(R.id.dayNumberTextView)    TextView mDayNumberTextView;
@@ -75,7 +70,7 @@ public class DayTimeFragment extends Fragment {
     }
 
     private void startDayTimer(){
-        dayTimeTimer = new TimeCounterClass(mTheGame.getMdMaxDayTime(), 1000);
+        dayTimeTimer = new TimeCounterClass(mTheGame.getMaxDailyTime(), 1000);
         dayTimeTimer.start();
     }
 
@@ -89,10 +84,13 @@ public class DayTimeFragment extends Fragment {
     private void vUiSetupUserInterface(){
         vUiSetupTextView();
         vUiSetupButtonListener();
+        vUiSetupMaterialDialog();
+
+        mDayBeginStatsMaterialDalog.show();
     }
 
     private void vUiSetupTextView(){
-        mDayNumberTextView.setText(getString(R.string.day_number,mTheGame.getMiCurrentDayNumber()));
+        mDayNumberTextView.setText(getString(R.string.day_number,mTheGame.getCurrentDayNumber()));
     }
 
     private void vUiSetupButtonListener(){
@@ -109,6 +107,28 @@ public class DayTimeFragment extends Fragment {
             }
         });
 
+    }
+
+    private void vUiSetupMaterialDialog(){
+        if(mTheGame.isFirstDay()){}
+
+        mDayBeginStatsMaterialDalog = new MaterialDialog.Builder(this.getActivity())
+                .title(R.string.game_stats)
+                .cancelable(false)
+                .content(
+                        getString(R.string.new_day_stats,
+                                mTheGame.getCurrentDayNumber(),
+                                mTheGame.getLastNightKilledPlayer().size()==0 ? getString(R.string.noone_died) : getString(R.string.somebody_died),
+                                getString(R.string.fraction_stats))
+                )
+                .positiveText(R.string.ok)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+
+                    }
+                })
+                .build();
     }
 
     private void vUiSetMaterialDialog(){
@@ -133,7 +153,7 @@ public class DayTimeFragment extends Fragment {
                                 Integer[] selected = mChoosingPlayerMaterialDialog.getSelectedIndices();
                                 if(selected!=null&&selected.length==2){
                                     for(int i=0;i<selected.length;i++)
-                                        mTheGame.mChoosedPlayersToDailyJudgment.add(mTheGame.getLiveHumanPlayers().get(selected[i]));
+                                        mTheGame.choseDailyJudgmentPlayersList.add(mTheGame.getLiveHumanPlayers().get(selected[i]));
 
                                     mChoosingPlayerMaterialDialog.dismiss();
                                     vUiSetAndShowDailyJudgmentFragment();
@@ -150,11 +170,10 @@ public class DayTimeFragment extends Fragment {
                         })
                         .build();
 
-
         }
 
     private void vUiSetAndShowDailyJudgmentFragment(){
-        mDailyJudgmentVotingDialogFragment = new DailyJudgmentVotingDialogFragment(mTheGame,mTheGame.mChoosedPlayersToDailyJudgment.get(0),mTheGame.mChoosedPlayersToDailyJudgment.get(1));
+        mDailyJudgmentVotingDialogFragment = new DailyJudgmentVotingDialogFragment(mTheGame,mTheGame.choseDailyJudgmentPlayersList.get(0),mTheGame.choseDailyJudgmentPlayersList.get(1));
         mDailyJudgmentVotingDialogFragment.show(getChildFragmentManager(),DAILY_JUDGMENT_DIALOG);
     }
 

@@ -124,7 +124,7 @@ public class DailyJudgmentVotingDialogFragment extends DialogFragment implements
 
     private String killingResultString(){
         String result="";
-        for(HumanPlayer hp: mTheGame.getmTemporaryLastTimeKilledPlayerList())
+        for(HumanPlayer hp: mTheGame.getTemporaryLastTimeKilledPlayersList())
             result+="- "+hp.getPlayerName()+" \n";
         return result;
     }

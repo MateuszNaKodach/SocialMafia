@@ -142,6 +142,18 @@ public class PlayerRole {
         this.rolePlayersAmount = rolePlayersAmount;
     }
 
+    public boolean isOrdinaryCitizenRole(){
+        return this.name == R.string.citizen;
+    }
+
+    public boolean isOrdinaryMafiosoRole(){
+        return this.name == R.string.mafioso;
+    }
+
+    public boolean isBasicMafiaRole(){
+        return isOrdinaryCitizenRole()||isOrdinaryMafiosoRole();
+    }
+
     /*public boolean is_actionMade() {
         return roleActionMade;
     }

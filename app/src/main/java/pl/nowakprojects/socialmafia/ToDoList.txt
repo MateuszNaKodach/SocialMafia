@@ -7,3 +7,7 @@ Dokonczyc normalnie, a potem dodac obsluge bazy danych!!!!!!
 Dodac nocne funkcje, np. zabijanie mafii itp. po tym tez sprawdzanie czy gra sie nie zakonczyla.
 
 Jak dziala pojedynek gdy szybki jest Dilowany?
+
+Dorobic stan 0:0 do pojedynków
+
+Medyk ma móc uleczyć samego siebie!

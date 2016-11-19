@@ -108,7 +108,7 @@ Raz w ciągu gry,  podczas trwania dnia wybiera osobę, która aż do nocy nie b
 
 
     <string name="playersAmount">Liczba graczy:</string>
-    <string name="mdMaxDayTime">Czas trwania dnia:</string>
+    <string name="maxDailyTime">Czas trwania dnia:</string>
     <string name="rolesSettings">Wybór ról</string>
 
     <string name="playersAmountChanged">Liczba graczy została zmieniona.</string>
@@ -251,6 +251,7 @@ Raz w ciągu gry,  podczas trwania dnia wybiera osobę, która aż do nocy nie b
     <string name="newChallenge">Nowe wyzwanie</string>
     <string name="confirmDuelChallenge">Czy gracz %1$s jest pewien, że chce wyzwać na pojedynek gracza %2$s?</string>
     <string name="agreeDuelChallenge">Czy gracz %1$s zgadza się na pojedynek z graczem %2$s?</string>
+    <string name="judgeDuelDecision">Czy sędzia (%3$s) zgadza się na wyzwanie %2$s przez gracza %1$s na pojedynek?</string>
     <string name="duelActionDialogTitle">Pojedynek:\n%1$s VS %2$s</string>
     <string name="pref_tips">Podpowiedzi</string>
     <string name="pref_tips_summ">Czy podpowiedzi mają być rozwinięte?</string>
@@ -293,5 +294,19 @@ Raz w ciągu gry,  podczas trwania dnia wybiera osobę, która aż do nocy nie b
     <string name="seedetails">Zobacz szczegóły</string>
     <string name="hadHitByMafiaNow">zostanie tej nocy postrzelony przez mafię!</string>
     <string name="noduelsleast">Limit pojedynków na ten dzień został wykorzystany!</string>
+    <string name="game_stats">Statystyki Gry</string>
+    <string name="new_day_stats">Rozpoczynamy dzień %1$d!\n
+    \n
+    W nocy %2$s
+    \n
+    <b><font fgcolor="@color/lead_say">Aktualne statyski:</font></b>
+    %3$s</string>
+     <string name="noone_died">nikt nie zginął!</string>
+    <string name="somebody_died">zginęli: %1$s</string>
+    <string name="fraction_stats">Wszystkich graczy: %1$d \n
+    Żywych: %2$d (Miasto: %3$d \t Mafia: %4$d \t Syndykat: %5$d</string>
+    <string name="premiu_need">Ta opcja jest dostępna tylko w wersji PREMIUM.</string>
+    <string name="thisPlayerIsDeadBut">Ten gracz nie żyje, no ale zachowajmy pozory...</string>
+    <string name="thereWillBeNoDuel">Sędzia nie wyraził zgody na pojedynek!</string>
 
 </resources>

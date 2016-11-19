@@ -17,7 +17,7 @@ import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.fragments.DailyVotin
 import pl.nowakprojects.socialmafia.utitles.GameRolesWakeHierarchyComparator;
 
 /**
- * mdMaxDayTime - ograniczenie czasowe na dzien, gracz i tak decyfuje czy konczy
+ * maxDailyTime - ograniczenie czasowe na dzien, gracz i tak decyfuje czy konczy
  * teraz DODAC CZAS GRY ( BEDZIE POTRZEBNY DO SAVE!!!)
  * Parceler wymaga nieprywatnych pól!!!
  */
@@ -28,7 +28,7 @@ public class TheGame {
 	static TheGame instance;
 
 	@Transient
-	Context mContext;
+	Context context;
 
 	int gameId = 0;
 
@@ -44,29 +44,29 @@ public class TheGame {
 	//ArrayList<PlayerRole> currentGameRoles = new ArrayList<PlayerRole>();
 
 	// STATYSTYKI GRY:
-	long mdMaxDayTime = 180000; // czas dnia w milisekundach
-	int mdMaxDuelAmount = 3; //maksymalna ilosc pojedynkow na dzien
-	int mdMaxDuelChallenges = 10; //maksymalna ilosc  wyzwan na dzien
-	boolean mbFinished = false; //czy gra została skończona
+	long maxDailyTime = 180000; // czas dnia w milisekundach
+	int maxDailyDuelAmount = 3; //maksymalna ilosc pojedynkow na dzien
+	int maxDailyDuelChallenges = 10; //maksymalna ilosc  wyzwan na dzien
+	//boolean mbFinished = false; //czy gra została skończona
 
 	//początkowe ustawienia
-	int players = 0;
-	int mafia = 0;
-	int town = 0;
-	int miSyndicateStartAmount = 0;
-	int doublers = 0;
+	int playersStartAmount = 0;
+	int mafiaStartAmount = 0;
+	int townStartAmount = 0;
+	int syndicateStartAmount = 0;
+	int doublersStartAmount = 0;
 
 	//Ogolne zmienne do gry:
-	int miCurrentNightNumber = -1;
-	int miCurrentDayNumber = 0;
+	int currentNightNumber = -1;
+	int currentDayNumber = 0;
 
 
 	//Zmienne do aktualnego Daytime
-	Daytime mdaytimeCurrentDaytime;
-	DailyVotingFragment.OUTVOTED mCurrentDayOutVoted;
-	int miDaytimeRolesActionsMadeThis = 0;
-	ArrayList<HumanPlayer> mTemporaryLastTimeKilledPlayerList;
-	public ArrayList<HumanPlayer> mChoosedPlayersToDailyJudgment;
+	Daytime currentDaytime;
+	DailyVotingFragment.OUTVOTED currentDayOutVoted;
+	int currentDaytimeMadeRoleActions = 0;
+	ArrayList<HumanPlayer> temporaryLastTimeKilledPlayersList;
+	public ArrayList<HumanPlayer> choseDailyJudgmentPlayersList;
 
 
 	//Zmienne do aktualnej nocy
@@ -78,7 +78,7 @@ public class TheGame {
 
 	//Zmienne do aktualnego dnia
 	ArrayList<HumanPlayer> lastDayOperateByDentistPlayer;
-	int miThisDayRemainedDuels=mdMaxDuelAmount;
+	int miThisDayRemainedDuels= maxDailyDuelAmount;
 	int miThisDayThrownChallenges=0;
 
 	public TheGame() {
@@ -88,30 +88,31 @@ public class TheGame {
 		lastNightDealingByDealerPlayers = new ArrayList<>();
 		lastDayOperateByDentistPlayer = new ArrayList<>();
 		lastNightKilledPlayer = new ArrayList<>();
-		mTemporaryLastTimeKilledPlayerList = new ArrayList<>();
-		mChoosedPlayersToDailyJudgment = new ArrayList<>();
+		temporaryLastTimeKilledPlayersList = new ArrayList<>();
+		choseDailyJudgmentPlayersList = new ArrayList<>();
 	}
 
 	public TheGame(Context context) {
-		mContext = context;
+		this.context = context;
 		lastNightHealingByMedicPlayers = new ArrayList<>();
 		lastNightHeatingByDarkMedicPlayers = new ArrayList<>();
 		lastNightHittingByMafiaPlayer = new ArrayList<>();
 		lastNightDealingByDealerPlayers = new ArrayList<>();
 		lastDayOperateByDentistPlayer = new ArrayList<>();
 		lastNightKilledPlayer = new ArrayList<>();
-		mTemporaryLastTimeKilledPlayerList = new ArrayList<>();
-		mChoosedPlayersToDailyJudgment = new ArrayList<>();
+		temporaryLastTimeKilledPlayersList = new ArrayList<>();
+		choseDailyJudgmentPlayersList = new ArrayList<>();
 	}
 
 	public void setContext(Context context){
-		mContext = context;
+		this.context = context;
 	}
 
 	public boolean isGameFinished(){
 		return calculateWinner()!= PlayerRole.Fraction.NOFRACTION;
 	}
 
+	public boolean isFirstDay() { return this.currentDayNumber ==0;}
 
 	private PlayerRole.Fraction calculateWinner(){
 			//if(gameWithoutSyndicate())
@@ -124,20 +125,20 @@ public class TheGame {
 	}
 
 	public boolean gameWithoutSyndicate(){
-		return miSyndicateStartAmount==0;
+		return syndicateStartAmount ==0;
 	}
 
 	public void beginKilling(){
-		if(mTemporaryLastTimeKilledPlayerList!=null)
-			mTemporaryLastTimeKilledPlayerList.clear();
+		if(temporaryLastTimeKilledPlayersList !=null)
+			temporaryLastTimeKilledPlayersList.clear();
 	}
 
 	public boolean isKillingJudgment(){
-		return mCurrentDayOutVoted== DailyVotingFragment.OUTVOTED.KILLING;
+		return currentDayOutVoted == DailyVotingFragment.OUTVOTED.KILLING;
 	}
 
 	public boolean isCheckingJudgment(){
-		return mCurrentDayOutVoted== DailyVotingFragment.OUTVOTED.CHECKING;
+		return currentDayOutVoted == DailyVotingFragment.OUTVOTED.CHECKING;
 	}
 
 	//przeiwdziec jak murzyn murzyni murzyna!
@@ -151,7 +152,7 @@ public class TheGame {
 
 				if(humanPlayer.isDead()) {
 					//beginKilling();
-					mTemporaryLastTimeKilledPlayerList.add(humanPlayer); //dodawanie do licy ostatnio zabitych
+					temporaryLastTimeKilledPlayersList.add(humanPlayer); //dodawanie do licy ostatnio zabitych
 					if (humanPlayer.hasLover()) {
 						for (HumanPlayer hp : humanPlayer.getAliveLoversList())
 							kill(hp); //zabija wszystkich kochanków
@@ -196,10 +197,10 @@ public class TheGame {
 	}
 
 	public HumanPlayer getLastKilledPlayer(){
-		if(mTemporaryLastTimeKilledPlayerList.isEmpty())
+		if(temporaryLastTimeKilledPlayersList.isEmpty())
 			return null;
 		else
-			return mTemporaryLastTimeKilledPlayerList.get(mTemporaryLastTimeKilledPlayerList.size()-1);
+			return temporaryLastTimeKilledPlayersList.get(temporaryLastTimeKilledPlayersList.size()-1);
 	}
 
 	public HumanPlayer findPreviousPlayerTo(HumanPlayer humanPlayer){
@@ -218,8 +219,8 @@ public class TheGame {
 
 	}
 
-	public ArrayList<HumanPlayer> getmTemporaryLastTimeKilledPlayerList() {
-		return mTemporaryLastTimeKilledPlayerList;
+	public ArrayList<HumanPlayer> getTemporaryLastTimeKilledPlayersList() {
+		return temporaryLastTimeKilledPlayersList;
 	}
 
 	public void startNewNight(){
@@ -233,21 +234,21 @@ public class TheGame {
 
 		lastNightDealingByDealerPlayers.clear();
 		lastNightKilledPlayer.clear();
-		miDaytimeRolesActionsMadeThis = 0;
-		miCurrentNightNumber++;
-		this.mdaytimeCurrentDaytime=Daytime.NIGHT;
+		currentDaytimeMadeRoleActions = 0;
+		currentNightNumber++;
+		this.currentDaytime =Daytime.NIGHT;
 		//mlistTheGameDaytimes.add(new GameNight(this,Daytime.NIGHT));
 	}
 
 	public void startNewDay(){
-		miThisDayRemainedDuels=mdMaxDuelAmount;
+		miThisDayRemainedDuels= maxDailyDuelAmount;
 		miThisDayThrownChallenges=0;
 		lastDayOperateByDentistPlayer.clear();
-		mChoosedPlayersToDailyJudgment.clear();
-		miDaytimeRolesActionsMadeThis = 0;
-		mCurrentDayOutVoted=null;
-		miCurrentDayNumber++;
-		this.mdaytimeCurrentDaytime=Daytime.DAY;
+		choseDailyJudgmentPlayersList.clear();
+		currentDaytimeMadeRoleActions = 0;
+		currentDayOutVoted =null;
+		currentDayNumber++;
+		this.currentDaytime =Daytime.DAY;
 		//mlistTheGameDaytimes.add(new GameDay(this,Daytime.DAY));
 	}
 
@@ -259,18 +260,24 @@ public class TheGame {
 
 	}
 
-	public void setCurrentDayOutVoted(DailyVotingFragment.OUTVOTED mCurrentDayOutVoted) {
-		this.mCurrentDayOutVoted = mCurrentDayOutVoted;
+	public boolean isJudgeInTheGameSettings(){
+		HumanPlayer hp1 = findHumanPlayerByRoleName(context.getString(R.string.judge));
+		HumanPlayer hp2 = findHumanPlayerByRoleName(context.getString(R.string.blackJudge));
+		return (hp1!=null || hp2!=null);
 	}
 
-	public DailyVotingFragment.OUTVOTED getCurrentDayOutVoted() {
-		return mCurrentDayOutVoted;
+	public HumanPlayer getJudgePlayer(){
+		HumanPlayer hp1 = findLiveHumanPlayerByRoleName(context.getString(R.string.judge));
+		HumanPlayer hp2 = findLiveHumanPlayerByRoleName(context.getString(R.string.blackJudge));
+
+		return hp1!=null ? hp1 : hp2;
+
 	}
 
 	public ArrayList<HumanPlayer> getAllNightsBesideZeroHumanPlayers() {
 		ArrayList<HumanPlayer> result = new ArrayList<HumanPlayer>();
 		for (HumanPlayer humanPlayer : getPlayersInfoList()) {
-			if(humanPlayer.isAlive()) {
+			if(humanPlayer.isAlive()||!humanPlayer.isAlive()) {
 				if (humanPlayer.getPlayerRole().getActionType().equals(PlayerRole.ActionType.AllNights))
 					result.add(humanPlayer);
 				if (humanPlayer.getPlayerRole().getActionType().equals(PlayerRole.ActionType.AllNightsBesideZero))
@@ -279,7 +286,7 @@ public class TheGame {
 		}
 
 		if(isMafiaInTheGame())
-			result.add(new HumanPlayer(mContext.getString(R.string.mafiaKill), RolesDataObjects.getMafiaKillRole()));
+			result.add(new HumanPlayer(context.getString(R.string.mafiaKill), RolesDataObjects.getMafiaKillRole()));
 
 		Collections.sort(result,new GameRolesWakeHierarchyComparator());
 		if(!result.isEmpty())
@@ -288,7 +295,7 @@ public class TheGame {
 	}// private ArrayList<HumanPlayer> getAllNightsBesideZeroHumanPlayers()
 
 	public ArrayList<HumanPlayer> getThisNightHumanPlayers(){
-		if(miCurrentNightNumber==0)
+		if(currentNightNumber ==0)
 			return getZeroNightHumanPlayers();
 		else
 			return getAllNightsBesideZeroHumanPlayers();
@@ -361,7 +368,7 @@ public class TheGame {
 
 	public int iActionMadeThisTime(){
 		// miDaytimeRolesActionsMadeThis++;
-		return ++miDaytimeRolesActionsMadeThis;
+		return ++currentDaytimeMadeRoleActions;
 	}
 
 	public HumanPlayer findHumanPlayerByName(String playerName){
@@ -372,10 +379,26 @@ public class TheGame {
 		return null;
 	}
 
+	public HumanPlayer findLiveHumanPlayerByName(String playerName){
+		for(HumanPlayer humanPlayer: playersInfoList)
+			if(humanPlayer.getPlayerName().equals(playerName)&&humanPlayer.isAlive())
+				return humanPlayer;
+
+		return null;
+	}
+
 
 	public HumanPlayer findHumanPlayerByRoleName(String sRoleName){
 		for(HumanPlayer humanPlayer: playersInfoList)
-			if(humanPlayer.getPlayerName().equals(sRoleName))
+			if(context.getString(humanPlayer.getRoleName()).equals(sRoleName))
+				return humanPlayer;
+
+		return null;
+	}
+
+	public HumanPlayer findLiveHumanPlayerByRoleName(String sRoleName){
+		for(HumanPlayer humanPlayer: playersInfoList)
+			if(context.getString(humanPlayer.getRoleName()).equals(sRoleName)&&humanPlayer.isAlive())
 				return humanPlayer;
 
 		return null;
@@ -442,17 +465,17 @@ public class TheGame {
 	}
 
 	public boolean isSpecialZeroNightNow(){
-		return isNightDaytimeNow()&&(this.getMiCurrentNightNumber()==0);
+		return isNightDaytimeNow()&&(this.getCurrentNightNumber()==0);
 	}
 
 	private boolean isDaytimeNow(Daytime daytime){
-		return mdaytimeCurrentDaytime==daytime;
+		return currentDaytime ==daytime;
 	}
 
 	//GETTERS AND SETTERS-----------------------------------------------------------------------------
 
 	public int iGetActionsMadeThisTime(){
-		return miDaytimeRolesActionsMadeThis;
+		return currentDaytimeMadeRoleActions;
 	}
 
 
@@ -481,24 +504,24 @@ public class TheGame {
 	}
 
 
-	public long getMdMaxDayTime() {
-		return mdMaxDayTime;
+	public long getMaxDailyTime() {
+		return maxDailyTime;
 	}
 
-	public int getPlayers() {
-		return players;
+	public int getPlayersStartAmount() {
+		return playersStartAmount;
 	}
 
-	public int getMafia() {
-		return mafia;
+	public int getMafiaStartAmount() {
+		return mafiaStartAmount;
 	}
 
-	public int getTown() {
-		return town;
+	public int getTownStartAmount() {
+		return townStartAmount;
 	}
 
-	public int getMiSyndicateStartAmount() {
-		return miSyndicateStartAmount;
+	public int getSyndicateStartAmount() {
+		return syndicateStartAmount;
 	}
 
 
@@ -509,108 +532,100 @@ public class TheGame {
 
 		return false;
 	}
-	public int getDoublers() {
-		return doublers;
+	public int getDoublersStartAmount() {
+		return doublersStartAmount;
 	}
 
-	public int getMiCurrentNightNumber() {
-		return miCurrentNightNumber;
+	public int getCurrentNightNumber() {
+		return currentNightNumber;
 	}
 
-	public int getMiCurrentDayNumber() {
-		return miCurrentDayNumber;
+	public int getCurrentDayNumber() {
+		return currentDayNumber;
 	}
 
-	public void setMdMaxDayTime(long mdMaxDayTime) {
-		this.mdMaxDayTime = mdMaxDayTime;
+	public void setMaxDailyTime(long maxDailyTime) {
+		this.maxDailyTime = maxDailyTime;
 	}
 
-	public void setPlayers(int players) {
-		this.players = players;
+	public void setPlayersStartAmount(int playersStartAmount) {
+		this.playersStartAmount = playersStartAmount;
 	}
 
-	public void setMafia(int mafia) {
-		this.mafia = mafia;
+	public void setMafiaStartAmount(int mafiaStartAmount) {
+		this.mafiaStartAmount = mafiaStartAmount;
 	}
 
-	public void setTown(int town) {
-		this.town = town;
+	public void setTownStartAmount(int townStartAmount) {
+		this.townStartAmount = townStartAmount;
 	}
 
-	public void setMiSyndicateStartAmount(int miSyndicateStartAmount) {
-		this.miSyndicateStartAmount = miSyndicateStartAmount;
+	public void setSyndicateStartAmount(int syndicateStartAmount) {
+		this.syndicateStartAmount = syndicateStartAmount;
 	}
 
-	public void setDoublers(int doublers) {
-		this.doublers = doublers;
+	public void setDoublersStartAmount(int doublersStartAmount) {
+		this.doublersStartAmount = doublersStartAmount;
 	}
 
-	public void setMiCurrentNightNumber(int miCurrentNightNumber) {
-		this.miCurrentNightNumber = miCurrentNightNumber;
+	public void setCurrentNightNumber(int currentNightNumber) {
+		this.currentNightNumber = currentNightNumber;
 	}
 
-	public void setMiCurrentDayNumber(int miCurrentDayNumber) {
-		this.miCurrentDayNumber = miCurrentDayNumber;
+	public void setCurrentDayNumber(int currentDayNumber) {
+		this.currentDayNumber = currentDayNumber;
 	}
 
-	public boolean isMbFinished() {
-		return mbFinished;
+	public int getMaxDailyDuelAmount() {
+		return maxDailyDuelAmount;
 	}
 
-	public int getMdMaxDuelAmount() {
-		return mdMaxDuelAmount;
+	public void setMaxDailyDuelAmount(int maxDailyDuelAmount) {
+		this.maxDailyDuelAmount = maxDailyDuelAmount;
 	}
 
-	public void setMdMaxDuelAmount(int mdMaxDuelAmount) {
-		this.mdMaxDuelAmount = mdMaxDuelAmount;
+	public int getMaxDailyDuelChallenges() {
+		return maxDailyDuelChallenges;
 	}
 
-	public int getMdMaxDuelChallenges() {
-		return mdMaxDuelChallenges;
+	public void setMaxDailyDuelChallenges(int maxDailyDuelChallenges) {
+		this.maxDailyDuelChallenges = maxDailyDuelChallenges;
 	}
 
-	public void setMdMaxDuelChallenges(int mdMaxDuelChallenges) {
-		this.mdMaxDuelChallenges = mdMaxDuelChallenges;
+	public Daytime getCurrentDaytime() {
+		return currentDaytime;
 	}
 
-	public void setMbFinished(boolean mbFinished) {
-		this.mbFinished = mbFinished;
+	public void setCurrentDaytime(Daytime currentDaytime) {
+		this.currentDaytime = currentDaytime;
 	}
 
-	public Daytime getMdaytimeCurrentDaytime() {
-		return mdaytimeCurrentDaytime;
+	public DailyVotingFragment.OUTVOTED getCurrentDayOutVoted() {
+		return currentDayOutVoted;
 	}
 
-	public void setMdaytimeCurrentDaytime(Daytime mdaytimeCurrentDaytime) {
-		this.mdaytimeCurrentDaytime = mdaytimeCurrentDaytime;
+	public void setCurrentDayOutVoted(DailyVotingFragment.OUTVOTED currentDayOutVoted) {
+		this.currentDayOutVoted = currentDayOutVoted;
 	}
 
-	public DailyVotingFragment.OUTVOTED getmCurrentDayOutVoted() {
-		return mCurrentDayOutVoted;
+	public int getCurrentDaytimeMadeRoleActions() {
+		return currentDaytimeMadeRoleActions;
 	}
 
-	public void setmCurrentDayOutVoted(DailyVotingFragment.OUTVOTED mCurrentDayOutVoted) {
-		this.mCurrentDayOutVoted = mCurrentDayOutVoted;
+	public void setCurrentDaytimeMadeRoleActions(int currentDaytimeMadeRoleActions) {
+		this.currentDaytimeMadeRoleActions = currentDaytimeMadeRoleActions;
 	}
 
-	public int getMiDaytimeRolesActionsMadeThis() {
-		return miDaytimeRolesActionsMadeThis;
+	public void setTemporaryLastTimeKilledPlayersList(ArrayList<HumanPlayer> temporaryLastTimeKilledPlayersList) {
+		this.temporaryLastTimeKilledPlayersList = temporaryLastTimeKilledPlayersList;
 	}
 
-	public void setMiDaytimeRolesActionsMadeThis(int miDaytimeRolesActionsMadeThis) {
-		this.miDaytimeRolesActionsMadeThis = miDaytimeRolesActionsMadeThis;
+	public ArrayList<HumanPlayer> getChoseDailyJudgmentPlayersList() {
+		return choseDailyJudgmentPlayersList;
 	}
 
-	public void setmTemporaryLastTimeKilledPlayerList(ArrayList<HumanPlayer> mTemporaryLastTimeKilledPlayerList) {
-		this.mTemporaryLastTimeKilledPlayerList = mTemporaryLastTimeKilledPlayerList;
-	}
-
-	public ArrayList<HumanPlayer> getmChoosedPlayersToDailyJudgment() {
-		return mChoosedPlayersToDailyJudgment;
-	}
-
-	public void setmChoosedPlayersToDailyJudgment(ArrayList<HumanPlayer> mChoosedPlayersToDailyJudgment) {
-		this.mChoosedPlayersToDailyJudgment = mChoosedPlayersToDailyJudgment;
+	public void setChoseDailyJudgmentPlayersList(ArrayList<HumanPlayer> choseDailyJudgmentPlayersList) {
+		this.choseDailyJudgmentPlayersList = choseDailyJudgmentPlayersList;
 	}
 
 	public void setLastNightHealingByMedicPlayers(ArrayList<HumanPlayer> lastNightHealingByMedicPlayers) {

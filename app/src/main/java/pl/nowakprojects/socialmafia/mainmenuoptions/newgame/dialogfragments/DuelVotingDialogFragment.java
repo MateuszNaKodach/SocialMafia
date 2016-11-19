@@ -18,7 +18,6 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import me.tankery.lib.circularseekbar.CircularSeekBar;
 import pl.nowakprojects.socialmafia.R;
 import pl.nowakprojects.socialmafia.mafiagameclasses.HumanPlayer;
 import pl.nowakprojects.socialmafia.mafiagameclasses.TheGame;
@@ -147,7 +146,7 @@ public class DuelVotingDialogFragment extends DialogFragment {
     private String stringDuelResults(){
 
         String result = "Zabici zostali: ";
-        for(HumanPlayer hp: mTheGame.getmTemporaryLastTimeKilledPlayerList())
+        for(HumanPlayer hp: mTheGame.getTemporaryLastTimeKilledPlayersList())
             result+=hp.getPlayerName()+", ";
 
         return result;

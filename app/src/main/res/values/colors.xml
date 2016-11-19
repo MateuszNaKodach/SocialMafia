@@ -5,4 +5,5 @@
     <color name="colorAccent">#FF4081</color>
     <color name="iconsColor">#A52A2A</color>
     <color name="spinner_base_color">#44000000</color>
+    <color name="lead_say">#FF4CD964</color>
 </resources>

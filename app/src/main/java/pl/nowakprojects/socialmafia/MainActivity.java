@@ -16,7 +16,7 @@ import pl.nowakprojects.socialmafia.mainmenuoptions.settings.SettingsActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-    static boolean IS_PREMIUM_VESRION = false; //dodac to gdzies tam do gradle, jak na Udacity
+    //static boolean IS_PREMIUM_VESRION = false; //dodac to gdzies tam do gradle, jak na Udacity
     static boolean ALL_TIPS_COLLAPSED = false; //do preferencji czy wszystkie podpowiedzi maja byc zwiniecte, rozwiniete, ustawienia zalecane
 
     @BindView(R.id.buttonStartNewGame) ImageButton buttonStartNewGame;

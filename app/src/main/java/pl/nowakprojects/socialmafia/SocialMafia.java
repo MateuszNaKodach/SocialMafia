@@ -8,6 +8,7 @@ import io.realm.RealmList;
 
 public class SocialMafia extends Application {
 
+    //public final static boolean premimumVersion = ;
     @Override
     public void onCreate() {
         super.onCreate();

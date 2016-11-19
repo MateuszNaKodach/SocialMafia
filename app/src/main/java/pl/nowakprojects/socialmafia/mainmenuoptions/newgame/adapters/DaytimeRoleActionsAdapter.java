@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -65,34 +66,47 @@ public class DaytimeRoleActionsAdapter extends RecyclerView.Adapter<DaytimeRoleA
         holder.roleName.setText(playerRole.getName());
         holder.playerName.setText(actionPlayers.get(position).getPlayerName());
 
-        //Dodawanie opcji do Spinnera
-        ArrayList<String> playerNames = new ArrayList<String>();
-        for (HumanPlayer hp : mTheGame.getLiveHumanPlayers()) {
-            if (!(hp.getPlayerName().equals(actionPlayers.get(position).getPlayerName()))) //wszystkich oprócz samego gracza
-                playerNames.add(hp.getPlayerName());
-        }
-        ArrayAdapter<String> choosingSpinnerAdapter = new ArrayAdapter<String>(roleActionsFragment.getActivity().getApplicationContext(), android.R.layout.simple_spinner_item, playerNames);
-        choosingSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        holder.choosingSpinner.setAdapter(choosingSpinnerAdapter);
-        //-------------------------------------------------------
+        if(humanPlayer.isAlive()) {
+            holder.killedIcon.setVisibility(View.GONE);
+            //Dodawanie opcji do Spinnera
+            ArrayList<String> playerNames = new ArrayList<String>();
+            for (HumanPlayer hp : mTheGame.getLiveHumanPlayers()) {
+                if (!(hp.getPlayerName().equals(actionPlayers.get(position).getPlayerName()))) //wszystkich oprócz samego gracza
+                    playerNames.add(hp.getPlayerName());
+            }
+            ArrayAdapter<String> choosingSpinnerAdapter = new ArrayAdapter<String>(roleActionsFragment.getActivity().getApplicationContext(), android.R.layout.simple_spinner_item, playerNames);
+            choosingSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            holder.choosingSpinner.setAdapter(choosingSpinnerAdapter);
+            //-------------------------------------------------------
 
-        //SPRAWDZANIE CZY MAFIA MA 2 STRAZALY ITP!!!
-        if (playerRole.getName() == R.string.priest ) {
-            holder.choosingSpinner2.setVisibility(View.VISIBLE);
-            holder.choosingSpinner2.setAdapter(choosingSpinnerAdapter);
-        } else
+            //SPRAWDZANIE CZY MAFIA MA 2 STRAZALY ITP!!!
+            if (playerRole.getName() == R.string.priest) {
+                holder.choosingSpinner2.setVisibility(View.VISIBLE);
+                holder.choosingSpinner2.setAdapter(choosingSpinnerAdapter);
+            } else
+                holder.choosingSpinner2.setVisibility(View.GONE);
+
+            //sprawdza czy akcja została wykoanna
+            holder.choosingSpinner.setEnabled(false);
+            holder.choosingSpinner2.setEnabled(false);
+
+            if (humanPlayer.isPlayerTurn()) {
+                holder.itemView.findViewById(R.id.confirmButton).setEnabled(!humanPlayer.isRoleActionMade());
+                holder.choosingSpinner.setEnabled(!humanPlayer.isRoleActionMade());
+                holder.choosingSpinner2.setEnabled(!humanPlayer.isRoleActionMade());
+            } else
+                holder.itemView.findViewById(R.id.confirmButton).setEnabled(humanPlayer.isRoleActionMade());
+        }else if(humanPlayer.isNotAlive()){
+            holder.killedIcon.setVisibility(View.VISIBLE);
             holder.choosingSpinner2.setVisibility(View.GONE);
-
-        //sprawdza czy akcja została wykoanna
-        holder.choosingSpinner.setEnabled(false);
-        holder.choosingSpinner2.setEnabled(false);
-
-        if (humanPlayer.isPlayerTurn()) {
-            holder.itemView.findViewById(R.id.confirmButton).setEnabled(!humanPlayer.isRoleActionMade());
-            holder.choosingSpinner.setEnabled(!humanPlayer.isRoleActionMade());
-            holder.choosingSpinner2.setEnabled(!humanPlayer.isRoleActionMade());
-        } else
-            holder.itemView.findViewById(R.id.confirmButton).setEnabled(humanPlayer.isRoleActionMade());
+            holder.choosingSpinner.setVisibility(View.GONE);
+            if (humanPlayer.isPlayerTurn()) { //powielony kod!!!
+                holder.itemView.findViewById(R.id.confirmButton).setEnabled(!humanPlayer.isRoleActionMade());
+                holder.choosingSpinner.setEnabled(!humanPlayer.isRoleActionMade());
+                holder.choosingSpinner2.setEnabled(!humanPlayer.isRoleActionMade());
+            } else
+                holder.itemView.findViewById(R.id.confirmButton).setEnabled(humanPlayer.isRoleActionMade());
+        }
 
     }
 
@@ -106,6 +120,7 @@ public class DaytimeRoleActionsAdapter extends RecyclerView.Adapter<DaytimeRoleA
         // private ImageView roleIcon;
         private TextView roleName;
         private TextView playerName;
+        private ImageView killedIcon;
         private Button confirmButton;
         private Spinner choosingSpinner;
         private Spinner choosingSpinner2;
@@ -121,6 +136,7 @@ public class DaytimeRoleActionsAdapter extends RecyclerView.Adapter<DaytimeRoleA
             playerName = (TextView) itemView.findViewById(R.id.playerName);
             confirmButton = (Button) itemView.findViewById(R.id.confirmButton);
             choosingSpinner = (Spinner) itemView.findViewById(R.id.playersNamesSpinner);
+            killedIcon = (ImageView) itemView.findViewById(R.id.killedIcon);
 
             //Jeśli graczem jest ksiądz to używamy innego layoutu, dla wyboru 2 graczy do kochanków
 //                    if(actionPlayers.get(getAdapterPosition()).getRoleName() == R.string.priest)
@@ -169,17 +185,23 @@ public class DaytimeRoleActionsAdapter extends RecyclerView.Adapter<DaytimeRoleA
                 public void onClick(View view) {
                     if (confirmButton.isEnabled() && confirmButton.getText() != roleActionsFragment.getString(R.string.roleActionDone)) {
                         //sprawdza czy to ksiądz, aby wykonać odpowiednią funkcję
-                        if (actionPlayers.get(getAdapterPosition()).getRoleName() == R.string.priest) {
-                            if (mTheGame.findHumanPlayerByName(choosingSpinner.getSelectedItem().toString()).equals(mTheGame.findHumanPlayerByName(choosingSpinner2.getSelectedItem().toString())))
-                                Toast.makeText(context.getApplicationContext(), roleActionsFragment.getString(R.string.theSameLovers), Toast.LENGTH_LONG).show();
-                            else {
-                                makePriestAction(mTheGame.findHumanPlayerByName(choosingSpinner.getSelectedItem().toString()), mTheGame.findHumanPlayerByName(choosingSpinner2.getSelectedItem().toString()));
+                        if(actionPlayers.get(getAdapterPosition()).isAlive()) {
+                            if (actionPlayers.get(getAdapterPosition()).getRoleName() == R.string.priest) {
+                                if (mTheGame.findHumanPlayerByName(choosingSpinner.getSelectedItem().toString()).equals(mTheGame.findHumanPlayerByName(choosingSpinner2.getSelectedItem().toString())))
+                                    Toast.makeText(context.getApplicationContext(), roleActionsFragment.getString(R.string.theSameLovers), Toast.LENGTH_LONG).show();
+                                else {
+                                    makePriestAction(mTheGame.findHumanPlayerByName(choosingSpinner.getSelectedItem().toString()), mTheGame.findHumanPlayerByName(choosingSpinner2.getSelectedItem().toString()));
+                                    roleActionWasMade();
+                                }
+                            } else if (actionPlayers.get(getAdapterPosition()).getRoleName() == R.string.mafiaKill) {
+                                makeMafiaAction(mTheGame.findHumanPlayerByName(choosingSpinner.getSelectedItem().toString()), null);
+                                roleActionWasMade();
+                            } else {
+                                makeRoleAction(actionPlayers.get(getAdapterPosition()), mTheGame.findHumanPlayerByName(choosingSpinner.getSelectedItem().toString()));
                                 roleActionWasMade();
                             }
-                        } else if (actionPlayers.get(getAdapterPosition()).getRoleName() == R.string.mafiaKill){
-                            makeMafiaAction(mTheGame.findHumanPlayerByName(choosingSpinner.getSelectedItem().toString()), null);
-                            roleActionWasMade();
-                        }else{   makeRoleAction(actionPlayers.get(getAdapterPosition()), mTheGame.findHumanPlayerByName(choosingSpinner.getSelectedItem().toString()));
+                        }else{
+                            Toast.makeText(roleActionsFragment.getActivity().getApplicationContext(), R.string.thisPlayerIsDeadBut, Toast.LENGTH_LONG).show();
                             roleActionWasMade();
                         }
                     }

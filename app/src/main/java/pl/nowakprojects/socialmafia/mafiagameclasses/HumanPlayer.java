@@ -65,6 +65,9 @@ public class HumanPlayer{
             this.guardsList.add(guard);
     }
 
+    public boolean isNotAlive(){
+        return !alive;
+    }
     public void addLover(HumanPlayer lover) {
         if(!this.loversList.contains(lover))
             this.loversList.add(lover);

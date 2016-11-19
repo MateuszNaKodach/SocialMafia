@@ -35,6 +35,7 @@ public class DuelChallengesFragment extends Fragment{
     String msCurrentInsultedPlayer;
     MaterialDialog mChallengeConfirmationDialog;
     MaterialDialog mChallengedInsultedAgreeDialog;
+    MaterialDialog mJudgeDecicionMaterialDialog;
     android.support.v4.app.FragmentManager fragmentManager;
 
 
@@ -71,6 +72,19 @@ public class DuelChallengesFragment extends Fragment{
 
     public boolean samePlayersChose(){
      return (mTheGame.findHumanPlayerByName(mAgresivePlayerSpinner.getSelectedItem().toString())==mTheGame.findHumanPlayerByName(mInsultedPlayerSpinner.getSelectedItem().toString()));
+    }
+
+    public void vStartNewDuel(){
+        mTheGame.setMiThisDayRemainedDuels(mTheGame.getMiThisDayRemainedDuels()-1);
+        vUiUpdateTextView();
+        fragmentManager = getChildFragmentManager();
+        DuelVotingDialogFragment theGameDuelActionVotingFragment = new DuelVotingDialogFragment(mTheGame, mTheGame.findHumanPlayerByName(mAgresivePlayerSpinner.getSelectedItem().toString()), mTheGame.findHumanPlayerByName(mInsultedPlayerSpinner.getSelectedItem().toString()));
+        theGameDuelActionVotingFragment.show(fragmentManager, "DuelVotingDialogFragment");
+    }
+
+    public void judgeAction(){
+        vUiSetMaterialDialog();
+        mJudgeDecicionMaterialDialog.show();
     }
 
     //Setting User Interface methods:---------------------------------------------------------------
@@ -112,7 +126,7 @@ public class DuelChallengesFragment extends Fragment{
             public void onClick(View view) {
                 if(samePlayersChose())
                     Toast.makeText(getActivity(),R.string.theSameDuelPlayers,Toast.LENGTH_SHORT).show();
-                else if (mTheGame.getMiThisDayRemainedDuels()==0||mTheGame.getMiThisDayThrownChallenges()==mTheGame.getMdMaxDuelChallenges()){
+                else if (mTheGame.getMiThisDayRemainedDuels()==0||mTheGame.getMiThisDayThrownChallenges()==mTheGame.getMaxDailyDuelChallenges()){
                     Toast.makeText(getActivity(),R.string.noduelsleast,Toast.LENGTH_SHORT).show();
                 }else{
                     vUiSetupMaterialDialog();
@@ -123,8 +137,8 @@ public class DuelChallengesFragment extends Fragment{
     }
 
     private void vUiUpdateTextView(){
-        mRemainedDuelsTextView.setText(getString(R.string.remained_duels,mTheGame.getMiThisDayRemainedDuels(),mTheGame.getMdMaxDuelAmount()));
-        mThrownChallengesTextView.setText(getString(R.string.thrownChallenges,mTheGame.getMiThisDayThrownChallenges(),mTheGame.getMdMaxDuelChallenges()));
+        mRemainedDuelsTextView.setText(getString(R.string.remained_duels,mTheGame.getMiThisDayRemainedDuels(),mTheGame.getMaxDailyDuelAmount()));
+        mThrownChallengesTextView.setText(getString(R.string.thrownChallenges,mTheGame.getMiThisDayThrownChallenges(),mTheGame.getMaxDailyDuelChallenges()));
     }
 
     private void vUiSetupMaterialDialog(){
@@ -136,11 +150,17 @@ public class DuelChallengesFragment extends Fragment{
                 .content(getString(R.string.confirmDuelChallenge, msCurrentAgressivePlayer, msCurrentInsultedPlayer))
                 .positiveText(R.string.yes)
                 .negativeText(R.string.no)
+                .cancelable(false)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         mTheGame.setMiThisDayThrownChallenges(mTheGame.getMiThisDayThrownChallenges()+1);
-                        mChallengedInsultedAgreeDialog.show();
+                        vUiUpdateTextView();
+                        boolean bool = mTheGame.isJudgeInTheGameSettings();
+                        if(mTheGame.isJudgeInTheGameSettings())
+                            mChallengedInsultedAgreeDialog.show();
+                        else
+                            vStartNewDuel();
                     }
                 })
                 .build();
@@ -150,24 +170,51 @@ public class DuelChallengesFragment extends Fragment{
                 .content(getString(R.string.agreeDuelChallenge, msCurrentAgressivePlayer, msCurrentInsultedPlayer))
                 .positiveText(R.string.yes)
                 .negativeText(R.string.no)
+                .cancelable(false)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        mTheGame.setMiThisDayRemainedDuels(mTheGame.getMiThisDayRemainedDuels()-1);
-                        fragmentManager = getChildFragmentManager();
-                        DuelVotingDialogFragment theGameDuelActionVotingFragment = new DuelVotingDialogFragment(mTheGame, mTheGame.findHumanPlayerByName(mAgresivePlayerSpinner.getSelectedItem().toString()), mTheGame.findHumanPlayerByName(mInsultedPlayerSpinner.getSelectedItem().toString()));
-                        theGameDuelActionVotingFragment.show(fragmentManager, "DuelVotingDialogFragment");
+                        vStartNewDuel();
                     }
                 })
                 .onNegative(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        //AKCJA SEDZIEGO!!!
+                        //akcja sędziego
+                        judgeAction();
+
                     }
                 })
                 .build();
 
 
+    }
+
+    private void vUiSetMaterialDialog(){
+
+        mJudgeDecicionMaterialDialog = new MaterialDialog.Builder(this.getActivity())
+                .title(getString(R.string.duelActionDialogTitle, msCurrentAgressivePlayer, msCurrentInsultedPlayer))
+                .content(getString(R.string.judgeDuelDecision, msCurrentAgressivePlayer, msCurrentInsultedPlayer,mTheGame.getJudgePlayer().getPlayerName()))
+                .positiveText(R.string.yes)
+                .negativeText(R.string.no)
+                .autoDismiss(false)
+                .cancelable(false)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        mJudgeDecicionMaterialDialog.dismiss();
+                        vStartNewDuel();
+                    }
+                })
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        Toast.makeText(getContext(),R.string.thereWillBeNoDuel,Toast.LENGTH_LONG).show();
+                        mJudgeDecicionMaterialDialog.dismiss();
+                        //mJudgeDecicionMaterialDialog.setContent(R.string.thereWillBeNoDuel);
+                    }
+                })
+                .build();
     }
 
 }

@@ -227,6 +227,7 @@ public class TheGameActionActivity extends AppCompatActivity implements OnPlayer
         mFinishGameCommunicateMaterialDialog = new MaterialDialog.Builder(this)
                 .title("GRA ZAKONCZONA!")
                 .content("GRA ZAKONCZONA!")
+                .cancelable(false)
                 .positiveText(R.string.seedetails)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
