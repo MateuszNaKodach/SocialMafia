@@ -128,31 +128,10 @@ public class PlayerChoosingRoleAdapter extends RecyclerView.Adapter<PlayerChoosi
                 @Override
                 public void onClick(View view) {
                     fractionRolesList.get(getAdapterPosition()).showRoleDescriptionDialog(context);
-                    //buildRoleDescriptionDialog();
-                    //roleDescriptionDialog.show();
                 }
             });
 
         }
-
-
-        /**
-         * Tworzy okienko wyświetlające opis roli
-         */
-       /* public void buildRoleDescriptionDialog() {
-            final AlertDialog.Builder descriptionDialog = new AlertDialog.Builder(context);
-            descriptionDialog.setTitle(context.getString(fractionRolesList.get(getAdapterPosition()).getName()));
-            descriptionDialog.setMessage(context.getString(fractionRolesList.get(getAdapterPosition()).getDescription()));
-            descriptionDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    roleDescriptionDialog.cancel();
-                }
-            });
-
-            roleDescriptionDialog = descriptionDialog.create();
-        }*/
 
 
     }

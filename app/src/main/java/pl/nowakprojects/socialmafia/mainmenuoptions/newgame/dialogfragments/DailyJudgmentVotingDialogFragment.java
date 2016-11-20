@@ -15,6 +15,9 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.tankery.lib.circularseekbar.CircularSeekBar;
@@ -40,6 +43,15 @@ public class DailyJudgmentVotingDialogFragment extends DialogFragment implements
     DailyVotingFragment.OUTVOTED mDailyVotedResult;
     HumanPlayer mFirstPlayerToVote;
     HumanPlayer mSecondPlayerToVote;
+    HumanPlayer mThirdPlayerToVote;
+    ArrayList<String> mFirstPlayersNamesVotesList = new ArrayList<>();
+    ArrayList<String> mSecondPlayersNamesVotesList = new ArrayList<>();
+    ArrayList<String> mThirdPlayersNamesVotesList = new ArrayList<>();
+
+
+    MaterialDialog mVotingFirstPlayersMaterialDialog;
+    MaterialDialog mVotingSecondPlayersMaterialDialog;
+    MaterialDialog mVotingThirdPlayersMaterialDialog;
     private MaterialDialog mConfirmMaterialDialog;
     private MaterialDialog mKilledMaterialDialog;
 
@@ -52,13 +64,29 @@ public class DailyJudgmentVotingDialogFragment extends DialogFragment implements
         mDailyVotedResult=mTheGame.getCurrentDayOutVoted();
     }
 
+    public DailyJudgmentVotingDialogFragment(TheGame theGame, HumanPlayer firstPlayerToVote, HumanPlayer secondPlayerToVote, HumanPlayer thirdPlayerToVote) {
+        this.mTheGame = theGame;
+        this.mFirstPlayerToVote = firstPlayerToVote;
+        this.mSecondPlayerToVote = secondPlayerToVote;
+        this.mThirdPlayerToVote = thirdPlayerToVote;
+        mDailyVotedResult=mTheGame.getCurrentDayOutVoted();
+    }
+
     //Views
     View fragmentView;
-    @BindView(R.id.duelCircleSeekBar) CircularSeekBar seekBar;
+    @BindView(R.id.dailyOutvoted) TextView mDailyOutVoted;
+    @BindView(R.id.firstPlayerNameAndVotes) TextView firstPlayerNameAndVotesTextView;
+    @BindView(R.id.secondPlayerNameAndVotes) TextView secondPlayerNameAndVotesTextView;
+    @BindView(R.id.thirdPlayerNameAndVotes) TextView thirdPlayerNameAndVotesTextView;
+    @BindView(R.id.firstPlayerKillButton) Button firstPlayerKillButton;
+    @BindView(R.id.secondPlayerKillButton) Button secondPlayerKillButton;
+    @BindView(R.id.thirdPlayerKillButton) Button thirdPlayerKillButton;
+    @BindView(R.id.button_confirmDailyJudgment) Button mConfirmJudgmentButton;
+    /*@BindView(R.id.duelCircleSeekBar) CircularSeekBar seekBar;
     @BindView(R.id.dailyOutvoted) TextView mDailyOutVoted;
     @BindView(R.id.choseRedPlayerName) TextView mFirstPlayerName;
     @BindView(R.id.choseBluePlayerName) TextView mSecondPlayerName;
-    @BindView(R.id.button_confirmDailyJudgment) Button mConfirmJudgmentButton;
+    @BindView(R.id.button_confirmDailyJudgment) Button mConfirmJudgmentButton;*/
 
     @Override
     public void onAttach(Context context) {
@@ -97,29 +125,26 @@ public class DailyJudgmentVotingDialogFragment extends DialogFragment implements
        // GameTipFragment.vRemove(this);
     }
 
-    private float firstPlayerVotes(){
-        if(mTheGame.getLiveHumanPlayers().size()-seekBar.getProgress()<0)
-            return 0;
-        else if(Math.ceil(mTheGame.getLiveHumanPlayers().size()-seekBar.getProgress())>mTheGame.getLiveHumanPlayers().size())
-            return mTheGame.getLiveHumanPlayers().size();
-        else
-            return mTheGame.getLiveHumanPlayers().size()-seekBar.getProgress();
-    }
-
-    private float secondPlayerVotes(){
-        if(seekBar.getProgress()<0)
-            return 0;
-        else if(Math.ceil(seekBar.getProgress())>mTheGame.getLiveHumanPlayers().size())
-            return mTheGame.getLiveHumanPlayers().size();
-        else
-            return seekBar.getProgress();
-    }
-
     private HumanPlayer outvotedHumanPlayer(){
-        if(seekBar.getProgress()>mTheGame.getLiveHumanPlayers().size()-seekBar.getProgress())
+        if(mFirstPlayersNamesVotesList.size()<mSecondPlayersNamesVotesList.size())
             return mSecondPlayerToVote;
         else
             return mFirstPlayerToVote;
+    }
+
+    private ArrayList<HumanPlayer> generateToKillList(){
+        ArrayList<HumanPlayer> playersToKill = new ArrayList<>();
+            playersToKill.add(outvotedHumanPlayer());
+
+        if(outvotedHumanPlayer()==mFirstPlayerToVote&&outvotedHumanPlayer().hasSaintRole()){
+            for(String playerName: mFirstPlayersNamesVotesList)
+                playersToKill.add(mTheGame.findLiveHumanPlayerByName(playerName));
+        }else if((outvotedHumanPlayer()==mSecondPlayerToVote&&outvotedHumanPlayer().hasSaintRole())){
+            for(String playerName: mSecondPlayersNamesVotesList)
+                playersToKill.add(mTheGame.findLiveHumanPlayerByName(playerName));
+        }
+
+        return playersToKill;
     }
 
     private String killingResultString(){
@@ -130,8 +155,10 @@ public class DailyJudgmentVotingDialogFragment extends DialogFragment implements
     }
 
     private void vUiSetupUserInterface(){
+        vUiSetupPlayersTextAndButtonVisiblity();
         vUiSetupDialogFragment();
-        vUiSetupCircleSeekBar();
+        //vUiSetupCircleSeekBar();
+        vUiSetupButtonText();
         vUiSetupTextView();
         vUiSetupButtonListener();
         vUiShowGameTipFragment();
@@ -140,6 +167,14 @@ public class DailyJudgmentVotingDialogFragment extends DialogFragment implements
     private void vUiSetupDialogFragment(){
         setCancelable(false);
         getDialog().setTitle(R.string.dailyJudgment);
+    }
+
+    private void vUiSetupPlayersTextAndButtonVisiblity(){
+        if(mThirdPlayerToVote==null){
+            thirdPlayerKillButton.setVisibility(View.GONE);
+            thirdPlayerNameAndVotesTextView.setVisibility(View.GONE);
+        }
+
     }
 
     private void vUiSetupTextView(){
@@ -151,27 +186,36 @@ public class DailyJudgmentVotingDialogFragment extends DialogFragment implements
         vUiUpdateTextView();
     }
 
-    private void vUiSetupCircleSeekBar(){
-        seekBar.setMax(mTheGame.getLiveHumanPlayers().size());
-        seekBar.setProgress(0);
-        seekBar.setOnSeekBarChangeListener(new CircularSeekBar.OnCircularSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(CircularSeekBar circularSeekBar, float progress, boolean fromUser) {
-                vUiUpdateTextView();
-            }
-            @Override
-            public void onStopTrackingTouch(CircularSeekBar seekBar) {
+    private String getVoteTitle(){
+        if(mDailyVotedResult==DailyVotingFragment.OUTVOTED.CHECKING)
+            return getContext().getString(R.string.checking);
+        else
+            return getContext().getString(R.string.killing);
+    }
 
-            }
-
-            @Override
-            public void onStartTrackingTouch(CircularSeekBar seekBar) {
-
-            }
-        });
+    private void vUiSetupButtonText(){
+        firstPlayerKillButton.setText(getString(R.string.who_want_vote,mFirstPlayerToVote.getPlayerName()));
+        secondPlayerKillButton.setText(getString(R.string.who_want_vote,mSecondPlayerToVote.getPlayerName()));
     }
 
     private void vUiSetupButtonListener(){
+
+        firstPlayerKillButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                vUiUpdateMaterialDialog();
+                mVotingFirstPlayersMaterialDialog.show();
+            }
+        });
+
+        secondPlayerKillButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                vUiUpdateMaterialDialog();
+                mVotingSecondPlayersMaterialDialog.show();
+            }
+        });
+
         mConfirmJudgmentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -181,18 +225,76 @@ public class DailyJudgmentVotingDialogFragment extends DialogFragment implements
         });
     }
 
+    public void vUiUpdateMaterialDialog(){
+        List<String> itemsForFirstVotingPlayer = mTheGame.getLiveHumanPlayersNames();
+        itemsForFirstVotingPlayer.removeAll(mSecondPlayersNamesVotesList);
+
+        List<String> itemsForSecondVotingPlayer = mTheGame.getLiveHumanPlayersNames();
+        itemsForSecondVotingPlayer.removeAll(mFirstPlayersNamesVotesList);
+
+        mVotingFirstPlayersMaterialDialog = new MaterialDialog.Builder(this.getActivity())
+                .title(firstPlayerKillButton.getText())
+                .items(itemsForFirstVotingPlayer)
+                .content(R.string.judgment_voting_explanation,getVoteTitle(),mFirstPlayerToVote.getPlayerName())
+                .positiveText(R.string.confirm)
+                .negativeText(R.string.cancel)
+                .itemsCallbackMultiChoice(null, new MaterialDialog.ListCallbackMultiChoice() {
+                    @Override
+                    public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
+                        return true;
+                    }
+                })
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        Integer[] selected = mVotingFirstPlayersMaterialDialog.getSelectedIndices();
+
+                        mFirstPlayersNamesVotesList.clear();
+
+                        if(selected!=null)
+                            for (int i = 0; i < selected.length; i++)
+                                mFirstPlayersNamesVotesList.add(mTheGame.getLiveHumanPlayersNames().get(selected[i]));
+
+                        vUiUpdateTextView();
+                    }
+                })
+                .build();
+
+        mVotingSecondPlayersMaterialDialog = new MaterialDialog.Builder(this.getActivity())
+                .title(secondPlayerKillButton.getText())
+                .items(itemsForSecondVotingPlayer)
+                .content(R.string.judgment_voting_explanation,getVoteTitle(),mSecondPlayerToVote.getPlayerName())
+                .positiveText(R.string.confirm)
+                .negativeText(R.string.cancel)
+                .itemsCallbackMultiChoice(null, new MaterialDialog.ListCallbackMultiChoice() {
+                    @Override
+                    public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
+                        return true;
+                    }
+                })
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        Integer[] selected = mVotingSecondPlayersMaterialDialog .getSelectedIndices();
+
+                        mSecondPlayersNamesVotesList.clear();
+
+                        if(selected!=null)
+                            for (int i = 0; i < selected.length; i++)
+                                mSecondPlayersNamesVotesList.add(mTheGame.getLiveHumanPlayersNames().get(selected[i]));
+
+                        vUiUpdateTextView();
+                    }
+                })
+                .build();
+    }
+
     private void vUiUpdateTextView(){
-        mFirstPlayerName.setText(getString(R.string.dialy_voting_player_one,mFirstPlayerToVote.getPlayerName(),Double.toString(Math.ceil((double)firstPlayerVotes()))));
-        mSecondPlayerName.setText(getString(R.string.dialy_voting_player_one,mSecondPlayerToVote.getPlayerName(),Double.toString(Math.ceil((double)secondPlayerVotes()))));
-       /* if(firstPlayerVotes()>secondPlayerVotes()){
-            mFirstPlayerName.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 30);
-            mSecondPlayerName.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 24);
-        }else if(firstPlayerVotes()<secondPlayerVotes()){
-            mFirstPlayerName.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 24);
-            mSecondPlayerName.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 30);
-        }else if(firstPlayerVotes()==secondPlayerVotes())
-            mFirstPlayerName.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
-        mSecondPlayerName.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);*/
+        firstPlayerNameAndVotesTextView.setText(getString(R.string.player_name_votes,mFirstPlayerToVote.getPlayerName(),mFirstPlayersNamesVotesList.size()));
+        secondPlayerNameAndVotesTextView.setText(getString(R.string.player_name_votes,mSecondPlayerToVote.getPlayerName(),mSecondPlayersNamesVotesList.size()));
+
+        if(mThirdPlayerToVote!=null)
+            thirdPlayerNameAndVotesTextView.setText(getString(R.string.player_name_votes,mThirdPlayerToVote.getPlayerName(),mThirdPlayersNamesVotesList.size()));
     }
 
     private void vUiSetConfirmMaterialDialog(){
@@ -209,7 +311,8 @@ public class DailyJudgmentVotingDialogFragment extends DialogFragment implements
                         showingPlayerGoodOrBadDialog.show(getChildFragmentManager(), "PolicemanAction");
                         }else if(mTheGame.isKillingJudgment()){
                             mTheGame.beginKilling();
-                            mTheGame.kill(outvotedHumanPlayer());
+                            for(HumanPlayer hp: generateToKillList())
+                                mTheGame.kill(hp);
                             vUiSetAndShowKillingResultMaterialDialog();
                         }
                     }

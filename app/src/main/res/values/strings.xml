@@ -309,8 +309,10 @@ Raz w ciągu gry,  podczas trwania dnia wybiera osobę, która aż do nocy nie b
     <string name="thisPlayerIsDeadBut">Ten gracz nie żyje, no ale zachowajmy pozory...</string>
     <string name="thereWillBeNoDuel">Sędzia nie wyraził zgody na pojedynek!</string>
     <string name="who_want_kill">Kto chce zabić %1$s?</string>
+    <string name="who_want_vote">Kto głosuje na %1$s?</string>
     <string name="player_name_votes">%1$s \n - głosów: %2$d</string>
     <string name="duel_voting_explanation">Proszę zaznaczyć graczy, którzy głosują, aby pojedynek został przegrany przez ww. gracza.</string>
+    <string name="judgment_voting_explanation">%1$s: Proszę zaznaczyć graczy, którzy głosują za wykonaniem go na graczu %2$s</string>
     <string name="duel_result">Wyniki pojedynku</string>
     <string name="duel_result_players">Czy jesteś pewien, że przegra: \n </string>
     <string name="player_description"> Pozostałe życia: %1$d \n

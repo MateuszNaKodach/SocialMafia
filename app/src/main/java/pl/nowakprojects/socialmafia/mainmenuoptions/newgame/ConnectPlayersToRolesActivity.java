@@ -184,9 +184,7 @@ public class ConnectPlayersToRolesActivity extends AppCompatActivity {
             private TextView roleName;
             private Button showRoleButton;
             private CheckBox wasRoleShowed;
-            private View container;
 
-            private AlertDialog roleDescriptionDialog;
             private boolean isRoleShowed = false;
 
             public HumanPlayerViewHolder(View itemView) {
@@ -227,34 +225,11 @@ public class ConnectPlayersToRolesActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         if (isRoleShowed) {
-                            buildRoleDescriptionDialog();
-                            roleDescriptionDialog.show();
+                            humanPlayersList.get(getAdapterPosition()).getPlayerRole().showRoleDescriptionDialog(context);
                         }
                     }
                 });
 
-            }
-
-            /**
-             * Tworzy okienko wyświetlające opis roli
-             */
-            public void buildRoleDescriptionDialog() {
-                final AlertDialog.Builder descriptionDialog = new AlertDialog.Builder(context);
-                descriptionDialog.setTitle(context.getString(humanPlayersList.get(getAdapterPosition()).getPlayerRole().getName()));
-                descriptionDialog.setMessage(context.getString(humanPlayersList.get(getAdapterPosition()).getPlayerRole().getDescription()));
-                descriptionDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    /**
-                     * Zamyka okno z opisem roli
-                     * @param dialog
-                     * @param which
-                     */
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        roleDescriptionDialog.cancel();
-                    }
-                });
-
-                roleDescriptionDialog = descriptionDialog.create();
             }
 
         }
