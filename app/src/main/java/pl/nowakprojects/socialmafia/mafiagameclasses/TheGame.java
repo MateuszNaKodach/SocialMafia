@@ -293,7 +293,7 @@ public class TheGame {
 		}
 
 		if(isMafiaInTheGame())
-			result.add(new HumanPlayer(context.getString(R.string.mafiaKill), RolesDataObjects.getMafiaKillRole()));
+			result.add(new HumanPlayer(context.getString(R.string.mafia), RolesDataObjects.getMafiaKillRole()));
 
 		Collections.sort(result,new GameRolesWakeHierarchyComparator());
 		if(!result.isEmpty())
