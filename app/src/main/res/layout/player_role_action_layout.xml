@@ -8,7 +8,7 @@
     app:cardCornerRadius="8dp"
     app:cardPreventCornerOverlap="true"
     android:id="@+id/cardView_playerRoleAction"
-    tools:context="pl.nowakprojects.socialmafia.mainmenuoptions.newgame.TheGameActionActivity"
+    tools:context="pl.nowakprojects.socialmafia.ui.newgame.TheGameActionActivity"
     xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/AppTheme.NoActionBar">
 

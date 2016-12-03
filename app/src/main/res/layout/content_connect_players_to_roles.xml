@@ -10,7 +10,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="pl.nowakprojects.socialmafia.mainmenuoptions.newgame.ConnectPlayersToRolesActivity"
+    tools:context="pl.nowakprojects.socialmafia.ui.newgame.ConnectPlayersToRolesActivity"
     tools:showIn="@layout/activity_connect_players_to_roles"
     android:background="#ffffffff">
 

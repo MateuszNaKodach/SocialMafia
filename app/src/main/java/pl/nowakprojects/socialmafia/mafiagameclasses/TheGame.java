@@ -13,7 +13,8 @@ import java.util.Collections;
 import java.util.List;
 
 import pl.nowakprojects.socialmafia.R;
-import pl.nowakprojects.socialmafia.mainmenuoptions.newgame.fragments.DailyVotingFragment;
+import pl.nowakprojects.socialmafia.mafiagameclasses.roles.PlayerRole;
+import pl.nowakprojects.socialmafia.ui.newgame.fragments.DailyVotingFragment;
 import pl.nowakprojects.socialmafia.utitles.GameRolesWakeHierarchyComparator;
 
 /**

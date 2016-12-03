@@ -9,7 +9,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="pl.nowakprojects.socialmafia.mainmenuoptions.newgame.TheGameActionActivity"
+    tools:context="pl.nowakprojects.socialmafia.ui.newgame.TheGameActionActivity"
     android:orientation="vertical"
     android:gravity="left|center_vertical|center_horizontal"
     android:background="#ffffffff">

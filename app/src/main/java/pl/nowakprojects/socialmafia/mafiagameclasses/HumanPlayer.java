@@ -3,6 +3,8 @@ package pl.nowakprojects.socialmafia.mafiagameclasses;
 import android.content.Context;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.annimon.stream.Collectors;
+import com.annimon.stream.Stream;
 
 import org.parceler.Parcel;
 import org.parceler.Transient;
@@ -10,9 +12,8 @@ import org.parceler.Transient;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.realm.RealmObject;
-import io.realm.annotations.RealmClass;
 import pl.nowakprojects.socialmafia.R;
+import pl.nowakprojects.socialmafia.mafiagameclasses.roles.PlayerRole;
 
 @Parcel
 public class HumanPlayer{
@@ -51,7 +52,7 @@ public class HumanPlayer{
     public HumanPlayer(String playerName, PlayerRole playerRole) {
         this.playerName = playerName;
         this.playerRole = playerRole;
-        if(this.playerRole.name == R.string.emo)
+        if(this.playerRole.getName() == R.string.emo)
             lifes=2;
         else
             lifes=1;
@@ -149,13 +150,15 @@ public class HumanPlayer{
     }
 
     public List<HumanPlayer> getAliveLoversList(){
-        ArrayList<HumanPlayer> aliveLoversList = new ArrayList<>();
+        /*ArrayList<HumanPlayer> aliveLoversList = new ArrayList<>();
 
         for(HumanPlayer hp: loversList)
             if(hp.isAlive()&&hp.isNotDealed())
                 aliveLoversList.add(hp);
 
-        return aliveLoversList;
+        return aliveLoversList;*/
+
+        return Stream.of(loversList).filter(hp -> hp.isAlive() && hp.isNotDealed()).collect(Collectors.toList());
 
     }
 
@@ -195,7 +198,7 @@ public class HumanPlayer{
     }
 
     public boolean hasSpeedyRole(){
-        return this.isNotDealed() && getRoleName()== R.string.mafiaspeedy || getRoleName()== R.string.townspeedy || getRoleName()== R.string.sindicateSpeedy;
+        return this.isNotDealed() && getRoleName()== R.string.mafiaspeedy || getRoleName()== R.string.townspeedy || getRoleName()== R.string.syndicateSpeedy;
     }
 
     private String generatePlayerLoversString(){
@@ -238,7 +241,7 @@ public class HumanPlayer{
     }
 
     public void showPlayerInfoDialog(Context context){
-        if( playerInfoDialog==null)
+        //if( playerInfoDialog==null)
             buildPlayerInfoDialog(context);
 
         playerInfoDialog.show();
@@ -286,6 +289,9 @@ public class HumanPlayer{
 
     public boolean isAlive() {
         return alive;
+    }
+    public boolean isAlive(HumanPlayer hp) {
+        return hp.isAlive();
     }
 
     public void setStigmas(int stigmas) {

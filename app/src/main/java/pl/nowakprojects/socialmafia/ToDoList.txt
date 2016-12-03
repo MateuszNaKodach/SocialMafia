@@ -20,3 +20,13 @@ Przewidziec remis w DailyJudgment
 REFAKTORYZACJA!!! NOCNYCH AKCJI
 
 Dorobic mozliwosc w dzien swira itp.
+
+GameRole - ma byc klasa abstrakcyjna! Dla kazdej roli oddzielna klasa - fabryka abstrakcyjna!!!
+Zeby dla kaddej roli wywolywalo sie action przy jej funkcji!
+
+Zrobic nie n parceler, bo jest wiele bledow, ale na bazie adnych realm.
+
+TheGame, takie klasy jak:
+RoleManager,
+GameConfiguration
+wywoluje sie ta nie nadpisana rola!!!

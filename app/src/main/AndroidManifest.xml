@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,66 +22,66 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".mainmenuoptions.newgame.PickPlayersAmountActivity"
+            android:name=".ui.newgame.PickPlayersAmountActivity"
             android:label="@string/title_new_game"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".ui.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="pl.nowakprojects.socialmafia.MainActivity" />
+                android:value="pl.nowakprojects.socialmafia.ui.MainActivity" />
         </activity>
         <activity
-            android:name=".mainmenuoptions.gamerules.GameRulesActivity"
+            android:name=".ui.gamerules.GameRulesActivity"
             android:label="@string/title_activity_game_rules"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".ui.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="pl.nowakprojects.socialmafia.MainActivity" />
+                android:value="pl.nowakprojects.socialmafia.ui.MainActivity" />
         </activity>
         <activity
-            android:name=".mainmenuoptions.settings.SettingsActivity"
+            android:name=".ui.settings.SettingsActivity"
             android:label="@string/title_activity_game_settings"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".ui.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="pl.nowakprojects.socialmafia.MainActivity" />
+                android:value="pl.nowakprojects.socialmafia.ui.MainActivity" />
         </activity>
         <activity
-            android:name=".mainmenuoptions.newgame.TapPlayersNamesActivity"
+            android:name=".ui.newgame.TapPlayersNamesActivity"
             android:label="@string/title_new_game"
-            android:parentActivityName=".mainmenuoptions.newgame.PickPlayersAmountActivity"
+            android:parentActivityName=".ui.newgame.PickPlayersAmountActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="pl.nowakprojects.socialmafia.mainmenuoptions.newgame.PickPlayersAmountActivity" />
+                android:value="pl.nowakprojects.socialmafia.ui.newgame.PickPlayersAmountActivity" />
         </activity>
         <activity
-            android:name=".mainmenuoptions.newgame.SelectPlayerRolesActivity"
+            android:name=".ui.newgame.SelectPlayerRolesActivity"
             android:label="@string/title_new_game"
-            android:parentActivityName=".mainmenuoptions.newgame.TapPlayersNamesActivity"
+            android:parentActivityName=".ui.newgame.TapPlayersNamesActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="pl.nowakprojects.socialmafia.mainmenuoptions.newgame.TapPlayersNamesActivity" />
+                android:value="pl.nowakprojects.socialmafia.ui.newgame.TapPlayersNamesActivity" />
         </activity>
         <activity
-            android:name=".mainmenuoptions.newgame.ConnectPlayersToRolesActivity"
+            android:name=".ui.newgame.ConnectPlayersToRolesActivity"
             android:label="@string/title_new_game"
-            android:parentActivityName=".mainmenuoptions.newgame.SelectPlayerRolesActivity"
+            android:parentActivityName=".ui.newgame.SelectPlayerRolesActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="pl.nowakprojects.socialmafia.mainmenuoptions.newgame.SelectPlayerRolesActivity" />
+                android:value="pl.nowakprojects.socialmafia.ui.newgame.SelectPlayerRolesActivity" />
         </activity>
         <activity
-            android:name=".mainmenuoptions.newgame.TheGameActionActivity"
+            android:name=".ui.newgame.TheGameActionActivity"
             android:label="@string/title_activity_the_game_action"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".mainmenuoptions.loadgame.LoadGameActivity" />
+        <activity android:name=".ui.loadgame.LoadGameActivity" />
         <activity
-            android:name=".mainmenuoptions.newgame.GameFinishedActivity"
+            android:name=".ui.newgame.GameFinishedActivity"
             android:label="@string/title_activity_game_finished"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>

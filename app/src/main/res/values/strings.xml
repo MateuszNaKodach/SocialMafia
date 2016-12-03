@@ -166,11 +166,11 @@ Raz w ciągu gry,  podczas trwania dnia wybiera osobę, która aż do nocy nie b
     <string name="gravedigger">Grabarz</string>
     <string name="rapist">Gwałciciel</string>
 
-    <string name="sindicateBoss">Szef Syndykatu</string>
+    <string name="syndicateBoss">Szef Syndykatu</string>
     <string name="deathAngel">Anioł Smierci</string>
-    <string name="witch">Diabolistka</string>
+    <string name="diabolist">Diabolistka</string>
     <string name="saint">Swięty</string>
-    <string name="sindicateSpeedy">Szybki Syndykatu</string>
+    <string name="syndicateSpeedy">Szybki Syndykatu</string>
     <string name="conductor">Kolejarz</string>
     <string name="bartender">Barman</string>
     <string name="timestopper">Czasowstrzymywacz</string>
@@ -321,5 +321,24 @@ Raz w ciągu gry,  podczas trwania dnia wybiera osobę, która aż do nocy nie b
     Szantażyści: %4$s \n
     Kochankowie: %5$s</string>
     <string name="cantKillPriestWhileBossAlive">Nie można zabić księdza kiedy zyje szef mafii!</string>
+    <string name="bossDescription" />
+    <string name="blackmailerDescription" />
+    <string name="blackmailerBossDescription" />
+    <string name="darkmedicDescription" />
+    <string name="coquetteDescription" />
+    <string name="mafiaspeedyDescription" />
+    <string name="dealerDescription" />
+    <string name="gravediggerDescription" />
+    <string name="rapistDescription" />
+    <string name="syndicateBossDescription" />
+    <string name="deathAngelDescription" />
+    <string name="diabolistDescription" />
+    <string name="saintDescription" />
+    <string name="syndicateSpeedyDescription" />
+    <string name="conductorDescription" />
+    <string name="bartenderDescription" />
+    <string name="timestopperDescription" />
+    <string name="hunterDescription" />
+    <string name="dentistDescription" />
 
 </resources>

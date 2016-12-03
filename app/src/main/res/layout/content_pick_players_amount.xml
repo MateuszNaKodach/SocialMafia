@@ -17,7 +17,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="pl.nowakprojects.socialmafia.mainmenuoptions.newgame.PickPlayersAmountActivity"
+        tools:context="pl.nowakprojects.socialmafia.ui.newgame.PickPlayersAmountActivity"
         tools:showIn="@layout/activity_pick_players_amount"
         android:orientation="vertical"
         android:gravity="center"

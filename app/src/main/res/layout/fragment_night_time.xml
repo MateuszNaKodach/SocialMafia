@@ -98,7 +98,7 @@
     android:padding="16dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:orientation="horizontal"
-    tools:context="pl.nowakprojects.socialmafia.mainmenuoptions.newgame.TheGameActionActivity"
+    tools:context="pl.nowakprojects.socialmafia.ui.newgame.TheGameActionActivity"
     android:orientation="horizontal">
 
 
