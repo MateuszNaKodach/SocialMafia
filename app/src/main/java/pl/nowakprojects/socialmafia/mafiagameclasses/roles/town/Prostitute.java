@@ -27,7 +27,7 @@ public class Prostitute extends PlayerRole implements ContextRoleAction {
         setNightWakeHierarchyNumber(60);
     }
 
-    @Override
+    //@Override
     public void action(Fragment fragment, HumanPlayer actionPlayer, HumanPlayer... chosePlayers) {
         FragmentManager fragmentManager = fragment.getFragmentManager();
         ShowingPlayerRoleDialog showingPlayerRoleDialog = new ShowingPlayerRoleDialog(chosePlayers[0]);

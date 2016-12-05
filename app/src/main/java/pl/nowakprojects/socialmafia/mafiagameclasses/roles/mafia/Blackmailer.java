@@ -28,7 +28,7 @@ public class Blackmailer extends PlayerRole implements ContextRoleAction{
         setNightWakeHierarchyNumber(80);
     }
 
-    @Override
+    //@Override
     public void action(Fragment fragment, HumanPlayer actionPlayer, HumanPlayer... chosePlayers) {
         if (!(chosePlayers[0].getBlackMailersList().contains(actionPlayer)))
             chosePlayers[0].addBlackMailer(actionPlayer);

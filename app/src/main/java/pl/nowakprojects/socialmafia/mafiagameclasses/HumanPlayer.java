@@ -174,7 +174,7 @@ public class HumanPlayer{
 
 
     //ROLES CHECKING:
-    /*public boolean hasRole(String roleName){
+    public boolean hasRole(String roleName){
         return getContext().getString(getRoleName()).equals(roleName);
     }
 
@@ -182,29 +182,29 @@ public class HumanPlayer{
         return hasRole(roleNameId);
     }
 
-    public boolean hasNotDealedRole(String roleName){
-        return isNotDealed() && hasRole(roleName);
-    }
-
-    public boolean hasNotDealedRole(int roleNameId){
-        return hasNotDealedRole(getContext().getString(getRoleName()));
-    }*/
-
-   // public boolean hasRole(String roleName){
-   //     return getContext().getString(getRoleName()).equals(roleName);
-   // }
-
-    public boolean hasRole(int roleNameId){
-        return roleNameId == getRoleName();
-    }
-
    // public boolean hasNotDealedRole(String roleName){
    //     return isNotDealed() && hasRole(roleName);
    // }
 
     public boolean hasNotDealedRole(int roleNameId){
-        return isNotDealed() && hasRole(roleNameId);
+        return hasNotDealedRole(getContext().getString(getRoleName()));
     }
+
+   // public boolean hasRole(String roleName){
+    //    return getContext().getString(getRoleName()).equals(roleName);
+    //}
+
+    //public boolean hasRole(int roleNameId){
+     //   return roleNameId == getRoleName();
+    //}
+
+    public boolean hasNotDealedRole(String roleName){
+        return isNotDealed() && hasRole(roleName);
+    }
+
+   // public boolean hasNotDealedRole(int roleNameId){
+    //    return isNotDealed() && hasRole(roleNameId);
+    //}
 
     public boolean isNotDealedTerrorist(){
         return hasNotDealedRole(R.string.terrorist);

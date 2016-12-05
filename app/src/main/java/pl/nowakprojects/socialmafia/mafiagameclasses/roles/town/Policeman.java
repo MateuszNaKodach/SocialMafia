@@ -7,6 +7,7 @@ import org.parceler.Parcel;
 
 import pl.nowakprojects.socialmafia.R;
 import pl.nowakprojects.socialmafia.mafiagameclasses.HumanPlayer;
+import pl.nowakprojects.socialmafia.mafiagameclasses.roles.ContextRoleAction;
 import pl.nowakprojects.socialmafia.mafiagameclasses.roles.PlayerRole;
 import pl.nowakprojects.socialmafia.ui.newgame.dialogfragments.ShowingPlayerGoodOrBadDialog;
 
@@ -14,7 +15,7 @@ import pl.nowakprojects.socialmafia.ui.newgame.dialogfragments.ShowingPlayerGood
  * Created by Mateusz on 02.12.2016.
  */
 @Parcel
-public class Policeman extends PlayerRole {
+public class Policeman extends PlayerRole implements ContextRoleAction{
 
     public Policeman(){
         super();
@@ -26,7 +27,7 @@ public class Policeman extends PlayerRole {
         this.setNightWakeHierarchyNumber(50);
     }
 
-    @Override
+    //@Override
     public void action(Fragment fragment, HumanPlayer actionPlayer, HumanPlayer... chosePlayers) {
         FragmentManager fragmentManager = fragment.getFragmentManager();
         ShowingPlayerGoodOrBadDialog showingPlayerGoodOrBadDialog = new ShowingPlayerGoodOrBadDialog(chosePlayers[0]);

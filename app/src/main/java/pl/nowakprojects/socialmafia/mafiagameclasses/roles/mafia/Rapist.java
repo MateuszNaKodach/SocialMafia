@@ -7,6 +7,7 @@ import org.parceler.Parcel;
 
 import pl.nowakprojects.socialmafia.R;
 import pl.nowakprojects.socialmafia.mafiagameclasses.HumanPlayer;
+import pl.nowakprojects.socialmafia.mafiagameclasses.roles.ContextRoleAction;
 import pl.nowakprojects.socialmafia.mafiagameclasses.roles.PlayerRole;
 import pl.nowakprojects.socialmafia.ui.newgame.dialogfragments.ShowingPlayerRoleDialog;
 
@@ -14,7 +15,7 @@ import pl.nowakprojects.socialmafia.ui.newgame.dialogfragments.ShowingPlayerRole
  * Created by Mateusz on 02.12.2016.
  */
 @Parcel
-public class Rapist extends PlayerRole {
+public class Rapist extends PlayerRole implements ContextRoleAction{
 
     public Rapist(){
         super();
@@ -26,7 +27,7 @@ public class Rapist extends PlayerRole {
         setNightWakeHierarchyNumber(130);
     }
 
-    public void action(Fragment fragment, HumanPlayer... chosePlayers) {
+    public void action(Fragment fragment, HumanPlayer actionPlayer, HumanPlayer... chosePlayers) {
         FragmentManager fragmentManager = fragment.getFragmentManager();
         ShowingPlayerRoleDialog showingPlayerRoleDialog = new ShowingPlayerRoleDialog(chosePlayers[0]);
         showingPlayerRoleDialog.show(fragmentManager, "RapistAction");

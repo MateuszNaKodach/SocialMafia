@@ -26,7 +26,7 @@ public class Darkmedic extends PlayerRole implements GameStateModifierRoleAction
         setNightWakeHierarchyNumber(121);
     }
 
-    @Override
+    //@Override
     public void action(TheGame theGame, HumanPlayer actionPlayer, HumanPlayer... chosePlayers) {
         if (actionPlayer.isNotDealed())
             commitNotDealedRole(theGame, actionPlayer, chosePlayers);

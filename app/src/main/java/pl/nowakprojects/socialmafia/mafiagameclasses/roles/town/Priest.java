@@ -27,7 +27,7 @@ public class Priest extends PlayerRole implements ContextRoleAction{
         setNightWakeHierarchyNumber(160);
     }
 
-    @Override
+    //@Override
     public void action(Fragment fragment, HumanPlayer actionPlayer, HumanPlayer... chosePlayers) {
         chosePlayers[0].addLover(chosePlayers[1]);
         chosePlayers[1].addLover(chosePlayers[0]);

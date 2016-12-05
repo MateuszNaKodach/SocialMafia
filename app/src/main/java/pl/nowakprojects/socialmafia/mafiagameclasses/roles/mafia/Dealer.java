@@ -26,7 +26,7 @@ public class Dealer extends PlayerRole implements GameStateModifierRoleAction{
         setNightWakeHierarchyNumber(30);
     }
 
-    @Override
+    //@Override
     public void action(TheGame theGame, HumanPlayer actionPlayer, HumanPlayer... chosePlayers) {
         theGame.addLastNightDealingByDealerPlayers(chosePlayers[0]);
         theGame.findHumanPlayerByName(chosePlayers[0].getPlayerName()).setDealed(true);

@@ -25,7 +25,7 @@ public class BlackJudge extends PlayerRole{
         setNightWakeHierarchyNumber(20);
     }
 
-    @Override
+    //@Override
     public void action(Fragment fragment, HumanPlayer actionPlayer, HumanPlayer... chosePlayers) {
         if (!(chosePlayers[0].getGuardsList().contains(actionPlayer)))
             chosePlayers[0].addGuard(actionPlayer);

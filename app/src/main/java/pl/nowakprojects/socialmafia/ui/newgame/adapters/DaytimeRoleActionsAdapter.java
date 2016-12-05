@@ -226,10 +226,15 @@ public class DaytimeRoleActionsAdapter extends RecyclerView.Adapter<DaytimeRoleA
          */
         void makeRoleAction(HumanPlayer actionPlayer, HumanPlayer choosenPlayer, HumanPlayer choosenPlayer2) {
          //MOZLIWOSC BYCIA DILOWANYM DO WSZYSTKICH FUNKCJI!!!
-            if(actionPlayer instanceof ContextRoleAction)
-                actionPlayer.getPlayerRole().action(roleActionsFragment,actionPlayer, choosenPlayer, choosenPlayer2);
-            else if(actionPlayer instanceof GameStateModifierRoleAction)
-                actionPlayer.getPlayerRole().action(mTheGame,actionPlayer,choosenPlayer, choosenPlayer2);
+            if(actionPlayer.getPlayerRole() instanceof ContextRoleAction) {
+                ContextRoleAction playerRole = (ContextRoleAction) actionPlayer.getPlayerRole();
+                playerRole.action(roleActionsFragment, actionPlayer, choosenPlayer, choosenPlayer2);
+                //actionPlayer.getPlayerRole().action(roleActionsFragment, actionPlayer, choosenPlayer, choosenPlayer2);
+            }else if(actionPlayer.getPlayerRole() instanceof GameStateModifierRoleAction) {
+                //actionPlayer.getPlayerRole().action(mTheGame, actionPlayer, choosenPlayer, choosenPlayer2);
+                GameStateModifierRoleAction playerRole = (GameStateModifierRoleAction) actionPlayer.getPlayerRole();
+                playerRole.action(mTheGame, actionPlayer, choosenPlayer, choosenPlayer2);
+            }
            // else
                 //throw new IllegalClassException("There is necessary class implements ContextRoleAction or GameStateModifierRoleAction!");
         }

@@ -24,7 +24,7 @@ import com.google.auto.value.AutoValue;
 
 @AutoValue
 @Parcel
-public abstract class PlayerRole implements GameStateModifierRoleAction, ContextRoleAction {
+public abstract class PlayerRole {
 
     @Transient
     protected Context mContext;
@@ -232,9 +232,9 @@ public abstract class PlayerRole implements GameStateModifierRoleAction, Context
     }
 
 
-    public void action(Fragment fragment, HumanPlayer actionPlayer, HumanPlayer... chosePlayers){};
+    //public abstract void action(Fragment fragment, HumanPlayer actionPlayer, HumanPlayer... chosePlayers);
 
-    public void action(TheGame theGame, HumanPlayer actionPlayer, HumanPlayer... chosePlayers){};
+    //public abstract void action(TheGame theGame, HumanPlayer actionPlayer, HumanPlayer... chosePlayers);
 
 
     public void setContext(Context context) {
