@@ -179,6 +179,7 @@ public class TheGame {
 	//Co zrobic jak np. dwaj lekarze leczyli tego gracza!?
 	public ArrayList<HumanPlayer> calculateNightimeResult(){
 		ArrayList<HumanPlayer> result = new ArrayList<HumanPlayer>();
+		this.beginKilling();
 		for(HumanPlayer hp: getLastNightHittingByMafiaPlayer())
 			if(wasPlayerHitByDarkMedic(hp))
 				result.add(hp);
