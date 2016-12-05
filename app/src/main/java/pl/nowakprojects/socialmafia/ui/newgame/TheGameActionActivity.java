@@ -144,8 +144,6 @@ public class TheGameActionActivity extends AppCompatActivity implements OnPlayer
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.remove(roleActionsFragment);
         fragmentTransaction.commit();
-
-
     }
 
     void startDayAction() {

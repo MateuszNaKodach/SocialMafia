@@ -39,20 +39,20 @@ public class HumanPlayer{
     boolean wasRoleShowed = false;
 
     @Transient
-    MaterialDialog playerInfoDialog;
+    MaterialDialog mPlayerInfoDialog;
 
     //CONSTRUCTORS:
     public HumanPlayer() {
     }
 
-    public HumanPlayer(String playerName) {
+   /* public HumanPlayer(String playerName) {
         this.playerName = playerName;
-    }
+    }*/
 
     public HumanPlayer(String playerName, PlayerRole playerRole) {
         this.playerName = playerName;
         this.playerRole = playerRole;
-        if(this.playerRole.getNameId() == R.string.emo)
+        if(isNotDealedEmo())
             lifes=2;
         else
             lifes=1;
@@ -61,12 +61,10 @@ public class HumanPlayer{
 
 
     //GAME METHODS:
-    public boolean hit(){
-        this.lifes-=1;
+    public void hit(){
+        setLifes(getLifes()-1);
         if(getLifes()<=0)
             this.setNotAlive();
-
-        return isAlive();
     }
 
 
@@ -90,7 +88,7 @@ public class HumanPlayer{
     }
 
     //dochodzi do obroncy, ktory ma zginac metoda rekurencji
-    public static HumanPlayer getFirstGuard(HumanPlayer player){
+    /*public static HumanPlayer getFirstGuard(HumanPlayer player){
         if(player.getGuardsList().isEmpty())
             return player;
         else
@@ -103,7 +101,7 @@ public class HumanPlayer{
             if(x.isAlive())
                 return x;
         return this;
-    }
+    }*/
 
 
     public List<HumanPlayer> getBlackMailersList() {
@@ -120,13 +118,7 @@ public class HumanPlayer{
     }
 
     public boolean hasGuard(){
-        if(guardsList.isEmpty())
-            return false;
-        for(HumanPlayer hp: guardsList)
-            if(hp.isAlive()&&hp.isNotDealed())
-                return true;
-
-        return false;
+        return isAliveAndNotDealedPlayerOnTheList(guardsList);
     }
 
     public boolean isNotDealed(){
@@ -138,38 +130,36 @@ public class HumanPlayer{
     }
 
     public boolean hasLover(){
-        if(loversList.isEmpty())
-            return false;
-        for(HumanPlayer hp: loversList)
-            if(hp.isAlive()&&hp.isNotDealed())
-                return true;
-
-        return false;
+        return isAliveAndNotDealedPlayerOnTheList(loversList);
     }
 
-    public void setDealed(boolean dealed) {
-        this.dealed = dealed;
+    private boolean isAliveAndNotDealedPlayerOnTheList(List<HumanPlayer> playersList){
+        return !Stream.of(playersList).noneMatch(HumanPlayer::isAliveAndNotDealed);
     }
+
 
     public List<HumanPlayer> getAliveLoversList(){
-        return Stream.of(loversList).filter(hp -> hp.isAlive() && hp.isNotDealed()).collect(Collectors.toList());
+        return Stream.of(loversList).filter(HumanPlayer::isAliveAndNotDealed).collect(Collectors.toList());
     }
 
     public HumanPlayer getGuardToKill(){
-        if(hasGuard())
-            for(HumanPlayer hp: guardsList)
-                if(hp.isAlive()&&hp.isNotDealed())
-                    return hp;
-
-        return null;
+        return Stream.of(guardsList).filter(HumanPlayer::isAliveAndNotDealed).findFirst().get();
     }
+
+    public boolean isAliveAndNotDealed(){
+        return isAlive() && isNotDealed();
+    }
+
 
     public int howManyLifes(){
         return this.getLifes();
     }
 
     public void reviveThePlayer(){
-        alive = true;
+        if(isDead()){
+            lifes++;
+            alive = true;
+        }
     }
 
 
@@ -191,17 +181,6 @@ public class HumanPlayer{
     //    return getContext().getString(getRoleName()).equals(roleName);
     //}
 
-    public boolean hasRole(int roleNameId){
-        return roleNameId == getRoleName();
-    }
-
-    //public boolean hasNotDealedRole(String roleName){
-    //    return isNotDealed() && hasRole(roleName);
-    //}
-
-    public boolean hasNotDealedRole(int roleNameId){
-        return isNotDealed() && hasRole(roleNameId);
-    }
 
     public boolean isNotDealedTerrorist(){
         return hasNotDealedRole(R.string.terrorist);
@@ -221,15 +200,40 @@ public class HumanPlayer{
         return isNotDealed() && (hasRole(R.string.mafiaspeedy)|| hasRole(R.string.townspeedy) || hasRole(R.string.syndicateSpeedy));
     }
 
-    private String generatePlayersConnectionListWith(List<HumanPlayer> playersConnectedToThisPlayerList){
-        StringBuffer playersConnectionsStringBuffer = new StringBuffer();
-        for(HumanPlayer hp: playersConnectedToThisPlayerList)
-            playersConnectionsStringBuffer.append(" ").append(hp.getPlayerName()).append(", ");
+    public boolean hasNotDealedRole(int roleNameId){
+        return isNotDealed() && hasRole(roleNameId);
+    }
 
-        if(playersConnectionsStringBuffer.toString().isEmpty())
-            playersConnectionsStringBuffer.append("---");
+    public boolean hasRole(int roleNameId){
+        return roleNameId == getRoleName();
+    }
 
-        return playersConnectionsStringBuffer.toString();
+
+
+
+    public void showPlayerInfoDialog(Context context){
+        buildPlayerInfoDialog(context);
+
+        mPlayerInfoDialog.show();
+    }
+
+    private void buildPlayerInfoDialog(Context context){
+        mPlayerInfoDialog = new MaterialDialog.Builder(context)
+                .title(getPlayerName())
+                .content(generatePlayerDescription(context))
+                .positiveText(R.string.ok)
+                .build();
+    }
+
+    private String generatePlayerDescription(Context context){
+        return context.getString(
+                R.string.player_description,
+                lifes,
+                stigmas,
+                generatePlayerGuardsString(),
+                generatePlayerBlackmailersString(),
+                generatePlayerLoversString()
+        );
     }
 
     private String generatePlayerLoversString(){
@@ -245,24 +249,18 @@ public class HumanPlayer{
         return generatePlayersConnectionListWith(guardsList);
     }
 
-    private String generatePlayerDescription(Context context){
-        return context.getString(R.string.player_description, lifes, stigmas, generatePlayerGuardsString(), generatePlayerBlackmailersString(), generatePlayerLoversString());
+    private String generatePlayersConnectionListWith(List<HumanPlayer> playersConnectedToThisPlayerList){
+        StringBuilder playersConnectionsStringBuffer = new StringBuilder();
+        for(HumanPlayer hp: playersConnectedToThisPlayerList)
+            playersConnectionsStringBuffer.append(" ").append(hp.getPlayerName()).append(", ");
+
+        if(playersConnectionsStringBuffer.toString().isEmpty())
+            playersConnectionsStringBuffer.append("---");
+
+        return playersConnectionsStringBuffer.toString();
     }
 
-    private void buildPlayerInfoDialog(Context context){
-        playerInfoDialog = new MaterialDialog.Builder(context)
-                .title(getPlayerName())
-                .content(generatePlayerDescription(context))
-                .positiveText(R.string.ok)
-                .build();
-    }
 
-    public void showPlayerInfoDialog(Context context){
-        //if( playerInfoDialog==null)
-            buildPlayerInfoDialog(context);
-
-        playerInfoDialog.show();
-    }
 
     //OBJECT METHODS OVERRIDE:
     @Override
@@ -288,6 +286,11 @@ public class HumanPlayer{
 
 
     //GETTERS AND SETTERS:
+
+    public void setDealed(boolean dealed) {
+        this.dealed = dealed;
+    }
+
     public String getPlayerName() {
         return this.playerName;
     }
@@ -307,9 +310,9 @@ public class HumanPlayer{
     public boolean isAlive() {
         return alive;
     }
-    public boolean isAlive(HumanPlayer hp) {
-        return hp.isAlive();
-    }
+    //public boolean isAlive(HumanPlayer hp) {
+    //    return hp.isAlive();
+    //}
 
     public void setStigmas(int stigmas) {
         this.stigmas = stigmas;

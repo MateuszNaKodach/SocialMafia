@@ -29,9 +29,7 @@ public class Blackman extends PlayerRole implements ContextRoleAction {
 
     @Override
     public void action(Fragment fragment, HumanPlayer actionPlayer, HumanPlayer... chosePlayers) {
-        if (!(chosePlayers[0].getGuardsList().contains(actionPlayer)))
-            chosePlayers[0].addGuard(actionPlayer);
-
+        chosePlayers[0].addGuard(actionPlayer);
         Toast.makeText(fragment.getActivity().getApplicationContext(), chosePlayers[0].getPlayerName() + " " + fragment.getString(R.string.hasBlackNow), Toast.LENGTH_LONG).show();
     }
 }

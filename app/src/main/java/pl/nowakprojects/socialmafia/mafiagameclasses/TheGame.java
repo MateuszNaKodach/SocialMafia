@@ -5,8 +5,11 @@ package pl.nowakprojects.socialmafia.mafiagameclasses;
 
 import android.content.Context;
 
+import com.annimon.stream.Stream;
+
 import org.parceler.Parcel;
 import org.parceler.Transient;
+import org.parceler.javaxinject.Singleton;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,7 +31,7 @@ import pl.nowakprojects.socialmafia.utitles.GameRolesWakeHierarchyComparator;
 @Parcel
 public class TheGame {
 
-	static TheGame mInstance;
+	//static TheGame mInstance;
 
 	@Transient
 	Context mContext;
@@ -193,19 +196,15 @@ public class TheGame {
 	}
 
 	private boolean wasPlayerHealed(HumanPlayer humanPlayer){
-			for(HumanPlayer hp2: getLastNightHealingByMedicPlayers())
-				if(humanPlayer==hp2)
-					return true;
-
-		return false;
+		return isPlayerOnTheList(humanPlayer, getLastNightHealingByMedicPlayers());
 	}
 
 	private boolean wasPlayerHitByDarkMedic(HumanPlayer humanPlayer){
-		for(HumanPlayer hp2: getLastNightHeatingByDarkMedicPlayers())
-			if(humanPlayer==hp2)
-				return true;
+		return isPlayerOnTheList(humanPlayer, getLastNightHeatingByDarkMedicPlayers());
+	}
 
-		return false;
+	private boolean isPlayerOnTheList(HumanPlayer humanPlayer, ArrayList<HumanPlayer> playersList){
+		return !Stream.of(playersList).noneMatch(hp->hp==humanPlayer);
 	}
 
 	public HumanPlayer getLastKilledPlayer(){
@@ -236,10 +235,15 @@ public class TheGame {
 	}
 
 	public String lastTimeKilledPlayersString(){
-		String result="";
+		StringBuilder lastTimeKilledPlayersStringBuffer = new StringBuilder();
+
 		for(HumanPlayer hp: this.getTemporaryLastTimeKilledPlayersList())
-			result+=""+hp.getPlayerName()+", ";
-		return result;
+			lastTimeKilledPlayersStringBuffer.append("").append(hp.getPlayerName()).append(", ");
+
+		if(lastTimeKilledPlayersStringBuffer.toString().isEmpty())
+			lastTimeKilledPlayersStringBuffer.append("---");
+
+		return lastTimeKilledPlayersStringBuffer.toString();
 	}
 
 	public void startNewNight(){
