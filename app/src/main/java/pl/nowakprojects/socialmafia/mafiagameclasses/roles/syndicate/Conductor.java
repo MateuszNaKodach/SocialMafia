@@ -13,8 +13,8 @@ public class Conductor extends PlayerRole {
 
     public Conductor(){
         super();
-        setName(R.string.conductor);
-        setDescription(R.string.conductorDescription);
+        setNameId(R.string.conductor);
+        setDescriptionId(R.string.conductorDescription);
         setIconResourceID(R.drawable.icon_conductor);
         setFraction(Fraction.SYNDICATE);
         setActionType(ActionType.OnceAGame);

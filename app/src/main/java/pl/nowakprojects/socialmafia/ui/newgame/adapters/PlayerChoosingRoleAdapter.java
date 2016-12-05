@@ -63,7 +63,7 @@ public class PlayerChoosingRoleAdapter extends RecyclerView.Adapter<PlayerChoosi
     public void onBindViewHolder(PlayerRoleViewHolder holder, int position) {
         PlayerRole playerRole = fractionRolesList.get(position);
         holder.roleIcon.setImageResource(playerRole.getIconResourceID());
-        holder.roleName.setText(playerRole.getName());
+        holder.roleName.setText(playerRole.getNameId());
         holder.roleAmount.setText(String.valueOf(playerRole.getRolePlayersAmount()));
     }
 
@@ -95,7 +95,7 @@ public class PlayerChoosingRoleAdapter extends RecyclerView.Adapter<PlayerChoosi
             increaseRoleAmount.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(!BuildConfig.PREMIUM_VERSION && !fractionRolesList.get(getAdapterPosition()).isBasicMafiaRole() && fractionRolesList.get(getAdapterPosition()).getRolePlayersAmount()>0)
+                    if(!BuildConfig.PREMIUM_VERSION && !fractionRolesList.get(getAdapterPosition()).isBasicRole() && fractionRolesList.get(getAdapterPosition()).getRolePlayersAmount()>0)
                         Toast.makeText(context,R.string.premiu_need,Toast.LENGTH_SHORT).show();
                     else{
                     selectedRolesList.add(fractionRolesList.get(getAdapterPosition()));
@@ -125,7 +125,7 @@ public class PlayerChoosingRoleAdapter extends RecyclerView.Adapter<PlayerChoosi
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    fractionRolesList.get(getAdapterPosition()).showRoleDescriptionDialog(context);
+                    fractionRolesList.get(getAdapterPosition()).showRoleDescriptionDialog();
                 }
             });
 

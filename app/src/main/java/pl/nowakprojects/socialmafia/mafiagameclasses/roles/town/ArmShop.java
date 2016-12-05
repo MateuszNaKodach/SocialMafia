@@ -13,8 +13,8 @@ public class Armshop extends PlayerRole {
 
     public Armshop(){
         super();
-        this.setName(R.string.armshop);
-        this.setDescription(R.string.armshopDescription);
+        this.setNameId(R.string.armshop);
+        this.setDescriptionId(R.string.armshopDescription);
         this.setIconResourceID(R.drawable.image_template);
         this.setFraction(Fraction.TOWN);
         this.setActionType(ActionType.ActionRequire);

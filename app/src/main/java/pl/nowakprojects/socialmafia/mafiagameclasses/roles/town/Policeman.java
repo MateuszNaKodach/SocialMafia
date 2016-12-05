@@ -1,9 +1,7 @@
 package pl.nowakprojects.socialmafia.mafiagameclasses.roles.town;
 
-import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.widget.Toast;
 
 import org.parceler.Parcel;
 
@@ -20,8 +18,8 @@ public class Policeman extends PlayerRole {
 
     public Policeman(){
         super();
-        this.setName(R.string.policeman);
-        this.setDescription(R.string.policemanDescription);
+        this.setNameId(R.string.policeman);
+        this.setDescriptionId(R.string.policemanDescription);
         this.setIconResourceID(R.drawable.icon_policeman);
         this.setFraction(Fraction.TOWN);
         this.setActionType(ActionType.AllNightsBesideZero);
@@ -29,12 +27,9 @@ public class Policeman extends PlayerRole {
     }
 
     @Override
-    public void action(Fragment fragment, HumanPlayer... players) {
-        //CO JEST!? NIC SIE NIE POKAZALO!?
-        Toast.makeText(fragment.getActivity().getApplicationContext(), "Jestesmy w Policeman", Toast.LENGTH_LONG).show();
-
+    public void action(Fragment fragment, HumanPlayer actionPlayer, HumanPlayer... chosePlayers) {
         FragmentManager fragmentManager = fragment.getFragmentManager();
-        ShowingPlayerGoodOrBadDialog showingPlayerGoodOrBadDialog = new ShowingPlayerGoodOrBadDialog(players[0]);
+        ShowingPlayerGoodOrBadDialog showingPlayerGoodOrBadDialog = new ShowingPlayerGoodOrBadDialog(chosePlayers[0]);
         showingPlayerGoodOrBadDialog.show(fragmentManager, "PolicemanAction");
     }
 }

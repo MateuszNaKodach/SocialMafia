@@ -13,8 +13,8 @@ public class Lawyer extends PlayerRole {
 
     public Lawyer(){
         super();
-        setName(R.string.lawyer);
-        setDescription(R.string.lawyerDescription);
+        setNameId(R.string.lawyer);
+        setDescriptionId(R.string.lawyerDescription);
         setIconResourceID(R.drawable.ic_lawyer);
         setFraction(Fraction.TOWN);
         setActionType(ActionType.ActionRequire);

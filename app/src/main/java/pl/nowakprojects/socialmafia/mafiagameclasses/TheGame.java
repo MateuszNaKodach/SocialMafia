@@ -14,6 +14,7 @@ import java.util.List;
 
 import pl.nowakprojects.socialmafia.R;
 import pl.nowakprojects.socialmafia.mafiagameclasses.roles.PlayerRole;
+import pl.nowakprojects.socialmafia.mafiagameclasses.roles.PlayerRolesManager;
 import pl.nowakprojects.socialmafia.ui.newgame.fragments.DailyVotingFragment;
 import pl.nowakprojects.socialmafia.utitles.GameRolesWakeHierarchyComparator;
 
@@ -21,15 +22,19 @@ import pl.nowakprojects.socialmafia.utitles.GameRolesWakeHierarchyComparator;
  * maxDailyTime - ograniczenie czasowe na dzien, gracz i tak decyfuje czy konczy
  * teraz DODAC CZAS GRY ( BEDZIE POTRZEBNY DO SAVE!!!)
  * Parceler wymaga nieprywatnych pól!!!
+ * Moze zrobic interfejs i implementation
  */
 
 @Parcel
 public class TheGame {
 
-	static TheGame instance;
+	static TheGame mInstance;
 
 	@Transient
-	Context context;
+	Context mContext;
+
+	//@Transient
+	//PlayerRolesManager playerRolesManager;
 
 	int gameId = 0;
 
@@ -94,7 +99,7 @@ public class TheGame {
 	}
 
 	public TheGame(Context context) {
-		this.context = context;
+		this.mContext = context;
 		lastNightHealingByMedicPlayers = new ArrayList<>();
 		lastNightHeatingByDarkMedicPlayers = new ArrayList<>();
 		lastNightHittingByMafiaPlayer = new ArrayList<>();
@@ -106,13 +111,18 @@ public class TheGame {
 	}
 
 	public void setContext(Context context){
-		this.context = context;
+		this.mContext = context;
 	}
 
 	public boolean isGameFinished(){
 		return calculateWinner()!= PlayerRole.Fraction.NOFRACTION;
 	}
 
+	//To jest tylko tymczasowa metoda na ustawienie kontekstu funkcji!!!
+	public void initalize(Context context){
+		this.mContext = context.getApplicationContext();
+		PlayerRolesManager.setContextForPlayersRoles(playersInfoList,context);
+	}
 	public boolean isFirstDay() { return this.currentDayNumber ==0;}
 
 	private PlayerRole.Fraction calculateWinner(){
@@ -159,7 +169,7 @@ public class TheGame {
 							kill(hp); //zabija wszystkich kochanków
 					}//if (humanPlayer.hasLover())
 
-					if (humanPlayer.hasTerroristRole())
+					if (humanPlayer.isNotDealedTerrorist())
 						kill(findPreviousPlayerTo(humanPlayer));
 				}//if(!humanPlayer.isAlive())
 			}//else
@@ -269,14 +279,14 @@ public class TheGame {
 	}
 
 	public boolean isJudgeInTheGameSettings(){
-		HumanPlayer hp1 = findHumanPlayerByRoleName(context.getString(R.string.judge));
-		HumanPlayer hp2 = findHumanPlayerByRoleName(context.getString(R.string.blackJudge));
+		HumanPlayer hp1 = findHumanPlayerByRoleName(mContext.getString(R.string.judge));
+		HumanPlayer hp2 = findHumanPlayerByRoleName(mContext.getString(R.string.blackJudge));
 		return (hp1!=null || hp2!=null);
 	}
 
 	public HumanPlayer getJudgePlayer(){
-		HumanPlayer hp1 = findLiveHumanPlayerByRoleName(context.getString(R.string.judge));
-		HumanPlayer hp2 = findLiveHumanPlayerByRoleName(context.getString(R.string.blackJudge));
+		HumanPlayer hp1 = findLiveHumanPlayerByRoleName(mContext.getString(R.string.judge));
+		HumanPlayer hp2 = findLiveHumanPlayerByRoleName(mContext.getString(R.string.blackJudge));
 
 		return hp1!=null ? hp1 : hp2;
 
@@ -294,7 +304,7 @@ public class TheGame {
 		}
 
 		if(isMafiaInTheGame())
-			result.add(new HumanPlayer(context.getString(R.string.mafia), RolesDataObjects.getMafiaKillRole()));
+			result.add(new HumanPlayer(mContext.getString(R.string.mafia), PlayerRolesManager.getInstance(mContext).getMafiaKillRole()));
 
 		Collections.sort(result,new GameRolesWakeHierarchyComparator());
 		if(!result.isEmpty())
@@ -398,7 +408,7 @@ public class TheGame {
 
 	public HumanPlayer findHumanPlayerByRoleName(String sRoleName){
 		for(HumanPlayer humanPlayer: playersInfoList)
-			if(context.getString(humanPlayer.getRoleName()).equals(sRoleName))
+			if(mContext.getString(humanPlayer.getRoleName()).equals(sRoleName))
 				return humanPlayer;
 
 		return null;
@@ -406,7 +416,7 @@ public class TheGame {
 
 	public HumanPlayer findLiveHumanPlayerByRoleName(String sRoleName){
 		for(HumanPlayer humanPlayer: playersInfoList)
-			if(context.getString(humanPlayer.getRoleName()).equals(sRoleName)&&humanPlayer.isAlive())
+			if(mContext.getString(humanPlayer.getRoleName()).equals(sRoleName)&&humanPlayer.isAlive())
 				return humanPlayer;
 
 		return null;
@@ -482,8 +492,8 @@ public class TheGame {
 	}
 
 	public boolean isMafiaBossAlive() {
-		HumanPlayer mafiaboss = findLiveHumanPlayerByRoleName(context.getString(R.string.boss));
-		HumanPlayer mafiaboss2 = findLiveHumanPlayerByRoleName(context.getString(R.string.blackmailerBoss));
+		HumanPlayer mafiaboss = findLiveHumanPlayerByRoleName(mContext.getString(R.string.boss));
+		HumanPlayer mafiaboss2 = findLiveHumanPlayerByRoleName(mContext.getString(R.string.blackmailerBoss));
 
 		return mafiaboss!=null|| mafiaboss2!=null;
 	}
@@ -517,6 +527,7 @@ public class TheGame {
 
 	public void setPlayersInfoList(ArrayList<HumanPlayer> playersInfoList) {
 		this.playersInfoList = playersInfoList;
+		PlayerRolesManager.setContextForPlayersRoles(playersInfoList, mContext);
 	}
 
 

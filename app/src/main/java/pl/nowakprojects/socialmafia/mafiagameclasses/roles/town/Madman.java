@@ -13,8 +13,8 @@ public class Madman extends PlayerRole {
 
     public Madman(){
         super();
-        this.setName(R.string.madman);
-        this.setDescription(R.string.madmanDescription);
+        this.setNameId(R.string.madman);
+        this.setDescriptionId(R.string.madmanDescription);
         this.setIconResourceID(R.drawable.image_template);
         this.setFraction(Fraction.TOWN);
         this.setActionType(ActionType.OnceAGame);

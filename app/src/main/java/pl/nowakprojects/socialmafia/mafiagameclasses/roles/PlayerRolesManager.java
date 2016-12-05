@@ -1,4 +1,11 @@
-package pl.nowakprojects.socialmafia.mafiagameclasses;
+package pl.nowakprojects.socialmafia.mafiagameclasses.roles;
+
+import android.content.Context;
+
+import com.annimon.stream.Stream;
+
+import org.parceler.Transient;
+import org.parceler.javaxinject.Singleton;
 
 import java.util.ArrayList;
 
@@ -7,24 +14,85 @@ import java.util.ArrayList;
  */
 
 import pl.nowakprojects.socialmafia.R;
+import pl.nowakprojects.socialmafia.mafiagameclasses.HumanPlayer;
 import pl.nowakprojects.socialmafia.mafiagameclasses.roles.PlayerRole;
+import pl.nowakprojects.socialmafia.mafiagameclasses.roles.mafia.MafiaKilling;
 
 /**
  * Generowanie obiektów graczy dla RecyclerView wyboru, oraz pozniejszej gry
  */
-public class RolesDataObjects {
+@Singleton
+public class PlayerRolesManager {
 
-    public static ArrayList<PlayerRole> getTownRolesList(){
+    public static PlayerRolesManager mInstance;
+
+    @Transient
+    Context mContext;
+
+    ArrayList<PlayerRole> mMafiaRolesList;
+    ArrayList<PlayerRole> mTownRolesList;
+    ArrayList<PlayerRole> mSyndicateRolesList;
+
+
+    public static PlayerRolesManager getInstance(Context context){
+        if(mInstance == null)
+            return new PlayerRolesManager(context);
+        else {
+            if(mInstance.mContext==null) {
+                mInstance.mContext = context;
+                mInstance.setContextForAllRoles();
+            }
+            return mInstance;
+        }
+    }
+
+    private PlayerRolesManager(Context context){
+        mContext=context;
+    }
+
+    private void setContextForRoles(ArrayList<PlayerRole> rolesList){
+        Stream.of(rolesList).forEach(playerRole->playerRole.setContext(mContext));
+    }
+
+    public static void setContextForRoles(ArrayList<PlayerRole> rolesList, Context context){
+        Stream.of(rolesList).forEach(playerRole->playerRole.setContext(context));
+    }
+
+    public static void setContextForPlayersRoles(ArrayList<HumanPlayer> playersList, Context context){
+        Stream.of(playersList).forEach(player->player.setContext(context));
+    }
+
+    private void setContextForAllRoles(){
+        setContextForRoles(mMafiaRolesList);
+        setContextForRoles(mTownRolesList);
+        setContextForRoles(mSyndicateRolesList);
+    }
+
+    public ArrayList<PlayerRole> getTownRolesList(){
+       if(mTownRolesList==null)
+           mTownRolesList = generateTownRolesList();
+
+        return mTownRolesList;
+    }
+
+
+    public ArrayList<PlayerRole> getMafiaRolesList(){
+        if(mMafiaRolesList==null)
+            mMafiaRolesList = generateMafiaRolesList();
+
+        return mMafiaRolesList;
+    }
+
+    public ArrayList<PlayerRole> getSyndicateRolesList(){
+        if(mSyndicateRolesList==null)
+            mSyndicateRolesList = generateSyndicateRolesList();
+
+        return mSyndicateRolesList;
+    }
+
+    private ArrayList<PlayerRole> generateTownRolesList(){
         ArrayList<PlayerRole> playerRoles = new ArrayList<>();
-       /* int[] townRolesNamesIds = {
-                R.string.citizen,
-                R.string.armshop,
-                R.string.policeman,
-                R.string.prostitute
-        };*/
-        //Stream.of(Arrays.asList(townRolesNamesIds)).forEach(name -> playerRoles.add(PlayerRole.makeRoleFromNameId(name)));
-        //pomyslec tutaj nad stream API!!!
-        //playerRoles.add(new PlayerRole(R.string.citizen,R.string.citizenDescription,R.drawable.image_template, PlayerRole.Fraction.TOWN, PlayerRole.ActionType.NoAction,-1));
+
         playerRoles.add(PlayerRole.makeRoleFromNameId(R.string.citizen));
         playerRoles.add(PlayerRole.makeRoleFromNameId(R.string.armshop));
         playerRoles.add(PlayerRole.makeRoleFromNameId(R.string.policeman));
@@ -41,25 +109,12 @@ public class RolesDataObjects {
         playerRoles.add(PlayerRole.makeRoleFromNameId(R.string.mayor));
         playerRoles.add(PlayerRole.makeRoleFromNameId(R.string.emo));
 
+        setContextForRoles(playerRoles);
         return playerRoles;
     }
 
-
-    public static ArrayList<PlayerRole> getMafiaRolesList(){
+    private ArrayList<PlayerRole> generateMafiaRolesList(){
         ArrayList<PlayerRole> playerRoles = new ArrayList<>();
-        /*PlayerRole[] playerRolesArray = {
-                PlayerRole.makeRoleFromNameId(R.string.mafioso),
-                PlayerRole.makeRoleFromNameId(R.string.boss),
-                PlayerRole.makeRoleFromNameId(R.string.blackmailer),
-                PlayerRole.makeRoleFromNameId(R.string.blackmailerBoss),
-                PlayerRole.makeRoleFromNameId(R.string.coquette),
-                PlayerRole.makeRoleFromNameId(R.string.darkmedic),
-                PlayerRole.makeRoleFromNameId(R.string.mafiaspeedy),
-                PlayerRole.makeRoleFromNameId(R.string.dealer),
-                PlayerRole.makeRoleFromNameId(R.string.gravedigger),
-                PlayerRole.makeRoleFromNameId(R.string.rapist),
-                PlayerRole.makeRoleFromNameId(R.string.hitler)
-        };*/
 
         playerRoles.add(PlayerRole.makeRoleFromNameId(R.string.mafioso));
         playerRoles.add(PlayerRole.makeRoleFromNameId(R.string.boss));
@@ -73,10 +128,12 @@ public class RolesDataObjects {
         playerRoles.add(PlayerRole.makeRoleFromNameId(R.string.rapist));
         playerRoles.add(PlayerRole.makeRoleFromNameId(R.string.hitler));
 
+        setContextForRoles(playerRoles);
+
         return playerRoles;
     }
 
-    public static ArrayList<PlayerRole> getSyndicateRolesList(){
+    private ArrayList<PlayerRole> generateSyndicateRolesList(){
         ArrayList<PlayerRole> playerRoles = new ArrayList<>();
         playerRoles.add(PlayerRole.makeRoleFromNameId(R.string.syndicateBoss)); //brak przydzielonego budzenia!!!
         playerRoles.add(PlayerRole.makeRoleFromNameId(R.string.deathAngel));
@@ -88,6 +145,9 @@ public class RolesDataObjects {
         playerRoles.add(PlayerRole.makeRoleFromNameId(R.string.timestopper));
         playerRoles.add(PlayerRole.makeRoleFromNameId(R.string.hunter));
         playerRoles.add(PlayerRole.makeRoleFromNameId(R.string.dentist));
+
+        setContextForRoles(playerRoles);
+
         return playerRoles;
     }
 
@@ -95,7 +155,7 @@ public class RolesDataObjects {
     //    return generateSyndicateRolesList();
    // }
 
-    public static ArrayList<PlayerRole> getNeutralRolesList(){
+    public ArrayList<PlayerRole> getNeutralRolesList(){
         ArrayList<PlayerRole> playerRoles = new ArrayList<>();
      //   playerRoles.add(new PlayerRole(R.string.roleDobule,R.string.doubleDescription,R.drawable.image_template, PlayerRole.Fraction.NEUTRAL, PlayerRole.ActionType.Double,40));
         return playerRoles;
@@ -105,14 +165,20 @@ public class RolesDataObjects {
      * Roles that are NOT belong to one player, like mafia kill shot.
      * @return
      */
-    public static  ArrayList<PlayerRole> getMultiPlayersRoles(){
+    public ArrayList<PlayerRole> getMultiPlayersRoles(){
         ArrayList<PlayerRole> playerRoles = new ArrayList<>();
         playerRoles.add(getMafiaKillRole());
+
+        setContextForRoles(playerRoles);
+
         return playerRoles;
     }
 
-    public static PlayerRole getMafiaKillRole(){
-        return PlayerRole.getMultiPlayerRoleFromNameId(R.string.mafiaKill);
+    public PlayerRole getMafiaKillRole(){
+        MafiaKilling mafiaKilling = new MafiaKilling();
+        mafiaKilling.getMultiPlayerRoleFromNameId(R.string.mafiaKill);
+        mafiaKilling.setContext(mContext);
+        return mafiaKilling;
     }
 
 }

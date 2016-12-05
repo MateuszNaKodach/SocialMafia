@@ -13,8 +13,8 @@ public class Emo extends PlayerRole {
 
     public Emo(){
         super();
-        setName(R.string.emo);
-        setDescription(R.string.emoDescription);
+        setNameId(R.string.emo);
+        setDescriptionId(R.string.emoDescription);
         setIconResourceID(R.drawable.ic_emo);
         setFraction(Fraction.TOWN);
         setActionType(ActionType.ActionRequire);

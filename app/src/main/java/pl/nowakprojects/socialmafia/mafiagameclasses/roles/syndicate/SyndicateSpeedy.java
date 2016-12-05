@@ -13,8 +13,8 @@ public class SyndicateSpeedy extends PlayerRole {
 
     public SyndicateSpeedy(){
         super();
-        setName(R.string.syndicateSpeedy);
-        setDescription(R.string.syndicateSpeedyDescription);
+        setNameId(R.string.syndicateSpeedy);
+        setDescriptionId(R.string.syndicateSpeedyDescription);
         setIconResourceID(R.drawable.image_template);
         setFraction(Fraction.SYNDICATE);
         setActionType(ActionType.ActionRequire);

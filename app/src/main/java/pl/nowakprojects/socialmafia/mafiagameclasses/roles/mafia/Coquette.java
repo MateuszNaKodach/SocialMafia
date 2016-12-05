@@ -13,8 +13,8 @@ public class Coquette extends PlayerRole {
 
     public Coquette(){
         super();
-        setName(R.string.coquette);
-        setDescription(R.string.coquetteDescription);
+        setNameId(R.string.coquette);
+        setDescriptionId(R.string.coquetteDescription);
         setIconResourceID(R.drawable.icon_prostitute2);
         setFraction(Fraction.MAFIA);
         setActionType(ActionType.NoAction);

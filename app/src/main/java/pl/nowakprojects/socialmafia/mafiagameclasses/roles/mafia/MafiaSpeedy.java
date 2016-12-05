@@ -13,8 +13,8 @@ public class MafiaSpeedy extends PlayerRole {
 
     public MafiaSpeedy(){
         super();
-        setName(R.string.mafiaspeedy);
-        setDescription(R.string.mafiaspeedyDescription);
+        setNameId(R.string.mafiaspeedy);
+        setDescriptionId(R.string.mafiaspeedyDescription);
         setIconResourceID(R.drawable.image_template);
         setFraction(Fraction.MAFIA);
         setActionType(ActionType.ActionRequire);

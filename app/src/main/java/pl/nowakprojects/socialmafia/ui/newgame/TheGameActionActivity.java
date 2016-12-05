@@ -103,6 +103,7 @@ public class TheGameActionActivity extends AppCompatActivity implements OnPlayer
 
     private void receiveNewGameSettings() {
         theGame = Parcels.unwrap(getIntent().getParcelableExtra(ConnectPlayersToRolesActivity.EXTRA_NEW_GAME));
+        theGame.initalize(this);
         theGame.setContext(getApplicationContext());
     }
 

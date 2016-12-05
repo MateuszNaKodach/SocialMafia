@@ -13,8 +13,8 @@ public class Citizen extends PlayerRole {
 
     public Citizen(){
         super();
-        this.setName(R.string.citizen);
-        this.setDescription(R.string.citizenDescription);
+        this.setNameId(R.string.citizen);
+        this.setDescriptionId(R.string.citizenDescription);
         this.setIconResourceID(R.drawable.image_template);
         this.setFraction(Fraction.TOWN);
         this.setActionType(ActionType.NoAction);

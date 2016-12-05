@@ -13,8 +13,8 @@ public class TownSpeedy extends PlayerRole {
 
     public TownSpeedy(){
         super();
-        setName(R.string.townspeedy);
-        setDescription(R.string.townspeedyDescription);
+        setNameId(R.string.townspeedy);
+        setDescriptionId(R.string.townspeedyDescription);
         setIconResourceID(R.drawable.ic_fastman);
         setFraction(Fraction.TOWN);
         setActionType(ActionType.ActionRequire);

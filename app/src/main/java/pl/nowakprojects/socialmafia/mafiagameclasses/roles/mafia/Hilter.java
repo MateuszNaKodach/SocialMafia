@@ -13,8 +13,8 @@ public class Hilter extends PlayerRole {
 
     public Hilter(){
         super();
-        setName(R.string.hitler);
-        setDescription(R.string.hitlerDescription);
+        setNameId(R.string.hitler);
+        setDescriptionId(R.string.hitlerDescription);
         setIconResourceID(R.drawable.image_template);
         setFraction(Fraction.MAFIA);
         setActionType(ActionType.OnlyZeroNight);

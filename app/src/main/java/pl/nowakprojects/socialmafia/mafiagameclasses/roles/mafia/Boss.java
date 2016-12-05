@@ -13,8 +13,8 @@ public class Boss extends PlayerRole {
 
     public Boss(){
         super();
-        setName(R.string.boss);
-        setDescription(R.string.bossDescription);
+        setNameId(R.string.boss);
+        setDescriptionId(R.string.bossDescription);
         setIconResourceID(R.drawable.image_template);
         setFraction(Fraction.MAFIA);
         setActionType(ActionType.NoAction);

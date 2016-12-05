@@ -13,8 +13,8 @@ public class Dentist extends PlayerRole {
 
     public Dentist(){
         super();
-        setName(R.string.dentist);
-        setDescription(R.string.dentistDescription);
+        setNameId(R.string.dentist);
+        setDescriptionId(R.string.dentistDescription);
         setIconResourceID(R.drawable.icon_dentist);
         setFraction(Fraction.SYNDICATE);
         setActionType(ActionType.AllNightsBesideZero);

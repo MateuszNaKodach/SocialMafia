@@ -135,10 +135,10 @@ public class DailyJudgmentVotingDialogFragment extends DialogFragment implements
         ArrayList<HumanPlayer> playersToKill = new ArrayList<>();
             playersToKill.add(outvotedHumanPlayer());
 
-        if(outvotedHumanPlayer()==mFirstPlayerToVote&&outvotedHumanPlayer().hasSaintRole()){
+        if(outvotedHumanPlayer()==mFirstPlayerToVote&&outvotedHumanPlayer().isNotDealedSaint()){
             for(String playerName: mFirstPlayersNamesVotesList)
                 playersToKill.add(mTheGame.findLiveHumanPlayerByName(playerName));
-        }else if((outvotedHumanPlayer()==mSecondPlayerToVote&&outvotedHumanPlayer().hasSaintRole())){
+        }else if((outvotedHumanPlayer()==mSecondPlayerToVote&&outvotedHumanPlayer().isNotDealedSaint())){
             for(String playerName: mSecondPlayersNamesVotesList)
                 playersToKill.add(mTheGame.findLiveHumanPlayerByName(playerName));
         }

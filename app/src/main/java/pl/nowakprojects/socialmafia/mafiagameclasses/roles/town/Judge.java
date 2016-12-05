@@ -13,8 +13,8 @@ public class Judge extends PlayerRole {
 
     public Judge(){
         super();
-        setName(R.string.judge);
-        setDescription(R.string.judgeDescription);
+        setNameId(R.string.judge);
+        setDescriptionId(R.string.judgeDescription);
         setIconResourceID(R.drawable.icon_judge);
         setFraction(Fraction.TOWN);
         setActionType(ActionType.ActionRequire);

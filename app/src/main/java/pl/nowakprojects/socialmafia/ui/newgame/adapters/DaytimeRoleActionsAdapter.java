@@ -15,14 +15,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
+import org.parceler.apache.commons.lang.IllegalClassException;
 
 import java.util.ArrayList;
 
 import pl.nowakprojects.socialmafia.R;
+import pl.nowakprojects.socialmafia.mafiagameclasses.roles.ContextRoleAction;
+import pl.nowakprojects.socialmafia.mafiagameclasses.roles.GameStateModifierRoleAction;
 import pl.nowakprojects.socialmafia.ui.newgame.fragments.RoleActionsFragment;
 import pl.nowakprojects.socialmafia.ui.newgame.dialogfragments.ShowingLoversRolesDialog;
-import pl.nowakprojects.socialmafia.ui.newgame.dialogfragments.ShowingPlayerGoodOrBadDialog;
-import pl.nowakprojects.socialmafia.ui.newgame.dialogfragments.ShowingPlayerRoleDialog;
 import pl.nowakprojects.socialmafia.mafiagameclasses.HumanPlayer;
 import pl.nowakprojects.socialmafia.mafiagameclasses.roles.PlayerRole;
 import pl.nowakprojects.socialmafia.mafiagameclasses.TheGame;
@@ -63,7 +64,7 @@ public class DaytimeRoleActionsAdapter extends RecyclerView.Adapter<DaytimeRoleA
         HumanPlayer humanPlayer = actionPlayers.get(position);
         PlayerRole playerRole = actionPlayers.get(position).getPlayerRole();
         //  holder.roleIcon.setImageResource(playerRole.getIconResourceID());
-        holder.roleName.setText(playerRole.getName());
+        holder.roleName.setText(playerRole.getNameId());
         holder.playerName.setText(actionPlayers.get(position).getPlayerName());
 
         if(humanPlayer.isAlive()) {
@@ -83,7 +84,7 @@ public class DaytimeRoleActionsAdapter extends RecyclerView.Adapter<DaytimeRoleA
             //-------------------------------------------------------
 
             //SPRAWDZANIE CZY MAFIA MA 2 STRAZALY ITP!!!
-            if (playerRole.getName() == R.string.priest) {
+            if (playerRole.getNameId() == R.string.priest) {
                 holder.choosingSpinner2.setVisibility(View.VISIBLE);
                 holder.choosingSpinner2.setAdapter(choosingSpinnerAdapter);
             } else
@@ -193,18 +194,18 @@ public class DaytimeRoleActionsAdapter extends RecyclerView.Adapter<DaytimeRoleA
                                 if (mTheGame.findHumanPlayerByName(choosingSpinner.getSelectedItem().toString()).equals(mTheGame.findHumanPlayerByName(choosingSpinner2.getSelectedItem().toString())))
                                     Toast.makeText(context.getApplicationContext(), roleActionsFragment.getString(R.string.theSameLovers), Toast.LENGTH_LONG).show();
                                 else {
-                                    makePriestAction(mTheGame.findHumanPlayerByName(choosingSpinner.getSelectedItem().toString()), mTheGame.findHumanPlayerByName(choosingSpinner2.getSelectedItem().toString()));
+                                    makeRoleAction(actionPlayers.get(getAdapterPosition()),mTheGame.findHumanPlayerByName(choosingSpinner.getSelectedItem().toString()), mTheGame.findHumanPlayerByName(choosingSpinner2.getSelectedItem().toString()));
                                     roleActionWasMade();
                                 }
                             } else if (actionPlayers.get(getAdapterPosition()).getRoleName() == R.string.mafiaKill) {
                                 if(mTheGame.findHumanPlayerByName(choosingSpinner.getSelectedItem().toString()).getRoleName()==R.string.priest&&mTheGame.isMafiaBossAlive()){
                                     Toast.makeText(roleActionsFragment.getActivity().getApplicationContext(), R.string.cantKillPriestWhileBossAlive, Toast.LENGTH_LONG).show();
                                 }else {
-                                    makeMafiaAction(mTheGame.findHumanPlayerByName(choosingSpinner.getSelectedItem().toString()), null);
+                                    makeRoleAction(actionPlayers.get(getAdapterPosition()),mTheGame.findHumanPlayerByName(choosingSpinner.getSelectedItem().toString()), null);
                                     roleActionWasMade();
                                 }
                                 } else {
-                                makeRoleAction(actionPlayers.get(getAdapterPosition()), mTheGame.findHumanPlayerByName(choosingSpinner.getSelectedItem().toString()));
+                                makeRoleAction(actionPlayers.get(getAdapterPosition()), mTheGame.findHumanPlayerByName(choosingSpinner.getSelectedItem().toString()),null);
                                 roleActionWasMade();
                             }
                         }else{
@@ -223,140 +224,15 @@ public class DaytimeRoleActionsAdapter extends RecyclerView.Adapter<DaytimeRoleA
          * @param actionPlayer
          * @param choosenPlayer
          */
-        void makeRoleAction(HumanPlayer actionPlayer, HumanPlayer choosenPlayer) {
-            switch (actionPlayer.getRoleName()) {
-                case R.string.policeman:
-                    //makePolicemanAction(choosenPlayer);
-                    actionPlayer.getPlayerRole().action(roleActionsFragment,choosenPlayer);
-                    break;
-                case R.string.prostitute:
-                    makeProstituteAction(choosenPlayer);
-                    break;
-                case R.string.medic:
-                    makeMedicAction(choosenPlayer);
-                    break;
-                case R.string.black:
-                    makeBlackManAction(choosenPlayer);
-                    break;
-                case R.string.blackJudge:
-                    makeBlackManAction(choosenPlayer);
-                    break;
-                case R.string.blackmailer:
-                    makeBlackmailerAction(choosenPlayer);
-                    break;
-                case R.string.blackmailerBoss:
-                    makeBlackmailerAction(choosenPlayer);
-                    break;
-                case R.string.darkmedic:
-                    makeDarkMedicAction(choosenPlayer);
-                    break;
-                case R.string.dealer:
-                    makeDealerAction(choosenPlayer);
-                    break;
-                case R.string.rapist:
-                    makeProstituteAction(choosenPlayer);
-                    break;
-                case R.string.hitler:
-                    makeProstituteAction(choosenPlayer);
-                    break;
-                case R.string.deathAngel:
-                    makeDeathAngelAction(choosenPlayer);
-                    break;
-                case R.string.bartender:
-                    //makeBartenderAction(choosenPlayer);
-                    break;
-            }
+        void makeRoleAction(HumanPlayer actionPlayer, HumanPlayer choosenPlayer, HumanPlayer choosenPlayer2) {
+         //MOZLIWOSC BYCIA DILOWANYM DO WSZYSTKICH FUNKCJI!!!
+            if(actionPlayer instanceof ContextRoleAction)
+                actionPlayer.getPlayerRole().action(roleActionsFragment,actionPlayer, choosenPlayer, choosenPlayer2);
+            else if(actionPlayer instanceof GameStateModifierRoleAction)
+                actionPlayer.getPlayerRole().action(mTheGame,actionPlayer,choosenPlayer, choosenPlayer2);
+           // else
+                //throw new IllegalClassException("There is necessary class implements ContextRoleAction or GameStateModifierRoleAction!");
         }
-
-        private void makeProstituteAction(HumanPlayer choosenPlayer) {
-            FragmentManager fragmentManager = roleActionsFragment.getFragmentManager();
-            ShowingPlayerRoleDialog showingPlayerRoleDialog = new ShowingPlayerRoleDialog(choosenPlayer);
-            showingPlayerRoleDialog.show(fragmentManager, "ProstituteAction");
-        }
-
-        private void makePolicemanAction(HumanPlayer choosenPlayer) {
-            FragmentManager fragmentManager = roleActionsFragment.getFragmentManager();
-            ShowingPlayerGoodOrBadDialog showingPlayerGoodOrBadDialog = new ShowingPlayerGoodOrBadDialog(choosenPlayer);
-            showingPlayerGoodOrBadDialog.show(fragmentManager, "PolicemanAction");
-        }
-
-        private void makeBlackManAction(HumanPlayer choosenPlayer) {
-            if (!(choosenPlayer.getGuardsList().contains(actionPlayers.get(getAdapterPosition()))))
-                choosenPlayer.addGuard(actionPlayers.get(getAdapterPosition()));
-
-            Toast.makeText(roleActionsFragment.getActivity().getApplicationContext(), choosenPlayer.getPlayerName() + " " + roleActionsFragment.getString(R.string.hasBlackNow), Toast.LENGTH_LONG).show();
-        }
-
-        private void makeBlackmailerAction(HumanPlayer choosenPlayer) {
-            if (!(choosenPlayer.getBlackMailersList().contains(actionPlayers.get(getAdapterPosition()))))
-                choosenPlayer.addBlackMailer(actionPlayers.get(getAdapterPosition()));
-
-            Toast.makeText(roleActionsFragment.getActivity().getApplicationContext(), choosenPlayer.getPlayerName() + " " + roleActionsFragment.getString(R.string.hasBlackmailerNow), Toast.LENGTH_LONG).show();
-        }
-
-        private void makePriestAction(HumanPlayer choosenPlayer1, HumanPlayer choosenPlayer2) {
-            choosenPlayer1.addLover(choosenPlayer2);
-            choosenPlayer2.addLover(choosenPlayer1);
-            FragmentManager fragmentManager = roleActionsFragment.getFragmentManager();
-            ShowingLoversRolesDialog theGameActionShowingLoversRolesDialog = new ShowingLoversRolesDialog(choosenPlayer1, choosenPlayer2);
-            theGameActionShowingLoversRolesDialog.show(fragmentManager, "PriestAction");
-        }
-
-        //DODAC MOZLIWOSC BYCIA DILOWANYM DO WSZYSTKICH FUNKCJI!!!!
-        //DOKONCZYC GDY ZABIJE SIE WIELE SKLEPÓW Z BRONIĄ!
-        private void makeMafiaAction(HumanPlayer choosenPlayer1, HumanPlayer choosenPlayer2) {
-            mTheGame.addLastNightHittingByMafiaPlayer(choosenPlayer1);
-            if(choosenPlayer2!=null){
-                mTheGame.addLastNightHittingByMafiaPlayer(choosenPlayer2);}
-
-            Toast.makeText(roleActionsFragment.getActivity().getApplicationContext(), choosenPlayer1.getPlayerName() + " " + roleActionsFragment.getString(R.string.hadHitByMafiaNow), Toast.LENGTH_LONG).show();
-        }
-
-        private void makeMedicAction(HumanPlayer choosenPlayer) {
-            mTheGame.addLastNightHealingByMedicPlayers(choosenPlayer);
-            Toast.makeText(roleActionsFragment.getActivity().getApplicationContext(), choosenPlayer.getPlayerName() + " " + roleActionsFragment.getString(R.string.isHealingThisNight), Toast.LENGTH_LONG).show();
-
-        }
-
-        private void makeDarkMedicAction(HumanPlayer choosenPlayer) {
-            if(choosenPlayer.isNotDealed()){
-                mTheGame.addLastNightHeatingByDarkMedicPlayers(choosenPlayer);
-            Toast.makeText(roleActionsFragment.getActivity().getApplicationContext(), choosenPlayer.getPlayerName() + " " + roleActionsFragment.getString(R.string.isHeatingThisNight), Toast.LENGTH_LONG).show();}
-
-        }
-
-        private void makeDealerAction(HumanPlayer choosenPlayer) {
-            mTheGame.addLastNightDealingByDealerPlayers(choosenPlayer);
-            mTheGame.findHumanPlayerByName(choosenPlayer.getPlayerName()).setDealed(true);
-            Toast.makeText(roleActionsFragment.getActivity().getApplicationContext(), choosenPlayer.getPlayerName() + " " + roleActionsFragment.getString(R.string.isDealingThisNight), Toast.LENGTH_LONG).show();
-
-        }
-
-        private void makeDeathAngelAction(HumanPlayer choosenPlayer) {
-            choosenPlayer.addStigma();
-            Toast.makeText(roleActionsFragment.getActivity().getApplicationContext(), choosenPlayer.getPlayerName() + " " + roleActionsFragment.getString(R.string.isSignedThisNight), Toast.LENGTH_LONG).show();
-
-        }
-
-        private void makeBartenderAction() {
-            //przusawnie strzalu, wybiera stronę i ilość
-        }
-
-        private void makeHitlerAction() {
-            FragmentManager fragmentManager = roleActionsFragment.getFragmentManager();
-            //TheGameActionShowingJewPlayerName theGameActionShowingJewPlayerName = new TheGameActionShowingJewPlayerName(theGameActionActivity.mTheGame.findHumanPlayerByRoleName(getString(R.string.jew)));
-            //theGameActionShowingJewPlayerName.show(fragmentManager, "ProstituteAction");
-        }
-
-        //----daytime::
-        private void makeJudgeDecisionAction() {
-        }
-
-        ;
-
-        //-----
-
-
     }
 
 

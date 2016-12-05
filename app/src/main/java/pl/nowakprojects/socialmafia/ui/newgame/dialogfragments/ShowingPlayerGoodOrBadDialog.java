@@ -64,7 +64,7 @@ public class ShowingPlayerGoodOrBadDialog extends DialogFragment {
         showedPlayerName = (TextView) view.findViewById(R.id.showedPlayerName);
         showedPlayerName.setText(choosenPlayer.getPlayerName());
         thumbIcon = (ImageView) view.findViewById(R.id.thumb);
-        if (choosenPlayer.getPlayerRole().getFraction() == PlayerRole.Fraction.MAFIA || choosenPlayer.hasJewRole())
+        if (choosenPlayer.getPlayerRole().getFraction() == PlayerRole.Fraction.MAFIA || choosenPlayer.isNotDealedJew())
             thumbIcon.setImageResource(R.drawable.icon_thumbdown2);
         else
             thumbIcon.setImageResource(R.drawable.icon_thumbup3);

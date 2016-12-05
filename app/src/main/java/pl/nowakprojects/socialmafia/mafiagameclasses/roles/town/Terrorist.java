@@ -13,8 +13,8 @@ public class Terrorist extends PlayerRole {
 
     public Terrorist(){
         super();
-        setName(R.string.terrorist);
-        setDescription(R.string.terroristDescription);
+        setNameId(R.string.terrorist);
+        setDescriptionId(R.string.terroristDescription);
         setIconResourceID(R.drawable.icon_terrorist);
         setFraction(Fraction.TOWN);
         setActionType(ActionType.ActionRequire);

@@ -1,9 +1,14 @@
 package pl.nowakprojects.socialmafia.mafiagameclasses.roles.mafia;
 
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+
 import org.parceler.Parcel;
 
 import pl.nowakprojects.socialmafia.R;
+import pl.nowakprojects.socialmafia.mafiagameclasses.HumanPlayer;
 import pl.nowakprojects.socialmafia.mafiagameclasses.roles.PlayerRole;
+import pl.nowakprojects.socialmafia.ui.newgame.dialogfragments.ShowingPlayerRoleDialog;
 
 /**
  * Created by Mateusz on 02.12.2016.
@@ -13,11 +18,17 @@ public class Rapist extends PlayerRole {
 
     public Rapist(){
         super();
-        setName(R.string.rapist);
-        setDescription(R.string.rapistDescription);
+        setNameId(R.string.rapist);
+        setDescriptionId(R.string.rapistDescription);
         setIconResourceID(R.drawable.image_template);
         setFraction(Fraction.MAFIA);
         setActionType(ActionType.OnlyZeroNight);
         setNightWakeHierarchyNumber(130);
+    }
+
+    public void action(Fragment fragment, HumanPlayer... chosePlayers) {
+        FragmentManager fragmentManager = fragment.getFragmentManager();
+        ShowingPlayerRoleDialog showingPlayerRoleDialog = new ShowingPlayerRoleDialog(chosePlayers[0]);
+        showingPlayerRoleDialog.show(fragmentManager, "RapistAction");
     }
 }

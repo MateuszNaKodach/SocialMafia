@@ -27,6 +27,7 @@ import pl.nowakprojects.socialmafia.R;
 import pl.nowakprojects.socialmafia.mafiagameclasses.HumanPlayer;
 import pl.nowakprojects.socialmafia.mafiagameclasses.roles.PlayerRole;
 import pl.nowakprojects.socialmafia.mafiagameclasses.TheGame;
+import pl.nowakprojects.socialmafia.mafiagameclasses.roles.PlayerRolesManager;
 
 public class ConnectPlayersToRolesActivity extends AppCompatActivity {
 
@@ -98,6 +99,7 @@ public class ConnectPlayersToRolesActivity extends AppCompatActivity {
 
     private void vReceiveExtraObjects(){
         mSelectedPlayersRoles = Parcels.unwrap(getIntent().getParcelableExtra(SelectPlayerRolesActivity.EXTRA_SELECTED_ROLES_LIST));
+        PlayerRolesManager.setContextForRoles(mSelectedPlayersRoles,this);
         mPlayersNamesList = getIntent().getStringArrayListExtra(TapPlayersNamesActivity.EXTRA_PLAYERS_NAMES_LIST);
     }
 
@@ -223,7 +225,7 @@ public class ConnectPlayersToRolesActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         if (isRoleShowed) {
-                            humanPlayersList.get(getAdapterPosition()).getPlayerRole().showRoleDescriptionDialog(context);
+                            humanPlayersList.get(getAdapterPosition()).getPlayerRole().showRoleDescriptionDialog();
                         }
                     }
                 });

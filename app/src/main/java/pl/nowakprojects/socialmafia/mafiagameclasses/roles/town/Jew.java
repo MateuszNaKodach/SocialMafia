@@ -13,8 +13,8 @@ public class Jew extends PlayerRole {
 
     public Jew(){
         super();
-        setName(R.string.jew);
-        setDescription(R.string.jewDescription);
+        setNameId(R.string.jew);
+        setDescriptionId(R.string.jewDescription);
         setIconResourceID(R.drawable.ic_jew);
         setFraction(Fraction.TOWN);
         setActionType(ActionType.ActionRequire);

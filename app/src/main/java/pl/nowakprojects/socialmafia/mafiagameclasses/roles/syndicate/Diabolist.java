@@ -13,8 +13,8 @@ public class Diabolist extends PlayerRole {
 
     public Diabolist(){
         super();
-        setName(R.string.diabolist);
-        setDescription(R.string.diabolistDescription);
+        setNameId(R.string.diabolist);
+        setDescriptionId(R.string.diabolistDescription);
         setIconResourceID(R.drawable.ic_diabolist);
         setFraction(Fraction.SYNDICATE);
         setActionType(ActionType.AllNightsBesideZero);

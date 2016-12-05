@@ -13,8 +13,8 @@ public class Hunter extends PlayerRole {
 
     public Hunter(){
         super();
-        setName(R.string.hunter);
-        setDescription(R.string.hunterDescription);
+        setNameId(R.string.hunter);
+        setDescriptionId(R.string.hunterDescription);
         setIconResourceID(R.drawable.image_template);
         setFraction(Fraction.SYNDICATE);
         setActionType(ActionType.ActionRequire);

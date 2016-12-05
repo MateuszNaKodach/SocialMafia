@@ -13,8 +13,8 @@ public class Bartender extends PlayerRole {
 
     public Bartender(){
         super();
-        setName(R.string.bartender);
-        setDescription(R.string.bartenderDescription);
+        setNameId(R.string.bartender);
+        setDescriptionId(R.string.bartenderDescription);
         setIconResourceID(R.drawable.ic_bartender);
         setFraction(Fraction.SYNDICATE);
         setActionType(ActionType.OnceAGame);

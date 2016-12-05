@@ -13,8 +13,8 @@ public class Mafioso extends PlayerRole {
 
     public Mafioso(){
         super();
-        this.setName(R.string.mafioso);
-        this.setDescription(R.string.mafiosoDescription);
+        this.setNameId(R.string.mafioso);
+        this.setDescriptionId(R.string.mafiosoDescription);
         this.setIconResourceID(R.drawable.image_template);
         this.setFraction(Fraction.MAFIA);
         this.setActionType(ActionType.NoAction);

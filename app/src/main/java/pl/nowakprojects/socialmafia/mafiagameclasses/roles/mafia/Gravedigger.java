@@ -13,8 +13,8 @@ public class Gravedigger extends PlayerRole {
 
     public Gravedigger(){
         super();
-        setName(R.string.gravedigger);
-        setDescription(R.string.gravediggerDescription);
+        setNameId(R.string.gravedigger);
+        setDescriptionId(R.string.gravediggerDescription);
         setIconResourceID(R.drawable.ic_gravedigger);
         setFraction(Fraction.MAFIA);
         setActionType(ActionType.AllNightsBesideZero);

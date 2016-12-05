@@ -13,8 +13,8 @@ public class Mayor extends PlayerRole {
 
     public Mayor(){
         super();
-        setName(R.string.mayor);
-        setDescription(R.string.mayorDescription);
+        setNameId(R.string.mayor);
+        setDescriptionId(R.string.mayorDescription);
         setIconResourceID(R.drawable.ic_lawyer);
         setFraction(Fraction.TOWN);
         setActionType(ActionType.ActionRequire);

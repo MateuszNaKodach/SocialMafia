@@ -103,9 +103,9 @@ public class DuelVotingDialogFragment extends DialogFragment {
     private void hpCalculateDuelResult(){
         mLoosersList.clear();
         //mLoosersList = new ArrayList<>();
-        if(mAgressiveHumanPlayer.hasSpeedyRole()&&!mInsultedHumanPlayer.hasSpeedyRole())
+        if(mAgressiveHumanPlayer.isNotDealedFractionSpeedy()&&!mInsultedHumanPlayer.isNotDealedFractionSpeedy())
             mLoosersList.add(mInsultedHumanPlayer);
-        else if(!mAgressiveHumanPlayer.hasSpeedyRole()&&mInsultedHumanPlayer.hasSpeedyRole())
+        else if(!mAgressiveHumanPlayer.isNotDealedFractionSpeedy()&&mInsultedHumanPlayer.isNotDealedFractionSpeedy())
             mLoosersList.add(mAgressiveHumanPlayer);
         else if(mInsultedPlayersNamesVotesList.size()==mAgressivePlayersNamesVotesList.size()){
             mLoosersList.add(mAgressiveHumanPlayer);
@@ -129,11 +129,11 @@ public class DuelVotingDialogFragment extends DialogFragment {
     }
 
     public void additionalSaintKill(){
-        if(mAgressiveHumanPlayer.hasSaintRole()&&mLoosersList.contains(mAgressiveHumanPlayer))
+        if(mAgressiveHumanPlayer.isNotDealedSaint()&&mLoosersList.contains(mAgressiveHumanPlayer))
             for(String hpName: mAgressivePlayersNamesVotesList)
                 mLoosersList.add(mTheGame.findHumanPlayerByName(hpName));
 
-        if(mInsultedHumanPlayer.hasSaintRole()&&mLoosersList.contains(mInsultedHumanPlayer))
+        if(mInsultedHumanPlayer.isNotDealedSaint()&&mLoosersList.contains(mInsultedHumanPlayer))
             for(String hpName: mInsultedPlayersNamesVotesList)
                 mLoosersList.add(mTheGame.findHumanPlayerByName(hpName));
     }
@@ -347,9 +347,9 @@ public class DuelVotingDialogFragment extends DialogFragment {
 
     private void hpCalculateDuelResult(){
         mLoosersList = new ArrayList<>();
-        if(mAgressiveHumanPlayer.hasSpeedyRole()&&!mInsultedHumanPlayer.hasSpeedyRole())
+        if(mAgressiveHumanPlayer.isNotDealedFractionSpeedy()&&!mInsultedHumanPlayer.isNotDealedFractionSpeedy())
             mLoosersList.add(mInsultedHumanPlayer);
-        else if(!mAgressiveHumanPlayer.hasSpeedyRole()&&mInsultedHumanPlayer.hasSpeedyRole())
+        else if(!mAgressiveHumanPlayer.isNotDealedFractionSpeedy()&&mInsultedHumanPlayer.isNotDealedFractionSpeedy())
             mLoosersList.add(mAgressiveHumanPlayer);
         else if(seekbarKillInsultedPlayerVotes.getProgress()==seekbarKillAgressivePlayerVotes.getProgress()){
             mLoosersList.add(mAgressiveHumanPlayer);

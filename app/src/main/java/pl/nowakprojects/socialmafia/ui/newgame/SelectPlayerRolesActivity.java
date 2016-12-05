@@ -20,7 +20,7 @@ import butterknife.ButterKnife;
 import pl.nowakprojects.socialmafia.R;
 import pl.nowakprojects.socialmafia.ui.newgame.adapters.PlayerChoosingRoleAdapter;
 import pl.nowakprojects.socialmafia.mafiagameclasses.roles.PlayerRole;
-import pl.nowakprojects.socialmafia.mafiagameclasses.RolesDataObjects;
+import pl.nowakprojects.socialmafia.mafiagameclasses.roles.PlayerRolesManager;
 
 /**
  * Wybór ról jakie znajdą się w aktualnej grze
@@ -46,6 +46,7 @@ public class SelectPlayerRolesActivity extends AppCompatActivity implements Play
     private int i_selectedMafiaRoles = 0;
     private int i_selectedSyndicateRoles = 0;
 
+    private PlayerRolesManager playerRolesManager;
 
     @BindView(R.id.selectTownRolesRecyclerView) RecyclerView mTownRolesRecyclerView;
     @BindView(R.id.selectMafiaRolesRecyclerView)    RecyclerView mMafiaRolesRecyclerView;
@@ -63,11 +64,14 @@ public class SelectPlayerRolesActivity extends AppCompatActivity implements Play
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_player_roles);
 
+        playerRolesManager = PlayerRolesManager.getInstance(this);
+
         ButterKnife.bind(this);
 
         vUiSetupUserInterface();
 
         vReceiveExtraObjects();
+
 
 
     }// protected void onCreate(Bundle savedInstanceState)
@@ -131,19 +135,19 @@ public class SelectPlayerRolesActivity extends AppCompatActivity implements Play
     }
 
     private void vUiSetupRecyclerView(){
-        prlist_townRoles = RolesDataObjects.getTownRolesList();
+        prlist_townRoles = playerRolesManager.getTownRolesList();
         mTownRolesRecyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
         adapter_townRolesList = new PlayerChoosingRoleAdapter(prlist_townRoles,this);
         adapter_townRolesList.setRoleAmountChangedCallback(this);
         mTownRolesRecyclerView.setAdapter(adapter_townRolesList);
 
-        prlist_mafiaRoles = RolesDataObjects.getMafiaRolesList();
+        prlist_mafiaRoles = playerRolesManager.getMafiaRolesList();
         mMafiaRolesRecyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
         adapter_mafiaRolesList = new PlayerChoosingRoleAdapter(prlist_mafiaRoles,this);
         adapter_mafiaRolesList.setRoleAmountChangedCallback(this);
         mMafiaRolesRecyclerView.setAdapter(adapter_mafiaRolesList);
 
-        prlist_syndicateRoles = RolesDataObjects.getSyndicateRolesList();
+        prlist_syndicateRoles = playerRolesManager.getSyndicateRolesList();
         mSyndicateRolesRecyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
         adapter_syndicateRolesList = new PlayerChoosingRoleAdapter(prlist_syndicateRoles,this);
         adapter_syndicateRolesList.setRoleAmountChangedCallback(this);

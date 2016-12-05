@@ -13,8 +13,8 @@ public class Timestopper extends PlayerRole {
 
     public Timestopper(){
         super();
-        setName(R.string.timestopper);
-        setDescription(R.string.timestopperDescription);
+        setNameId(R.string.timestopper);
+        setDescriptionId(R.string.timestopperDescription);
         setIconResourceID(R.drawable.icon_timestopper);
         setFraction(Fraction.SYNDICATE);
         setActionType(ActionType.ActionRequire);

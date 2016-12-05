@@ -340,5 +340,7 @@ Raz w ciągu gry,  podczas trwania dnia wybiera osobę, która aż do nocy nie b
     <string name="timestopperDescription" />
     <string name="hunterDescription" />
     <string name="dentistDescription" />
+    <string name="and2">oraz</string>
+    <string name="dealExplanation">Funkcja została zablokowana przez dilera!</string>
 
 </resources>

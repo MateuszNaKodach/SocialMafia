@@ -13,8 +13,8 @@ public class Saint extends PlayerRole {
 
     public Saint(){
         super();
-        setName(R.string.saint);
-        setDescription(R.string.saintDescription);
+        setNameId(R.string.saint);
+        setDescriptionId(R.string.saintDescription);
         setIconResourceID(R.drawable.image_template);
         setFraction(Fraction.SYNDICATE);
         setActionType(ActionType.ActionRequire);

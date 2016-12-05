@@ -13,8 +13,8 @@ public class SyndicateBoss extends PlayerRole {
 
     public SyndicateBoss(){
         super();
-        setName(R.string.syndicateBoss);
-        setDescription(R.string.syndicateBossDescription);
+        setNameId(R.string.syndicateBoss);
+        setDescriptionId(R.string.syndicateBossDescription);
         setIconResourceID(R.drawable.image_template);
         setFraction(Fraction.SYNDICATE);
         setActionType(ActionType.OnlyZeroNight);
