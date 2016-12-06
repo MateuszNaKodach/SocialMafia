@@ -1,7 +1,6 @@
 package pl.nowakprojects.socialmafia.ui.newgame.adapters;
 
 import android.content.Context;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,7 +14,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
-import org.parceler.apache.commons.lang.IllegalClassException;
 
 import java.util.ArrayList;
 
@@ -23,7 +21,6 @@ import pl.nowakprojects.socialmafia.R;
 import pl.nowakprojects.socialmafia.mafiagameclasses.roles.ContextRoleAction;
 import pl.nowakprojects.socialmafia.mafiagameclasses.roles.GameStateModifierRoleAction;
 import pl.nowakprojects.socialmafia.ui.newgame.fragments.RoleActionsFragment;
-import pl.nowakprojects.socialmafia.ui.newgame.dialogfragments.ShowingLoversRolesDialog;
 import pl.nowakprojects.socialmafia.mafiagameclasses.HumanPlayer;
 import pl.nowakprojects.socialmafia.mafiagameclasses.roles.PlayerRole;
 import pl.nowakprojects.socialmafia.mafiagameclasses.TheGame;
@@ -45,7 +42,7 @@ public class DaytimeRoleActionsAdapter extends RecyclerView.Adapter<DaytimeRoleA
         if(mTheGame.isSpecialZeroNightNow()) //OGARNAC CI CO SIE BUDZA O DANEJ PORZE DNIA
             this.actionPlayers = mTheGame.getZeroNightHumanPlayers();
         else if(mTheGame.isNightDaytimeNow())
-            this.actionPlayers = mTheGame.getAllNightsBesideZeroHumanPlayers();
+            this.actionPlayers = mTheGame.getNormalNightRolesHumanPlayers();
         //else if(mTheGame.isDayDaytimeNow())
         //    this.actionPlayers = mTheGame.getAllDaysHumanPlayers();
 
@@ -168,7 +165,7 @@ public class DaytimeRoleActionsAdapter extends RecyclerView.Adapter<DaytimeRoleA
                  */
                 void roleActionWasMade() {
                     if (!(actionPlayers.get(getAdapterPosition()).isRoleActionMade())) {
-                        mTheGame.iActionMadeThisTime();
+                        mTheGame.getAmountActionsMadeThisTime();
                         choosingSpinner.setEnabled(false);
                         choosingSpinner2.setEnabled(false);
                         confirmButton.setText(R.string.roleActionDone);

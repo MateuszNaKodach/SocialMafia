@@ -75,7 +75,7 @@ public class DuelChallengesFragment extends Fragment{
     }
 
     public void vStartNewDuel(){
-        mTheGame.setMiThisDayRemainedDuels(mTheGame.getMiThisDayRemainedDuels()-1);
+        mTheGame.setCurrentDayRemainedDuels(mTheGame.getCurrentDayRemainedDuels()-1);
         vUiUpdateTextView();
         fragmentManager = getChildFragmentManager();
         DuelVotingDialogFragment theGameDuelActionVotingFragment = new DuelVotingDialogFragment(mTheGame, mTheGame.findHumanPlayerByName(mAgresivePlayerSpinner.getSelectedItem().toString()), mTheGame.findHumanPlayerByName(mInsultedPlayerSpinner.getSelectedItem().toString()));
@@ -126,7 +126,7 @@ public class DuelChallengesFragment extends Fragment{
             public void onClick(View view) {
                 if(samePlayersChose())
                     Toast.makeText(getActivity(),R.string.theSameDuelPlayers,Toast.LENGTH_SHORT).show();
-                else if (mTheGame.getMiThisDayRemainedDuels()==0||mTheGame.getMiThisDayThrownChallenges()==mTheGame.getMaxDailyDuelChallenges()){
+                else if (mTheGame.getCurrentDayRemainedDuels()==0||mTheGame.getCurrentDayThrownChallenges()==mTheGame.getMaxDailyDuelChallenges()){
                     Toast.makeText(getActivity(),R.string.noduelsleast,Toast.LENGTH_SHORT).show();
                 }else{
                     vUiSetupMaterialDialog();
@@ -137,8 +137,8 @@ public class DuelChallengesFragment extends Fragment{
     }
 
     private void vUiUpdateTextView(){
-        mRemainedDuelsTextView.setText(getString(R.string.remained_duels,mTheGame.getMiThisDayRemainedDuels(),mTheGame.getMaxDailyDuelAmount()));
-        mThrownChallengesTextView.setText(getString(R.string.thrownChallenges,mTheGame.getMiThisDayThrownChallenges(),mTheGame.getMaxDailyDuelChallenges()));
+        mRemainedDuelsTextView.setText(getString(R.string.remained_duels,mTheGame.getCurrentDayRemainedDuels(),mTheGame.getMaxDailyDuelAmount()));
+        mThrownChallengesTextView.setText(getString(R.string.thrownChallenges,mTheGame.getCurrentDayThrownChallenges(),mTheGame.getMaxDailyDuelChallenges()));
     }
 
     private void vUiSetupMaterialDialog(){
@@ -154,7 +154,7 @@ public class DuelChallengesFragment extends Fragment{
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        mTheGame.setMiThisDayThrownChallenges(mTheGame.getMiThisDayThrownChallenges()+1);
+                        mTheGame.setCurrentDayThrownChallenges(mTheGame.getCurrentDayThrownChallenges()+1);
                         vUiUpdateTextView();
                         //boolean bool = mTheGame.isJudgeInTheGameSettings();
                         if(mTheGame.isJudgeInTheGameSettings())

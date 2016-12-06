@@ -30,3 +30,17 @@ TheGame, takie klasy jak:
 RoleManager,
 GameConfiguration
 wywoluje sie ta nie nadpisana rola!!!
+
+UZYWANIE GET I SET WENWATRZ KONSTRUKTORA NIE JEST DOBRE, BO PRZEZ TO NIE MOZNA ZROBIC IMMUTABE CLASS!!!!!
+
+Minimun API for forEach for list - 24, for lambda and stream
+
+Moze sprawdzac czy streamy sa puste i jesli tak to zwracac nulle!? Bo one daja exception
+
+
+Co umiem:
+testy JUNit
+Debugowanie aplikacji
+
+Dodac metode dla kazdej roli, ktora bedzie przed wykoanniem akcji sprawdzac czy nie jest dilowana,
+czy jej nie zuzyla i czy zyje.

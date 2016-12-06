@@ -7,7 +7,6 @@ import org.parceler.Parcel;
 import pl.nowakprojects.socialmafia.R;
 import pl.nowakprojects.socialmafia.mafiagameclasses.HumanPlayer;
 import pl.nowakprojects.socialmafia.mafiagameclasses.TheGame;
-import pl.nowakprojects.socialmafia.mafiagameclasses.roles.ContextRoleAction;
 import pl.nowakprojects.socialmafia.mafiagameclasses.roles.GameStateModifierRoleAction;
 import pl.nowakprojects.socialmafia.mafiagameclasses.roles.PlayerRole;
 
@@ -29,9 +28,9 @@ public class MafiaKilling extends PlayerRole implements GameStateModifierRoleAct
 
     @Override
     public void action(TheGame theGame, HumanPlayer actionPlayer, HumanPlayer... chosePlayers) {
-        theGame.addLastNightHittingByMafiaPlayer(chosePlayers[0]);
+        theGame.appendLastNightHittingByMafiaPlayer(chosePlayers[0]);
         if(chosePlayers[1]!=null){
-            theGame.addLastNightHittingByMafiaPlayer(chosePlayers[1]);}
+            theGame.appendLastNightHittingByMafiaPlayer(chosePlayers[1]);}
 
         Toast.makeText(mContext.getApplicationContext(),
                 chosePlayers[0].getPlayerName() + (

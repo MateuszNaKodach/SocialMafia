@@ -7,7 +7,6 @@ import org.parceler.Parcel;
 
 import pl.nowakprojects.socialmafia.R;
 import pl.nowakprojects.socialmafia.mafiagameclasses.HumanPlayer;
-import pl.nowakprojects.socialmafia.mafiagameclasses.TheGame;
 import pl.nowakprojects.socialmafia.mafiagameclasses.roles.ContextRoleAction;
 import pl.nowakprojects.socialmafia.mafiagameclasses.roles.PlayerRole;
 
@@ -29,7 +28,7 @@ public class Blackman extends PlayerRole implements ContextRoleAction {
 
     @Override
     public void action(Fragment fragment, HumanPlayer actionPlayer, HumanPlayer... chosePlayers) {
-        chosePlayers[0].addGuard(actionPlayer);
+        chosePlayers[0].appendGuard(actionPlayer);
         Toast.makeText(fragment.getActivity().getApplicationContext(), chosePlayers[0].getPlayerName() + " " + fragment.getString(R.string.hasBlackNow), Toast.LENGTH_LONG).show();
     }
 }

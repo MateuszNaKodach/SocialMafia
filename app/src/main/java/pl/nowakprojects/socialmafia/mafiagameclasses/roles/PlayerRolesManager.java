@@ -50,6 +50,10 @@ public class PlayerRolesManager {
         mContext=context;
     }
 
+
+
+
+
     private void setContextForRoles(ArrayList<PlayerRole> rolesList){
         Stream.of(rolesList).forEach(playerRole->playerRole.setContext(mContext));
     }
@@ -68,13 +72,15 @@ public class PlayerRolesManager {
         setContextForRoles(mSyndicateRolesList);
     }
 
+
+
+
     public ArrayList<PlayerRole> getTownRolesList(){
        if(mTownRolesList==null)
            mTownRolesList = generateTownRolesList();
 
         return mTownRolesList;
     }
-
 
     public ArrayList<PlayerRole> getMafiaRolesList(){
         if(mMafiaRolesList==null)
@@ -151,15 +157,18 @@ public class PlayerRolesManager {
         return playerRoles;
     }
 
-    //public static ArrayList<PlayerRole> getSyndicateRolesList(){
-    //    return generateSyndicateRolesList();
-   // }
+
+
 
     public ArrayList<PlayerRole> getNeutralRolesList(){
         ArrayList<PlayerRole> playerRoles = new ArrayList<>();
      //   playerRoles.add(new PlayerRole(R.string.roleDobule,R.string.doubleDescription,R.drawable.image_template, PlayerRole.Fraction.NEUTRAL, PlayerRole.ActionType.Double,40));
         return playerRoles;
     }
+
+
+
+
 
     /**
      * Roles that are NOT belong to one player, like mafia kill shot.
@@ -175,8 +184,7 @@ public class PlayerRolesManager {
     }
 
     public PlayerRole getMafiaKillRole(){
-        MafiaKilling mafiaKilling = new MafiaKilling();
-        mafiaKilling.getMultiPlayerRoleFromNameId(R.string.mafiaKill);
+        MafiaKilling mafiaKilling = (MafiaKilling) PlayerRole.getMultiPlayerRoleFromNameId(R.string.mafiaKill);
         mafiaKilling.setContext(mContext);
         return mafiaKilling;
     }

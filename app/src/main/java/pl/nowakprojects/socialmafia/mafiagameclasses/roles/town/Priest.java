@@ -29,8 +29,8 @@ public class Priest extends PlayerRole implements ContextRoleAction{
 
     //@Override
     public void action(Fragment fragment, HumanPlayer actionPlayer, HumanPlayer... chosePlayers) {
-        chosePlayers[0].addLover(chosePlayers[1]);
-        chosePlayers[1].addLover(chosePlayers[0]);
+        chosePlayers[0].appendLover(chosePlayers[1]);
+        chosePlayers[1].appendLover(chosePlayers[0]);
         FragmentManager fragmentManager = fragment.getFragmentManager();
         ShowingLoversRolesDialog theGameActionShowingLoversRolesDialog = new ShowingLoversRolesDialog(chosePlayers[0], chosePlayers[1]);
         theGameActionShowingLoversRolesDialog.show(fragmentManager, "PriestAction");

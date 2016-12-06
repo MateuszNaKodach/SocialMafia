@@ -103,7 +103,7 @@ public class TheGameActionActivity extends AppCompatActivity implements OnPlayer
 
     private void receiveNewGameSettings() {
         theGame = Parcels.unwrap(getIntent().getParcelableExtra(ConnectPlayersToRolesActivity.EXTRA_NEW_GAME));
-        theGame.initalize(this);
+        theGame.setupGameAndRolesContext(this);
         theGame.setContext(getApplicationContext());
     }
 
@@ -140,7 +140,7 @@ public class TheGameActionActivity extends AppCompatActivity implements OnPlayer
     }
 
     void endNightAction() {
-        theGame.calculateNightimeResult();
+        theGame.commitNightKillingResults();
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.remove(roleActionsFragment);
         fragmentTransaction.commit();
@@ -160,6 +160,7 @@ public class TheGameActionActivity extends AppCompatActivity implements OnPlayer
         fragmentTransaction.add(R.id.dayJudgmentFragment, gameDailyVotingFragment, DAILY_VOTING_FRAGMENT);
         fragmentTransaction.add(R.id.dayDuelsFragment, gameDailyDuelChallengesFragment, DAILY_DUELS_FRAGMENT);
         fragmentTransaction.commit();
+        onPlayerKilled();
 
 
     }

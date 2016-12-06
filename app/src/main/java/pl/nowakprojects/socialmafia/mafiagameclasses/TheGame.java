@@ -5,11 +5,11 @@ package pl.nowakprojects.socialmafia.mafiagameclasses;
 
 import android.content.Context;
 
+import com.annimon.stream.Collectors;
 import com.annimon.stream.Stream;
 
 import org.parceler.Parcel;
 import org.parceler.Transient;
-import org.parceler.javaxinject.Singleton;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -80,65 +80,71 @@ public class TheGame {
 
 	//Zmienne do aktualnej nocy
 	ArrayList<HumanPlayer> lastNightHealingByMedicPlayers;
-	ArrayList<HumanPlayer> lastNightHeatingByDarkMedicPlayers;
+	ArrayList<HumanPlayer> lastNightHittingByDarkMedicPlayers;
 	ArrayList<HumanPlayer> lastNightDealingByDealerPlayers;
-	ArrayList<HumanPlayer> lastNightHittingByMafiaPlayer;
-	ArrayList<HumanPlayer> lastNightKilledPlayer;
+	ArrayList<HumanPlayer> lastNightHittingByMafiaPlayers;
+	ArrayList<HumanPlayer> lastNightKilledPlayers;
 
 	//Zmienne do aktualnego dnia
-	ArrayList<HumanPlayer> lastDayOperateByDentistPlayer;
-	int miThisDayRemainedDuels= maxDailyDuelAmount;
-	int miThisDayThrownChallenges=0;
+	ArrayList<HumanPlayer> lastDayOperateByDentistPlayers;
+	int currentDayRemainedDuels = maxDailyDuelAmount;
+	int currentDayThrownChallenges =0;
 
 	public TheGame() {
 		lastNightHealingByMedicPlayers = new ArrayList<>();
-		lastNightHeatingByDarkMedicPlayers = new ArrayList<>();
-		lastNightHittingByMafiaPlayer = new ArrayList<>();
+		lastNightHittingByDarkMedicPlayers = new ArrayList<>();
+		lastNightHittingByMafiaPlayers = new ArrayList<>();
 		lastNightDealingByDealerPlayers = new ArrayList<>();
-		lastDayOperateByDentistPlayer = new ArrayList<>();
-		lastNightKilledPlayer = new ArrayList<>();
+		lastDayOperateByDentistPlayers = new ArrayList<>();
+		lastNightKilledPlayers = new ArrayList<>();
 		temporaryLastTimeKilledPlayersList = new ArrayList<>();
 		choseDailyJudgmentPlayersList = new ArrayList<>();
 	}
 
 	public TheGame(Context context) {
-		this.mContext = context;
+		//this.mContext = context;
 		lastNightHealingByMedicPlayers = new ArrayList<>();
-		lastNightHeatingByDarkMedicPlayers = new ArrayList<>();
-		lastNightHittingByMafiaPlayer = new ArrayList<>();
+		lastNightHittingByDarkMedicPlayers = new ArrayList<>();
+		lastNightHittingByMafiaPlayers = new ArrayList<>();
 		lastNightDealingByDealerPlayers = new ArrayList<>();
-		lastDayOperateByDentistPlayer = new ArrayList<>();
-		lastNightKilledPlayer = new ArrayList<>();
+		lastDayOperateByDentistPlayers = new ArrayList<>();
+		lastNightKilledPlayers = new ArrayList<>();
 		temporaryLastTimeKilledPlayersList = new ArrayList<>();
 		choseDailyJudgmentPlayersList = new ArrayList<>();
+		setupGameAndRolesContext(context);
 	}
 
-	public void setContext(Context context){
-		this.mContext = context;
+	public void setupGameAndRolesContext(Context context){
+		this.mContext = context.getApplicationContext();
+		PlayerRolesManager.setContextForPlayersRoles(playersInfoList,context);
 	}
 
 	public boolean isGameFinished(){
 		return calculateWinner()!= PlayerRole.Fraction.NOFRACTION;
 	}
 
-	//To jest tylko tymczasowa metoda na ustawienie kontekstu funkcji!!!
-	public void initalize(Context context){
-		this.mContext = context.getApplicationContext();
-		PlayerRolesManager.setContextForPlayersRoles(playersInfoList,context);
-	}
-	public boolean isFirstDay() { return this.currentDayNumber ==0;}
+	public boolean isFirstDay() { return this.currentDayNumber ==1;}
 
+	//DOKONCZYC JESLI JEST SYNDYKAT!!!!
 	private PlayerRole.Fraction calculateWinner(){
 			//if(gameWithoutSyndicate())
-				if(getLiveMafiaPlayersAmount()>=getLiveTownPlayersAmount())
+				if(isMoreOrEqualMafiaThanTownPlayers())
 					return PlayerRole.Fraction.MAFIA;
-				else if(getLiveMafiaPlayersAmount()==0&&getLiveTownPlayersAmount()>0)
+				else if(isThereNoMafiaAndMoreTownPlayers())
 					return PlayerRole.Fraction.TOWN;
 
 				return PlayerRole.Fraction.NOFRACTION;
 	}
 
-	public boolean gameWithoutSyndicate(){
+	private boolean isMoreOrEqualMafiaThanTownPlayers(){
+		return getLiveMafiaPlayersAmount()>=getLiveTownPlayersAmount();
+	}
+
+	private boolean isThereNoMafiaAndMoreTownPlayers(){
+		return getLiveMafiaPlayersAmount()==0&&getLiveTownPlayersAmount()>0;
+	}
+
+	private boolean gameWithoutSyndicate(){
 		return syndicateStartAmount ==0;
 	}
 
@@ -180,27 +186,37 @@ public class TheGame {
 	}//public static void kill(HumanPlayer humanPlayer)
 
 	//Co zrobic jak np. dwaj lekarze leczyli tego gracza!?
-	public ArrayList<HumanPlayer> calculateNightimeResult(){
-		ArrayList<HumanPlayer> result = new ArrayList<HumanPlayer>();
+	public void commitNightKillingResults(){
 		this.beginKilling();
-		for(HumanPlayer hp: getLastNightHittingByMafiaPlayer())
-			if(wasPlayerHitByDarkMedic(hp))
-				result.add(hp);
-			else if(!wasPlayerHealed(hp))
-				result.add(hp);
+		commitKillForPlayerList(findPlayersWillHaveKilledBecauseOfMafia());
+	}
 
-		for(HumanPlayer hp: result)
-			kill(hp);
+	private void commitKillForPlayerList(List<HumanPlayer> playersList){
+		Stream.of(playersList).forEach(this::kill);
+	}
 
-		return result;
+	private List<HumanPlayer> findPlayersWillHaveKilledBecauseOfMafia(){
+		return Stream.of(getLastNightHittingByMafiaPlayers()).filter(this::goingToDieAfterMafiaMedicAndDarkMedicActions).collect(Collectors.toList());
+	}
+
+	private boolean goingToDieAfterMafiaMedicAndDarkMedicActions(HumanPlayer humanPlayer){
+		return (WasHealedAndHitByDarkMedic(humanPlayer) || wasNotPlayerHealed(humanPlayer));
+	}
+
+	private boolean WasHealedAndHitByDarkMedic(HumanPlayer humanPlayer){
+		return wasPlayerHitByDarkMedic(humanPlayer) && wasPlayerHealed(humanPlayer);
 	}
 
 	private boolean wasPlayerHealed(HumanPlayer humanPlayer){
 		return isPlayerOnTheList(humanPlayer, getLastNightHealingByMedicPlayers());
 	}
 
+	private boolean wasNotPlayerHealed(HumanPlayer humanPlayer){
+		return !isPlayerOnTheList(humanPlayer, getLastNightHealingByMedicPlayers());
+	}
+
 	private boolean wasPlayerHitByDarkMedic(HumanPlayer humanPlayer){
-		return isPlayerOnTheList(humanPlayer, getLastNightHeatingByDarkMedicPlayers());
+		return isPlayerOnTheList(humanPlayer, getLastNightHittingByDarkMedicPlayers());
 	}
 
 	private boolean isPlayerOnTheList(HumanPlayer humanPlayer, ArrayList<HumanPlayer> playersList){
@@ -214,10 +230,11 @@ public class TheGame {
 			return temporaryLastTimeKilledPlayersList.get(temporaryLastTimeKilledPlayersList.size()-1);
 	}
 
-	public HumanPlayer findPreviousPlayerTo(HumanPlayer humanPlayer){
+	private HumanPlayer findPreviousPlayerTo(HumanPlayer humanPlayer){
 		for(int i=playersInfoList.indexOf(humanPlayer)-1; i>=0;i--)
 			if(playersInfoList.get(i).isAlive())
 				return playersInfoList.get(i);
+
 
 		for(int i=playersInfoList.size()-1; i>playersInfoList.indexOf(humanPlayer);i--)
 			if(playersInfoList.get(i).isAlive())
@@ -248,25 +265,30 @@ public class TheGame {
 
 	public void startNewNight(){
 		clearMadeActions();
-		lastNightHealingByMedicPlayers.clear();
-		lastNightHeatingByDarkMedicPlayers.clear();
-		lastNightHittingByMafiaPlayer.clear();
-		//undealed all players
-		for(HumanPlayer dealed: lastNightDealingByDealerPlayers)
-			dealed.setDealed(false);
-
-		lastNightDealingByDealerPlayers.clear();
-		lastNightKilledPlayer.clear();
-		currentDaytimeMadeRoleActions = 0;
-		currentNightNumber++;
-		this.currentDaytime =Daytime.NIGHT;
+		clearLastNightStats();
+		setCurrentDaytimeMadeRoleActions(0);
+		setCurrentNightNumber(getCurrentNightNumber()+1);
+		setCurrentDaytime(Daytime.NIGHT);
 		//mlistTheGameDaytimes.add(new GameNight(this,Daytime.NIGHT));
 	}
 
+	private void clearLastNightStats(){
+		getLastNightHealingByMedicPlayers().clear();
+		getLastNightHittingByDarkMedicPlayers().clear();
+		getLastNightHittingByMafiaPlayers().clear();
+		getLastNightKilledPlayers().clear();
+		undealLastNightDealedPlayers();
+	}
+
+	private void undealLastNightDealedPlayers(){
+		Stream.of(getLastNightDealingByDealerPlayers()).forEach(hp -> hp.setDealed(false));
+		lastNightDealingByDealerPlayers.clear();
+	}
+
 	public void startNewDay(){
-		miThisDayRemainedDuels= maxDailyDuelAmount;
-		miThisDayThrownChallenges=0;
-		lastDayOperateByDentistPlayer.clear();
+		currentDayRemainedDuels = maxDailyDuelAmount;
+		currentDayThrownChallenges =0;
+		lastDayOperateByDentistPlayers.clear();
 		choseDailyJudgmentPlayersList.clear();
 		currentDaytimeMadeRoleActions = 0;
 		currentDayOutVoted =null;
@@ -275,12 +297,8 @@ public class TheGame {
 		//mlistTheGameDaytimes.add(new GameDay(this,Daytime.DAY));
 	}
 
-	public void clearMadeActions(){
-		for(HumanPlayer hp: this.getLiveHumanPlayers()){
-			hp.playerTurn =false;
-			hp.roleActionMade =false;
-		}
-
+	private void clearMadeActions(){
+		Stream.of(getLiveHumanPlayers()).forEach(hp -> {hp.playerTurn =false; hp.roleActionMade =false;});
 	}
 
 	public boolean isJudgeInTheGameSettings(){
@@ -297,153 +315,106 @@ public class TheGame {
 
 	}
 
-	public ArrayList<HumanPlayer> getAllNightsBesideZeroHumanPlayers() {
-		ArrayList<HumanPlayer> result = new ArrayList<HumanPlayer>();
-		for (HumanPlayer humanPlayer : getPlayersInfoList()) {
-			if(humanPlayer.isAlive()||!humanPlayer.isAlive()) {
-				if (humanPlayer.getPlayerRole().getActionType().equals(PlayerRole.ActionType.AllNights))
-					result.add(humanPlayer);
-				if (humanPlayer.getPlayerRole().getActionType().equals(PlayerRole.ActionType.AllNightsBesideZero))
-					result.add(humanPlayer);
-			}
-		}
+	private void appendMafiaKillingAbstractPlayerTo(List<HumanPlayer> humanPlayers){
+		humanPlayers.add(new HumanPlayer(mContext.getString(R.string.mafia), PlayerRolesManager.getInstance(mContext).getMafiaKillRole()));
 
-		if(isMafiaInTheGame())
-			result.add(new HumanPlayer(mContext.getString(R.string.mafia), PlayerRolesManager.getInstance(mContext).getMafiaKillRole()));
-
-		Collections.sort(result,new GameRolesWakeHierarchyComparator());
-		if(!result.isEmpty())
-			result.get(0).setPlayerTurn(true);
-		return result;
-	}// private ArrayList<HumanPlayer> getAllNightsBesideZeroHumanPlayers()
-
-	public ArrayList<HumanPlayer> getThisNightHumanPlayers(){
-		if(currentNightNumber ==0)
-			return getZeroNightHumanPlayers();
-		else
-			return getAllNightsBesideZeroHumanPlayers();
 	}
 
-	public ArrayList<HumanPlayer> getZeroNightHumanPlayers() {
-		ArrayList<HumanPlayer> result = new ArrayList<HumanPlayer>();
-		for (HumanPlayer humanPlayer : getPlayersInfoList()) {
-			if (humanPlayer.getPlayerRole().getActionType().equals(PlayerRole.ActionType.OnlyZeroNightAndActionRequire))
-				result.add(humanPlayer);
-			if (humanPlayer.getPlayerRole().getActionType().equals(PlayerRole.ActionType.OnlyZeroNight))
-				result.add(humanPlayer);
-		}
-		Collections.sort(result,new GameRolesWakeHierarchyComparator());
-		if(!result.isEmpty())
-			result.get(0).setPlayerTurn(true);
-		return result;
-	}// private ArrayList<HumanPlayer> getZeroNightHumanPlayers()
+	public List<HumanPlayer> getNormalNightRolesHumanPlayers() {
+		List<HumanPlayer> result = Stream.of(getPlayersInfoList())
+				.filter(HumanPlayer::hasRoleForNormalNight)
+				.collect(Collectors.toList());
 
-	public ArrayList<HumanPlayer> getTownHumanPlayers() {
+		if(isMafiaInTheGame())
+			appendMafiaKillingAbstractPlayerTo(result);
+
+
+		if(!result.isEmpty()){
+			sortPlayersListInWakingHierarchy(result);
+			setTurnForFirstPlayerInList(result);
+		}
+
+		return result;
+	}// private ArrayList<HumanPlayer> getNormalNightRolesHumanPlayers()
+
+
+	public List<HumanPlayer> getZeroNightHumanPlayers() {
+		List<HumanPlayer> result = Stream.of(getPlayersInfoList())
+				.filter(HumanPlayer::hasRoleForZeroNight)
+				.sorted(new GameRolesWakeHierarchyComparator())
+				.collect(Collectors.toList());
+
+		if(!result.isEmpty())
+			setTurnForFirstPlayerInList(result);
+
+		return result;
+	}
+
+	private void sortPlayersListInWakingHierarchy(List<HumanPlayer> playersList){
+		Collections.sort(playersList,new GameRolesWakeHierarchyComparator());
+	}
+
+	private void setTurnForFirstPlayerInList(List<HumanPlayer> playersList){
+			playersList.get(0).setPlayerTurn(true);
+	}
+
+	/*public ArrayList<HumanPlayer> getTownHumanPlayers() {
 		ArrayList<HumanPlayer> result = new ArrayList<HumanPlayer>();
 		for (HumanPlayer humanPlayer : getPlayersInfoList()) {
 			if (humanPlayer.getPlayerRole().getFraction().equals(PlayerRole.Fraction.TOWN))
 				result.add(humanPlayer);
 		}
 		return result;
-	}// private ArrayList<HumanPlayer> getTownHumanPlayers()
+	}// private ArrayList<HumanPlayer> getTownHumanPlayers()*/
 
-	public ArrayList<HumanPlayer> getPlayersInfoList() {
-		return playersInfoList;
+	//COS ŹLE - DLACZEGO TO ZMIENIA WARTOSC!?
+	public List<HumanPlayer> getThisNightHumanPlayers(){
+		if(currentNightNumber ==0)
+			return getZeroNightHumanPlayers();
+		else
+			return getNormalNightRolesHumanPlayers();
 	}
 
-	public void addLastNightHealingByMedicPlayers(HumanPlayer humanPlayer){
-		if(!lastNightHealingByMedicPlayers.contains(humanPlayer))
-			lastNightHealingByMedicPlayers.add(humanPlayer);
-	}
-
-	public void addLastNightHittingByMafiaPlayer(HumanPlayer humanPlayer){
-		if(!lastNightHittingByMafiaPlayer.contains(humanPlayer))
-			lastNightHittingByMafiaPlayer.add(humanPlayer);
-	}
-
-	public ArrayList<HumanPlayer> getLastDayOperateByDentistPlayer() {
-		return lastDayOperateByDentistPlayer;
-	}
-
-	public ArrayList<HumanPlayer> getLastNightHittingByMafiaPlayer() {
-		return lastNightHittingByMafiaPlayer;
-	}
-
-	public void addLastDayOperateByDentistPlayer(HumanPlayer humanPlayer){
-		if(!lastDayOperateByDentistPlayer.contains(humanPlayer))
-			lastDayOperateByDentistPlayer.add(humanPlayer);
-	}
-
-	public void addLastNightDealingByDealerPlayers(HumanPlayer humanPlayer){
-		if(!lastNightDealingByDealerPlayers.contains(humanPlayer))
-			lastNightDealingByDealerPlayers.add(humanPlayer);
-	}
-
-	public void addLastNightKilledPlayer(HumanPlayer humanPlayer){
-		if(!lastNightKilledPlayer.contains(humanPlayer))
-			lastNightKilledPlayer.add(humanPlayer);
-	}
-
-	public void addLastNightHeatingByDarkMedicPlayers(HumanPlayer humanPlayer){
-		if(!lastNightHeatingByDarkMedicPlayers.contains(humanPlayer))
-			lastNightHeatingByDarkMedicPlayers.add(humanPlayer);
-	}
-
-	public int iActionMadeThisTime(){
+	public int getAmountActionsMadeThisTime(){
 		// miDaytimeRolesActionsMadeThis++;
 		return ++currentDaytimeMadeRoleActions;
 	}
 
 	public HumanPlayer findHumanPlayerByName(String playerName){
-		for(HumanPlayer humanPlayer: playersInfoList)
-			if(humanPlayer.getPlayerName().equals(playerName))
-				return humanPlayer;
-
-		return null;
+		return Stream.of(playersInfoList).filter(
+				hp -> hp.getPlayerName().equals(playerName)
+		).findFirst().get();
 	}
 
 	public HumanPlayer findLiveHumanPlayerByName(String playerName){
-		for(HumanPlayer humanPlayer: playersInfoList)
-			if(humanPlayer.getPlayerName().equals(playerName)&&humanPlayer.isAlive())
-				return humanPlayer;
-
-		return null;
+		return Stream.of(playersInfoList).filter(
+				hp -> hp.getPlayerName().equals(playerName) && hp.isAlive()
+		).findFirst().get();
 	}
 
-
-	public HumanPlayer findHumanPlayerByRoleName(String sRoleName){
-		for(HumanPlayer humanPlayer: playersInfoList)
-			if(mContext.getString(humanPlayer.getRoleName()).equals(sRoleName))
-				return humanPlayer;
-
-		return null;
+	private HumanPlayer findHumanPlayerByRoleName(String sRoleName){
+		return Stream.of(playersInfoList).filter(
+				hp -> mContext.getString(hp.getRoleName()).equals(sRoleName)
+		).findFirst().get();
 	}
 
-	public HumanPlayer findLiveHumanPlayerByRoleName(String sRoleName){
-		for(HumanPlayer humanPlayer: playersInfoList)
-			if(mContext.getString(humanPlayer.getRoleName()).equals(sRoleName)&&humanPlayer.isAlive())
-				return humanPlayer;
-
-		return null;
+	private HumanPlayer findLiveHumanPlayerByRoleName(String sRoleName){
+		return Stream.of(playersInfoList).filter(
+				hp -> mContext.getString(hp.getRoleName()).equals(sRoleName) && hp.isAlive()
+		).findFirst().get();
 	}
 
 	public List<String> getLiveHumanPlayersNames() {
-		ArrayList<String> result = new ArrayList<>();
-		for (HumanPlayer humanPlayer : playersInfoList) {
-			if (humanPlayer.isAlive())
-				result.add(humanPlayer.getPlayerName());
-		}
-		return result;
-	}// private ArrayList<HumanPlayer> getTownHumanPlayers()
-
+		return Stream.of(playersInfoList)
+				.filter(HumanPlayer::isAlive)
+				.map(HumanPlayer::getPlayerName)
+				.collect(Collectors.toList());
+	}
 
 	public List<HumanPlayer> getLiveHumanPlayers() {
-		ArrayList<HumanPlayer> result = new ArrayList<HumanPlayer>();
-		for (HumanPlayer humanPlayer : playersInfoList) {
-			if (humanPlayer.isAlive())
-				result.add(humanPlayer);
-		}
-		return result;
+		return Stream.of(playersInfoList)
+				.filter(HumanPlayer::isAlive)
+				.collect(Collectors.toList());
 	}// private ArrayList<HumanPlayer> getTownHumanPlayers()
 
 	public List<HumanPlayer> getLiveMafiaPlayers(){
@@ -458,11 +429,11 @@ public class TheGame {
 		return getLiveSelectedFractionPlayers(PlayerRole.Fraction.SYNDICATE);
 	}
 
-	public int getLiveMafiaPlayersAmount(){
+	private int getLiveMafiaPlayersAmount(){
 		return getLiveMafiaPlayers().size();
 	}
 
-	public int getLiveTownPlayersAmount(){
+	private int getLiveTownPlayersAmount(){
 		return getLiveTownPlayers().size();
 	}
 
@@ -470,31 +441,28 @@ public class TheGame {
 		return getLiveSyndicatePlayers().size();
 	}
 
-
 	private List<HumanPlayer> getLiveSelectedFractionPlayers(PlayerRole.Fraction fraction) {
-		ArrayList<HumanPlayer> result = new ArrayList<HumanPlayer>();
-		for (HumanPlayer humanPlayer : playersInfoList) {
-			if (humanPlayer.getPlayerRole().isFractionRole(fraction)&&humanPlayer.isAlive())
-				result.add(humanPlayer);
-		}
-		return result;
-	}// private ArrayList<HumanPlayer> getTownHumanPlayers()
-
-	public boolean isNightDaytimeNow(){
-		return isDaytimeNow(Daytime.NIGHT);
-	}
-
-	public boolean isDayDaytimeNow(){
-		return isDaytimeNow(Daytime.DAY);
+		return Stream.of(playersInfoList)
+				.filter(hp -> hp.isAlive() && hp.hasFraction(fraction))
+				.collect(Collectors.toList());
 	}
 
 	public boolean isSpecialZeroNightNow(){
 		return isNightDaytimeNow()&&(this.getCurrentNightNumber()==0);
 	}
 
-	private boolean isDaytimeNow(Daytime daytime){
+	public boolean isNightDaytimeNow(){
+		return isExactlyThisDaytimeNow(Daytime.NIGHT);
+	}
+
+	public boolean isDayDaytimeNow(){
+		return isExactlyThisDaytimeNow(Daytime.DAY);
+	}
+
+	private boolean isExactlyThisDaytimeNow(Daytime daytime){
 		return currentDaytime ==daytime;
 	}
+
 
 	public boolean isMafiaBossAlive() {
 		HumanPlayer mafiaboss = findLiveHumanPlayerByRoleName(mContext.getString(R.string.boss));
@@ -503,15 +471,24 @@ public class TheGame {
 		return mafiaboss!=null|| mafiaboss2!=null;
 	}
 
+
+	public void setPlayersInfoList(ArrayList<HumanPlayer> playersInfoList) {
+		this.playersInfoList = playersInfoList;
+		PlayerRolesManager.setContextForPlayersRoles(playersInfoList, mContext);
+	}
+
+	private boolean isMafiaInTheGame(){
+		return getLiveMafiaPlayers().size()>0;
+	}
+
 	//GETTERS AND SETTERS-----------------------------------------------------------------------------
 
 	public int iGetActionsMadeThisTime(){
 		return currentDaytimeMadeRoleActions;
 	}
 
-
 	public ArrayList<HumanPlayer> getLastDayOperateByDentistPlayers() {
-		return lastDayOperateByDentistPlayer;
+		return lastDayOperateByDentistPlayers;
 	}
 
 	public ArrayList<HumanPlayer> getLastNightDealingByDealerPlayers() {
@@ -522,19 +499,13 @@ public class TheGame {
 		return lastNightHealingByMedicPlayers;
 	}
 
-	public ArrayList<HumanPlayer> getLastNightHeatingByDarkMedicPlayers() {
-		return lastNightHeatingByDarkMedicPlayers;
+	public ArrayList<HumanPlayer> getLastNightHittingByDarkMedicPlayers() {
+		return lastNightHittingByDarkMedicPlayers;
 	}
 
-	public ArrayList<HumanPlayer> getLastNightKilledPlayer() {
-		return lastNightKilledPlayer;
+	public ArrayList<HumanPlayer> getLastNightKilledPlayers() {
+		return lastNightKilledPlayers;
 	}
-
-	public void setPlayersInfoList(ArrayList<HumanPlayer> playersInfoList) {
-		this.playersInfoList = playersInfoList;
-		PlayerRolesManager.setContextForPlayersRoles(playersInfoList, mContext);
-	}
-
 
 	public long getMaxDailyTime() {
 		return maxDailyTime;
@@ -556,14 +527,6 @@ public class TheGame {
 		return syndicateStartAmount;
 	}
 
-
-	public boolean isMafiaInTheGame(){
-		for(HumanPlayer hp: getLiveHumanPlayers())
-			if(hp.getPlayerRole().getFraction() == PlayerRole.Fraction.MAFIA)
-				return true;
-
-		return false;
-	}
 	public int getDoublersStartAmount() {
 		return doublersStartAmount;
 	}
@@ -664,39 +627,81 @@ public class TheGame {
 		this.lastNightHealingByMedicPlayers = lastNightHealingByMedicPlayers;
 	}
 
-	public void setLastNightHeatingByDarkMedicPlayers(ArrayList<HumanPlayer> lastNightHeatingByDarkMedicPlayers) {
-		this.lastNightHeatingByDarkMedicPlayers = lastNightHeatingByDarkMedicPlayers;
+	public void setLastNightHittingByDarkMedicPlayers(ArrayList<HumanPlayer> lastNightHittingByDarkMedicPlayers) {
+		this.lastNightHittingByDarkMedicPlayers = lastNightHittingByDarkMedicPlayers;
 	}
 
 	public void setLastNightDealingByDealerPlayers(ArrayList<HumanPlayer> lastNightDealingByDealerPlayers) {
 		this.lastNightDealingByDealerPlayers = lastNightDealingByDealerPlayers;
 	}
 
-	public void setLastNightHittingByMafiaPlayer(ArrayList<HumanPlayer> lastNightHittingByMafiaPlayer) {
-		this.lastNightHittingByMafiaPlayer = lastNightHittingByMafiaPlayer;
+	public void setLastNightHittingByMafiaPlayers(ArrayList<HumanPlayer> lastNightHittingByMafiaPlayers) {
+		this.lastNightHittingByMafiaPlayers = lastNightHittingByMafiaPlayers;
 	}
 
-	public void setLastNightKilledPlayer(ArrayList<HumanPlayer> lastNightKilledPlayer) {
-		this.lastNightKilledPlayer = lastNightKilledPlayer;
+	public void setLastNightKilledPlayers(ArrayList<HumanPlayer> lastNightKilledPlayers) {
+		this.lastNightKilledPlayers = lastNightKilledPlayers;
 	}
 
-	public void setLastDayOperateByDentistPlayer(ArrayList<HumanPlayer> lastDayOperateByDentistPlayer) {
-		this.lastDayOperateByDentistPlayer = lastDayOperateByDentistPlayer;
+	public void setLastDayOperateByDentistPlayers(ArrayList<HumanPlayer> lastDayOperateByDentistPlayers) {
+		this.lastDayOperateByDentistPlayers = lastDayOperateByDentistPlayers;
 	}
 
-	public int getMiThisDayRemainedDuels() {
-		return miThisDayRemainedDuels;
+	public int getCurrentDayRemainedDuels() {
+		return currentDayRemainedDuels;
 	}
 
-	public void setMiThisDayRemainedDuels(int miThisDayRemainedDuels) {
-		this.miThisDayRemainedDuels = miThisDayRemainedDuels;
+	public void setCurrentDayRemainedDuels(int currentDayRemainedDuels) {
+		this.currentDayRemainedDuels = currentDayRemainedDuels;
 	}
 
-	public int getMiThisDayThrownChallenges() {
-		return miThisDayThrownChallenges;
+	public int getCurrentDayThrownChallenges() {
+		return currentDayThrownChallenges;
 	}
 
-	public void setMiThisDayThrownChallenges(int miThisDayThrownChallenges) {
-		this.miThisDayThrownChallenges = miThisDayThrownChallenges;
+	public void setCurrentDayThrownChallenges(int currentDayThrownChallenges) {
+		this.currentDayThrownChallenges = currentDayThrownChallenges;
+	}
+
+	public ArrayList<HumanPlayer> getPlayersInfoList() {
+		return playersInfoList;
+	}
+
+	public void appendLastNightHealingByMedicPlayers(HumanPlayer humanPlayer){
+		if(!lastNightHealingByMedicPlayers.contains(humanPlayer))
+			lastNightHealingByMedicPlayers.add(humanPlayer);
+	}
+
+	public void appendLastNightHittingByMafiaPlayer(HumanPlayer humanPlayer){
+		if(!lastNightHittingByMafiaPlayers.contains(humanPlayer))
+			lastNightHittingByMafiaPlayers.add(humanPlayer);
+	}
+
+	private ArrayList<HumanPlayer> getLastNightHittingByMafiaPlayers() {
+		return lastNightHittingByMafiaPlayers;
+	}
+
+	public void appendLastDayOperateByDentistPlayers(HumanPlayer humanPlayer){
+		if(!lastDayOperateByDentistPlayers.contains(humanPlayer))
+			lastDayOperateByDentistPlayers.add(humanPlayer);
+	}
+
+	public void appendLastNightDealingByDealerPlayers(HumanPlayer humanPlayer){
+		if(!lastNightDealingByDealerPlayers.contains(humanPlayer))
+			lastNightDealingByDealerPlayers.add(humanPlayer);
+	}
+
+	public void appendLastNightKilledPlayers(HumanPlayer humanPlayer){
+		if(!lastNightKilledPlayers.contains(humanPlayer))
+			lastNightKilledPlayers.add(humanPlayer);
+	}
+
+	public void appendLastNightHeatingByDarkMedicPlayers(HumanPlayer humanPlayer){
+		if(!lastNightHittingByDarkMedicPlayers.contains(humanPlayer))
+			lastNightHittingByDarkMedicPlayers.add(humanPlayer);
+	}
+
+	public void setContext(Context context){
+		this.mContext = context;
 	}
 }

@@ -7,6 +7,7 @@ import com.annimon.stream.Collectors;
 import com.annimon.stream.Stream;
 
 import org.parceler.Parcel;
+import org.parceler.ParcelConstructor;
 import org.parceler.Transient;
 
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ import pl.nowakprojects.socialmafia.mafiagameclasses.roles.PlayerRole;
 public class HumanPlayer{
     //int playerIndex; // index gracza, dla ulatwienia indentyfikacji
     //int playerPoints=0; //punkty jakie gracz uzbieral w trakcie gier
-    String playerName = ""; // imię gracza
+    String playerName; // imię gracza
     PlayerRole playerRole; // rola gracza
     boolean alive = true; // czy gracz jeszcze żyje
     int warns = 0; //ostrzezenia za lamanie zasad
@@ -28,67 +29,102 @@ public class HumanPlayer{
     List<HumanPlayer> blackMailersList = new ArrayList<>(); //szantazysta, nie moze na niego zaglosowac itp. CHYBA ZROBIC LISTE SZANTAZYSTÓW!!!
     List<HumanPlayer> loversList = new ArrayList<>(); //kochanek - nie mozna na niego glosowac, jesli ginie jeden z nich - gina oboje I KOCHANKÓW TEŻ
     boolean dealed = false; //czy dilowany
-    int lifes = 0;
-    boolean roleUsed = false;
+    int lives = 0;
+
+    //For TheGameAction:
+    //boolean roleUsed = false;
     boolean mainRole = false; //jesli jest wiecej niz jedna rola, do danej funkcji, np. sędzia główny
     boolean playerTurn = false;
     boolean roleActionMade = false;
-
 
     //For ShowingRoles:
     boolean wasRoleShowed = false;
 
     @Transient
-    MaterialDialog mPlayerInfoDialog;
+    private MaterialDialog mPlayerInfoDialog;
+
+
+
 
     //CONSTRUCTORS:
-    public HumanPlayer() {
-    }
+    //@ParcelConstructor
+    //private HumanPlayer() {}
 
-   /* public HumanPlayer(String playerName) {
-        this.playerName = playerName;
-    }*/
-
+    @ParcelConstructor
     public HumanPlayer(String playerName, PlayerRole playerRole) {
         this.playerName = playerName;
         this.playerRole = playerRole;
+
         if(isNotDealedEmo())
-            lifes=2;
+            lives =2;
         else
-            lifes=1;
+            lives =1;
     }
+
 
 
 
     //GAME METHODS:
     public void hit(){
-        setLifes(getLifes()-1);
-        if(getLifes()<=0)
+        setLives(getLives()-1);
+        if(getLives()<=0)
             this.setNotAlive();
     }
 
+    public void reviveThePlayer(){
+        if(isDead()){
+            setLives(getLives()+1);
+            setAlive(true);
+        }
+    }
 
-    public void addGuard(HumanPlayer guard) {
+
+
+
+    public void appendGuard(HumanPlayer guard) {
         if(!this.guardsList.contains(guard))
             this.guardsList.add(guard);
     }
 
-    public boolean isNotAlive(){
-        return !alive;
-    }
-
-    public void addLover(HumanPlayer lover) {
+    public void appendLover(HumanPlayer lover) {
         if(!this.loversList.contains(lover))
             this.loversList.add(lover);
     }
 
+    public void appendBlackMailer(HumanPlayer blackMailer) {
+        if(!this.blackMailersList.contains(blackMailer))
+            this.blackMailersList.add(blackMailer);
+    }
 
     private void showRoleDescriptionDialog(){
         playerRole.showRoleDescriptionDialog();
     }
 
-    //dochodzi do obroncy, ktory ma zginac metoda rekurencji
-    /*public static HumanPlayer getFirstGuard(HumanPlayer player){
+    public boolean hasGuard(){
+        return isAliveAndNotDealedPlayerOnTheList(guardsList);
+    }
+
+    public boolean hasLover(){
+        return isAliveAndNotDealedPlayerOnTheList(loversList);
+    }
+
+    private boolean isAliveAndNotDealedPlayerOnTheList(List<HumanPlayer> playersList){
+        return !Stream.of(playersList).noneMatch(HumanPlayer::isAliveAndNotDealed);
+    }
+
+    public List<HumanPlayer> getAliveLoversList(){
+        return Stream.of(loversList).filter(HumanPlayer::isAliveAndNotDealed).collect(Collectors.toList());
+    }
+
+    public HumanPlayer getGuardToKill(){
+        return Stream.of(guardsList).filter(HumanPlayer::isAliveAndNotDealed).findFirst().get();
+    }
+
+
+
+
+    /*//dochodzi do obroncy, ktory ma zginac metoda rekurencji
+    public static HumanPlayer getFirstGuard(HumanPlayer player){
         if(player.getGuardsList().isEmpty())
             return player;
         else
@@ -102,66 +138,6 @@ public class HumanPlayer{
                 return x;
         return this;
     }*/
-
-
-    public List<HumanPlayer> getBlackMailersList() {
-        return blackMailersList;
-    }
-
-    public void addBlackMailer(HumanPlayer blackMailer) {
-        if(!this.blackMailersList.contains(blackMailer))
-            this.blackMailersList.add(blackMailer);
-    }
-
-    public void setNotAlive(){
-        alive = false;
-    }
-
-    public boolean hasGuard(){
-        return isAliveAndNotDealedPlayerOnTheList(guardsList);
-    }
-
-    public boolean isNotDealed(){
-        return !dealed;
-    }
-
-    public boolean isDealed() {
-        return dealed;
-    }
-
-    public boolean hasLover(){
-        return isAliveAndNotDealedPlayerOnTheList(loversList);
-    }
-
-    private boolean isAliveAndNotDealedPlayerOnTheList(List<HumanPlayer> playersList){
-        return !Stream.of(playersList).noneMatch(HumanPlayer::isAliveAndNotDealed);
-    }
-
-
-    public List<HumanPlayer> getAliveLoversList(){
-        return Stream.of(loversList).filter(HumanPlayer::isAliveAndNotDealed).collect(Collectors.toList());
-    }
-
-    public HumanPlayer getGuardToKill(){
-        return Stream.of(guardsList).filter(HumanPlayer::isAliveAndNotDealed).findFirst().get();
-    }
-
-    public boolean isAliveAndNotDealed(){
-        return isAlive() && isNotDealed();
-    }
-
-
-    public int howManyLifes(){
-        return this.getLifes();
-    }
-
-    public void reviveThePlayer(){
-        if(isDead()){
-            lifes++;
-            alive = true;
-        }
-    }
-
 
     //ROLES CHECKING:
    // public boolean hasRole(String roleName){
@@ -200,11 +176,11 @@ public class HumanPlayer{
         return isNotDealed() && (hasRole(R.string.mafiaspeedy)|| hasRole(R.string.townspeedy) || hasRole(R.string.syndicateSpeedy));
     }
 
-    public boolean hasNotDealedRole(int roleNameId){
+    private boolean hasNotDealedRole(int roleNameId){
         return isNotDealed() && hasRole(roleNameId);
     }
 
-    public boolean hasRole(int roleNameId){
+    private boolean hasRole(int roleNameId){
         return roleNameId == getRoleName();
     }
 
@@ -228,7 +204,7 @@ public class HumanPlayer{
     private String generatePlayerDescription(Context context){
         return context.getString(
                 R.string.player_description,
-                lifes,
+                lives,
                 stigmas,
                 generatePlayerGuardsString(),
                 generatePlayerBlackmailersString(),
@@ -262,28 +238,26 @@ public class HumanPlayer{
 
 
 
-    //OBJECT METHODS OVERRIDE:
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof HumanPlayer)) return false;
 
-        HumanPlayer that = (HumanPlayer) o;
-
-        if (alive != that.alive) return false;
-        if (!playerName.equals(that.playerName)) return false;
-        return playerRole.equals(that.playerRole);
-
+    public boolean isAliveAndNotDealed(){
+        return isAlive() && isNotDealed();
     }
 
-    @Override
-    public int hashCode() {
-        int result = playerName.hashCode();
-        result = 31 * result + playerRole.hashCode();
-        result = 31 * result + (alive ? 1 : 0);
-        return result;
+    public boolean isNotDealed(){
+        return !dealed;
     }
 
+    public int howManyLifes(){
+        return this.getLives();
+    }
+
+    public void setNotAlive(){
+        alive = false;
+    }
+
+    public boolean isNotAlive(){
+        return !alive;
+    }
 
     //GETTERS AND SETTERS:
 
@@ -310,9 +284,6 @@ public class HumanPlayer{
     public boolean isAlive() {
         return alive;
     }
-    //public boolean isAlive(HumanPlayer hp) {
-    //    return hp.isAlive();
-    //}
 
     public void setStigmas(int stigmas) {
         this.stigmas = stigmas;
@@ -342,16 +313,20 @@ public class HumanPlayer{
         return wasRoleShowed;
     }
 
-    public int getLifes() {
-        return lifes;
+    private int getLives() {
+        return lives;
     }
 
-    public void setLifes(int lifes) {
-        this.lifes = lifes;
+    private void setLives(int lives) {
+        this.lives = lives;
     }
 
-    public boolean isRoleUsed() {
-        return roleUsed;
+    public boolean isRoleUsed(){
+        return playerRole.isRoleUsed();
+    }
+
+    public void setRoleUsed(){
+        playerRole.setRoleUsed(true);
     }
 
     public boolean isMainRole() {
@@ -380,5 +355,73 @@ public class HumanPlayer{
 
     public void setContext(Context context){
         getPlayerRole().setContext(context);
+    }
+
+    public void setAlive(boolean alive) {
+        this.alive = alive;
+    }
+
+    public boolean isDealed() {
+        return dealed;
+    }
+
+    public List<HumanPlayer> getBlackMailersList() {
+        return blackMailersList;
+    }
+
+    public void setPlayerName(String playerName) {
+        this.playerName = playerName;
+    }
+
+    public void setPlayerRole(PlayerRole playerRole) {
+        this.playerRole = playerRole;
+    }
+
+    public int getWarns() {
+        return warns;
+    }
+
+    public void setWarns(int warns) {
+        this.warns = warns;
+    }
+
+    public void setMainRole(boolean mainRole) {
+        this.mainRole = mainRole;
+    }
+
+    boolean hasFraction(PlayerRole.Fraction checkedFraction){
+        return getPlayerRole().isFractionRole(checkedFraction);
+    }
+
+    boolean hasRoleForNormalNight(){
+        return getPlayerRole().getActionType().equals(PlayerRole.ActionType.AllNights)
+                || getPlayerRole().getActionType().equals(PlayerRole.ActionType.AllNightsBesideZero);
+    }
+
+    boolean hasRoleForZeroNight(){
+        return getPlayerRole().getActionType().equals(PlayerRole.ActionType.OnlyZeroNightAndActionRequire)
+                || getPlayerRole().getActionType().equals(PlayerRole.ActionType.OnlyZeroNight);
+    }
+
+    //OBJECT METHODS OVERRIDE:
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof HumanPlayer)) return false;
+
+        HumanPlayer that = (HumanPlayer) o;
+
+        if (alive != that.alive) return false;
+        if (!playerName.equals(that.playerName)) return false;
+        return playerRole.equals(that.playerRole);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = playerName.hashCode();
+        result = 31 * result + playerRole.hashCode();
+        result = 31 * result + (alive ? 1 : 0);
+        return result;
     }
 }

@@ -40,25 +40,18 @@ public abstract class PlayerRole {
     Fraction fraction;
     ActionType actionType;
     int nightWakeHierarchyNumber = -1; // -1 - nie budza sie w nocy
+    boolean roleUsed = false; //for OneAction roles
+
     int rolePlayersAmount=0;
     boolean onlyPremium=false;
 
     @Transient
-    MaterialDialog roleDescriptionDialog;
-
-    //PlayerActionViewHolder
-    //boolean playerTurn = false;
-    //HumanPlayer lastChoseenPlayer;
-    //boolean roleActionMade = false;
+    private MaterialDialog roleDescriptionDialog;
 
     //fabryka abstrakcyjna!!!
     @ParcelProperty("roleNameId") public int roleNameId(){
         return nameId;
     };
-
-    //public static PlayerRole makeRoleFromName(String roleName){
-    //    return makeRoleFromNameId(Integer.valueOf(roleName));
-    //}
 
     protected PlayerRole(Context context){
         setContext(context);
@@ -67,7 +60,7 @@ public abstract class PlayerRole {
 
 
     @ParcelFactory
-    protected static PlayerRole makeRoleFromNameId(int roleNameId){
+    static PlayerRole makeRoleFromNameId(int roleNameId){
         switch(roleNameId){
             //ustawic kontekst w kazdej klasie dziedziczacej
             //ustawic kontekt setterem w PlayerRolesMaganer
@@ -153,7 +146,7 @@ public abstract class PlayerRole {
         }
     }
 
-    public static PlayerRole getMultiPlayerRoleFromNameId(int roleNameId){
+    protected static PlayerRole getMultiPlayerRoleFromNameId(int roleNameId){
         switch(roleNameId){
             case R.string.mafiaKill:
                 return new MafiaKilling();
@@ -165,12 +158,11 @@ public abstract class PlayerRole {
 
 
     // empty constructor needed by the Parceler library
-    public PlayerRole(){}
+    protected PlayerRole(){
 
-
-    public void showDealedRoleToast(){
-        Toast.makeText(mContext.getApplicationContext(), mContext.getString(R.string.dealExplanation), Toast.LENGTH_LONG).show();
     }
+
+
 
     public boolean isMafiaRole(){
         return isFractionRole(Fraction.MAFIA);
@@ -188,6 +180,42 @@ public abstract class PlayerRole {
         return fraction==checkedFraction;
     }
 
+
+    public boolean isBasicRole(){
+        return isOrdinaryCitizenRole()||isOrdinaryMafiosoRole();
+    }
+
+    private boolean isOrdinaryCitizenRole(){
+        return getNameId() == R.string.citizen;
+    }
+
+    private boolean isOrdinaryMafiosoRole(){
+        return getNameId() == R.string.mafioso;
+    }
+
+
+    protected void showDealedRoleToast(){
+        Toast.makeText(mContext.getApplicationContext(), mContext.getString(R.string.dealExplanation), Toast.LENGTH_LONG).show();
+    }
+
+    public void showRoleDescriptionDialog(){
+        if(roleDescriptionDialog==null)
+            buildRoleDescriptionDialog(mContext);
+
+        roleDescriptionDialog.show();
+    }
+
+    private void buildRoleDescriptionDialog(Context context){
+        roleDescriptionDialog = new MaterialDialog.Builder(context)
+                .title(context.getString(getNameId()))
+                .content(context.getString(getDescriptionId()))
+                .positiveText(R.string.ok)
+                .build();
+    }
+
+
+
+
     public int getFractionNameStringID() {
         if(fraction.equals(Fraction.TOWN))
             return R.string.town;
@@ -199,78 +227,15 @@ public abstract class PlayerRole {
         return R.string.fraction;
     }
 
-    protected void setOnlyPremium(){
-        this.onlyPremium=true;
-    }
-
-    private void buildRoleDescriptionDialog(Context context){
-        roleDescriptionDialog = new MaterialDialog.Builder(context)
-                .title(context.getString(getNameId()))
-                .content(context.getString(getDescriptionId()))
-                .positiveText(R.string.ok)
-                .build();
-    }
-
-    public void showRoleDescriptionDialog(){
-        if(roleDescriptionDialog==null)
-            buildRoleDescriptionDialog(mContext);
-
-        roleDescriptionDialog.show();
-    }
-
-
-    public boolean isBasicRole(){
-        return isOrdinaryCitizenRole()||isOrdinaryMafiosoRole();
-    }
-
-    public boolean isOrdinaryCitizenRole(){
-        return getNameId() == R.string.citizen;
-    }
-
-    public boolean isOrdinaryMafiosoRole(){
-        return getNameId() == R.string.mafioso;
-    }
-
-
-    //public abstract void action(Fragment fragment, HumanPlayer actionPlayer, HumanPlayer... chosePlayers);
-
-    //public abstract void action(TheGame theGame, HumanPlayer actionPlayer, HumanPlayer... chosePlayers);
-
-
     public void setContext(Context context) {
         mContext=context;
         if(mContext!=null)
             setName(mContext.getString(getNameId()));
     }
 
-    //Object class overwritten methods
-    @Override
-    public String toString() {
-        return name;
+    protected void setOnlyPremium(){
+        this.onlyPremium=true;
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof PlayerRole)) return false;
-
-        PlayerRole that = (PlayerRole) o;
-
-        if (nameId != that.nameId) return false;
-        if (descriptionId != that.descriptionId) return false;
-        if (iconResourceID != that.iconResourceID) return false;
-        return fraction == that.fraction;
-
-    }
-
-    @Override
-    public int hashCode() {
-        int result = nameId;
-        result = 31 * result + descriptionId;
-        result = 31 * result + iconResourceID;
-        return result;
-    }
-
 
     //NORMALLY GETTERS AND SETTERS:
     public int getNameId() {
@@ -329,8 +294,6 @@ public abstract class PlayerRole {
         this.rolePlayersAmount = rolePlayersAmount;
     }
 
-
-
     public String getName() {
         return name;
     }
@@ -349,6 +312,44 @@ public abstract class PlayerRole {
 
     public Context getContext() {
         return mContext;
+    }
+
+    public boolean isRoleUsed() {
+        return roleUsed;
+    }
+
+    public void setRoleUsed(boolean roleUsed) {
+        this.roleUsed = roleUsed;
+    }
+
+
+
+    //OBJECT METHODS OVERRIDE:
+    @Override
+    public String toString() {
+        return name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PlayerRole)) return false;
+
+        PlayerRole that = (PlayerRole) o;
+
+        if (nameId != that.nameId) return false;
+        if (descriptionId != that.descriptionId) return false;
+        if (iconResourceID != that.iconResourceID) return false;
+        return fraction == that.fraction;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = nameId;
+        result = 31 * result + descriptionId;
+        result = 31 * result + iconResourceID;
+        return result;
     }
 
 }

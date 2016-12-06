@@ -29,7 +29,7 @@ public class BlackmailerBoss extends PlayerRole implements ContextRoleAction{
     //@Override
     public void action(Fragment fragment, HumanPlayer actionPlayer, HumanPlayer... chosePlayers) {
         if (!(chosePlayers[0].getBlackMailersList().contains(actionPlayer)))
-            chosePlayers[0].addBlackMailer(actionPlayer);
+            chosePlayers[0].appendBlackMailer(actionPlayer);
 
         Toast.makeText(fragment.getActivity().getApplicationContext(), chosePlayers[0].getPlayerName() + " " + fragment.getString(R.string.hasBlackmailerNow), Toast.LENGTH_LONG).show();
     }

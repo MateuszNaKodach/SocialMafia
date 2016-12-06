@@ -28,7 +28,7 @@ public class Dealer extends PlayerRole implements GameStateModifierRoleAction{
 
     //@Override
     public void action(TheGame theGame, HumanPlayer actionPlayer, HumanPlayer... chosePlayers) {
-        theGame.addLastNightDealingByDealerPlayers(chosePlayers[0]);
+        theGame.appendLastNightDealingByDealerPlayers(chosePlayers[0]);
         theGame.findHumanPlayerByName(chosePlayers[0].getPlayerName()).setDealed(true);
         Toast.makeText(mContext.getApplicationContext(), chosePlayers[0].getPlayerName() + " " + mContext.getString(R.string.isDealingThisNight), Toast.LENGTH_LONG).show();
     }

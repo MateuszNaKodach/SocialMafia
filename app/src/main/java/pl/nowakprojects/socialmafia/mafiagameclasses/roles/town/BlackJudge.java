@@ -28,7 +28,7 @@ public class BlackJudge extends PlayerRole implements ContextRoleAction{
 
     //@Override
     public void action(Fragment fragment, HumanPlayer actionPlayer, HumanPlayer... chosePlayers) {
-        chosePlayers[0].addGuard(actionPlayer);
+        chosePlayers[0].appendGuard(actionPlayer);
         Toast.makeText(fragment.getActivity().getApplicationContext(), chosePlayers[0].getPlayerName() + " " + fragment.getString(R.string.hasBlackNow), Toast.LENGTH_LONG).show();
     }
 }

@@ -28,7 +28,8 @@ public class Medic extends PlayerRole implements GameStateModifierRoleAction {
 
     //@Override
     public void action(TheGame theGame, HumanPlayer actionPlayer, HumanPlayer... chosePlayers) {
-        theGame.addLastNightHealingByMedicPlayers(chosePlayers[0]);
+        theGame.appendLastNightHealingByMedicPlayers(chosePlayers[0]);
         Toast.makeText(mContext.getApplicationContext(), chosePlayers[0].getPlayerName() + " " + mContext.getString(R.string.isHealingThisNight), Toast.LENGTH_LONG).show();
     }
+
 }
