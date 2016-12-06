@@ -65,6 +65,7 @@ public class ConnectPlayersToRolesActivity extends AppCompatActivity {
 
     private void vCreateNewGame(){
         mNewGame = new TheGame(getApplicationContext());
+        //Te wszystkie ustawienia do GameConfiguration - taka klasa!!! - tutaj wszystko będzie final - immutable class
         mNewGame.setPlayersInfoList(mPlayersInfoList);
         mNewGame.setPlayersStartAmount(mPlayersInfoList.size());
         mNewGame.setMafiaStartAmount(iCountFractionRoles(mPlayersInfoList, PlayerRole.Fraction.MAFIA));

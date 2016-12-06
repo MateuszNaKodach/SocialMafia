@@ -16,6 +16,7 @@ import android.widget.Toast;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import pl.nowakprojects.socialmafia.R;
 import pl.nowakprojects.socialmafia.mafiagameclasses.roles.ContextRoleAction;
@@ -32,7 +33,7 @@ public class DaytimeRoleActionsAdapter extends RecyclerView.Adapter<DaytimeRoleA
 
     private RoleActionsFragment roleActionsFragment;
     private TheGame mTheGame;
-    private ArrayList<HumanPlayer> actionPlayers;
+    private List<HumanPlayer> actionPlayers;
     private LayoutInflater inflater;
     private Context context;
 

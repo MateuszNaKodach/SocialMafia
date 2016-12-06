@@ -6,6 +6,7 @@ package pl.nowakprojects.socialmafia.mafiagameclasses;
 import android.content.Context;
 
 import com.annimon.stream.Collectors;
+import com.annimon.stream.Optional;
 import com.annimon.stream.Stream;
 
 import org.parceler.Parcel;
@@ -102,7 +103,7 @@ public class TheGame {
 	}
 
 	public TheGame(Context context) {
-		//this.mContext = context;
+		this.mContext = context;
 		lastNightHealingByMedicPlayers = new ArrayList<>();
 		lastNightHittingByDarkMedicPlayers = new ArrayList<>();
 		lastNightHittingByMafiaPlayers = new ArrayList<>();
@@ -111,7 +112,7 @@ public class TheGame {
 		lastNightKilledPlayers = new ArrayList<>();
 		temporaryLastTimeKilledPlayersList = new ArrayList<>();
 		choseDailyJudgmentPlayersList = new ArrayList<>();
-		setupGameAndRolesContext(context);
+		//setupGameAndRolesContext(context);
 	}
 
 	public void setupGameAndRolesContext(Context context){
@@ -393,15 +394,19 @@ public class TheGame {
 	}
 
 	private HumanPlayer findHumanPlayerByRoleName(String sRoleName){
-		return Stream.of(playersInfoList).filter(
+		Optional<HumanPlayer> foundPlayer = Stream.of(playersInfoList).filter(
 				hp -> mContext.getString(hp.getRoleName()).equals(sRoleName)
-		).findFirst().get();
+		).findFirst();
+
+		return foundPlayer.isPresent() ? foundPlayer.get() : null;
 	}
 
 	private HumanPlayer findLiveHumanPlayerByRoleName(String sRoleName){
-		return Stream.of(playersInfoList).filter(
+		Optional<HumanPlayer> foundPlayer = Stream.of(playersInfoList).filter(
 				hp -> mContext.getString(hp.getRoleName()).equals(sRoleName) && hp.isAlive()
-		).findFirst().get();
+		).findFirst();
+
+		return foundPlayer.isPresent() ? foundPlayer.get() : null;
 	}
 
 	public List<String> getLiveHumanPlayersNames() {

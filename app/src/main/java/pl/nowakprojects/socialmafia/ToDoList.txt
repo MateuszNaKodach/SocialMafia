@@ -44,3 +44,5 @@ Debugowanie aplikacji
 
 Dodac metode dla kazdej roli, ktora bedzie przed wykoanniem akcji sprawdzac czy nie jest dilowana,
 czy jej nie zuzyla i czy zyje.
+
+Usunac argumenty z Fragmentów!!! Poczytać dokumentację!
