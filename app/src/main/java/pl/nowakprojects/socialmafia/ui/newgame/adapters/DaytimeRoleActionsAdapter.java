@@ -40,10 +40,7 @@ public class DaytimeRoleActionsAdapter extends RecyclerView.Adapter<DaytimeRoleA
     public DaytimeRoleActionsAdapter(RoleActionsFragment roleActionsFragment, Context context, TheGame theGame) {
         this.roleActionsFragment = roleActionsFragment;
         mTheGame = theGame;
-        if(mTheGame.isSpecialZeroNightNow()) //OGARNAC CI CO SIE BUDZA O DANEJ PORZE DNIA
-            this.actionPlayers = mTheGame.getZeroNightHumanPlayers();
-        else if(mTheGame.isNightDaytimeNow())
-            this.actionPlayers = mTheGame.getNormalNightRolesHumanPlayers();
+        this.actionPlayers = mTheGame.getGamePlayersManager().getThisNightHumanPlayers();
         //else if(mTheGame.isDayDaytimeNow())
         //    this.actionPlayers = mTheGame.getAllDaysHumanPlayers();
 
@@ -196,7 +193,7 @@ public class DaytimeRoleActionsAdapter extends RecyclerView.Adapter<DaytimeRoleA
                                     roleActionWasMade();
                                 }
                             } else if (actionPlayers.get(getAdapterPosition()).getRoleName() == R.string.mafiaKill) {
-                                if(mTheGame.findHumanPlayerByName(choosingSpinner.getSelectedItem().toString()).getRoleName()==R.string.priest&&mTheGame.isMafiaBossAlive()){
+                                if(mTheGame.findHumanPlayerByName(choosingSpinner.getSelectedItem().toString()).getRoleName()==R.string.priest&&mTheGame.getGamePlayersManager().isMafiaBossAlive()){
                                     Toast.makeText(roleActionsFragment.getActivity().getApplicationContext(), R.string.cantKillPriestWhileBossAlive, Toast.LENGTH_LONG).show();
                                 }else {
                                     makeRoleAction(actionPlayers.get(getAdapterPosition()),mTheGame.findHumanPlayerByName(choosingSpinner.getSelectedItem().toString()), null);

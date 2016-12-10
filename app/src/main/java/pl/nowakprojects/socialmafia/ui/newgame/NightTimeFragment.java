@@ -56,7 +56,7 @@ public class NightTimeFragment extends Fragment {
         nightNumberTextView = (TextView) fragmentView.findViewById(R.id.nightNumberTextView);
         finishTheNightButton = (Button) fragmentView.findViewById(R.id.finishTheNightButton);
 
-        if(theGame.getThisNightHumanPlayers().size()!=0)
+        if(theGame.getGamePlayersManager().getThisNightHumanPlayers().size()!=0)
             finishTheNightButton.setEnabled(false);
 
         updateNightNumberTextView();

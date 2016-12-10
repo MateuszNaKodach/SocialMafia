@@ -10,9 +10,9 @@ import com.annimon.stream.Optional;
 import com.annimon.stream.Stream;
 
 import org.parceler.Parcel;
+import org.parceler.ParcelConstructor;
 import org.parceler.Transient;
 
-import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -31,8 +31,12 @@ import pl.nowakprojects.socialmafia.utitles.GameRolesWakeHierarchyComparator;
  */
 
 @Parcel
-public class TheGame {
+final public class TheGame {
 
+	//OGARNAC PARCEL I FINAL!!!
+	GameInitialSettings gameInitialSettings;
+
+	GamePlayersManager gamePlayersManager;
 	//static TheGame mInstance;
 
 	@Transient
@@ -41,31 +45,11 @@ public class TheGame {
 	//@Transient
 	//PlayerRolesManager playerRolesManager;
 
-	int gameId = 0;
-
+	//int gameId = 0;
 
 	public enum Daytime {DAY, NIGHT, JUDGEMENT}
 
-
-	ArrayList<HumanPlayer> playersInfoList; 	// LISTA ZAPISANYCH GRACZY
-
 	//ArrayList<GameDaytime> mlistTheGameDaytimes = new ArrayList<>();
-
-	// LISTA WSZYSTKICH WYBRANYCH RÓL (Z POWTÓRZENIAMI)
-	//ArrayList<PlayerRole> currentGameRoles = new ArrayList<PlayerRole>();
-
-	// STATYSTYKI GRY:
-	long maxDailyTime = 180000; // czas dnia w milisekundach
-	int maxDailyDuelAmount = 3; //maksymalna ilosc pojedynkow na dzien
-	int maxDailyDuelChallenges = 10; //maksymalna ilosc  wyzwan na dzien
-	//boolean mbFinished = false; //czy gra została skończona
-
-	//początkowe ustawienia
-	int playersStartAmount = 0;
-	int mafiaStartAmount = 0;
-	int townStartAmount = 0;
-	int syndicateStartAmount = 0;
-	int doublersStartAmount = 0;
 
 	//Ogolne zmienne do gry:
 	int currentNightNumber = -1;
@@ -75,7 +59,7 @@ public class TheGame {
 	//Zmienne do aktualnego Daytime
 	Daytime currentDaytime;
 	DailyVotingFragment.OUTVOTED currentDayOutVoted;
-	int currentDaytimeMadeRoleActions = 0;
+	int currentDaytimeMadeRoleActions;
 	ArrayList<HumanPlayer> temporaryLastTimeKilledPlayersList;
 	public ArrayList<HumanPlayer> choseDailyJudgmentPlayersList;
 
@@ -89,14 +73,19 @@ public class TheGame {
 
 	//Zmienne do aktualnego dnia
 	ArrayList<HumanPlayer> lastDayOperateByDentistPlayers;
-	int currentDayRemainedDuels = maxDailyDuelAmount;
-	int currentDayThrownChallenges =0;
+	int currentDayRemainedDuels;
+	int currentDayThrownChallenges;
 
-	public TheGame() {
+	@ParcelConstructor
+	public TheGame(GameInitialSettings gameInitialSettings) {
+		this.gameInitialSettings = gameInitialSettings;
+		this.gamePlayersManager = new GamePlayersManager(this);
 		initializeTheGame(null);
 	}
 
-	public TheGame(Context context) {
+	public TheGame(GameInitialSettings gameInitialSettings, Context context) {
+		this.gameInitialSettings = gameInitialSettings;
+		this.gamePlayersManager = new GamePlayersManager(this);
 		initializeTheGame(context);
 		//setupGameAndRolesContext(context);
 	}
@@ -115,7 +104,7 @@ public class TheGame {
 
 	public void setupGameAndRolesContext(Context context){
 		this.mContext = context.getApplicationContext();
-		PlayerRolesManager.setContextForPlayersRoles(playersInfoList,context);
+		PlayerRolesManager.setContextForPlayersRoles(getPlayersInfoList(),context);
 	}
 
 	public boolean isGameFinished(){
@@ -136,21 +125,23 @@ public class TheGame {
 				return PlayerRole.Fraction.NOFRACTION;
 	}
 
-	private boolean isMoreOrEqualMafiaThanTownPlayers(){
-		return getLiveMafiaPlayersAmount()>=getLiveTownPlayersAmount();
-	}
-
-	private boolean isThereNoMafiaAndMoreTownPlayers(){
-		return getLiveMafiaPlayersAmount()==0&&getLiveTownPlayersAmount()>0;
-	}
 
 	private boolean gameWithoutSyndicate(){
-		return syndicateStartAmount ==0;
+		return gameInitialSettings.getSyndicateStartAmount() ==0;
 	}
 
 	public void beginKilling(){
 		if(temporaryLastTimeKilledPlayersList !=null)
 			temporaryLastTimeKilledPlayersList.clear();
+	}
+
+
+	private boolean isMoreOrEqualMafiaThanTownPlayers(){
+		return getGamePlayersManager().getLiveMafiaPlayersAmount()>=getGamePlayersManager().getLiveTownPlayersAmount();
+	}
+
+	private boolean isThereNoMafiaAndMoreTownPlayers(){
+		return getGamePlayersManager().getLiveMafiaPlayersAmount()==0&&getGamePlayersManager().getLiveTownPlayersAmount()>0;
 	}
 
 	public boolean isKillingJudgment(){
@@ -161,48 +152,8 @@ public class TheGame {
 		return currentDayOutVoted == DailyVotingFragment.OUTVOTED.CHECKING;
 	}
 
-	//przeiwdziec jak murzyn murzyni murzyna!
-	//dodac wybór łowcy
 	public void kill(HumanPlayer humanPlayer){
-		if(humanPlayer.isAlive()) {
-			killAlivePlayer(humanPlayer);
-		}
-	}
-
-	private void killAlivePlayer(HumanPlayer humanPlayer){
-		if (humanPlayer.hasGuard())
-			kill(humanPlayer.getGuardToKill()); //to przejdzie do zabicia odpowiedniego gracza
-		else
-			killPlayerWithoutBodyguard(humanPlayer);
-	}
-
-	private void killPlayerWithoutBodyguard(HumanPlayer humanPlayer){
-		humanPlayer.hit(); //dostaje hita, jak jest emo to nie ginie, sprawdamy czy nie byl emo, czyli czy zginal
-
-		if(humanPlayer.isDead())
-			confirmPlayerDeath(humanPlayer);
-	}
-
-	private void confirmPlayerDeath(HumanPlayer humanPlayer){
-		insertToLastTimeKilledList(humanPlayer);
-		killPlayerLovers(humanPlayer);
-		killNextToIfHasTerroristRole(humanPlayer);
-	}
-
-	private void insertToLastTimeKilledList(HumanPlayer humanPlayer){
-		temporaryLastTimeKilledPlayersList.add(humanPlayer);
-	}
-
-	private void killPlayerLovers(HumanPlayer humanPlayer){
-		if (humanPlayer.hasLover()) {
-			for (HumanPlayer hp : humanPlayer.getAliveLoversList())
-				kill(hp); //zabija wszystkich kochanków
-		}
-	}
-
-	private void killNextToIfHasTerroristRole(HumanPlayer humanPlayer){
-		if (humanPlayer.isNotDealedTerrorist())
-			kill(findPreviousPlayerTo(humanPlayer));
+		gamePlayersManager.kill(humanPlayer);
 	}
 
 	//Co zrobic jak np. dwaj lekarze leczyli tego gracza!?
@@ -250,18 +201,6 @@ public class TheGame {
 			return temporaryLastTimeKilledPlayersList.get(temporaryLastTimeKilledPlayersList.size()-1);
 	}
 
-	private HumanPlayer findPreviousPlayerTo(HumanPlayer humanPlayer){
-		for(int i=playersInfoList.indexOf(humanPlayer)-1; i>=0;i--)
-			if(playersInfoList.get(i).isAlive())
-				return playersInfoList.get(i);
-
-
-		for(int i=playersInfoList.size()-1; i>playersInfoList.indexOf(humanPlayer);i--)
-			if(playersInfoList.get(i).isAlive())
-				return playersInfoList.get(i);
-
-		return null;
-	}
 
 	public void clearMadeActionsCount(){
 
@@ -306,7 +245,7 @@ public class TheGame {
 	}
 
 	public void startNewDay(){
-		currentDayRemainedDuels = maxDailyDuelAmount;
+		currentDayRemainedDuels = gameInitialSettings.getMaxDailyDuelAmount();
 		currentDayThrownChallenges =0;
 		lastDayOperateByDentistPlayers.clear();
 		choseDailyJudgmentPlayersList.clear();
@@ -318,65 +257,16 @@ public class TheGame {
 	}
 
 	private void clearMadeActions(){
-		Stream.of(getLiveHumanPlayers()).forEach(hp -> {hp.playerTurn =false; hp.roleActionMade =false;});
+		Stream.of(getGamePlayersManager().getLiveHumanPlayers()).forEach(hp -> {hp.playerTurn =false; hp.roleActionMade =false;});
 	}
 
 	public boolean isJudgeInTheGameSettings(){
-		HumanPlayer hp1 = findHumanPlayerByRoleName(mContext.getString(R.string.judge));
-		HumanPlayer hp2 = findHumanPlayerByRoleName(mContext.getString(R.string.blackJudge));
+		HumanPlayer hp1 = getGamePlayersManager().findHumanPlayerByRoleName(mContext.getString(R.string.judge));
+		HumanPlayer hp2 = getGamePlayersManager().findHumanPlayerByRoleName(mContext.getString(R.string.blackJudge));
 		return (hp1!=null || hp2!=null);
 	}
 
-	public HumanPlayer getJudgePlayer(){
-		HumanPlayer hp1 = findLiveHumanPlayerByRoleName(mContext.getString(R.string.judge));
-		HumanPlayer hp2 = findLiveHumanPlayerByRoleName(mContext.getString(R.string.blackJudge));
 
-		return hp1!=null ? hp1 : hp2;
-
-	}
-
-	private void appendMafiaKillingAbstractPlayerTo(List<HumanPlayer> humanPlayers){
-		humanPlayers.add(new HumanPlayer(mContext.getString(R.string.mafia), PlayerRolesManager.getInstance(mContext).getMafiaKillRole()));
-
-	}
-
-	public List<HumanPlayer> getNormalNightRolesHumanPlayers() {
-		List<HumanPlayer> result = Stream.of(getPlayersInfoList())
-				.filter(HumanPlayer::hasRoleForNormalNight)
-				.collect(Collectors.toList());
-
-		if(isMafiaInTheGame())
-			appendMafiaKillingAbstractPlayerTo(result);
-
-
-		if(!result.isEmpty()){
-			sortPlayersListInWakingHierarchy(result);
-			setTurnForFirstPlayerInList(result);
-		}
-
-		return result;
-	}// private ArrayList<HumanPlayer> getNormalNightRolesHumanPlayers()
-
-
-	public List<HumanPlayer> getZeroNightHumanPlayers() {
-		List<HumanPlayer> result = Stream.of(getPlayersInfoList())
-				.filter(HumanPlayer::hasRoleForZeroNight)
-				.sorted(new GameRolesWakeHierarchyComparator())
-				.collect(Collectors.toList());
-
-		if(!result.isEmpty())
-			setTurnForFirstPlayerInList(result);
-
-		return result;
-	}
-
-	private void sortPlayersListInWakingHierarchy(List<HumanPlayer> playersList){
-		Collections.sort(playersList,new GameRolesWakeHierarchyComparator());
-	}
-
-	private void setTurnForFirstPlayerInList(List<HumanPlayer> playersList){
-			playersList.get(0).setPlayerTurn(true);
-	}
 
 	/*public ArrayList<HumanPlayer> getTownHumanPlayers() {
 		ArrayList<HumanPlayer> result = new ArrayList<HumanPlayer>();
@@ -387,88 +277,10 @@ public class TheGame {
 		return result;
 	}// private ArrayList<HumanPlayer> getTownHumanPlayers()*/
 
-	//COS ŹLE - DLACZEGO TO ZMIENIA WARTOSC!?
-	public List<HumanPlayer> getThisNightHumanPlayers(){
-		if(currentNightNumber ==0)
-			return getZeroNightHumanPlayers();
-		else
-			return getNormalNightRolesHumanPlayers();
-	}
 
 	public int getAmountActionsMadeThisTime(){
 		// miDaytimeRolesActionsMadeThis++;
 		return ++currentDaytimeMadeRoleActions;
-	}
-
-	public HumanPlayer findHumanPlayerByName(String playerName){
-		return Stream.of(playersInfoList).filter(
-				hp -> hp.getPlayerName().equals(playerName)
-		).findFirst().get();
-	}
-
-	public HumanPlayer findLiveHumanPlayerByName(String playerName){
-		return Stream.of(playersInfoList).filter(
-				hp -> hp.getPlayerName().equals(playerName) && hp.isAlive()
-		).findFirst().get();
-	}
-
-	private HumanPlayer findHumanPlayerByRoleName(String sRoleName){
-		Optional<HumanPlayer> foundPlayer = Stream.of(playersInfoList).filter(
-				hp -> mContext.getString(hp.getRoleName()).equals(sRoleName)
-		).findFirst();
-
-		return foundPlayer.isPresent() ? foundPlayer.get() : null;
-	}
-
-	private HumanPlayer findLiveHumanPlayerByRoleName(String sRoleName){
-		Optional<HumanPlayer> foundPlayer = Stream.of(playersInfoList).filter(
-				hp -> mContext.getString(hp.getRoleName()).equals(sRoleName) && hp.isAlive()
-		).findFirst();
-
-		return foundPlayer.isPresent() ? foundPlayer.get() : null;
-	}
-
-	public List<String> getLiveHumanPlayersNames() {
-		return Stream.of(playersInfoList)
-				.filter(HumanPlayer::isAlive)
-				.map(HumanPlayer::getPlayerName)
-				.collect(Collectors.toList());
-	}
-
-	public List<HumanPlayer> getLiveHumanPlayers() {
-		return Stream.of(playersInfoList)
-				.filter(HumanPlayer::isAlive)
-				.collect(Collectors.toList());
-	}// private ArrayList<HumanPlayer> getTownHumanPlayers()
-
-	public List<HumanPlayer> getLiveMafiaPlayers(){
-		return getLiveSelectedFractionPlayers(PlayerRole.Fraction.MAFIA);
-	}
-
-	public List<HumanPlayer> getLiveTownPlayers(){
-		return getLiveSelectedFractionPlayers(PlayerRole.Fraction.TOWN);
-	}
-
-	public List<HumanPlayer> getLiveSyndicatePlayers(){
-		return getLiveSelectedFractionPlayers(PlayerRole.Fraction.SYNDICATE);
-	}
-
-	private int getLiveMafiaPlayersAmount(){
-		return getLiveMafiaPlayers().size();
-	}
-
-	private int getLiveTownPlayersAmount(){
-		return getLiveTownPlayers().size();
-	}
-
-	public int getLiveSyndicatePlayersAmount(){
-		return getLiveSyndicatePlayers().size();
-	}
-
-	private List<HumanPlayer> getLiveSelectedFractionPlayers(PlayerRole.Fraction fraction) {
-		return Stream.of(playersInfoList)
-				.filter(hp -> hp.isAlive() && hp.hasFraction(fraction))
-				.collect(Collectors.toList());
 	}
 
 	public boolean isSpecialZeroNightNow(){
@@ -488,21 +300,14 @@ public class TheGame {
 	}
 
 
-	public boolean isMafiaBossAlive() {
-		HumanPlayer mafiaboss = findLiveHumanPlayerByRoleName(mContext.getString(R.string.boss));
-		HumanPlayer mafiaboss2 = findLiveHumanPlayerByRoleName(mContext.getString(R.string.blackmailerBoss));
-
-		return mafiaboss!=null|| mafiaboss2!=null;
-	}
-
 
 	public void setPlayersInfoList(ArrayList<HumanPlayer> playersInfoList) {
-		this.playersInfoList = playersInfoList;
+		//this.playersInfoList = playersInfoList;
 		PlayerRolesManager.setContextForPlayersRoles(playersInfoList, mContext);
 	}
 
-	private boolean isMafiaInTheGame(){
-		return getLiveMafiaPlayers().size()>0;
+	protected boolean isMafiaInTheGame(){
+		return gamePlayersManager.getLiveMafiaPlayers().size()>0;
 	}
 
 	//GETTERS AND SETTERS-----------------------------------------------------------------------------
@@ -532,28 +337,13 @@ public class TheGame {
 	}
 
 	public long getMaxDailyTime() {
-		return maxDailyTime;
+		return gameInitialSettings.getMaxDailyTimeInMilliseconds();
 	}
 
 	public int getPlayersStartAmount() {
-		return playersStartAmount;
+		return gameInitialSettings.getPlayersStartAmount();
 	}
 
-	public int getMafiaStartAmount() {
-		return mafiaStartAmount;
-	}
-
-	public int getTownStartAmount() {
-		return townStartAmount;
-	}
-
-	public int getSyndicateStartAmount() {
-		return syndicateStartAmount;
-	}
-
-	public int getDoublersStartAmount() {
-		return doublersStartAmount;
-	}
 
 	public int getCurrentNightNumber() {
 		return currentNightNumber;
@@ -563,29 +353,6 @@ public class TheGame {
 		return currentDayNumber;
 	}
 
-	public void setMaxDailyTime(long maxDailyTime) {
-		this.maxDailyTime = maxDailyTime;
-	}
-
-	public void setPlayersStartAmount(int playersStartAmount) {
-		this.playersStartAmount = playersStartAmount;
-	}
-
-	public void setMafiaStartAmount(int mafiaStartAmount) {
-		this.mafiaStartAmount = mafiaStartAmount;
-	}
-
-	public void setTownStartAmount(int townStartAmount) {
-		this.townStartAmount = townStartAmount;
-	}
-
-	public void setSyndicateStartAmount(int syndicateStartAmount) {
-		this.syndicateStartAmount = syndicateStartAmount;
-	}
-
-	public void setDoublersStartAmount(int doublersStartAmount) {
-		this.doublersStartAmount = doublersStartAmount;
-	}
 
 	public void setCurrentNightNumber(int currentNightNumber) {
 		this.currentNightNumber = currentNightNumber;
@@ -596,20 +363,14 @@ public class TheGame {
 	}
 
 	public int getMaxDailyDuelAmount() {
-		return maxDailyDuelAmount;
+		return gameInitialSettings.getMaxDailyDuelAmount();
 	}
 
-	public void setMaxDailyDuelAmount(int maxDailyDuelAmount) {
-		this.maxDailyDuelAmount = maxDailyDuelAmount;
-	}
 
 	public int getMaxDailyDuelChallenges() {
-		return maxDailyDuelChallenges;
+		return gameInitialSettings.getMaxDailyDuelChallenges();
 	}
 
-	public void setMaxDailyDuelChallenges(int maxDailyDuelChallenges) {
-		this.maxDailyDuelChallenges = maxDailyDuelChallenges;
-	}
 
 	public Daytime getCurrentDaytime() {
 		return currentDaytime;
@@ -688,7 +449,7 @@ public class TheGame {
 	}
 
 	public ArrayList<HumanPlayer> getPlayersInfoList() {
-		return playersInfoList;
+		return gameInitialSettings.getPlayersInfoList();
 	}
 
 	public void appendLastNightHealingByMedicPlayers(HumanPlayer humanPlayer){
@@ -727,5 +488,21 @@ public class TheGame {
 
 	public void setContext(Context context){
 		this.mContext = context;
+	}
+
+	public List<HumanPlayer> getLiveHumanPlayers() {
+		return getGamePlayersManager().getLiveHumanPlayers();
+	}
+
+	public HumanPlayer findHumanPlayerByName(String playerName){
+		return getGamePlayersManager().findHumanPlayerByName(playerName);
+	}
+
+	public List<String> getLiveHumanPlayersNames(){
+		return getGamePlayersManager().getLiveHumanPlayersNames();
+	}
+
+	public GamePlayersManager getGamePlayersManager() {
+		return gamePlayersManager;
 	}
 }

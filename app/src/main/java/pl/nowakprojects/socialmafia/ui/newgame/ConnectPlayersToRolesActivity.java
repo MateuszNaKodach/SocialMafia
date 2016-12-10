@@ -24,6 +24,7 @@ import java.util.Collections;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import pl.nowakprojects.socialmafia.R;
+import pl.nowakprojects.socialmafia.mafiagameclasses.GameInitialSettings;
 import pl.nowakprojects.socialmafia.mafiagameclasses.HumanPlayer;
 import pl.nowakprojects.socialmafia.mafiagameclasses.roles.PlayerRole;
 import pl.nowakprojects.socialmafia.mafiagameclasses.TheGame;
@@ -64,13 +65,26 @@ public class ConnectPlayersToRolesActivity extends AppCompatActivity {
     }
 
     private void vCreateNewGame(){
-        mNewGame = new TheGame(getApplicationContext());
+        GameInitialSettings gameInitialSettings = new GameInitialSettings(
+                0,
+                mPlayersInfoList,
+                180000,
+                3,
+                10,
+                mPlayersInfoList.size(),
+                iCountFractionRoles(mPlayersInfoList, PlayerRole.Fraction.MAFIA),
+                iCountFractionRoles(mPlayersInfoList, PlayerRole.Fraction.TOWN),
+                iCountFractionRoles(mPlayersInfoList, PlayerRole.Fraction.SYNDICATE),
+                0
+                );
+
+        mNewGame = new TheGame(gameInitialSettings, getApplicationContext());
         //Te wszystkie ustawienia do GameConfiguration - taka klasa!!! - tutaj wszystko będzie final - immutable class
-        mNewGame.setPlayersInfoList(mPlayersInfoList);
+        /*mNewGame.setPlayersInfoList(mPlayersInfoList);
         mNewGame.setPlayersStartAmount(mPlayersInfoList.size());
         mNewGame.setMafiaStartAmount(iCountFractionRoles(mPlayersInfoList, PlayerRole.Fraction.MAFIA));
         mNewGame.setTownStartAmount(iCountFractionRoles(mPlayersInfoList, PlayerRole.Fraction.TOWN));
-        mNewGame.setSyndicateStartAmount(iCountFractionRoles(mPlayersInfoList, PlayerRole.Fraction.SYNDICATE));
+        mNewGame.setSyndicateStartAmount(iCountFractionRoles(mPlayersInfoList, PlayerRole.Fraction.SYNDICATE));*/
 //        mNewGame.setMaxDailyTime(Long.valueOf(getResources().getString(R.string.sharedpref_daytime)));
     }
 

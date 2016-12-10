@@ -120,7 +120,7 @@ public class DayTimeFragment extends Fragment {
                                 mTheGame.getCurrentDayNumber(),
                                 //TUTAJ COS NIE DZIALA!? JAKBY LISTA ZAWSZE BYLA PUSTA NA POCZATKU DNIA
                                 mTheGame.getTemporaryLastTimeKilledPlayersList().isEmpty() ? getString(R.string.noone_died) : getString(R.string.somebody_died, mTheGame.lastTimeKilledPlayersString()),
-                                getString(R.string.fraction_stats,mTheGame.getPlayersStartAmount(),mTheGame.getLiveHumanPlayers().size(),mTheGame.getLiveTownPlayers().size(),mTheGame.getLiveMafiaPlayers().size(),mTheGame.getLiveSyndicatePlayers().size())
+                                getString(R.string.fraction_stats,mTheGame.getPlayersStartAmount(),mTheGame.getLiveHumanPlayers().size(),mTheGame.getGamePlayersManager().getLiveTownPlayers().size(),mTheGame.getGamePlayersManager().getLiveMafiaPlayers().size(),mTheGame.getGamePlayersManager().getLiveSyndicatePlayers().size())
                         )
                 )
                 .positiveText(R.string.ok)

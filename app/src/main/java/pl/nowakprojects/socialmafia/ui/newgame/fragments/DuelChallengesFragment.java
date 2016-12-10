@@ -194,7 +194,7 @@ public class DuelChallengesFragment extends Fragment{
 
         mJudgeDecicionMaterialDialog = new MaterialDialog.Builder(this.getActivity())
                 .title(getString(R.string.duelActionDialogTitle, msCurrentAgressivePlayer, msCurrentInsultedPlayer))
-                .content(getString(R.string.judgeDuelDecision, msCurrentAgressivePlayer, msCurrentInsultedPlayer,mTheGame.getJudgePlayer().getPlayerName()))
+                .content(getString(R.string.judgeDuelDecision, msCurrentAgressivePlayer, msCurrentInsultedPlayer,mTheGame.getGamePlayersManager().getJudgePlayer().getPlayerName()))
                 .positiveText(R.string.yes)
                 .negativeText(R.string.no)
                 .autoDismiss(false)

@@ -16,6 +16,12 @@
     android:gravity="center_horizontal"
     android:background="@android:color/white">
 
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/dayOrNightTimeFragment"/>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -25,10 +31,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-        <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/dayOrNightTimeFragment"/>
 
             <FrameLayout
                 android:layout_width="match_parent"
