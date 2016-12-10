@@ -60,7 +60,7 @@ public abstract class PlayerRole {
 
 
     @ParcelFactory
-    static PlayerRole makeRoleFromNameId(int roleNameId){
+    public static PlayerRole makeRoleFromNameId(int roleNameId){
         switch(roleNameId){
             //ustawic kontekst w kazdej klasie dziedziczacej
             //ustawic kontekt setterem w PlayerRolesMaganer

@@ -12,6 +12,7 @@ import com.annimon.stream.Stream;
 import org.parceler.Parcel;
 import org.parceler.Transient;
 
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -92,17 +93,15 @@ public class TheGame {
 	int currentDayThrownChallenges =0;
 
 	public TheGame() {
-		lastNightHealingByMedicPlayers = new ArrayList<>();
-		lastNightHittingByDarkMedicPlayers = new ArrayList<>();
-		lastNightHittingByMafiaPlayers = new ArrayList<>();
-		lastNightDealingByDealerPlayers = new ArrayList<>();
-		lastDayOperateByDentistPlayers = new ArrayList<>();
-		lastNightKilledPlayers = new ArrayList<>();
-		temporaryLastTimeKilledPlayersList = new ArrayList<>();
-		choseDailyJudgmentPlayersList = new ArrayList<>();
+		initializeTheGame(null);
 	}
 
 	public TheGame(Context context) {
+		initializeTheGame(context);
+		//setupGameAndRolesContext(context);
+	}
+
+	private void initializeTheGame(Context context){
 		this.mContext = context;
 		lastNightHealingByMedicPlayers = new ArrayList<>();
 		lastNightHittingByDarkMedicPlayers = new ArrayList<>();
@@ -112,7 +111,6 @@ public class TheGame {
 		lastNightKilledPlayers = new ArrayList<>();
 		temporaryLastTimeKilledPlayersList = new ArrayList<>();
 		choseDailyJudgmentPlayersList = new ArrayList<>();
-		//setupGameAndRolesContext(context);
 	}
 
 	public void setupGameAndRolesContext(Context context){
@@ -126,7 +124,8 @@ public class TheGame {
 
 	public boolean isFirstDay() { return this.currentDayNumber ==1;}
 
-	//DOKONCZYC JESLI JEST SYNDYKAT!!!!
+
+	//TODO DOKONCZYC KONCZYC JESLI JEST SYNDYKAT!!!!
 	private PlayerRole.Fraction calculateWinner(){
 			//if(gameWithoutSyndicate())
 				if(isMoreOrEqualMafiaThanTownPlayers())
@@ -166,25 +165,45 @@ public class TheGame {
 	//dodac wybór łowcy
 	public void kill(HumanPlayer humanPlayer){
 		if(humanPlayer.isAlive()) {
-			if (humanPlayer.hasGuard())
-				kill(humanPlayer.getGuardToKill()); //to przejdzie do zabicia odpowiedniego gracza
-			else {
-					humanPlayer.hit(); //dostaje hita, jak jest emo to nie ginie, sprawdamy czy nie byl emo, czyli czy zginal
+			killAlivePlayer(humanPlayer);
+		}
+	}
 
-				if(humanPlayer.isDead()) {
-					//beginKilling();
-					temporaryLastTimeKilledPlayersList.add(humanPlayer); //dodawanie do licy ostatnio zabitych
-					if (humanPlayer.hasLover()) {
-						for (HumanPlayer hp : humanPlayer.getAliveLoversList())
-							kill(hp); //zabija wszystkich kochanków
-					}//if (humanPlayer.hasLover())
+	private void killAlivePlayer(HumanPlayer humanPlayer){
+		if (humanPlayer.hasGuard())
+			kill(humanPlayer.getGuardToKill()); //to przejdzie do zabicia odpowiedniego gracza
+		else
+			killPlayerWithoutBodyguard(humanPlayer);
+	}
 
-					if (humanPlayer.isNotDealedTerrorist())
-						kill(findPreviousPlayerTo(humanPlayer));
-				}//if(!humanPlayer.isAlive())
-			}//else
-		}//if(humanPlayer.isAlive())
-	}//public static void kill(HumanPlayer humanPlayer)
+	private void killPlayerWithoutBodyguard(HumanPlayer humanPlayer){
+		humanPlayer.hit(); //dostaje hita, jak jest emo to nie ginie, sprawdamy czy nie byl emo, czyli czy zginal
+
+		if(humanPlayer.isDead())
+			confirmPlayerDeath(humanPlayer);
+	}
+
+	private void confirmPlayerDeath(HumanPlayer humanPlayer){
+		insertToLastTimeKilledList(humanPlayer);
+		killPlayerLovers(humanPlayer);
+		killNextToIfHasTerroristRole(humanPlayer);
+	}
+
+	private void insertToLastTimeKilledList(HumanPlayer humanPlayer){
+		temporaryLastTimeKilledPlayersList.add(humanPlayer);
+	}
+
+	private void killPlayerLovers(HumanPlayer humanPlayer){
+		if (humanPlayer.hasLover()) {
+			for (HumanPlayer hp : humanPlayer.getAliveLoversList())
+				kill(hp); //zabija wszystkich kochanków
+		}
+	}
+
+	private void killNextToIfHasTerroristRole(HumanPlayer humanPlayer){
+		if (humanPlayer.isNotDealedTerrorist())
+			kill(findPreviousPlayerTo(humanPlayer));
+	}
 
 	//Co zrobic jak np. dwaj lekarze leczyli tego gracza!?
 	public void commitNightKillingResults(){

@@ -46,3 +46,5 @@ Dodac metode dla kazdej roli, ktora bedzie przed wykoanniem akcji sprawdzac czy 
 czy jej nie zuzyla i czy zyje.
 
 Usunac argumenty z Fragmentów!!! Poczytać dokumentację!
+
+Pozamieniac Guard na bodyguard - w TheGame np. i humanplayer

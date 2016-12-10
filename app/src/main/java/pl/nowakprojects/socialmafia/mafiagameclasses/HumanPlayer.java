@@ -44,42 +44,43 @@ public class HumanPlayer{
     private MaterialDialog mPlayerInfoDialog;
 
 
-
-
-    //CONSTRUCTORS:
-    //@ParcelConstructor
-    //private HumanPlayer() {}
-
+    //Initalization methods:-----------------------------------------------------------------------
     @ParcelConstructor
     public HumanPlayer(String playerName, PlayerRole playerRole) {
-        this.playerName = playerName;
-        this.playerRole = playerRole;
-
-        if(isNotDealedEmo())
-            lives =2;
-        else
-            lives =1;
+        initializeHumanPlayer(playerName,playerRole);
     }
 
+    public HumanPlayer(String playerName, int playerRoleNameId) {
+        initializeHumanPlayer(playerName,PlayerRole.makeRoleFromNameId(playerRoleNameId));
+    }
 
+    private void initializeHumanPlayer(String playerName, PlayerRole playerRole){
+        this.playerName=playerName;
+        this.playerRole=playerRole;
+        setProperlyLivesAmount();
+    }
 
+    private void setProperlyLivesAmount(){
+        if(isNotDealedEmo())
+            lives = 2;
+        else
+            lives = 1;
+    }
 
-    //GAME METHODS:
+    //In-Game methods:-----------------------------------------------------------------------------
+
     public void hit(){
-        setLives(getLives()-1);
-        if(getLives()<=0)
+        lives--;
+        if(lives<=0)
             this.setNotAlive();
     }
 
     public void reviveThePlayer(){
         if(isDead()){
-            setLives(getLives()+1);
-            setAlive(true);
+            lives++;
+            alive=true;
         }
     }
-
-
-
 
     public void appendGuard(HumanPlayer guard) {
         if(!this.guardsList.contains(guard))
@@ -239,6 +240,7 @@ public class HumanPlayer{
 
 
 
+
     public boolean isAliveAndNotDealed(){
         return isAlive() && isNotDealed();
     }
@@ -259,7 +261,7 @@ public class HumanPlayer{
         return !alive;
     }
 
-    //GETTERS AND SETTERS:
+    //NORMAL GETTERS AND SETTERS:
 
     public void setDealed(boolean dealed) {
         this.dealed = dealed;
@@ -421,7 +423,7 @@ public class HumanPlayer{
     public int hashCode() {
         int result = playerName.hashCode();
         result = 31 * result + playerRole.hashCode();
-        result = 31 * result + (alive ? 1 : 0);
+        result += (alive ? 1 : 0);
         return result;
     }
 }
