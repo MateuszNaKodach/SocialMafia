@@ -3,7 +3,7 @@ The motivation to create this app it was that me and my friends play popular maf
 Game Master), but I prefer to play than lead. So the app should able everyone (moreover person who have never play the game!) to 
 understand rules and be a Game Master.
 
-That was my first project in Android. The app is not fisnished, because of that I've learned a lot last time, and I decided to create it from zero. 
+That was my first project in Android. The app is not fisnished, because of that I've learned a lot last time, and I decided to create it from zero. There is better code version (with Model-View-Presenter Architecure):https://github.com/nowakprojects/Android-SocialMafia), but it's in progress to. I don't have enought time to finish it, because of my studies and work in startup.
 
 This is spaghetti code, and twisted layers, but... It was working so well.
 
