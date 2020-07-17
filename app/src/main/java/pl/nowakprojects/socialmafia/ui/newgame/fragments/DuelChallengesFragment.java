@@ -1,8 +1,10 @@
 package pl.nowakprojects.socialmafia.ui.newgame.fragments;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +38,7 @@ public class DuelChallengesFragment extends Fragment{
     MaterialDialog mChallengeConfirmationDialog;
     MaterialDialog mChallengedInsultedAgreeDialog;
     MaterialDialog mJudgeDecicionMaterialDialog;
-    android.support.v4.app.FragmentManager fragmentManager;
+    FragmentManager fragmentManager;
 
 
     public DuelChallengesFragment(){}

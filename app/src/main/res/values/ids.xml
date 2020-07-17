@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="tooLessRolesSelected" type="id">Wybrano zbyt mało ról!</item>
-    <item name="statusmenu_kill_the_player_during_the_game" type="id">game_kill</item>
+    <item name="tooLessRolesSelected" type="id" />
+    <item name="statusmenu_kill_the_player_during_the_game" type="id" />
 </resources>

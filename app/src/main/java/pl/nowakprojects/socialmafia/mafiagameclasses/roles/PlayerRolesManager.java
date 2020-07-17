@@ -5,13 +5,14 @@ import android.content.Context;
 import com.annimon.stream.Stream;
 
 import org.parceler.Transient;
-import org.parceler.javaxinject.Singleton;
 
 import java.util.ArrayList;
 
 /**
  * Created by Mateusz on 08.08.2016.
  */
+
+import javax.inject.Singleton;
 
 import pl.nowakprojects.socialmafia.R;
 import pl.nowakprojects.socialmafia.mafiagameclasses.HumanPlayer;

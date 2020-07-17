@@ -101,7 +101,7 @@
                     android:layout_marginLeft="10dp" />
             </LinearLayout>
 
-            <android.support.v7.widget.RecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/selectTownRolesRecyclerView"
@@ -142,7 +142,7 @@
                     android:layout_marginLeft="10dp" />
             </LinearLayout>
 
-            <android.support.v7.widget.RecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/selectMafiaRolesRecyclerView"
@@ -183,7 +183,7 @@
                     android:layout_marginLeft="10dp" />
             </LinearLayout>
 
-            <android.support.v7.widget.RecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/selectSyndicateRolesRecyclerView"

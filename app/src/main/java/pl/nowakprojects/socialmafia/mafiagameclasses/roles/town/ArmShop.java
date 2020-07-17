@@ -9,9 +9,9 @@ import pl.nowakprojects.socialmafia.mafiagameclasses.roles.PlayerRole;
  * Created by Mateusz on 02.12.2016.
  */
 @Parcel
-public class Armshop extends PlayerRole {
+public class ArmShop extends PlayerRole {
 
-    public Armshop(){
+    public ArmShop(){
         super();
         this.setNameId(R.string.armshop);
         this.setDescriptionId(R.string.armshopDescription);

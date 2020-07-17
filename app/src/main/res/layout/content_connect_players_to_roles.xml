@@ -38,7 +38,7 @@
             android:layout_gravity="center"
             android:gravity="center_vertical|center_horizontal"
             android:layout_marginRight="12dp" />
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_weight="0.8"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

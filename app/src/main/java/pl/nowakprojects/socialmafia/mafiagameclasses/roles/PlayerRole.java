@@ -1,7 +1,6 @@
 package pl.nowakprojects.socialmafia.mafiagameclasses.roles;
 
 import android.content.Context;
-import android.support.v4.app.Fragment;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -12,8 +11,6 @@ import org.parceler.ParcelProperty;
 import org.parceler.Transient;
 
 import pl.nowakprojects.socialmafia.R;
-import pl.nowakprojects.socialmafia.mafiagameclasses.HumanPlayer;
-import pl.nowakprojects.socialmafia.mafiagameclasses.TheGame;
 import pl.nowakprojects.socialmafia.mafiagameclasses.roles.mafia.*;
 import pl.nowakprojects.socialmafia.mafiagameclasses.roles.syndicate.*;
 import pl.nowakprojects.socialmafia.mafiagameclasses.roles.town.*;
@@ -70,7 +67,7 @@ public abstract class PlayerRole {
             case R.string.madman:
                 return new Madman();
             case R.string.armshop:
-                return new Armshop();
+                return new ArmShop();
             case R.string.policeman:
                 return new Policeman();
             case R.string.prostitute:
